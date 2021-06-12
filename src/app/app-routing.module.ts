@@ -4,7 +4,8 @@ import {QuicklinkModule, QuicklinkStrategy} from "ngx-quicklink";
 
 const routes: Routes = [
   {path: '', redirectTo: 'auth', pathMatch: 'full'},
-  {path: 'auth', loadChildren: ()=> import('./modules/auth/auth.module').then((m)=> m.AuthModule)}
+  {path: 'auth', loadChildren: ()=> import('./modules/auth/auth.module').then((m)=> m.AuthModule)},
+  {path: 'admin', loadChildren: ()=> import('./modules/administration/administration.module').then((m)=> m.AdministrationModule)}
 ];
 
 @NgModule({
