@@ -2,3 +2,311 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "~ecapture-ng-ui/assets/styles/_global.css";
+
+@layer base {
+  :root {
+    --c-white: #F4F5F6;
+    --c-mono-10: #E3E4E7;
+    --c-mono-30: #9FA3AD;
+    --c-mono-70: #595B5D;
+    --c-mono-100: #313335;
+    --c-black: #2B2B2B;
+
+    --c-brand-d-3: #002266;
+    --c-brand-d-2: #003399;
+    --c-brand-d-1: #0044CC;
+    --c-brand: #0055FF;
+    --c-brand-l-1: #3377FF;
+    --c-brand-l-2: #6699FF;
+    --c-brand-l-3: #99BBFF;
+
+    --c-alert-error-l: #FF666E;
+    --c-alert-success-l: #2ABB54;
+    --c-alert-info-l: #4C8AFF;
+    --c-alert-warning-l: #FFB119;
+
+    --c-alert-error-d: #DA1E28;
+    --c-alert-success-d: #1C7D38;
+    --c-alert-info-d: #0150E4;
+    --c-alert-warning-d: #CC8700;
+  }
+  .theme-light {
+    --c-fl-white: var(--c-white);
+    --c-fl-mono-10: var(--c-mono-10);
+    --c-fl-mono-30: var(--c-mono-30);
+    --c-fl-mono-70: var(--c-mono-70);
+    --c-fl-mono-100: var(--c-mono-100);
+    --c-fl-black: var(--c-black);
+
+    --c-fl-brand-d-3: var(--c-brand-d-3);
+    --c-fl-brand-d-2: var(--c-brand-d-2);
+    --c-fl-brand-d-1: var(--c-brand-d-1);
+
+    --c-fl-brand-1: var(--c-brand);
+    --c-fl-brand-2: var(--c-brand);
+
+    --c-fl-brand-l-1: var(--c-brand-l-1);
+    --c-fl-brand-l-2: var(--c-brand-l-2);
+    --c-fl-brand-l-3: var(--c-brand-l-3);
+
+    --c-fl-alert-error: var(--c-alert-error-d);
+    --c-fl-alert-success: var(--c-alert-success-d);
+    --c-fl-alert-info: var(--c-alert-info-d);
+    --c-fl-alert-warning: var(--c-alert-warning-d);
+  }
+}
+
+@layer utilities {
+
+  @variants dark {
+    .theme-dark {
+      --c-fl-white: var(--c-black);
+      --c-fl-mono-10: var(--c-mono-100);
+      --c-fl-mono-30: var(--c-mono-70);
+      --c-fl-mono-70: var(--c-mono-30);
+      --c-fl-mono-100: var(--c-mono-10);
+      --c-fl-black: var(--c-white);
+
+      --c-fl-brand-d-3: var(--c-brand-l-3);
+      --c-fl-brand-d-2: var(--c-brand-l-2);
+      --c-fl-brand-d-1: var(--c-brand-l-1);
+
+      --c-fl-brand-1: var(--c-brand-l-2);
+      --c-fl-brand-2: var(--c-brand-l-2);
+
+      --c-fl-brand-l-1: var(--c-brand-d-1);
+      --c-fl-brand-l-2: var(--c-brand-d-2);
+      --c-fl-brand-l-3: var(--c-brand-d-3);
+
+      --c-fl-alert-error: var(--c-alert-error-l);
+      --c-fl-alert-success: var(--c-alert-success-l);
+      --c-fl-alert-info: var(--c-alert-info-l);
+      --c-fl-alert-warning: var(--c-alert-warning-l);
+    }
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500&display=swap");
+
+.t-h1 {
+  font-family: "IBM Plex Sans";
+  font-weight: 300;
+  font-size: 6rem;
+  line-height: 8rem;
+}
+.t-h2 {
+  font-family: "IBM Plex Sans";
+  font-weight: 300;
+  font-size: 4rem;
+  line-height: 5rem;
+}
+.t-h3 {
+  font-family: "IBM Plex Sans";
+  font-weight: 300;
+  font-size: 3rem;
+  line-height: 4rem;
+}
+.t-h4 {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 3rem;
+}
+.t-h5 {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.t-subtitle-1 {
+  font-family: "IBM Plex Sans";
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.t-subtitle-2 {
+  font-family: "IBM Plex Sans Condensed";
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.t-body-1 {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.t-body-2 {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.t-button-1 {
+  font-family: "IBM Plex Sans";
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.t-button-2 {
+  font-family: "IBM Plex Sans";
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.t-caption-1 {
+  font-family: "IBM Plex Sans";
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.t-caption-2 {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  /*flex-wrap: wrap;*/
+}
+.t-caption-3 {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 8px;
+}
+
+.t-overline {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  letter-spacing: 0.05rem;
+}
+
+
+@font-face {
+  font-family: Roboto;
+  src: url("assets/fonts/Roboto-Regular.ttf") format("truetype");
+}
+
+/* Header & Footer */
+
+.ec-header {
+  @apply fixed bg-white top-0 w-screen h-12 border-b border-mono-30 flex justify-between items-center pr-6 md:pr-12 lg:pr-12 xl:pr-16 2xl:pr-24 relative
+}
+
+.ec-footer {
+  @apply w-screen h-20 bottom-0 bg-mono-10 flex justify-between items-center px-12 pr-6 md:pr-12 lg:pr-12 xl:pr-16 2xl:pr-24
+}
+
+/* Inputs */
+
+label {
+  @apply t-caption-2 text-mono-70
+}
+
+.input-style {
+  @apply px-2 h-10 t-body-1 text-black bg-mono-10 rounded
+}
+
+/* Buttons */
+
+button {
+  @apply h-12 px-4 rounded flex flex-row items-center justify-center space-x-2 t-button-1
+}
+button:disabled{
+  @apply text-mono-10 border border-mono-10 bg-transparent cursor-default
+}
+
+.b-solid {
+  @apply t-button-1 text-white bg-brand-2
+}
+.b-outline {
+  @apply t-button-1 text-brand-2 border border-brand-2
+}
+.b-ghost {
+  @apply t-button-1 text-brand-2
+}
+.b-solid:hover {
+  @apply bg-brand-d-1
+}
+.b-outline:hover {
+  @apply bg-brand-d-1 text-white
+}
+.b-ghost:hover {
+  @apply bg-brand-d-1 text-white
+}
+
+.gutter {
+  @apply bg-mono-30 bg-no-repeat;
+  /*background-color: var(--c-mono-70) !important;
+  background-repeat: no-repeat;*/
+  background-position: 50%;
+}
+
+.gutter-horizontal {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  cursor: col-resize;
+}
+
+::-webkit-scrollbar {
+  @apply w-3 h-3
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-transparent
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-transparent
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-mono-30
+}
+
+.ec-container {
+  @apply px-6 md:px-12 lg:px-16 2xl:px-24
+}
+
+.ec-container-workflow {
+  @apply px-6 md:px-12 lg:px-4
+}
+
+/* Complements */
+.border-input {
+  @apply border border-mono-30 rounded h-10 text-black
+}
+
+/* Combo */
+.container-combo {
+  @apply border border-mono-30 rounded text-black absolute top-10 left-0 bg-mono-10 w-full
+}
+.option-combo {
+  @apply flex-grow p-2 bg-mono-10
+}
+.option-combo:hover {
+  @apply bg-white
+}
+.option-combo:active, .border-input:active {
+  @apply bg-mono-30
+}
+
+
+.toast-item-container {
+  z-index: 1113 !important;
+}
+
+.toast-container {
+  z-index: 1113 !important;
+}

@@ -1,71 +1,65 @@
 module.exports = {
   purge: ['./src/**/*.html', './src/**/*.ts'],
-  darkMode: 'class',
+  darkMode: 'media',
   theme: {
     extend: {
-      colors:{
-        neutral_gray: {
-          black: "#000000",
-          100: "#161616",
-          90: "#262626",
-          80: "#393939",
-          70: "#525252",
-          60: "#6F6F6F",
-          50: "#8D8D8D",
-          40: "#A8A8A8",
-          30: "#C6C6C6",
-          20: "#E0E0E0",
-          10: "#F4F4F4",
-          white: "#FFFFFF"
+      colors: {
+        'white-fx': 'var(--c-white)',
+        'black-fx': 'var(--c-black)',
+        white: 'var(--c-fl-white)',
+        black: 'var(--c-fl-black)',
+        mono: {
+          10: 'var(--c-fl-mono-10)',
+          30: 'var(--c-fl-mono-30)',
+          70: 'var(--c-fl-mono-70)',
+          100: 'var(--c-fl-mono-100)',
         },
-        orange_core:{
-          100: "#421A00",
-          90: "#6B2A00",
-          80: "#9E3E00",
-          70: "#CC5000",
-          60: "#F66100",
-          50: "#FF9047",
-          40: "#FFAF7A",
-          30: "#FFCAA8",
-          20: "#FFE3D1",
-          10: "#FFF3EB"
+        brand: {
+          d: {
+            1: 'var(--c-fl-brand-d-1)',
+            2: 'var(--c-fl-brand-d-2)',
+            3: 'var(--c-fl-brand-d-3)',
+          },
+          1: 'var(--c-fl-brand-1)',
+          2: 'var(--c-fl-brand-2)',
+          l: {
+            1: 'var(--c-fl-brand-l-1)',
+            2: 'var(--c-fl-brand-l-2)',
+            3: 'var(--c-fl-brand-l-3)',
+          }
         },
-        alert_light:{
-          60: "#FB6060",
-          50: "#24A148",
-          40: "#66A6FF",
-          30: "#F1C21B"
-        },
-        alert_dark:{
-          60: "#DA1E28",
-          50: "#1F7A3D",
-          40: "#0F62FE",
-          30: "#806A00"
-        },
-        status:{
-          firmado: "#00E573",
-          pendiente: "#FFCC33",
-          errado: "#FF0055",
-          expirado: "#00D4FF",
-          cancelado: "#8080B2"
-        },
-      },
-      opacity: ['disabled'],
-    },
-    fontFamily: {
-      'rubik': ['Rubik']
+        alert: {
+          error: 'var(--c-fl-alert-error)',
+          success: 'var(--c-fl-alert-success)',
+          info: 'var(--c-fl-alert-info)',
+          warning: 'var(--c-fl-alert-warning)',
+        }
+      }
     },
     screens: {
       'sm': '320px',
+      // => @media (min-width: 640px) { ... }
+
       'md': '672px',
+      // => @media (min-width: 768px) { ... }
+
       'lg': '1056px',
+      // => @media (min-width: 1024px) { ... }
+
+      'xl': '1312px',
+      // => @media (min-width: 1280px) { ... }
+
+      '2xl': '1584px',
+      // => @media (min-width: 1536px) { ... }
     },
   },
   variants: {
-    extend:{
-      textAlign: ['hover', 'focus'],
-      pointerEvents: ['hover', 'focus']
-    }
+    extend: {
+      backgroundColor: ['active','checked'],
+      borderWidth: ['hover','checked'],
+      borderColor: ['hover','checked'],
+      display: ['group-hover']
+    },
   },
 
   plugins: [],

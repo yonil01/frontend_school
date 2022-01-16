@@ -1,8 +1,68 @@
-<p>login works!</p>
-<ec-modal [activeModal]="true" bgContainerColor="bg-yellow-500" bgBoxColor="bg-white" brBoxColor="bg-black">
-  <div>
-    <span>
-      Test de Luis
-    </span>
+<div class="bg-mono-10 w-screen h-screen flex justify-center items-center">
+  <div class="flex flex-col w-full h-screen lg:w-3/5 lg:h-auto lg:rounded-lg lg:border lg:border-mono-30 lg:overflow-hidden">
+    <div class="flex flex-col lg:flex-row flex-1 w-full">
+      <div class="flex-1 lg:flex-1">
+        <div style="background-image: url('assets/img/BannerLogin.png');" class="h-full bg-cover bg-center"></div>
+      </div>
+      <div class="form-login">
+        <span class="t-subtitle-1 text-black text-center">Inicio de Sesión</span>
+        <form [formGroup]="formLogin" id="form-login" class="space-y-4">
+          <div class="flex flex-col flex-1 space-y-1">
+            <label>{{ 'Username' | translate}} ó {{ 'EMAIL' | translate}}</label>
+            <input formControlName="user" class="input-style" type="text">
+          </div>
+          <div class="flex flex-col flex-1 space-y-1">
+            <label>{{ 'PASSWORD' | translate}}</label>
+            <input formControlName="password" class="input-style" type="password">
+          </div>
+        </form>
+        <div class="flex flex-col space-y-4">
+          <button (click)="login()" form="form-login" class="b-solid">Ingresar</button>
+          <div class="flex flex-row justify-between">
+            <!--<button routerLink="recovery" class="b-ghost">{{ 'RECOVERY' | translate}}</button>-->
+            <button class="b-ghost" (click)="recovery()">{{ 'RECOVERY' | translate}}</button>
+            <!--<button routerLink="/autogestion" class="b-ghost">{{ 'REGISTER' | translate}}</button>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-login">
+      <div class="flex flex-row items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 22 24" fill="none">
+          <path d="M10.2042 0.142635L8.10631 1.19158L10.2042 2.24053C10.5846 2.43071 11.0323 2.43071 11.4126 2.24053L13.5105 1.19158L11.4126 0.142634C11.0323 -0.0475449 10.5846 -0.0475446 10.2042 0.142635Z" fill="url(#paint0_linear)"/>
+          <path d="M2.7021 3.89369L4.8 2.84474C5.18036 2.65456 5.62806 2.65456 6.00842 2.84474L10.8084 5.24474L15.6084 2.84474C15.9888 2.65456 16.4365 2.65456 16.8168 2.84474L18.9147 3.89369L11.4126 7.64474C11.0323 7.83492 10.5846 7.83492 10.2042 7.64474L2.7021 3.89369Z" fill="url(#paint1_linear)"/>
+          <path d="M10.8084 10.6489L0 5.24474V7.11185C0 7.62359 0.289128 8.09141 0.746843 8.32026L9.45737 12.6755V15.3776L0 10.6489V12.5161C0 13.0278 0.289128 13.4956 0.746843 13.7245L9.45737 18.0797V20.7818L0 16.0532V17.9203C0 18.432 0.28913 18.8998 0.746845 19.1287L10.2042 23.8574C10.5846 24.0475 11.0323 24.0475 11.4126 23.8574L20.87 19.1287C21.3277 18.8998 21.6168 18.432 21.6168 17.9203V16.0532L12.1595 20.7818V12.6755L20.87 8.32026C21.3277 8.09141 21.6168 7.62359 21.6168 7.11185V5.24474L10.8084 10.6489Z" fill="url(#paint2_linear)"/>
+          <defs>
+            <linearGradient id="paint0_linear" x1="0" y1="0" x2="22.9163" y2="22.7241" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#1FFFFF"/>
+              <stop offset="1" stop-color="#7A00F5"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear" x1="0" y1="0" x2="22.9163" y2="22.7241" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#1FFFFF"/>
+              <stop offset="1" stop-color="#7A00F5"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear" x1="0" y1="0" x2="22.9163" y2="22.7241" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#1FFFFF"/>
+              <stop offset="1" stop-color="#7A00F5"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="text-mono-70 ml-2 t-body-2"><b>ECatch</b> © v.6.2.0</span>
+      </div>
+      <div>
+        <svg class="fill-current text-mono-70" xmlns="http://www.w3.org/2000/svg" width="62" height="16" viewBox="0 0 62 16">
+          <path d="M16 8C16 3.58172 12.4183 0 8 0V5.33333C9.47276 5.33333 10.6667 6.52724 10.6667 8H16Z"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8 5.33333V0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16V10.6667C6.52724 10.6667 5.33333 9.47276 5.33333 8C5.33333 6.52724 6.52724 5.33333 8 5.33333Z"/>
+          <circle r="2" transform="matrix(1 0 0 -1 12.6667 12.6667)" fill="#9FA3AD"/>
+          <path d="M19.4005 11.4V5.44373H23.2149V6.29706H20.3648V7.95253H22.9504V8.80586H20.3648V10.5467H23.2149V11.4H19.4005ZM26.6946 11.5024C25.9152 11.5024 25.3037 11.2407 24.8599 10.7173C24.4162 10.1883 24.1943 9.4231 24.1943 8.42186C24.1943 7.92124 24.2512 7.48035 24.365 7.09919C24.4788 6.71804 24.6437 6.39662 24.8599 6.13493C25.0761 5.87324 25.3378 5.67697 25.645 5.54613C25.9579 5.40959 26.3077 5.34133 26.6946 5.34133C27.2123 5.34133 27.6446 5.4551 27.9917 5.68266C28.3444 5.91022 28.6203 6.24586 28.8194 6.68959L28.0087 7.13333C27.9063 6.84888 27.747 6.62417 27.5309 6.45919C27.3204 6.28853 27.0416 6.20319 26.6946 6.20319C26.2338 6.20319 25.8725 6.35964 25.6109 6.67253C25.3492 6.98542 25.2183 7.41777 25.2183 7.96959V8.87413C25.2183 9.42595 25.3492 9.8583 25.6109 10.1712C25.8725 10.4841 26.2338 10.6405 26.6946 10.6405C27.053 10.6405 27.3431 10.5495 27.565 10.3675C27.7925 10.1797 27.9604 9.94079 28.0685 9.65066L28.845 10.12C28.6459 10.5523 28.3671 10.8908 28.0087 11.1355C27.6503 11.3801 27.2123 11.5024 26.6946 11.5024ZM33.5627 11.4L33.0251 9.78719H30.7979L30.2774 11.4H29.2961L31.327 5.44373H32.5387L34.5697 11.4H33.5627ZM31.9329 6.33119H31.8902L31.0283 8.95946H32.7862L31.9329 6.33119ZM35.4922 11.4V5.44373H38.0522C38.604 5.44373 39.0307 5.60586 39.3322 5.93013C39.6337 6.25439 39.7845 6.68959 39.7845 7.23573C39.7845 7.78186 39.6337 8.21706 39.3322 8.54133C39.0307 8.86559 38.604 9.02773 38.0522 9.02773H36.4565V11.4H35.4922ZM36.4565 8.18293H37.9925C38.2371 8.18293 38.4277 8.12035 38.5642 7.99519C38.7007 7.86435 38.769 7.67946 38.769 7.44053V7.03093C38.769 6.79199 38.7007 6.60995 38.5642 6.48479C38.4277 6.35395 38.2371 6.28853 37.9925 6.28853H36.4565V8.18293ZM43.0523 6.29706V11.4H42.0881V6.29706H40.3131V5.44373H44.8273V6.29706H43.0523ZM46.6803 5.44373V9.11306C46.6803 9.61937 46.777 10.0005 46.9704 10.2565C47.1638 10.5125 47.4938 10.6405 47.9603 10.6405C48.4267 10.6405 48.7567 10.5125 48.9501 10.2565C49.1435 10.0005 49.2403 9.61937 49.2403 9.11306V5.44373H50.1875V8.95946C50.1875 9.3975 50.1476 9.77582 50.068 10.0944C49.9883 10.413 49.8603 10.6775 49.684 10.888C49.5076 11.0928 49.2772 11.2464 48.9928 11.3488C48.714 11.4512 48.3699 11.5024 47.9603 11.5024C47.5507 11.5024 47.2036 11.4512 46.9192 11.3488C46.6404 11.2464 46.4129 11.0928 46.2365 10.888C46.0602 10.6775 45.9322 10.413 45.8525 10.0944C45.7729 9.77582 45.7331 9.3975 45.7331 8.95946V5.44373H46.6803ZM52.5815 11.4H51.6172V5.44373H54.1857C54.7205 5.44373 55.1415 5.60586 55.4487 5.93013C55.7559 6.2487 55.9095 6.6839 55.9095 7.23573C55.9095 7.66239 55.8099 8.01795 55.6108 8.30239C55.4174 8.58115 55.1301 8.77742 54.7489 8.89119L56.0375 11.4H54.9623L53.7676 8.99359H52.5815V11.4ZM54.1175 8.18293C54.3621 8.18293 54.5527 8.12035 54.6892 7.99519C54.8257 7.86435 54.894 7.67946 54.894 7.44053V7.03093C54.894 6.79199 54.8257 6.60995 54.6892 6.48479C54.5527 6.35395 54.3621 6.28853 54.1175 6.28853H52.5815V8.18293H54.1175ZM57.2089 11.4V5.44373H61.0233V6.29706H58.1731V7.95253H60.7587V8.80586H58.1731V10.5467H61.0233V11.4H57.2089Z"/>
+        </svg>
+      </div>
+    </div>
   </div>
-</ec-modal>
+</div>
+
+<app-block-page [show]="isBlock"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+
+
+
