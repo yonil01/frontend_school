@@ -13,6 +13,8 @@ import {StoreModule} from "@ngrx/store";
 import {appReducers} from "@app/core/store/app.reducers";
 import {environment} from "@env/environment";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {AuthenticationGuard} from "@app/core/services/guards/authentication.guard";
+import {ComponentGuard} from "@app/core/services/guards/component.guard";
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -39,7 +41,7 @@ export function createTranslateLoader(http: HttpClient): any {
     }),
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [AuthenticationGuard, ComponentGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

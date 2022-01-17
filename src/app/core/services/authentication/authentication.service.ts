@@ -16,13 +16,12 @@ export class AuthenticationService {
   constructor(private _httpClient: HttpClient,
               private store: Store<AppState>,
               private localStorageService: LocalStorageService) {
-    debugger
   }
 
   public login(value: any, secretKey: string) {
     const url = EnvServiceProvider.useFactory().REST_API + '/api/v3/auth';
     const data = {
-      id: encryptText(value.id, secretKey),
+      id: encryptText(value.user, secretKey),
       password: encryptText(value.password, secretKey),
       client_id: 9926,
       host_name: 'hostname',
@@ -77,10 +76,10 @@ export class AuthenticationService {
     this.store.dispatch(controlTimeout({timeout: timeout}));
   }
 
-  /*getTokenSessionStorage(param: string = '') {
+  public getTokenSessionStorage(param: string = '') {
     if (sessionStorage.getItem('Token')) {
-      const tokenEncryp = sessionStorage.getItem('Token');
-      const token = JSON.parse(tokenEncryp);
+      const tokenEncrypt = sessionStorage.getItem('Token') || '';
+      const token = JSON.parse(tokenEncrypt);
       if (param === '') {
         return token;
       }
@@ -88,8 +87,8 @@ export class AuthenticationService {
     return '';
   }
 
-  isLogged(): boolean {
+  public isLogged(): boolean {
     return !!sessionStorage.getItem('Token');
-  }*/
+  }
 
 }

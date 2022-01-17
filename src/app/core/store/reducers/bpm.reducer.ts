@@ -27,7 +27,7 @@ export const BpmInitialState: BpmState = {
   versions: []
 };
 
-const bpmReducer = createReducer(
+const _bpmReducer = createReducer(
   BpmInitialState,
   on(controlBpm, (state, {bpm}) => ({
     ...state,
@@ -61,5 +61,5 @@ const bpmReducer = createReducer(
 );
 
 export function BpmReducer(state: any, action: any) {
-  return bpmReducer(state, action);
+  return _bpmReducer(state, action);
 }

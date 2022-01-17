@@ -1,42 +1,65 @@
 import {NgModule} from '@angular/core';
 import {APOLLO_OPTIONS} from 'apollo-angular';
-import { ApolloClientOptions, ApolloLink, InMemoryCache } from '@apollo/client/core';
+import {ApolloClientOptions, ApolloLink, InMemoryCache} from "@apollo/client/core";
 import {HttpLink} from 'apollo-angular/http';
-import { HttpClientModule } from '@angular/common/http';
-import { setContext } from '@apollo/client/link/context';
+import {HttpHeaders} from '@angular/common/http';
+import {EnvServiceProvider} from '@app/core/services/env/env.service.provider';
+import {onError} from "@apollo/client/link/error";
+import {setContext} from "@apollo/client/link/context";
 
-const uri = 'http://localhost:50030/query'; // <-- add the URL of the GraphQL server here
+const errorLink = onError(({graphQLErrors, networkError}) => {
+  if (graphQLErrors) {
+    graphQLErrors.map(({message, locations, path}) =>
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
+    );
+  }
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
+});
+
+const uri = EnvServiceProvider.useFactory().GRAPHQL_API + '/query';
+
+// const uri = 'http://190.156.216.187:8080/querytoken'; // <-- add the URL of the GraphQL server here
+
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const basic = setContext((operation, context) => ({
     headers: {
-      Accept: 'charset=utf-8'
-    }
+      Accept: 'charset=utf-8',
+    },
   }));
 
   const auth = setContext((operation, context) => {
-    const token = sessionStorage.getItem('token');
-
-    if (token === null) {
-      return {};
-    } else {
-      return {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-    }
+    return sessionStorage.getItem('Token')
+      ? {headers: new HttpHeaders().set('Authorization', `Bearer ${sessionStorage.getItem('Token')}`),}
+      : {}
   });
 
   return {
-    link: ApolloLink.from([basic, auth, httpLink.create({ uri })]),
-    cache: new InMemoryCache(),
+    link: ApolloLink.from([
+      errorLink,
+      basic,
+      auth,
+      httpLink.create({uri})
+    ]),
+    cache: new InMemoryCache({
+      addTypename: false,
+    }),
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+      },
+      query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+      },
+    },
+    queryDeduplication: false,
   };
 }
 
 @NgModule({
-  exports: [
-    HttpClientModule,
-  ],
   providers: [
     {
       provide: APOLLO_OPTIONS,
@@ -45,4 +68,5 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     },
   ],
 })
-export class GraphQLModule {}
+export class GraphQLModule {
+}

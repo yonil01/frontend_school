@@ -1,0 +1,14 @@
+.option-list {
+  height: calc(100vh - 20rem);
+}
+
+.btn-menu {
+  @apply flex flex-row items-center px-6 py-2 text-brand-2
+}
+.btn-submenu {
+  @apply flex flex-row items-center pl-12 pr-6 py-2 text-brand-2
+}
+
+.btn-menu:hover, .btn-submenu:hover {
+  @apply bg-mono-10
+}

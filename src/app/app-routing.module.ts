@@ -1,11 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {QuicklinkModule, QuicklinkStrategy} from "ngx-quicklink";
 
 const routes: Routes = [
   {path: '', redirectTo: 'auth', pathMatch: 'full'},
-  {path: 'auth', loadChildren: ()=> import('./modules/auth/auth.module').then((m)=> m.AuthModule)},
-  {path: 'admin', loadChildren: ()=> import('./modules/administration/administration.module').then((m)=> m.AdministrationModule)}
+  {path: 'auth', loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule)},
+  {path: 'wizard', loadChildren: () => import('./modules/wizard/wizard.module').then((m) => m.WizardModule)},
+  {
+    path: 'admin',
+    loadChildren: () => import('./modules/administration/administration.module').then((m) => m.AdministrationModule)
+  }
 ];
 
 @NgModule({
@@ -18,4 +22,5 @@ const routes: Routes = [
     })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
