@@ -16,7 +16,10 @@
     --c-brand-d-3: #002266;
     --c-brand-d-2: #003399;
     --c-brand-d-1: #0044CC;
-    --c-brand: #0055FF;
+
+    --c-brand-1: #0055FF;
+    --c-brand-2: #0055FF;
+
     --c-brand-l-1: #3377FF;
     --c-brand-l-2: #6699FF;
     --c-brand-l-3: #99BBFF;
@@ -43,8 +46,8 @@
     --c-fl-brand-d-2: var(--c-brand-d-2);
     --c-fl-brand-d-1: var(--c-brand-d-1);
 
-    --c-fl-brand-1: var(--c-brand);
-    --c-fl-brand-2: var(--c-brand);
+    --c-fl-brand-1: var(--c-brand-1);
+    --c-fl-brand-2: var(--c-brand-2);
 
     --c-fl-brand-l-1: var(--c-brand-l-1);
     --c-fl-brand-l-2: var(--c-brand-l-2);
@@ -72,7 +75,7 @@
       --c-fl-brand-d-2: var(--c-brand-l-2);
       --c-fl-brand-d-1: var(--c-brand-l-1);
 
-      --c-fl-brand-1: var(--c-brand-l-2);
+      --c-fl-brand-1: var(--c-brand-l-1);
       --c-fl-brand-2: var(--c-brand-l-2);
 
       --c-fl-brand-l-1: var(--c-brand-d-1);
@@ -216,13 +219,15 @@ label {
   @apply px-2 h-10 t-body-1 text-black bg-mono-10 rounded
 }
 
+/* Buttons <a> link </a>*/
+
 /* Buttons */
 
 button {
-  @apply h-12 px-4 rounded flex flex-row items-center justify-center space-x-2 t-button-1
+  @apply h-10 px-4 rounded flex flex-row items-center justify-center space-x-2 t-button-1
 }
 button:disabled{
-  @apply text-mono-10 border border-mono-10 bg-transparent cursor-default
+  @apply text-mono-30 border border-mono-10 bg-mono-10 cursor-default
 }
 
 .b-solid {

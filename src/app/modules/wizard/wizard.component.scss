@@ -1,0 +1,29 @@
+@import "src/styles";
+
+.btn-item-home {
+  @apply p-4 border border-mono-30 rounded flex flex-row items-center space-x-2 text-brand-d-1
+}
+
+.btn-item-home:hover {
+  @apply bg-mono-10
+}
+
+.label-dropdown {
+  @apply text-mono-70 t-caption-2 py-2
+}
+
+.card-config {
+  @apply w-full h-28 p-4 border border-mono-30 rounded flex items-center
+}
+
+.card-config-title {
+  @apply text-brand-d-1
+}
+
+.card-config-body {
+  @apply t-body-2 text-black
+}
+
+.line-separator {
+  @apply bg-mono-30 h-px lg:h-auto w-auto lg:w-px mr-0 lg:mr-4 mb-4 lg:mb-0 bg-red-700
+}

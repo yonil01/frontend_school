@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {DocumentsComponent} from "@app/modules/wizard/documents/documents.component";
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '', component: DocumentsComponent
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

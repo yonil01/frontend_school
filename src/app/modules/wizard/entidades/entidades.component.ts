@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-entidades',
@@ -7,9 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EntidadesComponent implements OnInit {
 
-  constructor() { }
+  processes: any = [];
+  activeEmptyMsg =true;
+
+  isBlock = false;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  public findProcess(evt: any) {
+
+  }
+
+  public selectedProcessItem(evt: any) {
   }
 
 }

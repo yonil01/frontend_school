@@ -21,7 +21,8 @@ import {LocalStorageService} from "@app/core/services/local-storage/local-storag
   ],
   exports: [
     FooterComponent,
-    BlockPageComponent
+    BlockPageComponent,
+    LayoutComponent
   ],
   imports: [
     CommonModule

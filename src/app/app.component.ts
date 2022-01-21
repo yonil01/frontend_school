@@ -28,6 +28,7 @@ export class AppComponent implements OnDestroy {
     lookAndFeelService: LookAndFeelService,
     private _cryptoService: CryptoService,
   ) {
+    this.setTheme();
     this.getAppId();
     lookAndFeelService.getLookAndFeelConfig().subscribe((resp) => {
       sessionStorage.setItem('look-and-feel-config', JSON.stringify(resp));
@@ -86,5 +87,12 @@ export class AppComponent implements OnDestroy {
         },
       ),
     );
+  }
+
+  private setTheme() {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      const body = document.querySelector('#body')
+      if (body) body.classList.add('dark:theme-dark')
+    }
   }
 }

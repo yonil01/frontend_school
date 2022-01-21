@@ -11,11 +11,11 @@ export class AuthenticationGuard implements CanActivate {
     private _modalService: ModalService,
   ) {}
 
-  async canActivate() {
+  canActivate() {
     if (sessionStorage.getItem('Token')) {
       return true;
     } else {
-      await this._router.navigateByUrl('');
+      this._router.navigateByUrl('');
       return false;
     }
   }

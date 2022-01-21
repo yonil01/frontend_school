@@ -38,8 +38,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public secretKey: string = '';
 
-  public isBlock = false;
-
   public toastStyle: ToastStyleModel = toastDataStyle;
 
   constructor(
@@ -86,9 +84,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         (resp: any) => {
           if (resp.data) {
             this._authenticationService.setTokenSessionStorage(resp.data);
-            this.store.dispatch(controlLogin({ logged: true }));
+            this.store.dispatch(controlLogin({logged: true}));
           } else {
             this.isErrorLogin = true;
+            this._messageService.add({
+              type: 'error',
+              message: resp.msg,
+              life: 5000,
+            });
           }
           this.isLogged();
           this.isLoading = false;
@@ -118,7 +121,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       const modules: models.Module[] = await this.getModules();
       // const modules: Module[] = this._localStorageService.getModules();
       sessionStorage.setItem('Modules', JSON.stringify(modules));
-      this.store.dispatch(controlModules({ modules: modules }));
+      this.store.dispatch(controlModules({modules: modules}));
       if (modules.length > 0) {
         const allComponents = modules.map((module: models.Module) => module.components);
 
@@ -126,8 +129,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           await this._route.navigateByUrl('wizard');
         } else {
           const {components: firstComponent} = modules[0];
-          if(firstComponent) await this._route.navigateByUrl(firstComponent[0].url_front || '');
+          if (firstComponent) await this._route.navigateByUrl(firstComponent[0].url_front || '');
         }
+        this.isLoading = false;
       } else {
         this._messageService.add({
           type: 'info',

@@ -1,1 +1,208 @@
-<p>entidades works!</p>
+<app-layout>
+  <ng-container layoutBody>
+    <div class="ec-container pb-12 bg-white" style="min-height: calc(100vh - 3rem)">
+      <div class="migas-pan w-full text-brand-2 space-x-2 h-12 flex items-center">
+        <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
+             height="24" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"
+            fill="#6699FF"/>
+        </svg>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
+              fill="#6699FF"/>
+          </svg>
+          <span routerLink="/workflow/inbox" class="t-body-2 cursor-pointer">
+          CLIENTE
+          </span>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
+              fill="#6699FF"/>
+          </svg>
+          <span routerLink="/workflow/inbox" class="t-body-2 cursor-pointer">
+          Proyecto
+          </span>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
+              fill="#6699FF"/>
+          </svg>
+          <span routerLink="/workflow/inbox" class="t-body-2 cursor-pointer">
+          Entidades
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-2xl text-black">Entidades</div>
+        <div class="py-4">
+          <ul class="t-body-1 pl-4">
+            <li class="list-disc text-mono-70">25 entidades registradas actualmente.</li>
+            <li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <!--<app-footer></app-footer>-->
+    <!--
+    <div>
+      <div class="mt-6 px-12">
+        <div class="t-h5 text-black">
+          <span>
+            Flujos de Proceso
+          </span>
+        </div>
+        <div class="text-black t-body-1">
+          <span>
+            Descripción flujo de proceso.
+          </span>
+        </div>
+        <div class="flex justify-between mt-4">
+          <div class="rounded border-2 border-solid border-brand-1 h-12 w-12">
+          </div>
+          <ec-button bgContainerColor="bg-brand-1 text-center" brColor="border-brand-1" txtColor="text-white" icon="person" class="w-1/2 ml-4"></ec-button>
+          <ec-button brColor="border-brand-1" txtColor="text-brand-1" icon="person" class="w-1/2 ml-4"></ec-button>
+        </div>
+        <div class="mt-12">
+          <ec-input-search [ecStyle]="ecStyle" (input)="findProcess($event)"></ec-input-search>
+          <div *ngIf="processes.length > 0" class="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+            <div *ngFor="let item of processes" class="rounded border-2 border-solid border-mono-10 p-4 mt-4 w-full">
+              <div class="flex justify-between">
+                <div class="text-brand-1 t-subtitle-1">
+                  <span>
+                    {{item.name}}
+                  </span>
+                </div>
+                <div class="cursor-pointer" (click)="selectedProcessItem(item)">
+                  <span appIcon iconName="chevron right" iconColor="border-mono-10"></span>
+                </div>
+              </div>
+              <div class="mt-3.5 flex justify-center items-center">
+                <div>
+                  <svg width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M38.7498 0.300049H22.4998C22.2511 0.300049 22.0498 0.501299 22.0498 0.750049V10.75C22.0498 10.9988 22.2511 11.2 22.4998 11.2H38.7498C38.9986 11.2 39.1998 10.9988 39.1998 10.75V0.750049C39.1998 0.501299 38.9986 0.300049 38.7498 0.300049ZM38.2998 2.7463C37.5311 2.57255 36.9273 1.96755 36.7536 1.20005H38.2998V2.7463ZM35.8448 10.3H25.4048C25.2086 9.03505 24.2148 8.0413 22.9498 7.84505V3.6538C24.2148 3.45755 25.2086 2.4638 25.4048 1.1988H35.8448C36.0411 2.4638 37.0348 3.45755 38.2998 3.6538V7.84505C37.0348 8.0413 36.0411 9.0363 35.8448 10.3ZM24.4961 1.20005C24.3223 1.9688 23.7186 2.5738 22.9498 2.7463V1.20005H24.4961ZM22.9498 8.7538C23.7186 8.92755 24.3223 9.53255 24.4961 10.3H22.9498V8.7538ZM36.7536 10.3C36.9273 9.5313 37.5311 8.9263 38.2998 8.7538V10.3H36.7536ZM22.4998 12.8H38.7498V13.7H22.4998V12.8ZM22.4998 15.3H38.7498V16.2H22.4998V15.3ZM30.6211 2.80005C28.9936 2.80005 27.6711 4.1238 27.6711 5.75005C27.6711 7.3763 28.9948 8.70005 30.6211 8.70005C32.2473 8.70005 33.5711 7.3763 33.5711 5.75005C33.5711 4.1238 32.2486 2.80005 30.6211 2.80005ZM30.6211 7.80005C29.4911 7.80005 28.5711 6.88005 28.5711 5.75005C28.5711 4.62005 29.4898 3.70005 30.6211 3.70005C31.7523 3.70005 32.6711 4.62005 32.6711 5.75005C32.6711 6.88005 31.7511 7.80005 30.6211 7.80005ZM9.19981 18.25H8.2998V8.2613C8.2998 6.6288 9.62355 5.30005 11.2498 5.30005H17.6636L14.6823 2.31755L15.3186 1.6813L19.3861 5.75005L15.3261 9.82005L14.6886 9.1838L17.6648 6.20005H11.2498C10.1198 6.20005 9.19981 7.12505 9.19981 8.2613V18.25ZM30.7998 20.75H31.7011V25.75C31.7011 27.3776 30.3773 28.7001 28.7511 28.7001H19.8386L22.8198 31.6813L22.1823 32.3188L18.1136 28.25L22.1811 24.1813L22.8186 24.8188L19.8373 27.8H28.7498C29.8798 27.8 30.7998 26.8813 30.7998 25.75V20.75ZM16.6998 35.75H15.7998C15.7998 32.5763 13.6486 29.7826 10.5673 28.9563C10.3886 28.9088 10.2573 28.7575 10.2373 28.5725C10.2161 28.39 10.3086 28.2125 10.4723 28.125C11.6711 27.4813 12.4173 26.24 12.4173 24.8825C12.4173 22.8513 10.7686 21.2001 8.7423 21.2001C6.71605 21.2001 5.0673 22.8513 5.0673 24.8825C5.0673 26.24 5.8123 27.4825 7.01231 28.125C7.17481 28.2113 7.26855 28.39 7.2473 28.5725C7.22605 28.7563 7.0948 28.9088 6.9173 28.9563C3.8448 29.7801 1.6998 32.5725 1.6998 35.75H0.799805C0.799805 32.4813 2.81231 29.5725 5.79481 28.3813C4.77356 27.5213 4.16605 26.2488 4.16605 24.8825C4.16605 22.3563 6.21855 20.2988 8.74106 20.2988C11.2636 20.2988 13.3161 22.3563 13.3161 24.8825C13.3161 26.2488 12.7098 27.5213 11.6886 28.3813C14.6811 29.5738 16.6998 32.4838 16.6998 35.75Z" fill="#0055FF"/>
+                  </svg>
+                </div>
+                <div class="w-full ml-5">
+                  <div class="flex justify-between w-full border-b-2 border-solid border-mono-10 p-2">
+                    <div class="flex justify-between w-1/2 border-r-2 border-solid border-mono-10 pr-2">
+                      <div class="flex justify-center items-center">
+                        <div>
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM11.3584 5.64645C11.532 5.82001 11.5513 6.08944 11.4163 6.28431L11.3584 6.35355L7.35355 10.3584C7.17999 10.532 6.91056 10.5513 6.71569 10.4163L6.64645 10.3584L4.64645 8.35842C4.45118 8.16316 4.45118 7.84658 4.64645 7.65131C4.82001 7.47775 5.08944 7.45846 5.28431 7.59346L5.35355 7.65131L7 9.298L10.6513 5.64645C10.8466 5.45118 11.1632 5.45118 11.3584 5.64645Z" fill="#1C7D38"/>
+                          </svg>
+                        </div>
+                        <div class="ml-2">
+                          <span>
+                            Vigentes
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span>
+                          0
+                        </span>
+                      </div>
+                    </div>
+                    <div class="flex justify-between w-1/2 ml-3">
+                      <div class="flex justify-center items-center">
+                        <div>
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM7.5 3C7.74546 3 7.94961 3.17688 7.99194 3.41012L8 3.5V8H10.5C10.7761 8 11 8.22386 11 8.5C11 8.74546 10.8231 8.94961 10.5899 8.99194L10.5 9H7.5C7.25454 9 7.05039 8.82312 7.00806 8.58988L7 8.5V3.5C7 3.22386 7.22386 3 7.5 3Z" fill="#CC8700"/>
+                          </svg>
+                        </div>
+                        <div class="ml-2">
+                          <span>
+                            A vencer
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span>
+                          0
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex justify-between w-full p-2">
+                    <div class="flex justify-between w-1/2 border-r-2 border-solid border-mono-10 pr-2">
+                      <div class="flex justify-center items-center">
+                        <div>
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM5.80943 5.11372L5.87868 5.17157L8 7.29289L10.1213 5.17157C10.2949 4.99801 10.5643 4.97872 10.7592 5.11372L10.8284 5.17157C11.002 5.34514 11.0213 5.61456 10.8863 5.80943L10.8284 5.87868L8.70711 8L10.8284 10.1213C11.002 10.2949 11.0213 10.5643 10.8863 10.7592L10.8284 10.8284C10.6549 11.002 10.3854 11.0213 10.1906 10.8863L10.1213 10.8284L8 8.70711L5.87868 10.8284C5.70511 11.002 5.43569 11.0213 5.24082 10.8863L5.17157 10.8284C4.99801 10.6549 4.97872 10.3854 5.11372 10.1906L5.17157 10.1213L7.29289 8L5.17157 5.87868C4.99801 5.70511 4.97872 5.43569 5.11372 5.24082L5.17157 5.17157C5.34514 4.99801 5.61456 4.97872 5.80943 5.11372Z" fill="#CA1C25"/>
+                          </svg>
+                        </div>
+                        <div class="ml-2">
+                          <span>
+                            Vencidos
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                      <span>
+                        0
+                      </span>
+                      </div>
+                    </div>
+                    <div class="flex justify-between w-1/2 ml-3">
+                      <div class="flex justify-center items-center">
+                        <div>
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.9746 6.23223V10.4749C10.9746 10.751 10.7508 10.9749 10.4746 10.9749H6.232C5.95586 10.9749 5.732 10.751 5.732 10.4749C5.732 10.1987 5.95586 9.97487 6.232 9.97487L9.26754 9.97487L5.17134 5.87868C4.97608 5.68342 4.97608 5.36683 5.17134 5.17157C5.3666 4.97631 5.68319 4.97631 5.87845 5.17157L9.97464 9.26777V6.23223C9.97464 5.95609 10.1985 5.73223 10.4746 5.73223C10.7508 5.73223 10.9746 5.95609 10.9746 6.23223ZM13.6566 13.6569C16.7808 10.5327 16.7808 5.46734 13.6566 2.34315C10.5324 -0.781048 5.46711 -0.781048 2.34291 2.34315C-0.78128 5.46734 -0.78128 10.5327 2.34291 13.6569C5.46711 16.781 10.5324 16.781 13.6566 13.6569ZM12.9495 3.05025C15.6832 5.78392 15.6832 10.2161 12.9495 12.9497C10.2158 15.6834 5.78369 15.6834 3.05002 12.9497C0.316351 10.2161 0.316351 5.78392 3.05002 3.05025C5.78369 0.316582 10.2158 0.316582 12.9495 3.05025Z" fill="#636363"/>
+                          </svg>
+                        </div>
+                        <div class="ml-2">
+                          <span>
+                            Total
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span>
+                          {{item.tokens?.length || 0}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="processes.length === 0 && activeEmptyMsg" class="mt-4 w-full flex justify-center items-center" style="height: 50vh">
+            <div class="text-center text-black t-h5 w-full">
+              <span>
+                No tiene asigando flujos de procesos!
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+  </ng-container>
+</app-layout>
+
+<div class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"
+     style="background: rgba(20,20,20,0.6)" *ngIf="isBlock">
+  <div class="p-4 flex bg-white rounded border border-solid border-mono-30">
+    <div>
+      <img src="assets/img/spiner.svg" class="animate-spin" alt="spiner">
+    </div>
+    <div class="t-h5 ml-4 text-black">
+      <span>
+        Cargando...
+      </span>
+    </div>
+  </div>
+</div>
