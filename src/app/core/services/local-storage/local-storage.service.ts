@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Store} from '@ngrx/store';
 import {AppState} from "@app/core/store/app.reducers";
-import {Module} from "@app/core/models";
+import {Module, Project} from "@app/core/models";
+import {Client} from "@app/core/models/wizard/wizard";
 
 const helper = new JwtHelperService();
 
@@ -64,5 +65,15 @@ export class LocalStorageService {
   private decodeToken() {
     const token = sessionStorage.getItem('Token');
     return token ? helper.decodeToken(token) : null;
+  }
+
+  public getClient(): string {
+    const client = sessionStorage.getItem('client');
+    return client ? JSON.parse(client).name : '';
+  }
+
+  public getProject(): string {
+    const project = sessionStorage.getItem('project');
+    return project ? JSON.parse(project).name : ''
   }
 }
