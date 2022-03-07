@@ -220,6 +220,10 @@ label {
   @apply px-2 h-10 t-body-1 text-black bg-mono-10 rounded
 }
 
+.ec-input {
+  @apply h-10 px-2 text-black t-body-2 bg-mono-10 rounded
+}
+
 /* Buttons <a> link </a>*/
 
 /* Buttons */
@@ -244,10 +248,10 @@ button:disabled{
   @apply bg-brand-d-1
 }
 .b-outline:hover {
-  @apply bg-brand-d-1 text-white
+  @apply bg-brand-1 text-white
 }
 .b-ghost:hover {
-  @apply bg-brand-d-1 text-white
+  @apply bg-brand-1 text-white
 }
 
 .gutter {
