@@ -1,1 +1,4 @@
-<p>messages-list works!</p>
+<div *ngFor="let msg of messages">
+  <div>{{msg.spa}}</div>
+  <button (click)="deleteMsg(msg.id.toString())">ELIMINAR</button>
+</div>
