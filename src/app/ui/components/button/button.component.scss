@@ -1,0 +1,9 @@
+.button-base {
+  @apply w-full;
+  @apply flex md:space-x-2 flex-grow;
+  @apply focus:outline-none focus:ring-4 focus:border-transparent border-solid;
+  @apply h-full border-2 hover:opacity-80;
+  @apply rounded-lg;
+  @apply px-4;
+}
+
