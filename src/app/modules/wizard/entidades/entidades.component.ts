@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
+import {ReturnData} from "@app/modules/wizard/entidades/models/entities.models";
 
 @Component({
   selector: 'app-entidades',
@@ -15,6 +16,9 @@ export class EntidadesComponent implements OnInit {
 
   nameClient: string = '';
   nameProject: string = '';
+  public showCreateEdit: boolean = false;
+  public showEntities: boolean = true;
+  public showEntitiesList: boolean = false;
 
   constructor(private _localStorage: LocalStorageService) {
     this.nameClient = this._localStorage.getClient();
@@ -31,4 +35,30 @@ export class EntidadesComponent implements OnInit {
   public selectedProcessItem(evt: any) {
   }
 
+  createEntity() {
+    this.showCreateEdit = true;
+    this.showEntities = false;
+  }
+
+  onCancelCreateEntities() {
+    this.showCreateEdit = false;
+    this.showEntities = true;
+  }
+
+  onShowEntitiesList() {
+    this.showEntities = false;
+    this.showEntitiesList = true;
+  }
+
+  onShowHome($event: ReturnData) {
+    this.showEntities = $event.value;
+    switch ($event.id) {
+      case 'create':
+        this.showCreateEdit = false;
+        break;
+      case 'list':
+        this.showEntitiesList = false;
+        break;
+    }
+  }
 }
