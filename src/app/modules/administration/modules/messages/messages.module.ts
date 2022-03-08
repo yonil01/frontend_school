@@ -7,6 +7,7 @@ import { MessagesListComponent } from './pages/messages-list/messages-list.compo
 import { MessagesCrudComponent } from './pages/messages-crud/messages-crud.component';
 import {UiModule} from "@app/ui/ui.module";
 import { MessagesCreateComponent } from './pages/messages-create/messages-create.component';
+import {MessageServices} from "@app/modules/administration/services/message/message.service";
 
 
 @NgModule({
@@ -16,10 +17,16 @@ import { MessagesCreateComponent } from './pages/messages-create/messages-create
     MessagesCrudComponent,
     MessagesCreateComponent
   ],
-    imports: [
-        CommonModule,
-        MessagesRoutingModule,
-        UiModule
-    ]
+  imports: [
+    CommonModule,
+    MessagesRoutingModule,
+    UiModule
+  ],
+  providers: [MessageServices],
+  exports: [
+    MessagesComponent,
+    MessagesListComponent,
+    MessagesCrudComponent
+  ]
 })
 export class MessagesModule { }
