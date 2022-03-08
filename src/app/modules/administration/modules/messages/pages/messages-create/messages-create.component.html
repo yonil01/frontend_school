@@ -1,0 +1,47 @@
+<!--Messages - Create-->
+<app-layout>
+  <ng-container layoutBody>
+    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
+      <div class="flex flex-col lg:items-center space-y-12">
+        <span class="t-h5 text-black dark:text-white">Crear Mensaje</span>
+        <form class="space-y-4" class="grid grid-cols-2 gap-4 lg:w-2/3">
+          <div class="input flex flex-col space-y-1 col-span-2">
+            <label class="t-caption-2 text-mono-70">ID</label>
+            <input class="ec-input" type="number">
+          </div>
+          <div class="input flex flex-col space-y-1 col-span-2">
+            <label class="t-caption-2 text-mono-70">Mensaje en Español</label>
+            <input class="ec-input" type="text">
+          </div>
+          <div class="input flex flex-col col-span-2 space-y-1">
+            <label class="t-caption-2 text-mono-70">Mensaje en Inglés</label>
+            <input class="ec-input" type="number">
+          </div>
+          <div class="input flex flex-col space-y-1 col-span-2">
+            <label class="t-caption-2 text-mono-70">Tipo de Mensaje</label>
+            <div class="grid grid-cols-1 gap-4 col-span-2 md:grid-cols-3">
+              <div class="flex flex-row space-x-2 items-center">
+                <input class="w-4 h-4"type="radio">
+                <label class="t-body-2 text-black">Error</label>
+              </div>
+              <div class="flex flex-row space-x-2 items-center">
+                <input class="w-4 h-4"type="radio">
+                <label class="t-body-2 text-black">Advertencia</label>
+              </div>
+              <div class="flex flex-row space-x-2 items-center">
+                <input class="w-4 h-4"type="radio">
+                <label class="t-body-2 text-black">Éxito</label>
+              </div>
+            </div>
+          </div>
+
+        </form>
+        <div class="flex flex-row space-x-4 lg:w-2/3">
+          <button routerLink="/admin/message/list" class="flex-1 md:flex-none b-outline">Cancelar</button>
+          <button class="flex-1 md:flex-none b-solid">Guardar</button>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </ng-container>
+</app-layout>
