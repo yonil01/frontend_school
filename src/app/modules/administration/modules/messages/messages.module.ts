@@ -8,6 +8,7 @@ import { MessagesCrudComponent } from './pages/messages-crud/messages-crud.compo
 import {UiModule} from "@app/ui/ui.module";
 import { MessagesCreateComponent } from './pages/messages-create/messages-create.component';
 import {MessageServices} from "@app/modules/administration/services/message/message.service";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {MessageServices} from "@app/modules/administration/services/message/mess
   imports: [
     CommonModule,
     MessagesRoutingModule,
-    UiModule
+    UiModule,
+    ReactiveFormsModule
   ],
   providers: [MessageServices],
   exports: [

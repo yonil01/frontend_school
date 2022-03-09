@@ -3,6 +3,7 @@ import {MessageServices} from "@app/modules/administration/services/message/mess
 import {Subscription} from "rxjs/internal/Subscription";
 import {ToastService} from "ecapture-ng-ui";
 import {MsgModel} from "@app/modules/administration/modules/messages/models/msg.model";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-messages-list',
@@ -13,11 +14,16 @@ export class MessagesListComponent implements OnInit, OnDestroy {
 
   private _subscription: Subscription = new Subscription();
   public messages: MsgModel[] = [];
-
+  public onShowEditMessages: boolean = false;
+  public onShowMessagesList: boolean = true;
+  public selectedMessage!: MsgModel;
+  public editMessageForm!: FormGroup;
   constructor(
     private _messageService: MessageServices,
-    private _toastService: ToastService
-  ) { }
+    private _toastService: ToastService,
+    private _fb: FormBuilder
+  ) {
+  }
 
   ngOnInit(): void {
     this.getAllMsg();
@@ -69,5 +75,25 @@ export class MessagesListComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  editMessage(index: number) {
+    this.onShowEditMessages = true;
+    this.onShowMessagesList = false;
+    this.selectedMessage = this.messages[index];
+    this.editMessageForm = this._fb.group({
+      id: [this.selectedMessage.id, Validators.required],
+      eng: [this.selectedMessage.eng, Validators.required],
+      spa: [this.selectedMessage.spa, Validators.required],
+      type_message: [this.selectedMessage.type_message, Validators.required],
+    });
+    console.log(this.selectedMessage)
+
+  }
+
+  createMessage() {
+  this._messageService.updateMsgService(this.editMessageForm.value).subscribe((res) => {
+    console.log(res);
+  })
   }
 }
