@@ -34,17 +34,22 @@ export class EntidadesComponent implements OnInit {
   public showCreateEdit: boolean = false;
   public showEntities: boolean = true;
   public showEntitiesList: boolean = false;
+  public selectedEntity: any;
+  public showEditEntity: boolean = false;
+  public isDelete: boolean = false;
 
   constructor(private _localStorage: LocalStorageService,
               private store: Store<AppState>,
               private formBulder: FormBuilder,
-              private entityService: EntityService) {
+              private entityService: EntityService,
+  ) {
     this.nameClient = this._localStorage.getClient();
     this.nameProject = this._localStorage.getProject();
   }
 
   ngOnInit(): void {
-    if(sessionStorage.getItem('client') && sessionStorage.getItem('project')){
+    this.isBlock = true;
+    if (sessionStorage.getItem('client') && sessionStorage.getItem('project')) {
       // @ts-ignore
       this.client = JSON.parse(sessionStorage.getItem('client'));
       // @ts-ignore
@@ -52,7 +57,7 @@ export class EntidadesComponent implements OnInit {
     }
     this.getEntitiesByProject();
 
-    this.store.select('entity').subscribe(({ entities, entity, isShowAttribute, isShowDatasets }) => {
+    this.store.select('entity').subscribe(({entities, entity, isShowAttribute, isShowDatasets}) => {
       // this.isShowAttribute = isShowAttribute;
       this.entities = entities;
       this.entity = entity;
@@ -62,11 +67,12 @@ export class EntidadesComponent implements OnInit {
   }
 
   getEntitiesByProject(): void {
-    if(this.project.id){
+    if (this.project.id) {
       // @ts-ignore
-      this.entityService.getEntitiesByProject(this.project.id.toLowerCase()).subscribe( (res: Response) => {
+      this.entityService.getEntitiesByProject(this.project.id.toLowerCase()).subscribe((res: Response) => {
         const entities = res.data;
-        this.store.dispatch(controlEntities({ entities: entities }));
+        this.isBlock = false;
+        this.store.dispatch(controlEntities({entities: entities}));
       });
     }
   }
@@ -89,7 +95,8 @@ export class EntidadesComponent implements OnInit {
     this.showEntities = true;
   }
 
-  onShowEntitiesList() {
+  onShowEntitiesList(i: number) {
+    this.selectedEntity = this.entities[i];
     this.showEntities = false;
     this.showEntitiesList = true;
   }
@@ -103,6 +110,55 @@ export class EntidadesComponent implements OnInit {
       case 'list':
         this.showEntitiesList = false;
         break;
+      case 'edit':
+        this.showEditEntity = false;
+        break;
     }
+  }
+
+  onEditEntity(i: number) {
+    this.selectedEntity = this.entities[i];
+    this.showEntities = false;
+    this.showEditEntity = true;
+  }
+
+  onDelete(i: number) {
+    this.selectedEntity = this.entities[i];
+    this.isDelete = true;
+  }
+
+  cancelDelete() {
+    this.isDelete = false;
+  }
+
+  // confirmDeleteEntity() {
+  //   if (this.entity.attributes && this.entity.attributes.length) {
+  //     // this.confirmationService.confirm({
+  //       message: 'No se puede eliminar la entidad porque cotiene atributos',
+  //       header: 'Entidad',
+  //       icon: 'pi pi-exclamation-triangle',
+  //       accept: () => {},
+  //       reject: () => {},
+  //     });
+  //   } else {
+  //     this.confirmationService.confirm({
+  //       message: '¿Está seguro de guardar los cambios? Esta acción puede afectar el modelo de datos',
+  //       header: 'Confirmar Eliminación Entidad',
+  //       icon: 'pi pi-exclamation-triangle',
+  //       accept: () => {
+  //         this.deleteEntity();
+  //       },
+  //       reject: () => {},
+  //     });
+  //   }
+  // }
+
+  deleteEntity() {
+    this.isBlock = true;
+    // @ts-ignore
+    this.entityService.deleteEntity(this.selectedEntity.id.toLowerCase()).subscribe((res: Response) => {
+      this.isBlock = false;
+      this.getEntitiesByProject();
+    });
   }
 }

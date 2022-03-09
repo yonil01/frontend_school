@@ -1,6 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
 import {ReturnData} from "@app/modules/wizard/entidades/models/entities.models";
+import {Attribute, Entity} from "@app/core/models";
 
 @Component({
   selector: 'app-entities-list-atributes',
@@ -10,11 +11,15 @@ import {ReturnData} from "@app/modules/wizard/entidades/models/entities.models";
 export class EntitiesListComponent implements OnInit {
   public nameClient: string = '';
   public nameProject: string = '';
+  @Input()
+  public selectedEntity!: Entity;
   @Output()
   public isReturn: EventEmitter<ReturnData> = new EventEmitter<ReturnData>();
   public onSelectAutofills: boolean = false;
   public showAtributtes: boolean = true;
   public onSelectCreateAtribute: boolean = false;
+  public selectedAttribute!: Attribute;
+  public onShowEditAttribute: boolean = false;
 
   constructor(private _localStorage: LocalStorageService) {
     this.nameClient = this._localStorage.getClient();
@@ -22,6 +27,7 @@ export class EntitiesListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.selectedEntity);
   }
 
   onReturn() {
@@ -74,4 +80,15 @@ export class EntitiesListComponent implements OnInit {
     this.showAtributtes = true;
   }
 
+  onEditAttribute(i: number) {
+    if (this.selectedEntity.attributes) {
+      this.onShowEditAttribute = true;
+      this.showAtributtes = false;
+      if (this.selectedEntity.attributes[i]) {
+        this.selectedAttribute = this.selectedEntity.attributes[i];
+      }
+    } else {
+      console.log("No hay atributos");
+    }
+  }
 }

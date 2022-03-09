@@ -5,7 +5,7 @@
         <svg (click)="onReturn()" class="cursor-pointer" width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7.73272 15.7907C8.03264 16.0764 8.50738 16.0649 8.79306 15.765C9.07875 15.465 9.06721 14.9903 8.76728 14.7046L2.51587 8.75L17.25 8.75C17.6642 8.75 18 8.41421 18 8C18 7.58579 17.6642 7.25 17.25 7.25L2.51577 7.25L8.76728 1.29529C9.06721 1.00961 9.07875 0.534874 8.79306 0.234947C8.50738 -0.0649794 8.03264 -0.0765226 7.73272 0.209165L0.313785 7.27587C0.144859 7.43678 0.0449066 7.64202 0.0139294 7.85539C0.00478934 7.90218 -4.32463e-09 7.95053 0 8C4.3331e-09 8.04957 0.00480748 8.09801 0.0139828 8.14489C0.045022 8.35813 0.144956 8.56323 0.313786 8.72404L7.73272 15.7907Z" fill="#595B5D"/>
         </svg>
-        <span class="t-h5 text-black">Crear Entidad</span>
+        <span class="t-h5 text-black">Editar Entidad</span>
         <div>
           <div class="flex flex-row space-x-2">
             <div class="bg-brand-2 rounded-sm w-2"></div>
@@ -19,17 +19,17 @@
         <form class="space-y-4" action="">
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70" for="name">Nombre</label>
-            <input class="h-10 w-full lg:w-1/2 px-2 text-black t-body-2 bg-mono-10 rounded" type="text" id="name">
+            <input value="{{selectedEntity.name}}" class="h-10 w-full lg:w-1/2 px-2 text-black t-body-2 bg-mono-10 rounded" type="text" id="name">
           </div>
           <div class="flex flex-row space-x-2 items-center">
-            <input class="w-4 h-4" id="unique" type="checkbox">
+            <input disabled class="w-4 h-4" id="unique" type="checkbox">
             <label class="t-body-2 text-black" for="unique">Es único</label>
           </div>
         </form>
       </div>
       <div class="actions flex flex-row space-x-2">
-        <button (click)="onCancelCreateEntities()" class="w-full md:w-auto b-outline">Cancelar</button>
-        <button (click)="onCreateEntity(this.entity)" class="w-full md:w-auto b-solid">Guardar</button>
+        <button (click)="onCancelEditEntity()" class="w-full md:w-auto b-outline">Cancelar</button>
+        <button (click)="editEntity()" class="w-full md:w-auto b-solid">Guardar</button>
       </div>
     </div>
     <app-footer></app-footer>
