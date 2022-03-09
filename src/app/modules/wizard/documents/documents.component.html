@@ -520,7 +520,7 @@
 <!--Autoname de Tipo Documental-->
 <app-layout>
   <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
+    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black space-y-6">
       <div class="flex flex-col space-y-2 w-full">
         <span class="t-h5 text-black dark:text-white">Autoname de Tipo Documental</span>
         <div>
@@ -544,9 +544,51 @@
             </div>
           </button>
         </div>
-        <button class="h-10 hover:bg-alert-error hover:text-white px-4 rounded disabled:text-mono-30 text-alert-error">Borrar toda la lista</button>
+        <div class="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:justify-between">
+          <div class="flex flex-col pt-2">
+            <span class="t-caption-2 text-mono-70 dark:text-mono-30">Vista previa del autoname</span>
+            <span class="t-body-1 text-black dark:text-white">doctype</span>
+          </div>
+          <div class="flex flex-col space-y-2 md:pt-2 md:flex-row md:space-y-0 lg:space-x-2 md:justify-between">
+            <div>
+              <button class="w-full md:w-auto h-10 hover:bg-alert-error hover:text-white px-4 rounded disabled:text-mono-30 text-alert-error">Borrar toda la lista</button>
+            </div>
+            <div class="pt-2 md:p-0">
+              <button class="b-outline w-full md:w-auto">Agregar Tipo Documental</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col space-y-6 md:flex-row md:space-y-0 md:border-t md:border-mono-30">
+        <div class="pt-6 md:pr-4 flex-1 border-t md:border-t-0 md:border-r border-mono-30 space-y-4">
+          <span class="t-body-1 text-black dark:text-white">Agregar Texto Fijo</span>
+          <div class="flex flex-col space-y-1">
+            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Autoname</label>
+            <input type="text" class="ec-input">
+          </div>
+          <button class="b-outline w-full md:auto">Agregar a la lista</button>
+        </div>
+        <div class="pt-6 md:pl-4 flex-1 border-t md:border-t-0 border-mono-30 space-y-4">
+          <span class="t-body-1 text-black dark:text-white">Agregar Atributo</span>
+          <div class="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
+            <div class="flex lg:flex-1 flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70 dark:text-mono-30">Entidad</label>
+              <select type="text" class="ec-input"></select>
+            </div>
+            <div class="flex lg:flex-1 flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70 dark:text-mono-30">Atributo</label>
+              <select type="text" class="ec-input"></select>
+            </div>
+          </div>
+          <button class="b-outline w-full">Agregar a la lista</button>
+        </div>
+      </div>
+      <div class="w-full pt-6 lg:pt-12 flex flex-row justify-end space-x-2">
+        <button class="b-outline flex-1 md:flex-none">Cancelar</button>
+        <button class="b-solid flex-1 md:flex-none">Guardar</button>
       </div>
     </div>
+    <app-footer></app-footer>
   </ng-container>
 </app-layout>
 
