@@ -320,3 +320,7 @@ button:disabled{
 .toast-container {
   z-index: 1113 !important;
 }
+
+svg {
+  @apply fill-current
+}
