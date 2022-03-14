@@ -1,13 +1,7 @@
-<app-layout *ngIf="showAtributtes">
+<app-layout *ngIf="showCascadingList">
   <ng-container layoutBody>
     <div class="ec-container pb-12 space-y-6 bg-white" style="min-height: calc(100vh - 3rem)">
       <div class="migas-pan w-full text-brand-2 space-x-2 h-12 flex items-center">
-        <svg (click)="onReturn()" class="cursor-pointer" width="18" height="16" viewBox="0 0 18 16" fill="none"
-             xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M7.73272 15.7907C8.03264 16.0764 8.50738 16.0649 8.79306 15.765C9.07875 15.465 9.06721 14.9903 8.76728 14.7046L2.51587 8.75L17.25 8.75C17.6642 8.75 18 8.41421 18 8C18 7.58579 17.6642 7.25 17.25 7.25L2.51577 7.25L8.76728 1.29529C9.06721 1.00961 9.07875 0.534874 8.79306 0.234947C8.50738 -0.0649794 8.03264 -0.0765226 7.73272 0.209165L0.313785 7.27587C0.144859 7.43678 0.0449066 7.64202 0.0139294 7.85539C0.00478934 7.90218 -4.32463e-09 7.95053 0 8C4.3331e-09 8.04957 0.00480748 8.09801 0.0139828 8.14489C0.045022 8.35813 0.144956 8.56323 0.313786 8.72404L7.73272 15.7907Z"
-            fill="#595B5D"/>
-        </svg>
         <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
              height="24" viewBox="0 0 24 24" fill="none">
           <path
@@ -53,7 +47,7 @@
       <div class="space-y-12">
         <div class="space-y-6">
           <div class="space-y-2">
-            <div class="text-2xl text-black">{{selectedEntity.name}}</div>
+            <div class="text-2xl text-black">{{entity.name}}</div>
             <div>
               <div class="flex flex-row space-x-2">
                 <div class="bg-brand-2 rounded-sm w-2"></div>
@@ -64,20 +58,20 @@
             </div>
           </div>
           <div class="space-y-2">
-            <div class="flex flex-row p-2 w-full lg:w-1/3 rounded bg-mono-10 space-x-2">
-              <button class="b-solid w-full h-8">Atributos</button>
-              <button (click)="onShowAutofills()" class="b-ghost w-full h-8">Autofills</button>
-              <button (click)="onShowCascadings()" class="b-ghost w-full h-8">Cascadings</button>
+            <div class="flex flex-row p-2 rounded bg-mono-10 w-full space-x-2">
+              <button (click)="onChangeOption('atribute')" class="b-ghost w-full h-8">Atributos</button>
+              <button (click)="onChangeOption('autofills')" class="b-ghost w-full h-8">Autofills</button>
+              <button class="b-solid w-full h-8">Cascadings</button>
             </div>
             <div>
               <ul class="t-body-1 pl-4">
-                <li class="list-disc text-mono-70">{{nAttributes}} atributos registrados actualmente.</li>
+                <li class="list-disc text-mono-70">{{cascadingDatasets.length}} Cascadings registradas actualmente.</li>
                 <li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>
               </ul>
             </div>
           </div>
           <div>
-            <button (click)="onCreateAtribute()" class="b-outline w-full md:w-auto">Crear Nuevo Atributo</button>
+            <button (click)="onCreateEditCascade()" class="b-outline w-full">Crear Nuevo Cascading</button>
           </div>
         </div>
         <div class="data space-y-4">
@@ -88,21 +82,18 @@
               <div class="p-2 w-16">N°</div>
               <div class="p-2 flex-1">Nombre</div>
               <div class="p-2 flex-1">Descripción</div>
-              <div class="p-2 flex-1">Tipo</div>
-              <div class="p-2 flex-1">Cifrado</div>
+              <div class="p-2 flex-1">Proceso</div>
               <div class="p-2 w-32">Opciones</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
-              <div *ngFor="let atribute of selectedEntity.attributes, let i = index" class="item w-full flex flex-row">
+              <div *ngFor="let cascade of cascadingDatasets, let i = index" class="item w-full flex flex-row">
                 <div class="flex items-center p-2 w-16">{{i + 1}}</div>
-                <div class="flex items-center p-2 flex-1 break-all">{{atribute.name}}</div>
-                <div class="flex items-center p-2 flex-1 break-all">{{atribute.description}}</div>
-                <div class="flex items-center p-2 flex-1 break-all">{{atribute.type}}</div>
-                <div class="flex items-center p-2 flex-1 break-all">{{atribute.name}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{cascade.name}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{cascade.description}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{cascade.process}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
-                    <button *ngIf="false" (click)="onEditAttribute(i)"
-                            class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                    <button *ngIf="false" (click)="onCreateEditCascade(i)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -112,19 +103,8 @@
                       </div>
                     </button>
                     <div class="relative w-10 h-10">
-                      <button (click)="sureDelete(i)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
-                        <div>
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                               xmlns="http://www.w3.org/2000/svg">
-                            <path
-                              d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"
-                              fill="#CA1C25"/>
-                          </svg>
-                        </div>
-                      </button>
-                    </div>
-                    <div class="relative w-10 h-10">
-                      <button (click)="onSelectDataset(i)" class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
+                      <button
+                        class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
                         <div>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                xmlns="http://www.w3.org/2000/svg">
@@ -134,11 +114,21 @@
                           </svg>
                         </div>
                       </button>
-                      <div *ngIf="atribute.showConfig"
-                           class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
-                        <button class="b-ghost">Datasets</button>
+                      <div *ngIf="true"
+                        class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
+                        <button class="b-ghost">Atributos</button>
+                        <button class="b-ghost">Valores</button>
                       </div>
                     </div>
+                    <button (click)="sureDelete(i)"  class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                      <div>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"
+                            fill="#CA1C25"/>
+                        </svg>
+                      </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -178,22 +168,31 @@
           </div>
         </div>
       </div>
-
     </div>
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
-<app-entities-list-autofills (onReturnList)="onChangeOption($event)"
-                             [entity]="selectedEntity"
-                             *ngIf="onSelectAutofills"></app-entities-list-autofills>
-<app-entities-create-atribute *ngIf="onSelectCreateAtribute" (message)="toastMessage($event)"
-                              [entity]="selectedEntity" [attribute]="selectedAttribute"
-                              (onSubmit)=" onShowListEntity($event)"></app-entities-create-atribute>
-<app-entity-list-cascade (onReturnList)="onChangeOption($event)"
-                         [entity]="selectedEntity"
-                         *ngIf="onSelectCascade"></app-entity-list-cascade>
 
+<app-entity-create-edit-cascading *ngIf="showCreateEditCascading" [selectedEntity]="entity"
+                                  [selectedCascading]="selectedCascading"
+                                  (isReturn)="onShowHome($event)"
+                                  (message)="toastMessage($event)"></app-entity-create-edit-cascading>
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
+<!--IS BLOCKED PAGE-->
+<div class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"
+     style="background: rgba(20,20,20,0.6)" *ngIf="isBlock">
+  <div class="p-4 flex bg-white rounded border border-solid border-mono-30">
+    <div>
+      <img src="assets/img/spiner.svg" class="animate-spin" alt="spiner">
+    </div>
+    <div class="t-h5 ml-4 text-black">
+      <span>
+        Cargando...
+      </span>
+    </div>
+  </div>
+</div>
+
 
 <!--MODAL DELETE-->
 <div *ngIf="isDelete"
@@ -218,10 +217,10 @@
       </div>
       <!-- Modal body -->
       <div class="p-6 pt-0 text-center">
-        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Está seguro de eliminar el atributo
-          <b>"{{selectedAttribute.name}}"</b>?</h3>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Está seguro de eliminar el registro
+          <b>"{{selectedCascading.name}}"</b>? Esta acción puede afectar el modelo de datos.</h3>
         <div class="flex justify-around">
-          <button (click)="deleteAttribute()" data-modal-toggle="popup-modal" type="button"
+          <button (click)="deleteCascade()" data-modal-toggle="popup-modal" type="button"
                   class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
             Si, estoy seguro.
           </button>

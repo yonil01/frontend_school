@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EntityEditAtributeComponent } from './entity-edit-atribute.component';
+import { EntityAddAttributeComponent } from './entity-add-attribute.component';
 
-describe('EntityEditAtributeComponent', () => {
-  let component: EntityEditAtributeComponent;
-  let fixture: ComponentFixture<EntityEditAtributeComponent>;
+describe('EntityAddAttributeComponent', () => {
+  let component: EntityAddAttributeComponent;
+  let fixture: ComponentFixture<EntityAddAttributeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EntityEditAtributeComponent ]
+      declarations: [ EntityAddAttributeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EntityEditAtributeComponent);
+    fixture = TestBed.createComponent(EntityAddAttributeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

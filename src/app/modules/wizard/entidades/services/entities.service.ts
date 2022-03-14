@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 
-import {Attribute, AttributeDataset, CascadingDataset, Entity} from "@app/core/models";
+import {Attribute, AttributeDataset, CascadingDataset, Entity, Response} from "@app/core/models";
 import {
   CreateEntityQuery,
   GetAttributesByProjectQuery,

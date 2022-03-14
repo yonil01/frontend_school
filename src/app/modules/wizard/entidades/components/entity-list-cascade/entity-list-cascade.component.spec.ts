@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EntitiesEditComponent } from './entities-edit.component';
+import { EntityListCascadeComponent } from './entity-list-cascade.component';
 
-describe('EntitiesEditComponent', () => {
-  let component: EntitiesEditComponent;
-  let fixture: ComponentFixture<EntitiesEditComponent>;
+describe('EntityListCascadeComponent', () => {
+  let component: EntityListCascadeComponent;
+  let fixture: ComponentFixture<EntityListCascadeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EntitiesEditComponent ]
+      declarations: [ EntityListCascadeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EntitiesEditComponent);
+    fixture = TestBed.createComponent(EntityListCascadeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

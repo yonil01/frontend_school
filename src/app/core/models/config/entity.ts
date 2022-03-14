@@ -10,6 +10,7 @@ export interface Entity {
 }
 
 export interface Attribute {
+  showConfig?: boolean;
   id?: string;
   name?: string;
   description?: string;

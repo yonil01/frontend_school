@@ -8,25 +8,42 @@ import { EntitiesListComponent } from './components/entities-list/entities-list.
 import { EntitiesCreateEditComponent } from './components/entities-create-edit/entities-create-edit.component';
 import { EntitiesListAutofillsComponent } from './components/entities-list-autofills/entities-list-autofills.component';
 import { EntitiesCreateAtributeComponent } from './components/entities-create-atribute/entities-create-atribute.component';
-import { EntitiesEditComponent } from './components/entities-edit/entities-edit.component';
-import { EntityEditAtributeComponent } from './components/entity-edit-atribute/entity-edit-atribute.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { EntityAddDatasetComponent } from './components/entity-add-dataset/entity-add-dataset.component';
+import {ToastModule, ToastService} from "ecapture-ng-ui";
+import { EntitiesCreateEditAutofillsComponent } from './components/entities-create-edit-autofills/entities-create-edit-autofills.component';
+import { EntityListCascadeComponent } from './components/entity-list-cascade/entity-list-cascade.component';
+import { EntityCreateEditCascadingComponent } from './components/entity-create-edit-cascading/entity-create-edit-cascading.component';
+import { EntityAddAttributeComponent } from './components/entity-add-attribute/entity-add-attribute.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 
 @NgModule({
-    declarations: [
-        EntidadesComponent,
-        EntitiesListComponent,
-        EntitiesCreateEditComponent,
-        EntitiesListAutofillsComponent,
-        EntitiesCreateAtributeComponent,
-        EntitiesEditComponent,
-        EntityEditAtributeComponent,
-        EntityEditAtributeComponent,
+  declarations: [
+    EntidadesComponent,
+    EntitiesListComponent,
+    EntitiesCreateEditComponent,
+    EntitiesListAutofillsComponent,
+    EntitiesCreateAtributeComponent,
+    EntityAddDatasetComponent,
+    EntitiesCreateEditAutofillsComponent,
+    EntityListCascadeComponent,
+    EntityListCascadeComponent,
+    EntityCreateEditCascadingComponent,
+    EntityCreateEditCascadingComponent,
+    EntityAddAttributeComponent,
+
+  ],
+    imports: [
+        CommonModule,
+        EntidadesRoutingModule,
+        UiModule,
+        ReactiveFormsModule,
+        ToastModule,
+        DragDropModule
     ],
-  imports: [
-    CommonModule,
-    EntidadesRoutingModule,
-    UiModule
+  providers: [
+    ToastService
   ]
 })
 export class EntidadesModule {

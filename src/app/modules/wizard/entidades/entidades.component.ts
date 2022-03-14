@@ -8,6 +8,9 @@ import {controlEntities} from "@app/core/store/actions/entity.action";
 import {Customer, Entity, Project} from "@app/core/models";
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {Response} from "@app/core/models";
+import {ToastService} from "ecapture-ng-ui";
+import {ToastModel, ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
+import {toastDataStyle} from "@app/core/models/toast/toast";
 
 @Component({
   selector: 'app-entidades',
@@ -23,6 +26,7 @@ export class EntidadesComponent implements OnInit {
 
   public entities: Entity[] = [];
   public entity!: Entity;
+  public toastStyle: ToastStyleModel = toastDataStyle;
 
   processes: any = [];
   activeEmptyMsg = true;
@@ -42,6 +46,7 @@ export class EntidadesComponent implements OnInit {
               private store: Store<AppState>,
               private formBulder: FormBuilder,
               private entityService: EntityService,
+              private messageService: ToastService
   ) {
     this.nameClient = this._localStorage.getClient();
     this.nameProject = this._localStorage.getProject();
@@ -102,6 +107,7 @@ export class EntidadesComponent implements OnInit {
   }
 
   onShowHome($event: ReturnData) {
+    delete this.selectedEntity;
     this.showEntities = $event.value;
     switch ($event.id) {
       case 'create':
@@ -119,46 +125,41 @@ export class EntidadesComponent implements OnInit {
   onEditEntity(i: number) {
     this.selectedEntity = this.entities[i];
     this.showEntities = false;
-    this.showEditEntity = true;
+    this.showCreateEdit = true;
   }
 
   onDelete(i: number) {
     this.selectedEntity = this.entities[i];
-    this.isDelete = true;
+    this.confirmDeleteEntity();
   }
 
   cancelDelete() {
     this.isDelete = false;
   }
 
-  // confirmDeleteEntity() {
-  //   if (this.entity.attributes && this.entity.attributes.length) {
-  //     // this.confirmationService.confirm({
-  //       message: 'No se puede eliminar la entidad porque cotiene atributos',
-  //       header: 'Entidad',
-  //       icon: 'pi pi-exclamation-triangle',
-  //       accept: () => {},
-  //       reject: () => {},
-  //     });
-  //   } else {
-  //     this.confirmationService.confirm({
-  //       message: '¿Está seguro de guardar los cambios? Esta acción puede afectar el modelo de datos',
-  //       header: 'Confirmar Eliminación Entidad',
-  //       icon: 'pi pi-exclamation-triangle',
-  //       accept: () => {
-  //         this.deleteEntity();
-  //       },
-  //       reject: () => {},
-  //     });
-  //   }
-  // }
+  confirmDeleteEntity() {
+    if (this.entity.attributes && this.entity.attributes.length) {
+      this.toastMessage({
+        type: 'error',
+        message: 'No se puede eliminar la entidad porque contiene atributos',
+        life: 5000,
+      });
+    } else {
+      this.isDelete = true;
+    }
+  }
 
   deleteEntity() {
+    this.isDelete = false;
     this.isBlock = true;
     // @ts-ignore
     this.entityService.deleteEntity(this.selectedEntity.id.toLowerCase()).subscribe((res: Response) => {
       this.isBlock = false;
       this.getEntitiesByProject();
     });
+  }
+
+  toastMessage($event: ToastModel) {
+    this.messageService.add($event);
   }
 }
