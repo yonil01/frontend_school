@@ -33,6 +33,7 @@ export class EntitiesListComponent implements OnInit {
   public onSelectCascade: boolean = false;
   public onConfigDatasets: boolean = false;
   public isDelete: boolean = false;
+  public showAddDataset: boolean = false;
 
   constructor(private _localStorage: LocalStorageService,
               private messageService: ToastService,
@@ -46,9 +47,35 @@ export class EntitiesListComponent implements OnInit {
   ngOnInit(): void {
     if (this.selectedEntity.attributes) {
       this.nAttributes = this.selectedEntity.attributes.length;
-      this.attributes = this.selectedEntity.attributes;
-      this.attributes.forEach(attribute => {
-        attribute.showConfig = false;
+      this.selectedEntity.attributes.forEach(attribute => {
+        this.attributes.push({
+          showConfig: false,
+          name: attribute.name,
+          type: attribute.type,
+          id: attribute.id,
+          is_index: attribute.is_index,
+          disabled: attribute.disabled,
+          hidden: attribute.hidden,
+          required: attribute.required,
+          is_cipher: attribute.is_cipher,
+          dataset: attribute.dataset,
+          regex: attribute.regex,
+          max_length: attribute.max_length,
+          min_length: attribute.min_length,
+          sequence: attribute.sequence,
+          mask: attribute.mask,
+          field_types: attribute.field_types,
+          tag_html: attribute.tag_html,
+          validation: attribute.validation,
+          description: attribute.description,
+          entities_id: attribute.entities_id,
+          autofill: attribute.autofill,
+          autofill_attributes: attribute.autofill_attributes,
+          entities_attributes_autofills: attribute.entities_attributes_autofills,
+          cascading_datasets: attribute.cascading_datasets,
+          entities_attributes_cascading_dataset: attribute.entities_attributes_cascading_dataset,
+          entities_attributes_dataset: attribute.entities_attributes_dataset
+        });
       });
     }
   }
@@ -74,6 +101,10 @@ export class EntitiesListComponent implements OnInit {
         break;
       case 'createAtribute':
         this.onSelectCreateAtribute = false;
+        break;
+      case 'addDataset':
+        this.showAddDataset = false;
+        break;
     }
     switch ($event.id) {
       case 'autofill':
@@ -146,9 +177,8 @@ export class EntitiesListComponent implements OnInit {
   }
 
   onSelectDataset(i: number) {
-    // @ts-ignore
     this.selectedAttribute = this.attributes[i];
-    this.selectedAttribute.showConfig = !this.selectedAttribute.showConfig;
+    this.attributes[i].showConfig = !this.attributes[i].showConfig;
   }
 
   deleteAttribute() {
@@ -184,5 +214,11 @@ export class EntitiesListComponent implements OnInit {
       this.selectedAttribute = this.attributes[i];
       this.isDelete = true;
     }
+  }
+
+  onAddDatasets(i: number) {
+    this.selectedAttribute = this.attributes[i];
+    this.showAtributtes = false;
+    this.showAddDataset = true;
   }
 }

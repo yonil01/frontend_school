@@ -26,6 +26,7 @@ export class EntityListCascadeComponent implements OnInit {
   public isBlock: boolean = false;
   public showCascadingList: boolean = true;
   public isDelete: boolean = false;
+  public addAtribute: boolean = false;
 
   constructor(private _localStorage: LocalStorageService,
               private entityService: EntityService,
@@ -43,12 +44,13 @@ export class EntityListCascadeComponent implements OnInit {
       for (const dat of data) {
         if (this.entity.id) {
           if (dat.entities_id.toLowerCase() === this.entity.id.toLowerCase()) {
+            dat.showConfig = false;
             this.cascadingDatasets.push(dat);
           }
         }
       }
       this.isBlock = false;
-    }, );
+    },);
   }
 
 
@@ -107,18 +109,28 @@ export class EntityListCascadeComponent implements OnInit {
       this.cascadingDatasets = [];
       const data = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
       for (const dat of data) {
-        if(this.entity.id)
-        if (dat.entities_id.toLowerCase() === this.entity.id.toLowerCase()) {
-          this.cascadingDatasets.push(dat);
-        }
+        if (this.entity.id)
+          if (dat.entities_id.toLowerCase() === this.entity.id.toLowerCase()) {
+            this.cascadingDatasets.push(dat);
+          }
       }
     });
   }
+
   sureDelete(i: number) {
     if (this.selectedCascading) { // @ts-ignore
       delete this.selectedCascading;
     }
     this.selectedCascading = this.cascadingDatasets[i];
     this.isDelete = true;
+  }
+
+  showConfig(i: number) {
+    this.cascadingDatasets[i].showConfig = !this.cascadingDatasets[i].showConfig;
+  }
+
+  onAddAtributes(i: number) {
+    this.addAtribute = true;
+    this.showCascadingList = false;
   }
 }

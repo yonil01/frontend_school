@@ -2,7 +2,6 @@
 <app-layout>
   <ng-container layoutBody>
     <div class="ec-container pt-12 space-y-6 bg-white" style="min-height: calc(100vh - 3rem)">
-
       <div class="space-y-12">
         <div class="space-y-6">
           <div class="space-y-2">
@@ -18,46 +17,35 @@
           </div>
         </div>
         <form>
-          <div class="data space-y-4">
-            <div class="data-A space-y-1" cdkDropList>
+          <div class="data space-y-4" cdkDropListGroup>
+            <div class="data-A space-y-1">
               <span class="t-caption-2 text-mono-70">Atributos Disponibles</span>
               <div class="rounded bg-mono-10 p-3 space-y-2">
                 <div><input class="w-full h-10 px-2 rounded t-body-2 border border-mono-30 text-black" type="text"
                             placeholder="Buscar"></div>
-                <div class="flex flex-col space-y-2 overflow-y-auto" style="max-height: 240px;">
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 1</label>
+                <div class="flex flex-col space-y-2 overflow-y-auto" style="max-height: 240px;"
+                     cdkDropList
+                     id="available"
+                     #availableList="cdkDropList"
+                     [cdkDropListConnectedTo]="[selectedList]"
+                     [cdkDropListData]="attributesAvailable"
+                     (cdkDropListDropped)="drop($event)">
+                  <div *ngIf="attributesAvailable.length === 0"
+                       class="flex-1 py-2 flex flex-row space-x-2 items-center"
+                       cdkDrag>
+                    <label class="t-body-2 text-black">No hay atributos disponibles.</label>
                   </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 2</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 3</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 4</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 5</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 6</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 7</label>
+                  <div *ngFor="let attribute of attributesAvailable, let i = index"
+                       cdkDrag
+                       class="flex-1 py-2 flex flex-row space-x-2 items-center">
+                    <input class="w-4 h-4" type="checkbox" (change)="selectAtribute('available', i)">
+                    <label class="t-body-2 text-black">{{attribute.description}}</label>
                   </div>
                 </div>
               </div>
             </div>
             <div class="flex flex-row space-x-2">
-              <button class="b-solid">
+              <button (click)="oneToSelected()" type="button" class="b-solid">
                 <div>
                   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -66,7 +54,7 @@
                   </svg>
                 </div>
               </button>
-              <button class="b-solid">
+              <button (click)="allToSelected()" type="button" class="b-solid">
                 <div>
                   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -78,7 +66,7 @@
                   </svg>
                 </div>
               </button>
-              <button class="b-solid">
+              <button (click)="oneToAvailable()" type="button" class="b-solid">
                 <div>
                   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -87,7 +75,7 @@
                   </svg>
                 </div>
               </button>
-              <button class="b-solid">
+              <button (click)="allToAvailable()" type="button" class="b-solid">
                 <div>
                   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -100,46 +88,35 @@
                 </div>
               </button>
             </div>
-            <div class="data-B space-y-1" cdkDropList>
+            <div class="data-B space-y-1">
               <span class="t-caption-2 text-mono-70">Atributos Seleccionados</span>
               <div class="rounded bg-mono-10 p-3 space-y-2">
                 <div><input class="w-full h-10 px-2 rounded t-body-2 border border-mono-30 text-black" type="text"
                             placeholder="Buscar"></div>
-                <div class="flex flex-col space-y-2 overflow-y-auto" style="max-height: 240px;">
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 1</label>
+                <div class="flex flex-col space-y-2 overflow-y-auto" style="max-height: 240px;"
+                     cdkDropList
+                     #selectedList="cdkDropList"
+                     id="selected"
+                     [cdkDropListConnectedTo]="[availableList]"
+                     [cdkDropListData]="attributesSelected"
+                     (cdkDropListDropped)="drop($event)">
+                  <div *ngIf="attributesSelected.length === 0"
+                       class="flex-1 py-2 flex flex-row space-x-2 items-center"
+                       cdkDrag>
+                    <label class="t-body-2 text-black">Ning&uacute;n atributo seleccionado.</label>
                   </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 2</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 3</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 4</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 5</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 6</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Atribute 7</label>
+                  <div *ngFor="let selected of attributesSelected, let i = index"
+                       cdkDrag
+                       class="flex-1 py-2 flex flex-row space-x-2 items-center">
+                    <input (change)="selectAtribute('selected', i)" class="w-4 h-4" type="checkbox">
+                    <label class="t-body-2 text-black">{{selected.description}}</label>
                   </div>
                 </div>
               </div>
             </div>
             <div class="actions flex flex-row space-x-2 space-y-1">
-              <button class="w-full md:w-auto b-outline">Cancelar</button>
-              <button type="submit" class="w-full md:w-auto b-solid">Guardar</button>
+              <button (click)="onCancel()" class="w-full md:w-auto b-outline">Cancelar</button>
+              <button (click)="onSubmit()" type="submit" class="w-full md:w-auto b-solid">Guardar</button>
             </div>
           </div>
         </form>
@@ -148,3 +125,17 @@
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
+<!--IS BLOCKED PAGE-->
+<div class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"
+     style="background: rgba(20,20,20,0.6)" *ngIf="isBlock">
+  <div class="p-4 flex bg-white rounded border border-solid border-mono-30">
+    <div>
+      <img src="assets/img/spiner.svg" class="animate-spin" alt="spiner">
+    </div>
+    <div class="t-h5 ml-4 text-black">
+      <span>
+        Cargando...
+      </span>
+    </div>
+  </div>
+</div>

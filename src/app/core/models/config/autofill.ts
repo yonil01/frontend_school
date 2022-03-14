@@ -7,6 +7,7 @@ export interface Autofill {
   outside?: boolean;
   process?: string;
   entities_id?: string;
+  showConfig?: boolean;
 }
 
 export interface AutofillValue {

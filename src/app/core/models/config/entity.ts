@@ -10,6 +10,7 @@ export interface Entity {
 }
 
 export interface Attribute {
+  selected?: boolean
   showConfig?: boolean;
   id?: string;
   name?: string;
@@ -57,6 +58,7 @@ export interface AttributeCascadingDataset {
 }
 
 export interface CascadingDataset {
+  showConfig?: boolean;
   id?: string;
   name?: string;
   description?: string;

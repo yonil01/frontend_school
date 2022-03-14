@@ -41,6 +41,7 @@ export class EntidadesComponent implements OnInit {
   public selectedEntity: any;
   public showEditEntity: boolean = false;
   public isDelete: boolean = false;
+  private isShowForm: boolean = true;
 
   constructor(private _localStorage: LocalStorageService,
               private store: Store<AppState>,

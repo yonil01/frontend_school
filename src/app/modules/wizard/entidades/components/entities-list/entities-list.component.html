@@ -93,12 +93,12 @@
               <div class="p-2 w-32">Opciones</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
-              <div *ngFor="let atribute of selectedEntity.attributes, let i = index" class="item w-full flex flex-row">
+              <div *ngFor="let atribute of attributes, let i = index" class="item w-full flex flex-row">
                 <div class="flex items-center p-2 w-16">{{i + 1}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.name}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.description}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.type}}</div>
-                <div class="flex items-center p-2 flex-1 break-all">{{atribute.name}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{atribute.is_cipher}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
                     <button *ngIf="false" (click)="onEditAttribute(i)"
@@ -133,10 +133,11 @@
                               fill="#CC8700"/>
                           </svg>
                         </div>
+
                       </button>
                       <div *ngIf="atribute.showConfig"
                            class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
-                        <button class="b-ghost">Datasets</button>
+                        <button (click)="onAddDatasets(i)" class="b-ghost">Datasets</button>
                       </div>
                     </div>
                   </div>
@@ -192,6 +193,10 @@
 <app-entity-list-cascade (onReturnList)="onChangeOption($event)"
                          [entity]="selectedEntity"
                          *ngIf="onSelectCascade"></app-entity-list-cascade>
+
+
+<app-entity-add-dataset *ngIf="showAddDataset" (onSubmit)=" onShowListEntity($event)" (message)="toastMessage($event)" [attribute]="selectedAttribute"></app-entity-add-dataset>
+
 
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
 

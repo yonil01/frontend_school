@@ -103,7 +103,7 @@
                       </div>
                     </button>
                     <div class="relative w-10 h-10">
-                      <button
+                      <button (click)="showConfig(i)"
                         class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
                         <div>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -114,10 +114,9 @@
                           </svg>
                         </div>
                       </button>
-                      <div *ngIf="true"
+                      <div *ngIf="cascade.showConfig"
                         class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
-                        <button class="b-ghost">Atributos</button>
-                        <button class="b-ghost">Valores</button>
+                        <button (click)="onAddAtributes(i)" class="b-ghost">Atributos</button>
                       </div>
                     </div>
                     <button (click)="sureDelete(i)"  class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
@@ -234,3 +233,5 @@
   </div>
 </div>
 <!--MODAL DELETE-->
+
+<app-entity-add-attribute *ngIf="addAtribute"></app-entity-add-attribute>

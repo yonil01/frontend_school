@@ -26,7 +26,7 @@ export class EntitiesListAutofillsComponent implements OnInit {
   public toastStyle: ToastStyleModel = toastDataStyle;
   public isBlock: boolean = false;
   public isDelete: boolean = false;
-
+  public showAddAttribute: boolean = false;
 
   constructor(private _localStorage: LocalStorageService,
               private autofillsService: AutofillsService,
@@ -42,6 +42,9 @@ export class EntitiesListAutofillsComponent implements OnInit {
       this.autofillsService.getAutofillsByEntityID(this.entity.id).subscribe((res) => {
         this.autofills = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
         this.isBlock = false;
+        this.autofills.forEach((autofill) => {
+          autofill.showConfig = false;
+        });
       });
     }
   }
@@ -69,6 +72,14 @@ export class EntitiesListAutofillsComponent implements OnInit {
     delete this.selectedAutofill;
     if(this.entity.id)
     this.getAutofills(this.entity.id.toLowerCase());
+    switch ($event.from){
+      case 'create':
+        this.showCreateEditAutofill = false;
+        break;
+      case 'addAtribute':
+        this.showAddAttribute = false;
+        break;
+    }
     this.showAutofillsList = true;
     this.showCreateEditAutofill = false;
   }
@@ -116,5 +127,20 @@ export class EntitiesListAutofillsComponent implements OnInit {
     }
     this.selectedAutofill = this.autofills[i];
     this.isDelete = true;
+  }
+
+  onShowConfig(i: number) {
+    this.selectedAutofill = this.autofills[i];
+    this.autofills[i].showConfig = !this.autofills[i].showConfig
+  }
+
+  onAddAttributes(i: number) {
+    this.showAutofillsList = false;
+    this.showAddAttribute = true;
+    this.selectedAutofill = this.autofills[i];
+  }
+
+  onAddValues(i: number) {
+
   }
 }
