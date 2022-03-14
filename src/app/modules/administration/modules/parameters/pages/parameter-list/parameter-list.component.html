@@ -29,8 +29,7 @@
         <span class="t-h5 text-black dark:text-white">Parameters</span>
         <div>
           <ul class="t-body-1 pl-4">
-            <li class="list-disc text-mono-70">25 mensajes registradas actualmente.</li>
-            <li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>
+            <li class="list-disc text-mono-70">{{parameters.length}} parametros registradas actualmente.</li>
           </ul>
         </div>
       </div>
@@ -41,39 +40,39 @@
         <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"></div>
       </div>
       <div *ngIf="!isEditOrCreate" class="data space-y-4 mt-4">
-        <div class="table-v md:hidden flex flex-col space-y-4">
+        <div *ngFor="let parameter of parametersPagination; let position = index" class="table-v md:hidden flex flex-col space-y-4">
           <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">N° 1</span>
+            <span class="text-mono-70 t-caption-1">N° {{position+1}}</span>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">ID</span>
-              <span class="text-black t-body-1">100</span>
+              <span class="text-black t-body-1">{{parameter.id}}</span>
             </div>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">Name</span>
-              <span class="text-black t-body-1">La estructura no es válida</span>
+              <span class="text-black t-body-1">{{parameter.name}}</span>
             </div>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">Value</span>
-              <span class="text-black t-body-1">The structure is not valid</span>
+              <span class="text-black t-body-1">{{parameter.value}}</span>
             </div>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">Type</span>
-              <span class="text-black t-body-1">Error</span>
+              <span class="text-black t-body-1">{{parameter.type}}</span>
             </div>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">Description</span>
-              <span class="text-black t-body-1">Error</span>
+              <span class="text-black t-body-1">{{parameter.description}}</span>
             </div>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">Client id</span>
-              <span class="text-black t-body-1">Error</span>
+              <span class="text-black t-body-1">{{parameter.client_id}}</span>
             </div>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">is cipher</span>
-              <span class="text-black t-body-1">Error</span>
+              <span class="text-black t-body-1">{{parameter.is_cipher}}</span>
             </div>
             <div class="actions border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
+              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10" (click)="isEdit(parameter.id || 0)">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -82,7 +81,7 @@
                   </svg>
                 </div>
               </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10 "(click)="showDelete(parameter.id || 0)">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -98,16 +97,17 @@
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
             <div class="p-2 flex-1">ID</div>
-            <div class="p-2 flex-1">Name</div>
-            <div class="p-2 flex-1">Value</div>
-            <div class="p-2 flex-1">Type</div>
-            <div class="p-2 flex-1">Description</div>
-            <div class="p-2 flex-1">Client Id</div>
-            <div class="p-2 flex-1">Cipher</div>
+            <div class="p-2 flex-1">Nombre</div>
+            <div class="p-2 flex-1">Valor</div>
+            <div class="p-2 flex-1">Tipo</div>
+            <div class="p-2 flex-1">Descripcion</div>
+            <div class="p-2 flex-1">Id Cliente </div>
+            <div class="p-2 flex-1">Cifrado</div>
             <div class="p-2 w-24">Opciones</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
-            <div class="register-table w-full flex flex-row" *ngFor="let parameter of parametersPagination; let position = index">
+            <div class="register-table w-full flex flex-row"
+                 *ngFor="let parameter of parametersPagination; let position = index">
               <div class="flex items-center p-2 w-16">{{position + 1}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{parameter.id}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{parameter.name}}</div>
@@ -118,7 +118,7 @@
               <div class="flex items-center p-2 flex-1 break-all">{{parameter.is_cipher}}</div>
               <div class="flex items-center p-2 w-24">
                 <div class="w-full flex flex-row">
-                  <button  class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" (click)="isEdit(parameter.id || 0)">
+                  <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" (click)="isEdit(parameter.id || 0)">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -127,7 +127,8 @@
                       </svg>
                     </div>
                   </button>
-                  <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" (click)="deleteParameter(parameter.id || 0)">
+                  <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10"
+                          (click)="showDelete(parameter.id || 0)">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -151,7 +152,8 @@
             </select>
           </div>
           <div class="right flex items-center flex-row space-x-1">
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === 1 || currentLengthPg === 1" (click)="beforePagination()">
+            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === 1 || currentLengthPg === 1"
+                    (click)="beforePagination()">
               <div>
                 <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
@@ -163,7 +165,8 @@
             <div class="flex items-center bg-mono-10 px-2 rounded h-8">
               <span class="t-body-2">{{currentPg}}/{{currentLengthPg}}</span>
             </div>
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === currentLengthPg" (click)="nextPagination()">
+            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === currentLengthPg"
+                    (click)="nextPagination()">
               <div>
                 <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
@@ -175,32 +178,76 @@
           </div>
         </div>
       </div>
-      <div class="ec-container py-6 md:py-12 bg-white dark:bg-black" *ngIf="isEditOrCreate">
-        <div class="flex flex-col lg:items-center space-y-12">
+      <div class="ec-container w-full py-6 md:py-12 bg-white dark:bg-black" *ngIf="isEditOrCreate">
+        <div class="flex flex-col  space-y-12">
           <span class="t-h5 text-black dark:text-white">{{idParameter === 0 ? 'Crear' : 'Editar'}} Parametro</span>
-          <form [formGroup]="formParameter" class="space-y-4 grid grid-cols-2 gap-4 lg:w-2/3">
-            <div class="input flex flex-col space-y-1 col-span-2">
-              <label class="t-caption-2 text-mono-70">Name</label>
+          <form [formGroup]="formParameter" class=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Nombre</label>
               <input class="ec-input" type="text" formControlName="name">
+              <div class="text-alert-error" *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error"
+                   *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('maxlength')">
+                <span>El tamaño del campo no puede ser mayor a 20 caracteres</span>
+              </div>
+              <div class="text-alert-error"
+                   *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('minlength')">
+                <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
+              </div>
             </div>
-            <div class="input flex flex-col col-span-2 space-y-1">
-              <label class="t-caption-2 text-mono-70">Value</label>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Valor</label>
               <input class="ec-input" type="text" formControlName="value">
+              <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('maxlength')">
+                <span>El tamaño del campo no puede ser mayor a 20 caracteres</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('minlength')">
+                <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
+              </div>
             </div>
-            <div class="input flex flex-col col-span-2 space-y-1">
-              <label class="t-caption-2 text-mono-70">Type</label>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Tipo</label>
               <input class="ec-input" type="text" formControlName="type">
+              <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('maxlength')">
+                <span>El tamaño del campo no puede ser mayor a 10 caracteres</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('minlength')">
+              <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
             </div>
-            <div class="input flex flex-col col-span-2 space-y-1">
-              <label class="t-caption-2 text-mono-70">Description</label>
+            </div>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Descripcion</label>
               <input class="ec-input" type="text" formControlName="description">
+              <div class="text-alert-error" *ngIf="formParameter.get('description')?.invalid && formParameter.get('description')?.touched && formParameter.get('description')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('description')?.invalid && formParameter.get('description')?.touched && formParameter.get('description')?.hasError('maxlength')">
+                <span>El tamaño del campo no puede ser mayor a 50 caracteres</span>
+              </div>
             </div>
-            <div class="input flex flex-col col-span-2 space-y-1">
-              <label class="t-caption-2 text-mono-70">Client_id</label>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Id Client</label>
               <input class="ec-input" type="number" formControlName="client_id">
+              <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('max')">
+                <span>El id del cliente no puede ser mayor a 100000 </span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('min')">
+                <span>El id del cliente debe ser mayor a 0</span>
+              </div>
             </div>
-            <div class="input flex flex-col col-span-2 space-y-1">
-              <label class="t-caption-2 text-mono-70">is_cipher</label>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Cifrado</label>
               <div class="flex gap-4 items-center">
                 <div class="flex gap-4 items-center">
                   <label class="t-caption-2 text-mono-70">verdadero</label>
@@ -212,11 +259,11 @@
                 </div>
               </div>
             </div>
-
           </form>
-          <div class="flex flex-row space-x-4 lg:w-2/3">
+          <div class="flex flex-row space-x-4 lg:w-2/3 ">
             <button class="flex-1 md:flex-none b-outline" (click)="isEditOrCreate = false">Cancelar</button>
-            <button class="flex-1 md:flex-none b-solid" (click)="sendForm()">{{idParameter === 0 ? 'Crear' : 'Editar'}}</button>
+            <button class="flex-1 md:flex-none b-solid"
+                    (click)="sendForm()">{{idParameter === 0 ? 'Crear' : 'Editar'}}</button>
           </div>
         </div>
       </div>
@@ -227,3 +274,5 @@
 
 <app-block-page [show]="isShowBlockPage"></app-block-page>
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-confirm-dialog [show]="showAlert" type="warning" [title]="'Parametros '" body="Desea eliminar el parametro?"
+                    (onEvent)="cancelCloseDialog($event)"></app-confirm-dialog>

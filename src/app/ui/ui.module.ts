@@ -8,6 +8,7 @@ import {FooterComponent} from "@app/ui/components/footer/footer.component";
 import {MenuComponent} from "@app/ui/components/menu/menu.component";
 import {MenuService} from "@app/ui/services/menu.service";
 import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
+import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-dialog.component";
 
 
 @NgModule({
@@ -17,12 +18,14 @@ import {LocalStorageService} from "@app/core/services/local-storage/local-storag
     LayoutComponent,
     SidebarComponent,
     BlockPageComponent,
-    MenuComponent
+    MenuComponent,
+    ConfirmDialogComponent
   ],
   exports: [
     FooterComponent,
     BlockPageComponent,
-    LayoutComponent
+    LayoutComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule
