@@ -16,7 +16,7 @@ import {Router} from "@angular/router";
 export class ParameterListComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
-
+  public showAlert: boolean = false;
   public parameters: Parameters[] = [];
 
   public isShowBlockPage: boolean = false;
@@ -61,7 +61,11 @@ export class ParameterListComponent implements OnInit, OnDestroy {
             this.isShowBlockPage = false;
           },
           error: (err: Error) => {
-            this._messageService.add({type: 'error', message: 'Hubo un error a la hora de obtener la infomación!', life: 5000});
+            this._messageService.add({
+              type: 'error',
+              message: 'Hubo un error a la hora de obtener la infomación!',
+              life: 5000
+            });
             console.error(err.message);
             this.isShowBlockPage = false;
           }
@@ -87,13 +91,20 @@ export class ParameterListComponent implements OnInit, OnDestroy {
           } else {
             this.parameters = this.parameters.filter((parameter) => parameter.id !== id);
             this.initPagination();
+
           }
           this.isShowBlockPage = false;
+          this.showAlert=false;
         },
         error: (err: Error) => {
+          this.showAlert = false;
           this.isShowBlockPage = false;
           console.error(err.message);
-          this._messageService.add({type: 'error', message: 'Hubo un error a la hora de obtener la infomación!', life: 5000});
+          this._messageService.add({
+            type: 'error',
+            message: 'Hubo un error a la hora de obtener la infomación!',
+            life: 5000
+          });
         }
       })
     );
@@ -101,7 +112,7 @@ export class ParameterListComponent implements OnInit, OnDestroy {
 
   private createParameter(): void {
     if (this.formParameter.valid) {
-      const parameter: Parameters ={
+      const parameter: Parameters = {
         ...this.formParameter.value
       }
       this.isShowBlockPage = true;
@@ -122,7 +133,11 @@ export class ParameterListComponent implements OnInit, OnDestroy {
             error: (err: Error) => {
               this.isShowBlockPage = false;
               console.error(err.message);
-              this._messageService.add({type: 'warning', message: 'Hubo un problema cuando se trato de obtener la información!', life: 5000});
+              this._messageService.add({
+                type: 'warning',
+                message: 'Hubo un problema cuando se trato de obtener la información!',
+                life: 5000
+              });
             }
           }
         )
@@ -143,7 +158,7 @@ export class ParameterListComponent implements OnInit, OnDestroy {
 
   private updateParameter(): void {
     if (this.formParameter.valid) {
-      const parameter: Parameters ={
+      const parameter: Parameters = {
         id: this.idParameter,
         ...this.formParameter.value
       }
@@ -169,7 +184,11 @@ export class ParameterListComponent implements OnInit, OnDestroy {
             error: (err: Error) => {
               this.isShowBlockPage = false;
               console.error(err.message);
-              this._messageService.add({type: 'warning', message: 'Hubo un problema cuando se trato de obtener la información!', life: 5000});
+              this._messageService.add({
+                type: 'warning',
+                message: 'Hubo un problema cuando se trato de obtener la información!',
+                life: 5000
+              });
             }
           }
         )
@@ -221,4 +240,19 @@ export class ParameterListComponent implements OnInit, OnDestroy {
     this.parametersPagination = this.parameters.slice(this.leftLimit, this.rightLimit);
   }
 
+  cancelCloseDialog($event: boolean) {
+    if ($event) {
+      this.deleteParameter(this.idParameter);
+
+    } else {
+      this.showAlert = false;
+      this.idParameter = 0;
+    }
+  }
+
+  showDelete(event: number) {
+    this.idParameter = event;
+    this.showAlert = true;
+
+  }
 }

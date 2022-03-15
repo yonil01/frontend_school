@@ -35,13 +35,13 @@
           </ul>
         </div>
       </div>
-      <div class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
+      <div *ngIf="!createOrEdit" class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
         <div>
           <button routerLink="/admin/message/create" class="b-solid w-full md:w-auto">Crear Mensaje</button>
         </div>
         <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"></div>
       </div>
-      <div class="data space-y-4 mt-4">
+      <div *ngIf="!createOrEdit" class="data space-y-4 mt-4">
         <div class="table-v md:hidden flex flex-col space-y-4">
           <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
             <span class="text-mono-70 t-caption-1">N° 1</span>
@@ -101,7 +101,7 @@
               <div class="flex items-center p-2 flex-1 break-all">{{message.type_message}}</div>
               <div class="flex items-center p-2 w-24">
                 <div class="w-full flex flex-row">
-                  <button (click)="editMessage(i)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                  <button (click)="editMsj(message.id || 0)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -155,6 +155,40 @@
               </div>
             </button>
           </div>
+        </div>
+      </div>
+      <div *ngIf="createOrEdit" class="flex flex-col lg:items-center space-y-12">
+        <span class="t-h5 text-black dark:text-white">{{idMessages === 0 ? 'Crear' : 'Editar'}} Mensaje</span>
+        <form [formGroup]="messageForm" class="space-y-4 grid grid-cols-2 gap-4 lg:w-2/3">
+          <div class="input flex flex-col space-y-1 col-span-2">
+            <label class="t-caption-2 text-mono-70">Mensaje en Español</label>
+            <input class="ec-input" type="text" formControlName="spa">
+          </div>
+          <div class="input flex flex-col col-span-2 space-y-1">
+            <label class="t-caption-2 text-mono-70">Mensaje en Inglés</label>
+            <input class="ec-input" type="text" formControlName="eng">
+          </div>
+          <div class="input flex flex-col space-y-1 col-span-2">
+            <label class="t-caption-2 text-mono-70">Tipo de Mensaje</label>
+            <div class="grid grid-cols-1 gap-4 col-span-2 md:grid-cols-3">
+              <div class="flex flex-row space-x-2 items-center">
+                <input class="w-4 h-4"type="radio" formControlName="type_message" name="type_message" value="1">
+                <label class="t-body-2 text-black">Error</label>
+              </div>
+              <div class="flex flex-row space-x-2 items-center">
+                <input class="w-4 h-4"type="radio" formControlName="type_message" name="type_message" value="2">
+                <label class="t-body-2 text-black">Advertencia</label>
+              </div>
+              <div class="flex flex-row space-x-2 items-center">
+                <input class="w-4 h-4"type="radio" formControlName="type_message" name="type_message" value="3">
+                <label class="t-body-2 text-black">Éxito</label>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="flex flex-row space-x-4 lg:w-2/3">
+          <button routerLink="/admin/message/list" class="flex-1 md:flex-none b-outline">Cancelar</button>
+          <button class="flex-1 md:flex-none b-solid" (click)="editMessage()">Guardar</button>
         </div>
       </div>
     </div>
@@ -217,55 +251,4 @@
   </div>
 </div>
 
-
-<app-layout *ngIf="onShowEditMessages">
-  <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
-      <div class="flex flex-col lg:items-center space-y-12">
-        <span class="t-h5 text-black dark:text-white lg:w-2/3">Editar Mensaje</span>
-        <form [formGroup]="editMessageForm" (ngSubmit)="createMessage()" class="space-y-4"
-              class="grid grid-cols-2 gap-4 lg:w-2/3">
-          <div class="input flex flex-col space-y-1 col-span-2">
-            <label class="t-caption-2 text-mono-70">ID</label>
-            <input formControlName="id" class="ec-input" type="number">
-          </div>
-          <div class="input flex flex-col space-y-1 col-span-2">
-            <label class="t-caption-2 text-mono-70">Mensaje en Español</label>
-            <input formControlName="spa" class="ec-input" type="text">
-          </div>
-          <div class="input flex flex-col col-span-2 space-y-1">
-            <label class="t-caption-2 text-mono-70">Mensaje en Inglés</label>
-            <input formControlName="eng" class="ec-input" type="text">
-          </div>
-          <div class="input flex flex-col space-y-1 col-span-2">
-            <label class="t-caption-2 text-mono-70">Tipo de Mensaje</label>
-            <div class="grid grid-cols-1 gap-4 col-span-2 md:grid-cols-3">
-              <div class="flex flex-row space-x-2 items-center">
-                <input formControlName="type_message" class="w-4 h-4" type="radio">
-                <label class="t-body-2 text-black">Error</label>
-              </div>
-              <div class="flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="radio">
-                <label class="t-body-2 text-black">Advertencia</label>
-              </div>
-              <div class="flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="radio">
-                <label class="t-body-2 text-black">Éxito</label>
-              </div>
-            </div>
-          </div>
-          <div class="flex flex-col md:flex-row lg:w-2/3 space-y-4 md:space-y-0 md:space-x-4">
-            <div>
-              <button class="w-full md:w-auto b-ghost">Reestablecer Valores</button>
-            </div>
-            <div class="flex flex-row space-x-4">
-              <button class="flex-1 md:flex-none b-outline">Cancelar</button>
-              <button class="flex-1 md:flex-none b-solid">Guardar</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <app-footer></app-footer>
-  </ng-container>
-</app-layout>
+<app-block-page [show]="isShowBlockPage"></app-block-page>

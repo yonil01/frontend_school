@@ -17,12 +17,20 @@ export class MessagesListComponent implements OnInit, OnDestroy {
   public onShowEditMessages: boolean = false;
   public onShowMessagesList: boolean = true;
   public selectedMessage!: MsgModel;
-  public editMessageForm!: FormGroup;
+  public messageForm: FormGroup;
+  public createOrEdit: boolean= false;
+  public idMessages: number=0;
+  public isShowBlockPage: boolean = false;
   constructor(
     private _messageService: MessageServices,
     private _toastService: ToastService,
     private _fb: FormBuilder
   ) {
+    this.messageForm=_fb.group({
+      eng: ["",[Validators.required,Validators.maxLength(50),Validators.minLength(4)]],
+      spa: ["",[Validators.required,Validators.maxLength(50),Validators.minLength(4)]],
+      type_message: ["",[Validators.required]],
+    })
   }
 
   ngOnInit(): void {
@@ -34,6 +42,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
   }
 
   private getAllMsg(): void {
+    this.isShowBlockPage=true
     this._subscription.add(
       this._messageService.getAllMsgsService().subscribe(
         {
@@ -48,6 +57,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
                 this._toastService.add({type: 'info', message: 'No hay mensajes creados', life: 5000});
               }
             }
+            this.isShowBlockPage=false
           },
           error: (err: Error) => {
             console.error(err.message);
@@ -77,23 +87,51 @@ export class MessagesListComponent implements OnInit, OnDestroy {
     );
   }
 
-  editMessage(index: number) {
-    this.onShowEditMessages = true;
-    this.onShowMessagesList = false;
-    this.selectedMessage = this.messages[index];
-    this.editMessageForm = this._fb.group({
-      id: [this.selectedMessage.id, Validators.required],
-      eng: [this.selectedMessage.eng, Validators.required],
-      spa: [this.selectedMessage.spa, Validators.required],
-      type_message: [this.selectedMessage.type_message, Validators.required],
-    });
-    console.log(this.selectedMessage)
+  editMessage(): void {
+    if (this.messageForm.valid) {
+      const msg={
+        id:this.idMessages,
+        ...this.messageForm.value
+      }
+      this._subscription.add(
+        this._messageService.updateMsgService(msg).subscribe({
+          next:(res)=>{
+            if (res.error){
 
+            }
+            else {
+              console.log(res)
+              this.createOrEdit=false;
+              this.idMessages=0;
+            }
+          },
+          error:(err)=>{
+            console.log(err)
+          }
+        })
+      )
+    } else {
+
+    }
   }
 
   createMessage() {
-  this._messageService.updateMsgService(this.editMessageForm.value).subscribe((res) => {
-    console.log(res);
-  })
+
+  }
+
+  public editMsj(id: number): void {
+    this.idMessages=id;
+    this.createOrEdit=true;
+    const msgEdit = this.messages.find((msg) => msg.id === id);
+    console.log(msgEdit)
+    if (msgEdit) {
+      this.messageForm.patchValue(
+        {
+          eng: msgEdit.eng,
+          spa: msgEdit.spa,
+          type_message: msgEdit.type_message,
+        }
+      );
+    }
   }
 }
