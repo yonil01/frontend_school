@@ -1,16 +1,17 @@
+
 import {Injectable} from '@angular/core';
 import {
-  CreateBlackListPwd,
-  GetPwdNotAllowed
+  CreateBlackListPwd, DeleteBlackListPwd,
+  GetPwdNotAllowed, UpdateBlackListPwd
 } from "@app/modules/administration/modules/passwords-not-allowed/services/pwd-not-allowed.query";
 import {Observable} from "rxjs/internal/Observable";
 import {
-  ResponseCreateBlackListPwd,
+  PwdNotAllowed,
+  ResponseCreateBlackListPwd, ResponseDeleteBlackListPwd,
   ResponseGetPwdNotAllowed
 } from "@app/modules/administration/modules/passwords-not-allowed/models/pwdNotAllowed.models";
 import {map} from "rxjs/operators";
-import {CreateBlacklistPwd} from "@app/modules/administration/services/black-list/black-list-query.service";
-import {data} from "autoprefixer";
+
 
 
 @Injectable({
@@ -20,7 +21,9 @@ export class PasswordNotAllowedService {
 
   constructor(
     private getPwdNotAllowedQuery: GetPwdNotAllowed,
-    private createBlackListPwdMutation: CreateBlackListPwd
+    private createBlackListPwdMutation: CreateBlackListPwd,
+    private deleteBlackListPwdQuery: DeleteBlackListPwd,
+    private updateBlackListPwdQry: UpdateBlackListPwd
   ) {
   }
 
@@ -31,13 +34,30 @@ export class PasswordNotAllowedService {
   public CreateBlackListPwd(password: string): Observable<ResponseCreateBlackListPwd> {
     return this.createBlackListPwdMutation.mutate({
       rq: {
-        data:{
+        data: {
           password
         }
       }
     }).pipe(map(({data}: any) => data.createBlackListPwd));
   }
 
+   public DeleteBlackListPwd(id: number): Observable<ResponseDeleteBlackListPwd> {
+    return this.deleteBlackListPwdQuery.mutate({
+      id
+    }).pipe(map(({data}: any) => data.deleteBlackListPwd));
+  }
+
+  public UpdateBlackListPwd(password:PwdNotAllowed): Observable<ResponseCreateBlackListPwd> {
+    return this.updateBlackListPwdQry.mutate({
+        req: {
+          data:{
+          password
+          }
+        }
+      }).pipe(map(({ data }: any) => data.updateBlackListPwd));
+  }
+
 }
+
 
 
