@@ -11,7 +11,7 @@ import {LocalStorageService} from "@app/core/services/local-storage/local-storag
 import {PickTaskComponent} from './components/pick-task/pick-task.component';
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {FilterService} from "@app/ui/services/filter.service";
-
+import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-dialog.component";
 
 @NgModule({
   declarations: [
@@ -21,13 +21,15 @@ import {FilterService} from "@app/ui/services/filter.service";
     SidebarComponent,
     BlockPageComponent,
     MenuComponent,
-    PickTaskComponent
+    PickTaskComponent,
+    ConfirmDialogComponent
   ],
   exports: [
     FooterComponent,
     BlockPageComponent,
     LayoutComponent,
-    PickTaskComponent
+    PickTaskComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
