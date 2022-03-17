@@ -8,6 +8,9 @@ import {FooterComponent} from "@app/ui/components/footer/footer.component";
 import {MenuComponent} from "@app/ui/components/menu/menu.component";
 import {MenuService} from "@app/ui/services/menu.service";
 import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
+import {PickTaskComponent} from './components/pick-task/pick-task.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {FilterService} from "@app/ui/services/filter.service";
 
 
 @NgModule({
@@ -17,17 +20,20 @@ import {LocalStorageService} from "@app/core/services/local-storage/local-storag
     LayoutComponent,
     SidebarComponent,
     BlockPageComponent,
-    MenuComponent
+    MenuComponent,
+    PickTaskComponent
   ],
   exports: [
     FooterComponent,
     BlockPageComponent,
-    LayoutComponent
+    LayoutComponent,
+    PickTaskComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    DragDropModule
   ],
-  providers: [MenuService, LocalStorageService]
+  providers: [MenuService, LocalStorageService, FilterService]
 })
 export class UiModule {
 }

@@ -1,306 +1,378 @@
 <app-layout>
   <ng-container layoutBody>
     <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
-      <div class="migas mb-4 text-brand-2 flex flex-row space-x-2 items-center flex-wrap">
-        <div class="home">
-          <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
-               height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"/>
-          </svg>
+      <div *ngIf="!createOrUpdate">
+        <div class="migas mb-4 text-brand-2 flex flex-row space-x-2 items-center flex-wrap">
+          <div class="home">
+            <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
+                 height="24" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"/>
+            </svg>
+          </div>
+          <div class="miga flex flex-row items-center space-x-2">
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+              <path
+                d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+            </svg>
+            <span routerLink="/wizard" class="t-body-2 cursor-pointer">Gallagher</span>
+          </div>
+          <div class="miga flex flex-row items-center space-x-2">
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                 fill="none">
+              <path
+                d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+            </svg>
+            <span routerLink="/wizard" class="t-body-2 cursor-pointer">Seguros</span>
+          </div>
+          <div class="miga flex flex-row items-center space-x-2">
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                 fill="none">
+              <path
+                d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+            </svg>
+            <span routerLink="wizard/bpmn" class="t-body-2 cursor-pointer">Procesos</span>
+          </div>
         </div>
-        <div class="miga flex flex-row items-center space-x-2">
-          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-            <path
-              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
-          </svg>
-          <span routerLink="/wizard" class="t-body-2 cursor-pointer">Gallagher</span>
+        <div class="description mb-6 flex flex-col space-y-2">
+          <span class="t-h5 text-black dark:text-white">Procesos</span>
+          <Span class="t-body-2 text-mono-70 dark:text-mono-30">{{processes.length}} Procesos Registrados Actualmente.</Span>
         </div>
-        <div class="miga flex flex-row items-center space-x-2">
-          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-               fill="none">
-            <path
-              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
-          </svg>
-          <span routerLink="/wizard" class="t-body-2 cursor-pointer">Seguros</span>
+        <div class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
+          <div>
+            <button (click)="onCreateProcess()" class="b-solid w-full md:w-auto">Crear Nuevo Proceso</button>
+          </div>
+          <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"
+                      (input)="findProcess($event, processes)"></div>
         </div>
-        <div class="miga flex flex-row items-center space-x-2">
-          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-               fill="none">
-            <path
-              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
-          </svg>
-          <span routerLink="wizard/bpmn" class="t-body-2 cursor-pointer">Procesos</span>
+        <div class="data space-y-4 mt-4">
+          <div class="table-v grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div *ngFor="let process of processesDisplay; let position = index"
+                 class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+              <span class="text-mono-70 t-caption-1">N° {{position + 1}}</span>
+              <div class="flex flex-row space-x-4">
+                <div class="flex flex-col">
+                  <span class="text-mono-70 t-caption-2">ID</span>
+                  <span class="text-black t-body-1">{{process.process.id}}</span>
+                </div>
+                <div class="flex flex-1 flex-col">
+                  <span class="text-mono-70 t-caption-2">Proceso</span>
+                  <span class="text-black t-body-1">{{process.process.name}}</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-mono-70 t-caption-2">ANS</span>
+                  <span class="text-black t-body-1">{{process.process.ans}}</span>
+                </div>
+              </div>
+              <div class="flex flex-col">
+                <div *ngIf="process.diagramSVG === 'document-no-found'"
+                     class="img w-full rounded bg-mono-10 flex items-center justify-center text-alert-error"
+                     style="height: 240px">
+                  <span>Archivo de proceso no encontrado!</span>
+                </div>
+                <img *ngIf="process.diagramSVG !== 'document-no-found'" class="img w-full rounded bg-mono-10"
+                     style="height: 240px" [src]="process.diagramSVG" alt="bpmn image">
+              </div>
+              <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
+                <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10" (click)="onUpdateProcess(process)">
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"
+                        fill="#0150E5"/>
+                    </svg>
+                  </div>
+                </button>
+                <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"
+                        fill="#CA1C25"/>
+                    </svg>
+                  </div>
+                </button>
+                <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M9.25498 14.0045C10.2215 14.0045 11.005 14.788 11.005 15.7545V19.2535C11.005 20.2199 10.2215 21.0035 9.25498 21.0035H3.75C2.7835 21.0035 2 20.2199 2 19.2535V15.7545C2 14.788 2.7835 14.0045 3.75 14.0045H9.25498ZM20.25 14.0045C21.2165 14.0045 22 14.788 22 15.7545V19.2535C22 20.2199 21.2165 21.0035 20.25 21.0035H14.745C13.7785 21.0035 12.995 20.2199 12.995 19.2535V15.7545C12.995 14.788 13.7785 14.0045 14.745 14.0045H20.25ZM9.25498 15.5045H3.75C3.61193 15.5045 3.5 15.6165 3.5 15.7545V19.2535C3.5 19.3915 3.61193 19.5035 3.75 19.5035H9.25498C9.39306 19.5035 9.50498 19.3915 9.50498 19.2535V15.7545C9.50498 15.6165 9.39306 15.5045 9.25498 15.5045ZM20.25 15.5045H14.745C14.6069 15.5045 14.495 15.6165 14.495 15.7545V19.2535C14.495 19.3915 14.6069 19.5035 14.745 19.5035H20.25C20.3881 19.5035 20.5 19.3915 20.5 19.2535V15.7545C20.5 15.6165 20.3881 15.5045 20.25 15.5045ZM20.25 3C21.2165 3 22 3.7835 22 4.75V10.25C22 11.2165 21.2165 12 20.25 12H3.75C2.7835 12 2 11.2165 2 10.25V4.75C2 3.83183 2.70711 3.07881 3.60647 3.0058L3.75 3H20.25ZM20.25 4.5H3.75L3.69268 4.5066C3.58223 4.53251 3.5 4.63165 3.5 4.75V10.25C3.5 10.3881 3.61193 10.5 3.75 10.5H20.25C20.3881 10.5 20.5 10.3881 20.5 10.25V4.75C20.5 4.61193 20.3881 4.5 20.25 4.5Z"/>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="pagination flex flex-row items-center justify-between">
+            <div class="left">
+              <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
+                <option>10</option>
+                <option>20</option>
+                <option>30</option>
+              </select>
+            </div>
+            <div class="right flex items-center flex-row space-x-1">
+              <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
+                <div>
+                  <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
+                  </svg>
+                </div>
+              </button>
+              <div class="flex items-center bg-mono-10 px-2 rounded h-8">
+                <span class="t-body-2">1/2</span>
+              </div>
+              <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
+                <div>
+                  <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
+                  </svg>
+                </div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="description mb-6 flex flex-col space-y-2">
-        <span class="t-h5 text-black dark:text-white">Procesos</span>
-        <Span class="t-body-2 text-mono-70 dark:text-mono-30">Acceda a la lista de atributos de una entidad con el botón verde a la derecha.</Span>
-      </div>
-      <div class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
-        <div>
-          <button routerLink="/wizard/bpmn/create" class="b-solid w-full md:w-auto">Crear Nuevo Proceso</button>
-        </div>
-        <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"></div>
-      </div>
+      <div *ngIf="createOrUpdate">
+        <!--Step 1-->
+        <div class="ec-container py-6 md:py-12 bg-white dark:bg-black" *ngIf="positionStep === 1">
+          <div class="flex flex-col space-y-12 lg:items-center">
+            <div class="flex flex-col space-y-6 lg:w-2/3">
+              <span class="t-h5 text-black dark:text-white">Crear Proceso</span>
+              <div class="flex flex-row space-x-2 items-start">
+                <div class="relative">
+                  <div class="absolute left-0 top-0">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path class="text-mono-30 dark:text-mono-70"
+                            d="M64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32ZM3.2 32C3.2 47.9058 16.0942 60.8 32 60.8C47.9058 60.8 60.8 47.9058 60.8 32C60.8 16.0942 47.9058 3.2 32 3.2C16.0942 3.2 3.2 16.0942 3.2 32Z"/>
+                      <path class="text-brand-2"
+                            d="M32 0C26.3828 -6.69841e-08 20.8646 1.4786 16 4.28719C11.1354 7.09577 7.09577 11.1354 4.28719 16C1.4786 20.8646 -1.7855e-07 26.3828 0 32C1.7855e-07 37.6172 1.4786 43.1354 4.28719 48L7.05847 46.4C4.53074 42.0218 3.2 37.0555 3.2 32C3.2 26.9445 4.53074 21.9782 7.05847 17.6C9.5862 13.2218 13.2218 9.5862 17.6 7.05847C21.9782 4.53074 26.9445 3.2 32 3.2L32 0Z"/>
+                    </svg>
+                  </div>
+                  <div class="flex items-center justify-center" style="width: 64px; height: 64px;">
+                    <span class="text-black dark:text-white t-button-1">1/3</span>
+                  </div>
+                </div>
+                <div class="flex flex-1 flex-col">
+                  <span class="text-black dark:text-white t-h5">Información General</span>
+                  <span class="text-mono-70 dark:text-mono-30 t-caption-1">Siguiente: Tipos Documentales</span>
+                </div>
+              </div>
+            </div>
 
-      <div class="data space-y-4 mt-4">
-        <div class="table-v grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">N° 1</span>
-            <div class="flex flex-row space-x-4">
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ID</span>
-                <span class="text-black t-body-1">100</span>
-              </div>
-              <div class="flex flex-1 flex-col">
-                <span class="text-mono-70 t-caption-2">Proceso</span>
-                <span class="text-black t-body-1">Seguros</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ANS</span>
-                <span class="text-black t-body-1">1</span>
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="img w-full rounded bg-mono-10" style="height: 240px"></div>
-            </div>
-            <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
-                </svg>
+            <form class="flex flex-col gap-4 grid grid-cols-2 lg:w-2/3" [formGroup]="processForm">
+              <div class="flex flex-col space-y-1 col-span-2">
+                <label class="t-caption-2 text-mono-70 dark:text-mono-30">Nombre</label>
+                <input type="text" class="ec-input" formControlName="name">
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('name')?.invalid && processForm.get('name')?.touched && processForm.get('name')?.hasError('required')">
+                  <span>El nombre del proceso es requerido</span>
                 </div>
-              </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
-                </svg></div>
-              </button>
-              <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.25498 14.0045C10.2215 14.0045 11.005 14.788 11.005 15.7545V19.2535C11.005 20.2199 10.2215 21.0035 9.25498 21.0035H3.75C2.7835 21.0035 2 20.2199 2 19.2535V15.7545C2 14.788 2.7835 14.0045 3.75 14.0045H9.25498ZM20.25 14.0045C21.2165 14.0045 22 14.788 22 15.7545V19.2535C22 20.2199 21.2165 21.0035 20.25 21.0035H14.745C13.7785 21.0035 12.995 20.2199 12.995 19.2535V15.7545C12.995 14.788 13.7785 14.0045 14.745 14.0045H20.25ZM9.25498 15.5045H3.75C3.61193 15.5045 3.5 15.6165 3.5 15.7545V19.2535C3.5 19.3915 3.61193 19.5035 3.75 19.5035H9.25498C9.39306 19.5035 9.50498 19.3915 9.50498 19.2535V15.7545C9.50498 15.6165 9.39306 15.5045 9.25498 15.5045ZM20.25 15.5045H14.745C14.6069 15.5045 14.495 15.6165 14.495 15.7545V19.2535C14.495 19.3915 14.6069 19.5035 14.745 19.5035H20.25C20.3881 19.5035 20.5 19.3915 20.5 19.2535V15.7545C20.5 15.6165 20.3881 15.5045 20.25 15.5045ZM20.25 3C21.2165 3 22 3.7835 22 4.75V10.25C22 11.2165 21.2165 12 20.25 12H3.75C2.7835 12 2 11.2165 2 10.25V4.75C2 3.83183 2.70711 3.07881 3.60647 3.0058L3.75 3H20.25ZM20.25 4.5H3.75L3.69268 4.5066C3.58223 4.53251 3.5 4.63165 3.5 4.75V10.25C3.5 10.3881 3.61193 10.5 3.75 10.5H20.25C20.3881 10.5 20.5 10.3881 20.5 10.25V4.75C20.5 4.61193 20.3881 4.5 20.25 4.5Z"/>
-                </svg>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('name')?.invalid && processForm.get('name')?.touched && processForm.get('name')?.hasError('minlength')">
+                  <span>El nombre no puede ser menor 4 caracteres</span>
                 </div>
-              </button>
-            </div>
-          </div>
-          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">N° 1</span>
-            <div class="flex flex-row space-x-4">
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ID</span>
-                <span class="text-black t-body-1">100</span>
-              </div>
-              <div class="flex flex-1 flex-col">
-                <span class="text-mono-70 t-caption-2">Proceso</span>
-                <span class="text-black t-body-1">Seguros</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ANS</span>
-                <span class="text-black t-body-1">1</span>
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="img w-full rounded bg-mono-10" style="height: 240px"></div>
-            </div>
-            <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
-                </svg>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('name')?.invalid && processForm.get('name')?.touched && processForm.get('name')?.hasError('maxlength')">
+                  <span>El nombre del proceso no puede ser mayor a 50 caracteres</span>
                 </div>
-              </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
-                </svg></div>
-              </button>
-              <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.25498 14.0045C10.2215 14.0045 11.005 14.788 11.005 15.7545V19.2535C11.005 20.2199 10.2215 21.0035 9.25498 21.0035H3.75C2.7835 21.0035 2 20.2199 2 19.2535V15.7545C2 14.788 2.7835 14.0045 3.75 14.0045H9.25498ZM20.25 14.0045C21.2165 14.0045 22 14.788 22 15.7545V19.2535C22 20.2199 21.2165 21.0035 20.25 21.0035H14.745C13.7785 21.0035 12.995 20.2199 12.995 19.2535V15.7545C12.995 14.788 13.7785 14.0045 14.745 14.0045H20.25ZM9.25498 15.5045H3.75C3.61193 15.5045 3.5 15.6165 3.5 15.7545V19.2535C3.5 19.3915 3.61193 19.5035 3.75 19.5035H9.25498C9.39306 19.5035 9.50498 19.3915 9.50498 19.2535V15.7545C9.50498 15.6165 9.39306 15.5045 9.25498 15.5045ZM20.25 15.5045H14.745C14.6069 15.5045 14.495 15.6165 14.495 15.7545V19.2535C14.495 19.3915 14.6069 19.5035 14.745 19.5035H20.25C20.3881 19.5035 20.5 19.3915 20.5 19.2535V15.7545C20.5 15.6165 20.3881 15.5045 20.25 15.5045ZM20.25 3C21.2165 3 22 3.7835 22 4.75V10.25C22 11.2165 21.2165 12 20.25 12H3.75C2.7835 12 2 11.2165 2 10.25V4.75C2 3.83183 2.70711 3.07881 3.60647 3.0058L3.75 3H20.25ZM20.25 4.5H3.75L3.69268 4.5066C3.58223 4.53251 3.5 4.63165 3.5 4.75V10.25C3.5 10.3881 3.61193 10.5 3.75 10.5H20.25C20.3881 10.5 20.5 10.3881 20.5 10.25V4.75C20.5 4.61193 20.3881 4.5 20.25 4.5Z"/>
-                </svg>
+              </div>
+              <div class="flex flex-col space-y-1 col-span-2 md:col-span-1">
+                <label class="t-caption-2 text-mono-70 dark:text-mono-30">Tipo</label>
+                <select class="ec-input" formControlName="type">
+                  <option value="0">WorkFlow</option>
+                  <option value="1">Captura</option>
+                </select>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('type')?.invalid && processForm.get('type')?.touched && processForm.get('type')?.hasError('required')">
+                  <span>El tipo de proceso es requerido</span>
                 </div>
-              </button>
-            </div>
-          </div>
-          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">N° 1</span>
-            <div class="flex flex-row space-x-4">
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ID</span>
-                <span class="text-black t-body-1">100</span>
               </div>
-              <div class="flex flex-1 flex-col">
-                <span class="text-mono-70 t-caption-2">Proceso</span>
-                <span class="text-black t-body-1">Seguros</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ANS</span>
-                <span class="text-black t-body-1">1</span>
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="img w-full rounded bg-mono-10" style="height: 240px"></div>
-            </div>
-            <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
-                </svg>
+              <div class="flex flex-col space-y-1 col-span-2 md:col-span-1">
+                <label class="t-caption-2 text-mono-70 dark:text-mono-30">Ícono</label>
+                <select class="ec-input" formControlName="icon">
+                  <option value="add">+</option>
+                  <option value="eye show">ojo</option>
+                </select>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('icon')?.invalid && processForm.get('icon')?.touched && processForm.get('icon')?.hasError('required')">
+                  <span>El icono del proceso es requerido</span>
                 </div>
-              </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
-                </svg></div>
-              </button>
-              <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.25498 14.0045C10.2215 14.0045 11.005 14.788 11.005 15.7545V19.2535C11.005 20.2199 10.2215 21.0035 9.25498 21.0035H3.75C2.7835 21.0035 2 20.2199 2 19.2535V15.7545C2 14.788 2.7835 14.0045 3.75 14.0045H9.25498ZM20.25 14.0045C21.2165 14.0045 22 14.788 22 15.7545V19.2535C22 20.2199 21.2165 21.0035 20.25 21.0035H14.745C13.7785 21.0035 12.995 20.2199 12.995 19.2535V15.7545C12.995 14.788 13.7785 14.0045 14.745 14.0045H20.25ZM9.25498 15.5045H3.75C3.61193 15.5045 3.5 15.6165 3.5 15.7545V19.2535C3.5 19.3915 3.61193 19.5035 3.75 19.5035H9.25498C9.39306 19.5035 9.50498 19.3915 9.50498 19.2535V15.7545C9.50498 15.6165 9.39306 15.5045 9.25498 15.5045ZM20.25 15.5045H14.745C14.6069 15.5045 14.495 15.6165 14.495 15.7545V19.2535C14.495 19.3915 14.6069 19.5035 14.745 19.5035H20.25C20.3881 19.5035 20.5 19.3915 20.5 19.2535V15.7545C20.5 15.6165 20.3881 15.5045 20.25 15.5045ZM20.25 3C21.2165 3 22 3.7835 22 4.75V10.25C22 11.2165 21.2165 12 20.25 12H3.75C2.7835 12 2 11.2165 2 10.25V4.75C2 3.83183 2.70711 3.07881 3.60647 3.0058L3.75 3H20.25ZM20.25 4.5H3.75L3.69268 4.5066C3.58223 4.53251 3.5 4.63165 3.5 4.75V10.25C3.5 10.3881 3.61193 10.5 3.75 10.5H20.25C20.3881 10.5 20.5 10.3881 20.5 10.25V4.75C20.5 4.61193 20.3881 4.5 20.25 4.5Z"/>
-                </svg>
+              </div>
+              <div class="flex flex-col space-y-1">
+                <label class="t-caption-2 text-mono-70 dark:text-mono-30">ANS</label>
+                <input type="number" class="ec-input" formControlName="ans">
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('ans')?.invalid && processForm.get('ans')?.touched && processForm.get('ans')?.hasError('required')">
+                  <span>El ANS del proceso es requerido</span>
                 </div>
-              </button>
-            </div>
-          </div>
-          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">N° 1</span>
-            <div class="flex flex-row space-x-4">
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ID</span>
-                <span class="text-black t-body-1">100</span>
-              </div>
-              <div class="flex flex-1 flex-col">
-                <span class="text-mono-70 t-caption-2">Proceso</span>
-                <span class="text-black t-body-1">Seguros</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ANS</span>
-                <span class="text-black t-body-1">1</span>
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="img w-full rounded bg-mono-10" style="height: 240px"></div>
-            </div>
-            <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
-                </svg>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('ans')?.invalid && processForm.get('ans')?.touched && processForm.get('ans')?.hasError('min')">
+                  <span>El ANS no puede ser menor a 0</span>
                 </div>
-              </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
-                </svg></div>
-              </button>
-              <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.25498 14.0045C10.2215 14.0045 11.005 14.788 11.005 15.7545V19.2535C11.005 20.2199 10.2215 21.0035 9.25498 21.0035H3.75C2.7835 21.0035 2 20.2199 2 19.2535V15.7545C2 14.788 2.7835 14.0045 3.75 14.0045H9.25498ZM20.25 14.0045C21.2165 14.0045 22 14.788 22 15.7545V19.2535C22 20.2199 21.2165 21.0035 20.25 21.0035H14.745C13.7785 21.0035 12.995 20.2199 12.995 19.2535V15.7545C12.995 14.788 13.7785 14.0045 14.745 14.0045H20.25ZM9.25498 15.5045H3.75C3.61193 15.5045 3.5 15.6165 3.5 15.7545V19.2535C3.5 19.3915 3.61193 19.5035 3.75 19.5035H9.25498C9.39306 19.5035 9.50498 19.3915 9.50498 19.2535V15.7545C9.50498 15.6165 9.39306 15.5045 9.25498 15.5045ZM20.25 15.5045H14.745C14.6069 15.5045 14.495 15.6165 14.495 15.7545V19.2535C14.495 19.3915 14.6069 19.5035 14.745 19.5035H20.25C20.3881 19.5035 20.5 19.3915 20.5 19.2535V15.7545C20.5 15.6165 20.3881 15.5045 20.25 15.5045ZM20.25 3C21.2165 3 22 3.7835 22 4.75V10.25C22 11.2165 21.2165 12 20.25 12H3.75C2.7835 12 2 11.2165 2 10.25V4.75C2 3.83183 2.70711 3.07881 3.60647 3.0058L3.75 3H20.25ZM20.25 4.5H3.75L3.69268 4.5066C3.58223 4.53251 3.5 4.63165 3.5 4.75V10.25C3.5 10.3881 3.61193 10.5 3.75 10.5H20.25C20.3881 10.5 20.5 10.3881 20.5 10.25V4.75C20.5 4.61193 20.3881 4.5 20.25 4.5Z"/>
-                </svg>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('ans')?.invalid && processForm.get('ans')?.touched && processForm.get('ans')?.hasError('max')">
+                  <span>El ANS no puede ser mayor a 100</span>
                 </div>
-              </button>
-            </div>
-          </div>
-          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">N° 1</span>
-            <div class="flex flex-row space-x-4">
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ID</span>
-                <span class="text-black t-body-1">100</span>
               </div>
-              <div class="flex flex-1 flex-col">
-                <span class="text-mono-70 t-caption-2">Proceso</span>
-                <span class="text-black t-body-1">Seguros</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ANS</span>
-                <span class="text-black t-body-1">1</span>
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="img w-full rounded bg-mono-10" style="height: 240px"></div>
-            </div>
-            <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
-                </svg>
+              <div class="flex flex-col space-y-1">
+                <label class="t-caption-2 text-mono-70 dark:text-mono-30">Alert (%)</label>
+                <input type="number" class="ec-input" formControlName="alert">
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('alert')?.invalid && processForm.get('alert')?.touched && processForm.get('alert')?.hasError('required')">
+                  <span>El % de alerta del proceso es requerido</span>
                 </div>
-              </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
-                </svg></div>
-              </button>
-              <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.25498 14.0045C10.2215 14.0045 11.005 14.788 11.005 15.7545V19.2535C11.005 20.2199 10.2215 21.0035 9.25498 21.0035H3.75C2.7835 21.0035 2 20.2199 2 19.2535V15.7545C2 14.788 2.7835 14.0045 3.75 14.0045H9.25498ZM20.25 14.0045C21.2165 14.0045 22 14.788 22 15.7545V19.2535C22 20.2199 21.2165 21.0035 20.25 21.0035H14.745C13.7785 21.0035 12.995 20.2199 12.995 19.2535V15.7545C12.995 14.788 13.7785 14.0045 14.745 14.0045H20.25ZM9.25498 15.5045H3.75C3.61193 15.5045 3.5 15.6165 3.5 15.7545V19.2535C3.5 19.3915 3.61193 19.5035 3.75 19.5035H9.25498C9.39306 19.5035 9.50498 19.3915 9.50498 19.2535V15.7545C9.50498 15.6165 9.39306 15.5045 9.25498 15.5045ZM20.25 15.5045H14.745C14.6069 15.5045 14.495 15.6165 14.495 15.7545V19.2535C14.495 19.3915 14.6069 19.5035 14.745 19.5035H20.25C20.3881 19.5035 20.5 19.3915 20.5 19.2535V15.7545C20.5 15.6165 20.3881 15.5045 20.25 15.5045ZM20.25 3C21.2165 3 22 3.7835 22 4.75V10.25C22 11.2165 21.2165 12 20.25 12H3.75C2.7835 12 2 11.2165 2 10.25V4.75C2 3.83183 2.70711 3.07881 3.60647 3.0058L3.75 3H20.25ZM20.25 4.5H3.75L3.69268 4.5066C3.58223 4.53251 3.5 4.63165 3.5 4.75V10.25C3.5 10.3881 3.61193 10.5 3.75 10.5H20.25C20.3881 10.5 20.5 10.3881 20.5 10.25V4.75C20.5 4.61193 20.3881 4.5 20.25 4.5Z"/>
-                </svg>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('alert')?.invalid && processForm.get('alert')?.touched && processForm.get('alert')?.hasError('min')">
+                  <span>El % de alerta no puede ser menor a 0</span>
                 </div>
-              </button>
-            </div>
-          </div>
-          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">N° 1</span>
-            <div class="flex flex-row space-x-4">
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ID</span>
-                <span class="text-black t-body-1">100</span>
-              </div>
-              <div class="flex flex-1 flex-col">
-                <span class="text-mono-70 t-caption-2">Proceso</span>
-                <span class="text-black t-body-1">Seguros</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">ANS</span>
-                <span class="text-black t-body-1">1</span>
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="img w-full rounded bg-mono-10" style="height: 240px"></div>
-            </div>
-            <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
-                </svg>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('alert')?.invalid && processForm.get('alert')?.touched && processForm.get('alert')?.hasError('max')">
+                  <span>El % de alerta no puede ser mayor a 100</span>
                 </div>
-              </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
-                </svg></div>
-              </button>
-              <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
-                <div><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.25498 14.0045C10.2215 14.0045 11.005 14.788 11.005 15.7545V19.2535C11.005 20.2199 10.2215 21.0035 9.25498 21.0035H3.75C2.7835 21.0035 2 20.2199 2 19.2535V15.7545C2 14.788 2.7835 14.0045 3.75 14.0045H9.25498ZM20.25 14.0045C21.2165 14.0045 22 14.788 22 15.7545V19.2535C22 20.2199 21.2165 21.0035 20.25 21.0035H14.745C13.7785 21.0035 12.995 20.2199 12.995 19.2535V15.7545C12.995 14.788 13.7785 14.0045 14.745 14.0045H20.25ZM9.25498 15.5045H3.75C3.61193 15.5045 3.5 15.6165 3.5 15.7545V19.2535C3.5 19.3915 3.61193 19.5035 3.75 19.5035H9.25498C9.39306 19.5035 9.50498 19.3915 9.50498 19.2535V15.7545C9.50498 15.6165 9.39306 15.5045 9.25498 15.5045ZM20.25 15.5045H14.745C14.6069 15.5045 14.495 15.6165 14.495 15.7545V19.2535C14.495 19.3915 14.6069 19.5035 14.745 19.5035H20.25C20.3881 19.5035 20.5 19.3915 20.5 19.2535V15.7545C20.5 15.6165 20.3881 15.5045 20.25 15.5045ZM20.25 3C21.2165 3 22 3.7835 22 4.75V10.25C22 11.2165 21.2165 12 20.25 12H3.75C2.7835 12 2 11.2165 2 10.25V4.75C2 3.83183 2.70711 3.07881 3.60647 3.0058L3.75 3H20.25ZM20.25 4.5H3.75L3.69268 4.5066C3.58223 4.53251 3.5 4.63165 3.5 4.75V10.25C3.5 10.3881 3.61193 10.5 3.75 10.5H20.25C20.3881 10.5 20.5 10.3881 20.5 10.25V4.75C20.5 4.61193 20.3881 4.5 20.25 4.5Z"/>
-                </svg>
+              </div>
+              <div class="flex flex-col space-y-1 col-span-2">
+                <label class="t-caption-2 text-mono-70 dark:text-mono-30">Descripción</label>
+                <textarea class="ec-input" formControlName="description"></textarea>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('required')">
+                  <span>El % de alerta del proceso es requerido</span>
                 </div>
-              </button>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('min')">
+                  <span>El % de alerta no puede ser menor a 0</span>
+                </div>
+                <div class="text-alert-error"
+                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('max')">
+                  <span>El % de alerta no puede ser mayor a 100</span>
+                </div>
+              </div>
+            </form>
+            <div class="flex flex-col md:flex-row-reverse space-y-4 md:space-y-0 lg:w-2/3">
+              <div>
+                <button class="w-full md:flex-none b-solid" (click)="onSubmitFirstStep()">Siguiente</button>
+              </div>
+              <div class="md:w-4"></div>
+              <div class="flex flex-row space-x-4">
+                <button (click)="cancelCreateOrUpdate()" class="flex-1 md:flex-none b-ghost">Cancelar</button>
+                <button class="flex-1 md:flex-none b-outline" *ngIf="idProcess !== ''" (click)="updateProcess(false)">Guardar</button>
+              </div>
+            </div>
+            <div class="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 lg:w-2/3">
+              <div class="flex flex-row space-x-2">
+                <div>
+                  <svg class="text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M12 1.99622C16.0499 1.99622 19.3567 5.19097 19.4958 9.24528L19.5 9.49622V13.5932L20.88 16.7492C20.9491 16.9071 20.9847 17.0776 20.9847 17.25C20.9847 17.9404 20.4251 18.5 19.7347 18.5L15 18.5015C15 20.1583 13.6569 21.5015 12 21.5015C10.4023 21.5015 9.09634 20.2526 9.00509 18.6778L8.99955 18.4992L4.27486 18.5C4.10353 18.5 3.93402 18.4648 3.77686 18.3965C3.14366 18.1215 2.85331 17.3852 3.12835 16.752L4.5 13.5941V9.49612C4.5006 5.34132 7.85209 1.99622 12 1.99622ZM13.4995 18.4992L10.5 18.5015C10.5 19.3299 11.1716 20.0015 12 20.0015C12.7797 20.0015 13.4204 19.4066 13.4931 18.646L13.4995 18.4992ZM12 3.49622C8.67984 3.49622 6.00048 6.17048 6 9.49622V13.9059L4.65602 17H19.3525L18 13.9068L18.0001 9.50908L17.9964 9.28388C17.8853 6.0504 15.2416 3.49622 12 3.49622ZM21 8.25H23C23.4142 8.25 23.75 8.58579 23.75 9C23.75 9.3797 23.4678 9.69349 23.1018 9.74315L23 9.75H21C20.5858 9.75 20.25 9.41421 20.25 9C20.25 8.6203 20.5322 8.30651 20.8982 8.25685L21 8.25ZM1 8.25H3C3.41421 8.25 3.75 8.58579 3.75 9C3.75 9.3797 3.46785 9.69349 3.10177 9.74315L3 9.75H1C0.585786 9.75 0.25 9.41421 0.25 9C0.25 8.6203 0.532154 8.30651 0.898229 8.25685L1 8.25ZM22.6 2.55C22.8259 2.85125 22.791 3.26715 22.5338 3.527L22.45 3.6L20.45 5.1C20.1186 5.34853 19.6485 5.28137 19.4 4.95C19.1741 4.64875 19.209 4.23285 19.4662 3.973L19.55 3.9L21.55 2.4C21.8814 2.15147 22.3515 2.21863 22.6 2.55ZM2.45 2.4L4.45 3.9C4.78137 4.14853 4.84853 4.61863 4.6 4.95C4.35147 5.28137 3.88137 5.34853 3.55 5.1L1.55 3.6C1.21863 3.35147 1.15147 2.88137 1.4 2.55C1.64853 2.21863 2.11863 2.15147 2.45 2.4Z"/>
+                  </svg>
+                </div>
+                <span class="text-mono-70 dark:text-mono-30 t-body-2">El botón ‘Guardar’ realiza el registro hasta este punto y te dirige a la pantalla anterior.</span>
+              </div>
+              <div class="flex flex-row space-x-2">
+                <div>
+                  <svg class="text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M12 1.99622C16.0499 1.99622 19.3567 5.19097 19.4958 9.24528L19.5 9.49622V13.5932L20.88 16.7492C20.9491 16.9071 20.9847 17.0776 20.9847 17.25C20.9847 17.9404 20.4251 18.5 19.7347 18.5L15 18.5015C15 20.1583 13.6569 21.5015 12 21.5015C10.4023 21.5015 9.09634 20.2526 9.00509 18.6778L8.99955 18.4992L4.27486 18.5C4.10353 18.5 3.93402 18.4648 3.77686 18.3965C3.14366 18.1215 2.85331 17.3852 3.12835 16.752L4.5 13.5941V9.49612C4.5006 5.34132 7.85209 1.99622 12 1.99622ZM13.4995 18.4992L10.5 18.5015C10.5 19.3299 11.1716 20.0015 12 20.0015C12.7797 20.0015 13.4204 19.4066 13.4931 18.646L13.4995 18.4992ZM12 3.49622C8.67984 3.49622 6.00048 6.17048 6 9.49622V13.9059L4.65602 17H19.3525L18 13.9068L18.0001 9.50908L17.9964 9.28388C17.8853 6.0504 15.2416 3.49622 12 3.49622ZM21 8.25H23C23.4142 8.25 23.75 8.58579 23.75 9C23.75 9.3797 23.4678 9.69349 23.1018 9.74315L23 9.75H21C20.5858 9.75 20.25 9.41421 20.25 9C20.25 8.6203 20.5322 8.30651 20.8982 8.25685L21 8.25ZM1 8.25H3C3.41421 8.25 3.75 8.58579 3.75 9C3.75 9.3797 3.46785 9.69349 3.10177 9.74315L3 9.75H1C0.585786 9.75 0.25 9.41421 0.25 9C0.25 8.6203 0.532154 8.30651 0.898229 8.25685L1 8.25ZM22.6 2.55C22.8259 2.85125 22.791 3.26715 22.5338 3.527L22.45 3.6L20.45 5.1C20.1186 5.34853 19.6485 5.28137 19.4 4.95C19.1741 4.64875 19.209 4.23285 19.4662 3.973L19.55 3.9L21.55 2.4C21.8814 2.15147 22.3515 2.21863 22.6 2.55ZM2.45 2.4L4.45 3.9C4.78137 4.14853 4.84853 4.61863 4.6 4.95C4.35147 5.28137 3.88137 5.34853 3.55 5.1L1.55 3.6C1.21863 3.35147 1.15147 2.88137 1.4 2.55C1.64853 2.21863 2.11863 2.15147 2.45 2.4Z"/>
+                  </svg>
+                </div>
+                <span class="text-mono-70 dark:text-mono-30 t-body-2">El botón ‘Siguiente’ también realiza el registro, pero te dirige a la asignación de roles y entidades de seguridad, esos pasos son opcionales.</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="pagination flex flex-row items-center justify-between">
-          <div class="left">
-            <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
-              <option>10</option>
-              <option>20</option>
-              <option>30</option>
-            </select>
-          </div>
-          <div class="right flex items-center flex-row space-x-1">
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
-            </svg>
-            </div></button>
-            <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-              <span class="t-body-2">1/2</span>
+
+        <!--Step 2-->
+        <div class="ec-container py-6 md:py-12 bg-white dark:bg-black" *ngIf="positionStep === 2">
+          <div class="flex flex-col space-y-12 lg:items-center">
+            <div class="flex flex-col space-y-6 lg:w-2/3">
+              <span class="t-h5 text-black dark:text-white">{{idProcess === '' ? 'Crear' : 'Editar'}} Proceso</span>
+              <div class="flex flex-row space-x-2 items-start">
+                <div class="relative">
+                  <div class="absolute left-0 top-0">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path class="text-mono-30 dark:text-mono-70"
+                            d="M64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32ZM3.2 32C3.2 47.9058 16.0942 60.8 32 60.8C47.9058 60.8 60.8 47.9058 60.8 32C60.8 16.0942 47.9058 3.2 32 3.2C16.0942 3.2 3.2 16.0942 3.2 32Z"/>
+                      <path class="text-brand-2"
+                            d="M32 0C26.3828 -6.69841e-08 20.8646 1.4786 16 4.28719C11.1354 7.09577 7.09577 11.1354 4.28719 16C1.4786 20.8646 -1.7855e-07 26.3828 0 32C1.7855e-07 37.6172 1.4786 43.1354 4.28719 48C7.09577 52.8646 11.1354 56.9042 16 59.7128C20.8646 62.5214 26.3828 64 32 64C37.6172 64 43.1354 62.5214 48 59.7128C52.8646 56.9042 56.9042 52.8646 59.7128 48L56.9415 46.4C54.4138 50.7782 50.7782 54.4138 46.4 56.9415C42.0218 59.4693 37.0555 60.8 32 60.8C26.9445 60.8 21.9782 59.4693 17.6 56.9415C13.2218 54.4138 9.5862 50.7782 7.05847 46.4C4.53074 42.0218 3.2 37.0555 3.2 32C3.2 26.9445 4.53074 21.9782 7.05847 17.6C9.5862 13.2218 13.2218 9.5862 17.6 7.05847C21.9782 4.53074 26.9445 3.2 32 3.2L32 0Z"/>
+                    </svg>
+                  </div>
+                  <div class="flex items-center justify-center" style="width: 64px; height: 64px;">
+                    <span class="text-black dark:text-white t-button-1">2/3</span>
+                  </div>
+                </div>
+                <div class="flex flex-1 flex-col">
+                  <span class="text-black dark:text-white t-h5">Tipos Documentales</span>
+                  <span class="text-mono-70 dark:text-mono-30 t-caption-1">Siguiente: Roles</span>
+                </div>
+              </div>
             </div>
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
-            </svg>
-            </div></button>
+            <app-pick-task [filter]="true"
+                           [source-task]="{title: 'Tipos Documentales', data: doctypesAvailable}"
+                           [target-task]="{title: 'Tipos Documentales Seleccionados', data: doctypesSelected}"
+                           (on-assign)="assignItemsDoctypes($event)"
+                           (un-assign)="unAssignItemsDoctypes($event)"
+            >
+
+            </app-pick-task>
+            <div class="flex flex-col md:flex-row-reverse space-y-4 md:space-y-0 lg:w-2/3">
+              <div>
+                <button class="w-full md:flex-none b-solid" (click)="onSubmitSecondStep()">Siguiente</button>
+              </div>
+              <div class="md:w-4"></div>
+              <div class="flex flex-row space-x-4">
+                <button (click)="cancelCreateOrUpdate()" class="flex-1 md:flex-none b-ghost">Cancelar</button>
+                <button class="flex-1 md:flex-none b-outline" (click)="positionStep = positionStep-1">Anterior</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Step 3-->
+        <div class="ec-container py-6 md:py-12 bg-white dark:bg-black" *ngIf="positionStep === 3">
+          <div class="flex flex-col space-y-12 lg:items-center">
+            <div class="flex flex-col space-y-6 lg:w-2/3">
+              <span class="t-h5 text-black dark:text-white">{{idProcess === '' ? 'Crear' : 'Editar'}} Proceso</span>
+              <div class="flex flex-row space-x-2 items-start">
+                <div class="relative">
+                  <div class="absolute left-0 top-0">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path class="text-brand-2 dark:text-mono-70"
+                            d="M64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32ZM3.2 32C3.2 47.9058 16.0942 60.8 32 60.8C47.9058 60.8 60.8 47.9058 60.8 32C60.8 16.0942 47.9058 3.2 32 3.2C16.0942 3.2 3.2 16.0942 3.2 32Z"/>
+                    </svg>
+                  </div>
+                  <div class="flex items-center justify-center" style="width: 64px; height: 64px;">
+                    <span class="text-black dark:text-white t-button-1">3/3</span>
+                  </div>
+                </div>
+                <div class="flex flex-1 flex-col">
+                  <span class="text-black dark:text-white t-h5">Roles</span>
+                  <span class="text-mono-70 dark:text-mono-30 t-caption-1">Anterior: Tipos Documentales</span>
+                </div>
+              </div>
+            </div>
+            <app-pick-task [filter]="true"
+                           [source-task]="{title: 'Roles Disponibles', data: rolesAvailable}"
+                           [target-task]="{title: 'Roles Seleccionados', data: rolesSelected}"
+                           (on-assign)="assignItemsRoles($event)"
+                           (un-assign)="unAssignItemsRoles($event)"
+            >
+            </app-pick-task>
+            <div class="flex flex-col md:flex-row-reverse space-y-4 md:space-y-0 lg:w-2/3">
+              <div>
+                <button class="w-full md:flex-none b-solid" (click)="cancelCreateOrUpdate()">Terminar</button>
+              </div>
+              <div class="md:w-4"></div>
+              <div class="flex flex-row space-x-4">
+                <button (click)="cancelCreateOrUpdate()" class="flex-1 md:flex-none b-ghost">Cancelar</button>
+                <button class="flex-1 md:flex-none b-outline" (click)="positionStep = positionStep-1">Anterior</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -308,3 +380,5 @@
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
+<app-block-page [show]="isBlockPage"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>

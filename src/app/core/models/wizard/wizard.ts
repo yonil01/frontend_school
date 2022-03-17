@@ -20,3 +20,9 @@ export interface Project {
   product_owner: string;
   customers_id:  string;
 }
+
+export interface StepsCreateProcess {
+  title: string;
+  next_step: string;
+  active: boolean;
+}

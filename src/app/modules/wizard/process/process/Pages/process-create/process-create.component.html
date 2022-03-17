@@ -1,12 +1,12 @@
 <app-layout>
   <ng-container layoutBody>
     <!--Step 1-->
-    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
+    <!--<div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
       <div class="flex flex-col space-y-12 lg:items-center">
         <div class="flex flex-col space-y-6 lg:w-2/3">
           <span class="t-h5 text-black dark:text-white">Crear Proceso</span>
-          <div class="flex flex-row space-x-2 items-start">
-            <div class="relative">
+          <div class="flex flex-row space-x-2 items-start" *ngFor="let step of stepsCreateProcess; let position = index">
+            <div *ngIf="step.active" class="relative">
               <div class="absolute left-0 top-0"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path class="text-mono-30 dark:text-mono-70" d="M64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32ZM3.2 32C3.2 47.9058 16.0942 60.8 32 60.8C47.9058 60.8 60.8 47.9058 60.8 32C60.8 16.0942 47.9058 3.2 32 3.2C16.0942 3.2 3.2 16.0942 3.2 32Z"/>
                 <path class="text-brand-2" d="M32 0C26.3828 -6.69841e-08 20.8646 1.4786 16 4.28719C11.1354 7.09577 7.09577 11.1354 4.28719 16C1.4786 20.8646 -1.7855e-07 26.3828 0 32C1.7855e-07 37.6172 1.4786 43.1354 4.28719 48L7.05847 46.4C4.53074 42.0218 3.2 37.0555 3.2 32C3.2 26.9445 4.53074 21.9782 7.05847 17.6C9.5862 13.2218 13.2218 9.5862 17.6 7.05847C21.9782 4.53074 26.9445 3.2 32 3.2L32 0Z"/>
@@ -16,32 +16,82 @@
                 <span class="text-black dark:text-white t-button-1">1/3</span>
               </div>
             </div>
-            <div class="flex flex-1 flex-col">
-              <span class="text-black dark:text-white t-h5">Información General</span>
-              <span class="text-mono-70 dark:text-mono-30 t-caption-1">Siguiente: Tipos Documentales</span>
+            <div *ngIf="step.active" class="flex flex-1 flex-col">
+              <span class="text-black dark:text-white t-h5">{{step.title}}</span>
+              <span class="text-mono-70 dark:text-mono-30 t-caption-1">Siguiente: {{step.next_step}}</span>
             </div>
           </div>
         </div>
-        <form class="flex flex-col gap-4 grid grid-cols-2 lg:w-2/3">
+
+        <form class="flex flex-col gap-4 grid grid-cols-2 lg:w-2/3" [formGroup]="processForm">
           <div class="flex flex-col space-y-1 col-span-2">
             <label class="t-caption-2 text-mono-70 dark:text-mono-30">Nombre</label>
-            <input type="text" class="ec-input">
+            <input type="text" class="ec-input" formControlName="name">
+            <div class="text-alert-error" *ngIf="processForm.get('name')?.invalid && processForm.get('name')?.touched && processForm.get('name')?.hasError('required')">
+              <span>El nombre del proceso es requerido</span>
+            </div>
+            <div class="text-alert-error" *ngIf="processForm.get('name')?.invalid && processForm.get('name')?.touched && processForm.get('name')?.hasError('minlength')">
+              <span>El nombre no puede ser menor 4 caracteres</span>
+            </div>
+            <div class="text-alert-error" *ngIf="processForm.get('name')?.invalid && processForm.get('name')?.touched && processForm.get('name')?.hasError('maxlength')">
+              <span>El nombre del proceso no puede ser mayor a 50 caracteres</span>
+            </div>
           </div>
           <div class="flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70 dark:text-mono-30">Tipo</label>
-            <select class="ec-input"></select>
+            <select class="ec-input" formControlName="type">
+              <option [value]="0">WorkFlow</option>
+              <option [value]="1">Captura</option>
+            </select>
+            <div class="text-alert-error" *ngIf="processForm.get('type')?.invalid && processForm.get('type')?.touched && processForm.get('type')?.hasError('required')">
+              <span>El tipo de proceso es requerido</span>
+            </div>
           </div>
           <div class="flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70 dark:text-mono-30">Ícono</label>
-            <select class="ec-input"></select>
+            <select class="ec-input" formControlName="icon"></select>
+            <div class="text-alert-error" *ngIf="processForm.get('icon')?.invalid && processForm.get('icon')?.touched && processForm.get('icon')?.hasError('required')">
+              <span>El icono del proceso es requerido</span>
+            </div>
           </div>
           <div class="flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70 dark:text-mono-30">ANS</label>
-            <input type="number" class="ec-input">
+            <input type="number" class="ec-input" formControlName="ans">
+            <div class="text-alert-error" *ngIf="processForm.get('ans')?.invalid && processForm.get('ans')?.touched && processForm.get('ans')?.hasError('required')">
+              <span>El ANS del proceso es requerido</span>
+            </div>
+            <div class="text-alert-error" *ngIf="processForm.get('ans')?.invalid && processForm.get('ans')?.touched && processForm.get('ans')?.hasError('min')">
+              <span>El ANS no puede ser menor a 0</span>
+            </div>
+            <div class="text-alert-error" *ngIf="processForm.get('ans')?.invalid && processForm.get('ans')?.touched && processForm.get('ans')?.hasError('max')">
+              <span>El ANS no puede ser mayor a 100</span>
+            </div>
           </div>
           <div class="flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70 dark:text-mono-30">Alert (%)</label>
-            <input type="number" class="ec-input">
+            <input type="number" class="ec-input" formControlName="alert">
+            <div class="text-alert-error" *ngIf="processForm.get('alert')?.invalid && processForm.get('alert')?.touched && processForm.get('alert')?.hasError('required')">
+              <span>El % de alerta del proceso es requerido</span>
+            </div>
+            <div class="text-alert-error" *ngIf="processForm.get('alert')?.invalid && processForm.get('alert')?.touched && processForm.get('alert')?.hasError('min')">
+              <span>El % de alerta no puede ser menor a 0</span>
+            </div>
+            <div class="text-alert-error" *ngIf="processForm.get('alert')?.invalid && processForm.get('alert')?.touched && processForm.get('alert')?.hasError('max')">
+              <span>El % de alerta no puede ser mayor a 100</span>
+            </div>
+          </div>
+          <div class="flex flex-col space-y-1 col-span-2">
+            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Descripción</label>
+            <textarea class="ec-input" formControlName="description"></textarea>
+            <div class="text-alert-error" *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('required')">
+              <span>El % de alerta del proceso es requerido</span>
+            </div>
+            <div class="text-alert-error" *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('min')">
+              <span>El % de alerta no puede ser menor a 0</span>
+            </div>
+            <div class="text-alert-error" *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('max')">
+              <span>El % de alerta no puede ser mayor a 100</span>
+            </div>
           </div>
         </form>
         <div class="flex flex-col md:flex-row-reverse space-y-4 md:space-y-0 lg:w-2/3">
@@ -71,7 +121,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
 
     <!--Step 2-->
     <!--<div class="ec-container py-6 md:py-12 bg-white dark:bg-black">

@@ -5,6 +5,8 @@ import {WizardRoutingModule} from './wizard-routing.module';
 import {WizardComponent} from './wizard.component';
 import {UiModule} from "@app/ui/ui.module";
 import {DropdownModule} from "ecapture-ng-ui";
+import {RoleService} from "@app/core/services/graphql/auth/role/role.service";
+import {DocumentService} from "@app/core/services/graphql/doc/document/document.service";
 
 
 @NgModule({
@@ -16,7 +18,7 @@ import {DropdownModule} from "ecapture-ng-ui";
     WizardRoutingModule,
     UiModule,
     DropdownModule
-  ]
+  ], providers: [RoleService, DocumentService]
 })
 export class WizardModule {
 }
