@@ -17,6 +17,10 @@ const routes: Routes = [
     path: 'edit',
     component: RolesEditComponent
   },
+  {
+    path: 'manager',
+    loadChildren: () => import('./pages/roles-manager/roles-manager.module').then(m => m.RolesManagerModule)
+  },
 ];
 
 @NgModule({

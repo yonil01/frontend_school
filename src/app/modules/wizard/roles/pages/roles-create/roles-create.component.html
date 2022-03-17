@@ -1,1 +1,31 @@
-<p>roles-create works!</p>
+<app-layout>
+  <ng-container layoutBody>
+    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
+      <form action="" class="flex flex-col space-y-12">
+        <span class="t-h5 text-black dark:text-white">Crear Rol</span>
+        <div class="grid gap-4">
+          <div class="flex flex-col space-y-1 lg:w-1/2">
+            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Nombre</label>
+            <input type="text" class="ec-input">
+          </div>
+          <div class="flex flex-col space-y-1 lg:w-1/2">
+            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Descripción</label>
+            <input type="text" class="ec-input">
+          </div>
+          <div class="flex flex-col space-y-1 lg:w-1/2">
+            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Sesiones</label>
+            <input type="number" class="ec-input">
+          </div>
+          <div class="flex flex-row space-x-2 items-center">
+            <input class="w-4 h-4" type="checkbox">
+            <label class="t-body-2 text-black">Ver todos los usuarios</label>
+          </div>
+        </div>
+        <div class="flex flex-row space-x-4">
+          <button routerLink="/wizard/roles" class="flex-1 md:flex-none b-outline">Cancelar</button>
+          <button class="flex-1 md:flex-none b-solid">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+</app-layout>
