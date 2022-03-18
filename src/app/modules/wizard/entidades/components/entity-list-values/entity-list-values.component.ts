@@ -12,11 +12,11 @@ import {AutofillsService} from "@app/modules/wizard/entidades/services/autofills
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-entity-add-values',
-  templateUrl: './entity-add-values.component.html',
-  styleUrls: ['./entity-add-values.component.scss']
+  selector: 'app-entity-list-values',
+  templateUrl: './entity-list-values.component.html',
+  styleUrls: ['./entity-list-values.component.scss']
 })
-export class EntityAddValuesComponent implements OnInit {
+export class EntityListValuesComponent implements OnInit {
   public nameClient: string = '';
   public nameProject: string = '';
   @Input()
@@ -36,6 +36,7 @@ export class EntityAddValuesComponent implements OnInit {
   public hasAttribute: boolean = true;
   public columnsTable: any[] = [];
   public form = new FormGroup({});
+  public showCreateValue: boolean = false;
 
   constructor(private _localStorage: LocalStorageService,
               private autofillsService: AutofillsService,
@@ -55,6 +56,7 @@ export class EntityAddValuesComponent implements OnInit {
   }
 
   getAutofillValues(): void {
+    this.valuesAttributesAutofills = [];
     this.autofillsService.getAllAutofillValues(this.selectedAutofill.id?.toLowerCase() || '').subscribe((res) => {
       if (res.data?.autofill_response?.length) {
         this.ResponsevaluesAttributesAutofills = res.data.autofill_response;
@@ -79,32 +81,8 @@ export class EntityAddValuesComponent implements OnInit {
     });
   }
 
-  generateForm(atributos: AttributeResponse[]) {
-    atributos.forEach((atributo) => {
-      this.form.addControl(atributo.name, new FormControl(this.setValidators(atributo)));
-    });
-    console.log(this.form);
-    debugger
-  }
-
-  setValidators(atributo: AttributeResponse) {
-    let formValidators: Array<any> = [];
-    let keysOfAtribute = Object.keys(atributo);
-    formValidators.push(Validators.required);
-    for (let key of keysOfAtribute) {
-      switch (key) {
-        case 'min_length':
-          formValidators.push(Validators.minLength(atributo.min_length));
-          break;
-        case 'max_length':
-          formValidators.push(Validators.maxLength(atributo.max_length));
-          break;
-      }
-    }
-    return formValidators;
-  }
-
   async getAttributeAutofills() {
+    this.AttributesOfAutofills = [];
     this.autofillsService.getAttributeAutofillsByAutofillID(this.selectedAutofill.id?.toLowerCase() || '').subscribe(
       async (res) => {
         this.ResponseAtrributesOfAutofills = res.data;
@@ -113,7 +91,6 @@ export class EntityAddValuesComponent implements OnInit {
         }
         console.log('AttributesOfAutofills')
         console.log(this.AttributesOfAutofills);
-        this.generateForm(this.AttributesOfAutofills);
         this.isBlock = false;
       });
     this.isBlock = false;
@@ -127,6 +104,21 @@ export class EntityAddValuesComponent implements OnInit {
     });
   }
 
+  onShowHome($event: any) {
+    switch ($event.id) {
+      case 'values':
+        this.showValues = true;
+        break;
+    }
+    switch ($event.from) {
+      case 'createValues':
+        this.showCreateValue = false;
+        break;
+    }
+    if ($event.action == 'reloadValues') {
+      this.getAutofillValues();
+    }
+  }
 
   cancelDelete() {
     this.isDelete = false;
@@ -143,6 +135,7 @@ export class EntityAddValuesComponent implements OnInit {
   }
 
   onCreateValue() {
-
+    this.showCreateValue = true;
+    this.showValues = false;
   }
 }

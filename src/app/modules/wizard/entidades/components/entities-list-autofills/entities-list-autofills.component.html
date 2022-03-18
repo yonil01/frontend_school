@@ -200,7 +200,7 @@
 <app-entity-add-attribute *ngIf="showAddAttribute" [selectedAutofill]="selectedAutofill" (isReturn)="onShowHome($event)"
                           [entity]="entity" (message)="toastMessage($event)"></app-entity-add-attribute>
 
-<app-entity-add-values *ngIf="showAddValues" (isReturn)="onShowHome($event)" [selectedAutofill]="selectedAutofill"></app-entity-add-values>
+<app-entity-list-values *ngIf="showAddValues" (isReturn)="onShowHome($event)" [selectedAutofill]="selectedAutofill"></app-entity-list-values>
 <!--MODAL DELETE-->
 <div *ngIf="isDelete"
      class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"

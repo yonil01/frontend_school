@@ -20,16 +20,16 @@ import {Dataset, Response, DatasetValue} from "@app/core/models";
 })
 export class DatasetsService {
   constructor(
-    private getDatasetsQuery?: GetDatasetsQuery,
-    private createDatasetQuery?: CreateDatasetQuery,
-    private updateDatasetQuery?: UpdateDatasetQuery,
-    private deleteDatasetQuery?: DeleteDatasetQuery,
-    private createDatasetValueQuery?: CreateDatasetValueQuery,
-    private createDatasetsValuesQuery?: CreateDatasetsValuesQuery,
-    private getDatasetsValuesQuery?: GetDatasetsValuesQuery,
-    private updateDatasetValueQuery?: UpdateDatasetValueQuery,
-    private deleteDatasetValueByDatasetIDQuery?: DeleteDatasetValueByDatasetIDQuery,
-    private deleteDatasetValueQuery?: DeleteDatasetValueQuery,
+    private getDatasetsQuery: GetDatasetsQuery,
+    private createDatasetQuery: CreateDatasetQuery,
+    private updateDatasetQuery: UpdateDatasetQuery,
+    private deleteDatasetQuery: DeleteDatasetQuery,
+    private createDatasetValueQuery: CreateDatasetValueQuery,
+    private createDatasetsValuesQuery: CreateDatasetsValuesQuery,
+    private getDatasetsValuesQuery: GetDatasetsValuesQuery,
+    private updateDatasetValueQuery: UpdateDatasetValueQuery,
+    private deleteDatasetValueByDatasetIDQuery: DeleteDatasetValueByDatasetIDQuery,
+    private deleteDatasetValueQuery: DeleteDatasetValueQuery,
   ) {
   }
 
@@ -38,8 +38,7 @@ export class DatasetsService {
   }
 
   createDataset(dataset: Dataset): Observable<Response> {
-    return this.createDatasetQuery
-      .mutate({
+    return this.createDatasetQuery.mutate({
         request: {data: dataset},
       })
       .pipe(map(({data}: any) => data.createDataset));

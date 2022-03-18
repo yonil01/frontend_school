@@ -77,7 +77,7 @@
           <div *ngIf="hasAttribute" class="table-h md:block w-full">
             <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
               <div class="p-2 w-16">N°</div>
-              <div *ngFor="let props of columnsTable" class="p-2 w-16">{{props}}</div>
+              <div *ngFor="let props of columnsTable" class="p-2 flex-1">{{props}}</div>
               <div class="p-2 w-32">Opciones</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
@@ -86,9 +86,7 @@
                 <div class="flex items-center p-2 w-16">{{i + 1}}</div>
                 <div *ngFor="let props of columnsTable" class="flex items-center p-2 flex-1 break-all">
                   <div *ngFor="let attribute of AttributesOfAutofills">
-                  <input *ngIf="attribute.tag_html == 'Input' && props == attribute.name" value="{{value[attribute.name]}}">
-                  <select *ngIf="attribute.tag_html == 'Select' && props == attribute.name" value="{{value[attribute.name]}}"></select>
-                  <textarea *ngIf="attribute.tag_html == 'Textarea' && props == attribute.name" value="{{value[attribute.name]}}"></textarea>
+                    <span *ngIf="props == attribute.name">{{value[attribute.name]}}</span>
                   </div>
                 </div>
                 <div class="flex items-center p-2 w-32">
@@ -187,6 +185,12 @@
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
+
+<app-entity-create-value *ngIf="showCreateValue" [AttributesOfAutofills]="AttributesOfAutofills"
+                         [columnsTable]="columnsTable"
+                         [valuesAttributesAutofills]="valuesAttributesAutofills" [selectedAutofill]="selectedAutofill" (return)="onShowHome($event)"></app-entity-create-value>
+
+
 <!--IS BLOCKED PAGE-->
 <div class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"
      style="background: rgba(20,20,20,0.6)" *ngIf="isBlock">

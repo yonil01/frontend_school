@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EntityAddValuesComponent } from './entity-add-values.component';
+import { EntityCreateValueComponent } from './entity-create-value.component';
 
-describe('EntityAddValuesComponent', () => {
-  let component: EntityAddValuesComponent;
-  let fixture: ComponentFixture<EntityAddValuesComponent>;
+describe('EntityCreateValueComponent', () => {
+  let component: EntityCreateValueComponent;
+  let fixture: ComponentFixture<EntityCreateValueComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EntityAddValuesComponent ]
+      declarations: [ EntityCreateValueComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EntityAddValuesComponent);
+    fixture = TestBed.createComponent(EntityCreateValueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
