@@ -62,7 +62,7 @@ export class WizardComponent implements OnInit {
         name: 'BPMN',
         icon: '../../../assets/img/bpmns-icon.svg',
         description: 'Presione aquí para configurar lo correspondiente a procesos.',
-        route: 'processes',
+        route: 'bpmn',
       },
       {
         name: 'Roles',

@@ -312,7 +312,6 @@ button:disabled{
   @apply bg-mono-30
 }
 
-
 .toast-item-container {
   z-index: 1113 !important;
 }
@@ -321,5 +320,6 @@ button:disabled{
   z-index: 1113 !important;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+svg {
+  @apply fill-current
+}
