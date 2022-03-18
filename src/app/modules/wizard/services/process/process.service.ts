@@ -83,15 +83,8 @@ export class ProcessService {
     );
   }
 
-  getProcessByID(id: string): Observable<Response> {
-    return this.getProcessByIDQuery
-      .watch({
-        id,
-      })
-      .valueChanges.pipe(
-        first(),
-        map(({data}: any) => data.getProcessByID),
-      );
+  public getProcessByID(id: string): Observable<Response> {
+    return this.getProcessByIDQuery.watch({id}).valueChanges.pipe(first(), map(({data}: any) => data.getProcessByID));
   }
 
   getLockInfo(id: string): Observable<Response> {

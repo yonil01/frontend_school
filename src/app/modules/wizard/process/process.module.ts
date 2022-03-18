@@ -9,6 +9,9 @@ import {ProcessCreateComponent} from './process/Pages/process-create/process-cre
 import {ProcessShowComponent} from './process/Pages/process-show/process-show.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IconsModule, ToastModule} from "ecapture-ng-ui";
+import {MatMenuModule} from "@angular/material/menu";
+import {ConfigComponent} from "@app/modules/wizard/process/process/components/config/config.component";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -16,17 +19,20 @@ import {IconsModule, ToastModule} from "ecapture-ng-ui";
     ProcessComponent,
     ProcessListComponent,
     ProcessCreateComponent,
-    ProcessShowComponent
+    ProcessShowComponent,
+    ConfigComponent
   ],
-    imports: [
-        CommonModule,
-        ProcessRoutingModule,
-        UiModule,
-        ReactiveFormsModule,
-        FormsModule,
-        IconsModule,
-        ToastModule
-    ]
+  imports: [
+    CommonModule,
+    ProcessRoutingModule,
+    UiModule,
+    ReactiveFormsModule,
+    FormsModule,
+    IconsModule,
+    ToastModule,
+    MatMenuModule,
+    TranslateModule
+  ]
 })
 export class ProcessModule {
 }

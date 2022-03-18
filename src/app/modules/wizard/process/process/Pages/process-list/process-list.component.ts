@@ -15,6 +15,10 @@ import {dataStepProcess} from "@app/core/utils/constants/constant";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {FilterService} from "@app/ui/services/filter.service";
+import {Router} from "@angular/router";
+import {controlBpm} from "@app/core/store/actions/bpm.action";
+import {AppState} from "@app/core/store/app.reducers";
+import {Store} from "@ngrx/store";
 
 interface ProcessCard {
   process: Process;
@@ -45,7 +49,6 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   public doctypesSelected: DocTypes[] = [];
   public doctypesAvailable: DocTypes[] = [];
   public createOrUpdate: boolean = false;
-  public stepsCreateProcess: StepsCreateProcess[] = dataStepProcess;
   public positionStep: number = 1;
   public currentProcess: ProcessCard = {
     diagramSVG: undefined,
@@ -62,7 +65,9 @@ export class ProcessListComponent implements OnInit, OnDestroy {
     private _documentService: DocumentService,
     private _fb: FormBuilder,
     private _processService: ProcessService,
-    private _filterService: FilterService
+    private _filterService: FilterService,
+    private _router: Router,
+    private _store: Store<AppState>,
   ) {
     this.processForm = _fb.group({
       name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
@@ -543,40 +548,57 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   }
 
   private deleteProcess(process: ProcessCard) {
-    // TODO: Implementar la validación antes de eliminar el proceso
-    this.isBlockPage = true;
-    this.showAlert = false;
-    this._subscription.add(
-      this._processService.deleteBpm(process.process.id || '').subscribe({
-        next: (res) => {
-          if (res.error) {
-            this._messageService.add({message: res.msg, type: 'error', life: 5000});
-          } else {
+    if (this.validateDeleteProcess(process)) {
+      this.isBlockPage = true;
+      this.showAlert = false;
+      this._subscription.add(
+        this._processService.deleteBpm(process.process.id || '').subscribe({
+          next: (res) => {
+            if (res.error) {
+              this._messageService.add({message: res.msg, type: 'error', life: 5000});
+            } else {
+              this._messageService.add({
+                message: 'Se elimino correctamente el proceso',
+                type: 'success',
+                life: 5000
+              });
+              this.processes = this.processes.filter((p) => p.process.id !== process.process.id);
+              this.processesDisplay = this.processesDisplay.filter((p) => p.process.id !== process.process.id);
+              this.currentProcess = {process: {}, diagramSVG: ''};
+            }
+            this.isBlockPage = false;
+          },
+          error: (err: Error) => {
+            this.isBlockPage = false;
             this._messageService.add({
-              message: 'Se elimino correctamente el proceso',
-              type: 'success',
+              message: 'Ocurrio un error cuando se trato de eliminar el proceso!',
+              type: 'error',
               life: 5000
             });
-            this.processes = this.processes.filter((p) => p.process.id !== process.process.id);
-            this.processesDisplay = this.processesDisplay.filter((p) => p.process.id !== process.process.id);
-            this.currentProcess = {process: {}, diagramSVG: ''};
+            console.error(err.message);
           }
-          this.isBlockPage = false;
-        },
-        error: (err: Error) => {
-          this.isBlockPage = false;
-          this._messageService.add({
-            message: 'Ocurrio un error cuando se trato de eliminar el proceso!',
-            type: 'error',
-            life: 5000
-          });
-          console.error(err.message);
-        }
-      })
-    );
+        })
+      );
+    } else {
+      this.showAlert = false;
+      this._messageService.add({
+        message: 'No se puede eliminar el proceso, ya que tiene elementos asociados',
+        type: 'error',
+        life: 5000
+      });
+    }
   }
 
+  private validateDeleteProcess(process: ProcessCard): boolean {
+    if (process?.process?.process_roles?.length && process?.process?.process_roles?.length > 0) {
+      return false;
+    }
+    if (process?.process?.process_doctypes?.length && process?.process?.process_doctypes?.length > 0) {
+      return false;
+    }
 
+    return !(process.process.queues?.length && process.process.queues?.length > 0);
+  }
 
   public confirmDialog(event: boolean): void {
     if (event) {
@@ -585,6 +607,11 @@ export class ProcessListComponent implements OnInit, OnDestroy {
       this.showAlert = false;
       this.currentProcess = {process: {}, diagramSVG: ''};
     }
+  }
+
+  public showProcess(process: Process): void {
+    this._store.dispatch(controlBpm({ bpm: process }));
+    this._router.navigateByUrl('wizard/bpmn/show');
   }
 
 }

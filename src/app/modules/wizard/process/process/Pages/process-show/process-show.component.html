@@ -44,7 +44,7 @@
                 <span routerLink="wizard/bpmn" class="t-body-2 cursor-pointer">N° 1</span>
               </div>
             </div>
-            <span class="t-h5 text-black dark:text-white">Nombre Proceso</span>
+            <span class="t-h5 text-black dark:text-white">{{bpm?.name}}</span>
           </div>
           <div class="visor bg-mono-10 rounded overflow-hidden h-full"></div>
           <div>
@@ -60,7 +60,7 @@
 <div class="hidden lg:block h-screen">
   <div class="header-show-bpmn ec-container flex flex-row items-center justify-between bg-white h-14 border-b border-mono-30 dark:border-mono-70">
     <div class="left flex flex-row items-center space-x-4">
-      <span class="t-h5 text-black dark:text-white">Nombre Proceso</span>
+      <span class="t-h5 text-black dark:text-white capitalize">{{bpm?.name}}</span>
       <div class="text-alert-warning hidden flex flex-row items-center space-x-2">
         <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M10.9082 2.78216C11.948 2.20625 13.246 2.54089 13.8839 3.5224L13.9667 3.66023L21.7256 17.6685C21.9104 18.0021 22.0074 18.3773 22.0074 18.7587C22.0074 19.9495 21.0822 20.9243 19.9114 21.0035L19.7574 21.0087H4.24162C3.86031 21.0087 3.48526 20.9118 3.15167 20.7271C2.11183 20.1513 1.70679 18.8734 2.20035 17.812L2.27325 17.6687L10.03 3.66046C10.2346 3.2911 10.5389 2.98674 10.9082 2.78216ZM12.0002 16.0018C11.4486 16.0018 11.0015 16.4489 11.0015 17.0004C11.0015 17.552 11.4486 17.9991 12.0002 17.9991C12.5517 17.9991 12.9989 17.552 12.9989 17.0004C12.9989 16.4489 12.5517 16.0018 12.0002 16.0018ZM11.998 7.99806C11.4852 7.99825 11.0627 8.38444 11.0051 8.8818L10.9984 8.99842L11.0002 13.9993L11.007 14.1159C11.0649 14.6132 11.4877 14.9991 12.0006 14.9989C12.5134 14.9988 12.9359 14.6126 12.9935 14.1152L13.0002 13.9986L12.9984 8.9977L12.9916 8.88108C12.9337 8.38376 12.5109 7.99788 11.998 7.99806Z"/>
@@ -71,7 +71,7 @@
         <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM15.2197 8.96967L10.75 13.4393L8.78033 11.4697C8.48744 11.1768 8.01256 11.1768 7.71967 11.4697C7.42678 11.7626 7.42678 12.2374 7.71967 12.5303L10.2197 15.0303C10.5126 15.3232 10.9874 15.3232 11.2803 15.0303L16.2803 10.0303C16.5732 9.73744 16.5732 9.26256 16.2803 8.96967C15.9874 8.67678 15.5126 8.67678 15.2197 8.96967Z"/>
         </svg></div>
-        <span class="t-subtitle-1 font-bold">Última publicación: 01/06/2022</span>
+        <span class="t-subtitle-1 font-bold">Última publicación: {{bpm.updated_at | date: 'medium':'UTC'}}</span>
       </div>
       <div class="flex flex-row items-center space-x-2">
         <label>Versión</label>
@@ -94,7 +94,7 @@
             <path d="M15.793 7.73271C16.0787 8.03263 16.0672 8.50737 15.7672 8.79306L10.5168 13.7944C10.2271 14.0703 9.77187 14.0703 9.4822 13.7944L4.23173 8.79306C3.93181 8.50737 3.92028 8.03263 4.20597 7.73271C4.49166 7.43279 4.96639 7.42125 5.26631 7.70694L9.99949 12.2155L14.7327 7.70694C15.0326 7.42125 15.5073 7.43279 15.793 7.73271Z"/>
           </svg></div>
         </button>
-        <div class="absolute overflow-hidden border border-mono-30 dark:border-mono-70 rounded bg-white dark:bg-black shadow-lg right-0 top-12 w-48">
+        <div class="hidden absolute overflow-hidden border border-mono-30 dark:border-mono-70 rounded bg-white dark:bg-black shadow-lg right-0 top-12 w-48">
           <div class="flex flex-col">
             <button class="b-ghost w-full justify-start">
               <div><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -147,33 +147,35 @@
       </button>
     </div>
   </div>
-  <div class="bg-mono-10 flex items-center justify-center" style="height: calc(100vh - 56px)">
-    <span class="t-h5 text-mono-70 dark:text-mono-30">Aquí va el visor</span>
+  <div class="bg-mono-10" style="height: calc(100vh - 56px)">
+    <!--<span class="t-h5 text-mono-70 dark:text-mono-30">Aquí va el visor</span>-->
+    <div #bpmn class="w-full h-full"></div>
+    <div
+      style='visibility: hidden; position: fixed;'
+      [style.left]='contextMenuPosition.x'
+      [style.top]='contextMenuPosition.y'
+      [matMenuTriggerFor]='contextMenu'
+    >
+      <mat-menu #contextMenu='matMenu'>
+        <ng-template matMenuContent>
+          <button mat-menu-item (click)='initTaskForm()'>
+            <span appIcon iconName="edit" style='margin-right: 5px;'></span>
+            <span>Editar</span>
+          </button>
+          <!--button mat-menu-item *ngIf="existQueue"-->
+          <button (click)='initActivitiesForm()' *ngIf='existQueue'>
+            <span appIcon iconName="settings" style='margin-right: 5px;'></span>
+            <span>Configurar</span>
+          </button>
+        </ng-template>
+      </mat-menu>
+    </div>
   </div>
 
-  <div class="hidden modal-lateral">
-    <div class="block-ui z-40 bg-black opacity-60 absolute top-0 left-0 w-full h-screen">
-    </div>
-    <div class="modal z-50 absolute bg-white right-0 top-0 h-screen w-2/5 border-l border-mono-30 dark:border-mono-70">
-      <div class="sub-header flex flex-row items-center justify-between pl-4 border-b border-mono-30 dark:border-mono-70 h-12">
-        <span class="t-body-1 text-black dark:text-white">Title Modal</span>
-        <button class="text-black p-0 w-10 dark:text-white hover:opacity-60">
-          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4.2097 4.3871L4.29289 4.29289C4.65338 3.93241 5.22061 3.90468 5.6129 4.2097L5.70711 4.29289L12 10.585L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L13.415 12L19.7071 18.2929C20.0676 18.6534 20.0953 19.2206 19.7903 19.6129L19.7071 19.7071C19.3466 20.0676 18.7794 20.0953 18.3871 19.7903L18.2929 19.7071L12 13.415L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L10.585 12L4.29289 5.70711C3.93241 5.34662 3.90468 4.77939 4.2097 4.3871L4.29289 4.29289L4.2097 4.3871Z"/>
-          </svg></div>
-        </button>
-      </div>
-      <div class="no-aplicar-flex-a-este-div section space-y-2 p-6 overflow-y-auto" style="height: calc(100vh - 48px);">
-        <div class="h-48 w-full bg-black"></div>
-        <div class="h-48 w-full bg-black"></div>
-        <div class="h-48 w-full bg-black"></div>
-        <div class="h-48 w-full bg-black"></div>
-        <div class="h-48 w-full bg-black"></div>
-        <div class="h-48 w-full bg-black"></div>
-        <div class="h-48 w-full bg-black"></div>
-        <div class="h-48 w-full bg-black"></div>
-        <div class="h-48 w-full bg-black"></div>
-      </div>
-    </div>
-  </div>
+  <app-side-task [tile-side]="queueSelected.name || ''"  *ngIf="viewSide !== ''" (on-close)="viewSide = ''">
+    <app-config *ngIf="viewSide === 'activities'" [queue-selected]="queueSelected"></app-config>
+  </app-side-task>
 </div>
+
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-block-page [show]="isBlockedPage"></app-block-page>

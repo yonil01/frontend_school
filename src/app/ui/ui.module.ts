@@ -12,6 +12,7 @@ import {PickTaskComponent} from './components/pick-task/pick-task.component';
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {FilterService} from "@app/ui/services/filter.service";
 import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-dialog.component";
+import { SideTaskComponent } from './components/side-task/side-task.component';
 
 @NgModule({
   declarations: [
@@ -22,15 +23,17 @@ import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-
     BlockPageComponent,
     MenuComponent,
     PickTaskComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    SideTaskComponent
   ],
-  exports: [
-    FooterComponent,
-    BlockPageComponent,
-    LayoutComponent,
-    PickTaskComponent,
-    ConfirmDialogComponent
-  ],
+    exports: [
+        FooterComponent,
+        BlockPageComponent,
+        LayoutComponent,
+        PickTaskComponent,
+        ConfirmDialogComponent,
+        SideTaskComponent
+    ],
   imports: [
     CommonModule,
     DragDropModule

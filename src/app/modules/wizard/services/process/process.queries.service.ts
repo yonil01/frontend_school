@@ -177,6 +177,8 @@ export class GetProcessByIDQuery extends Query<Response> {
       getProcessByID(id: $id) {
         error
         data {
+        created_at
+        updated_at
           id
           name
           description
