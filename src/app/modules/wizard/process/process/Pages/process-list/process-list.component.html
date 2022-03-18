@@ -74,6 +74,7 @@
                      style="height: 240px" [src]="process.diagramSVG" alt="bpmn image">
               </div>
               <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
+                <!--btn edit process-->
                 <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10" (click)="onUpdateProcess(process)">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,7 +84,8 @@
                     </svg>
                   </div>
                 </button>
-                <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+                <!--btn delete process-->
+                <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10" (click)="showAlert = true; currentProcess = process">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -92,6 +94,7 @@
                     </svg>
                   </div>
                 </button>
+                <!--btn show process-->
                 <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -382,3 +385,4 @@
 </app-layout>
 <app-block-page [show]="isBlockPage"></app-block-page>
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-confirm-dialog [show]="showAlert" type="warning" body="Esta seguro de querer borrar este proceso?" title="Eliminar Proceso" (onEvent)="confirmDialog($event)"></app-confirm-dialog>

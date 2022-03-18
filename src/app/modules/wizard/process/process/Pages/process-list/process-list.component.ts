@@ -52,6 +52,8 @@ export class ProcessListComponent implements OnInit, OnDestroy {
     process: {}
   };
 
+  public showAlert: boolean = false;
+
   constructor(
     private _sanitizer: DomSanitizer,
     private _roleService: RoleService,
@@ -139,7 +141,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
               res.data.forEach(async (p: Process) => {
                 let docSVG;
                 if (p.document_id_svg) {
-                  const doc = await this.getDocumentSVG(p.document_id_svg.toLowerCase());
+                  const doc = await this.getDocumentSVG(p.document_id_svg);
                   docSVG = doc ? this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/svg+xml;base64,${doc}`) : 'document-no-found';
                 }
                 const processCard: ProcessCard = {process: p, diagramSVG: docSVG ? docSVG : this.defaultSVG};
@@ -541,8 +543,9 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   }
 
   private deleteProcess(process: ProcessCard) {
-    // this.validateQueueDocs(process);
+    // TODO: Implementar la validación antes de eliminar el proceso
     this.isBlockPage = true;
+    this.showAlert = false;
     this._subscription.add(
       this._processService.deleteBpm(process.process.id || '').subscribe({
         next: (res) => {
@@ -556,6 +559,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
             });
             this.processes = this.processes.filter((p) => p.process.id !== process.process.id);
             this.processesDisplay = this.processesDisplay.filter((p) => p.process.id !== process.process.id);
+            this.currentProcess = {process: {}, diagramSVG: ''};
           }
           this.isBlockPage = false;
         },
@@ -570,6 +574,17 @@ export class ProcessListComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+
+
+  public confirmDialog(event: boolean): void {
+    if (event) {
+      this.deleteProcess(this.currentProcess);
+    } else {
+      this.showAlert = false;
+      this.currentProcess = {process: {}, diagramSVG: ''};
+    }
   }
 
 }
