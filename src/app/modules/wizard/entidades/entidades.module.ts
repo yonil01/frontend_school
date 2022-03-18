@@ -16,6 +16,7 @@ import { EntityListCascadeComponent } from './components/entity-list-cascade/ent
 import { EntityCreateEditCascadingComponent } from './components/entity-create-edit-cascading/entity-create-edit-cascading.component';
 import { EntityAddAttributeComponent } from './components/entity-add-attribute/entity-add-attribute.component';
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import { EntityAddValuesComponent } from './components/entity-add-values/entity-add-values.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
     EntityCreateEditCascadingComponent,
     EntityCreateEditCascadingComponent,
     EntityAddAttributeComponent,
+    EntityAddValuesComponent,
 
   ],
     imports: [

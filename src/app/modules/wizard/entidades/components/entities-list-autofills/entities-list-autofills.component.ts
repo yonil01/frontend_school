@@ -27,6 +27,7 @@ export class EntitiesListAutofillsComponent implements OnInit {
   public isBlock: boolean = false;
   public isDelete: boolean = false;
   public showAddAttribute: boolean = false;
+  public showAddValues: boolean = false;
 
   constructor(private _localStorage: LocalStorageService,
               private autofillsService: AutofillsService,
@@ -70,14 +71,17 @@ export class EntitiesListAutofillsComponent implements OnInit {
   onShowHome($event: ReturnData) {
     // @ts-ignore
     delete this.selectedAutofill;
-    if(this.entity.id)
-    this.getAutofills(this.entity.id.toLowerCase());
-    switch ($event.from){
+    if (this.entity.id)
+      this.getAutofills(this.entity.id.toLowerCase());
+    switch ($event.from) {
       case 'create':
         this.showCreateEditAutofill = false;
         break;
       case 'addAtribute':
         this.showAddAttribute = false;
+        break;
+      case 'addValues':
+        this.showAddValues = false;
         break;
     }
     this.showAutofillsList = true;
@@ -141,6 +145,8 @@ export class EntitiesListAutofillsComponent implements OnInit {
   }
 
   onAddValues(i: number) {
-
+    this.selectedAutofill = this.autofills[i];
+    this.showAddValues = true;
+    this.showAutofillsList = false;
   }
 }

@@ -8,16 +8,17 @@
             <div class="text-2xl text-black">Agregar Atributos a Autofill</div>
             <div>
               <div class="flex flex-row space-x-2">
-                <div class="bg-brand-2 rounded-sm w-2"></div>
+                <div class="bg-brand-2 bg-brand-d-1 rounded-sm w-2"></div>
                 <div class="w-full text-mono-70 py-1">
-                  <span>Los atributos deshabilitados están siendo usados por otros autofill.</span>
+                  <span *ngIf="!containValues">Los atributos deshabilitados están siendo usados por otros autofill.</span>
+                  <span *ngIf="containValues">No se puede modificar el autofill debido a que tiene registros asignados.</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <form>
-          <div class="data space-y-4" cdkDropListGroup>
+          <div class="data space-y-4" cdkDropListGroup [cdkDropListGroupDisabled]="containValues == true">
             <div class="data-A space-y-1">
               <span class="t-caption-2 text-mono-70">Atributos Disponibles</span>
               <div class="rounded bg-mono-10 p-3 space-y-2">
@@ -38,14 +39,14 @@
                   <div *ngFor="let attribute of attributesAvailable, let i = index"
                        cdkDrag
                        class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox" (change)="selectAtribute('available', i)">
+                    <input [disabled]="containValues == true"  class="w-4 h-4" type="checkbox" (change)="selectAtribute('available', i)">
                     <label class="t-body-2 text-black">{{attribute.description}}</label>
                   </div>
                 </div>
               </div>
             </div>
             <div class="flex flex-row space-x-2">
-              <button (click)="oneToSelected()" type="button" class="b-solid">
+              <button [disabled]="containValues == true" (click)="oneToSelected()" type="button" class="b-solid">
                 <div>
                   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -54,7 +55,7 @@
                   </svg>
                 </div>
               </button>
-              <button (click)="allToSelected()" type="button" class="b-solid">
+              <button [disabled]="containValues == true" (click)="allToSelected()" type="button" class="b-solid">
                 <div>
                   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -66,7 +67,7 @@
                   </svg>
                 </div>
               </button>
-              <button (click)="oneToAvailable()" type="button" class="b-solid">
+              <button [disabled]="containValues == true" (click)="oneToAvailable()" type="button" class="b-solid">
                 <div>
                   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -75,7 +76,7 @@
                   </svg>
                 </div>
               </button>
-              <button (click)="allToAvailable()" type="button" class="b-solid">
+              <button [disabled]="containValues == true" (click)="allToAvailable()" type="button" class="b-solid">
                 <div>
                   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -108,7 +109,7 @@
                   <div *ngFor="let selected of attributesSelected, let i = index"
                        cdkDrag
                        class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input (change)="selectAtribute('selected', i)" class="w-4 h-4" type="checkbox">
+                    <input [disabled]="containValues == true"  (change)="selectAtribute('selected', i)" class="w-4 h-4" type="checkbox">
                     <label class="t-body-2 text-black">{{selected.description}}</label>
                   </div>
                 </div>
@@ -116,7 +117,7 @@
             </div>
             <div class="actions flex flex-row space-x-2 space-y-1">
               <button (click)="onCancel()" class="w-full md:w-auto b-outline">Cancelar</button>
-              <button (click)="onSubmit()" type="submit" class="w-full md:w-auto b-solid">Guardar</button>
+              <button [disabled]="containValues == true"  (click)="onSubmit()" type="submit" class="w-full md:w-auto b-solid">Guardar</button>
             </div>
           </div>
         </form>

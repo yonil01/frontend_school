@@ -13,7 +13,7 @@ import {v4 as uuidv4} from 'uuid';
 })
 export class EntityAddAttributeComponent implements OnInit {
   @Input()
-  public entity: Entity;
+  public entity?: Entity;
   @Input()
   public selectedAutofill!: Autofill;
   @Input()
@@ -22,11 +22,13 @@ export class EntityAddAttributeComponent implements OnInit {
   public isReturn: EventEmitter<ReturnData> = new EventEmitter();
   @Output()
   public message: EventEmitter<ToastModel> = new EventEmitter();
+  @Input()
 
   public attributesAvailable: Attribute[] = [];
   public attributesSelected: Attribute[] = [];
   public attributeAutofills = [];
   public isBlock: boolean = false;
+  public containValues: boolean = false;
 
 
   constructor(
@@ -35,6 +37,7 @@ export class EntityAddAttributeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAutofillValues();
     this.getAutofills();
   }
 
@@ -58,7 +61,7 @@ export class EntityAddAttributeComponent implements OnInit {
       );
     }
 
-    let updateArray = [];
+    let updateArray: Array<any> = [];
     copyArrayItem(event.container.data, updateArray, event.currentIndex, event.previousIndex);
     debugger
     switch (event.container.id) {
@@ -100,7 +103,7 @@ export class EntityAddAttributeComponent implements OnInit {
       }
     }
     debugger
-    let toUpdate = [];
+    let toUpdate: Array<any> = [];
     idToDelete.forEach((id) => {
       toUpdate.push(this.attributesSelected.find(at => at.id === id))
     });
@@ -122,12 +125,11 @@ export class EntityAddAttributeComponent implements OnInit {
       }
     }
     debugger
-    const toUpdate = []
+    const toUpdate: Array<any> = []
     idToDelete.forEach((id) => {
       toUpdate.push(this.attributesAvailable.find(at => at.id === id))
     });
     this.onMoveToSelected(toUpdate);
-    this.getAutofills();
   }
 
   selectAtribute(from: string, i: number) {
@@ -145,8 +147,8 @@ export class EntityAddAttributeComponent implements OnInit {
     for (const at of attributes) {
       const attributpAutofill: AttributeAutofill = {
         id: uuidv4().toLowerCase(),
-        attributes_id: at.id.toLowerCase(),
-        autofills_id: this.selectedAutofill.id.toLowerCase(),
+        attributes_id: at.id?.toLowerCase(),
+        autofills_id: this.selectedAutofill.id?.toLowerCase(),
         sequence: this.attributesSelected.indexOf(at) + 1,
         is_search: false,
       };
@@ -159,6 +161,7 @@ export class EntityAddAttributeComponent implements OnInit {
           this.isBlock = false;
           this.message.emit(
             {type: 'success', message: 'Creación Exitosa' + res.msg, life: 5000});
+          this.getAutofills();
         }
       });
     }
@@ -169,10 +172,10 @@ export class EntityAddAttributeComponent implements OnInit {
     this.attributesAvailable = [];
     const attributes = this.entity?.attributes ? JSON.parse(JSON.stringify(this.entity.attributes)) : [];
     this.isBlock = true;
-    this.autofillsService.getAttributeAutofillsByAutofillID(this.selectedAutofill.id.toLowerCase()).subscribe((res) => {
+    this.autofillsService.getAttributeAutofillsByAutofillID(this.selectedAutofill.id?.toLowerCase() || '').subscribe((res) => {
       this.attributeAutofills = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
       for (const at of attributes) {
-        if (res.data.find((att) => at.id.toLowerCase() === att.attribute.id.toLowerCase())) {
+        if (res.data.find((att: any) => at.id.toLowerCase() === att.attribute.id.toLowerCase())) {
           this.attributesSelected.push(at);
         } else {
           this.attributesAvailable.push(at);
@@ -182,15 +185,28 @@ export class EntityAddAttributeComponent implements OnInit {
     });
   }
 
+  getAutofillValues(): void {
+    this.autofillsService.getAllAutofillValues(this.selectedAutofill.id?.toLowerCase() || '').subscribe((res) => {
+      if (res.data?.autofill_response?.length) {
+        this.containValues = true;
+
+      } else {
+        this.containValues = false;
+      }
+    });
+  }
+
   onMoveToAvailable(attributes: Attribute[]): void {
     for (const at of attributes) {
       this.isBlock = true;
-      const attributeAutofill = this.attributeAutofills.find(
-        (aa) =>
-          aa.attribute.id.toLowerCase() === at.id.toLowerCase() &&
-          aa.autofills.id.toLowerCase() === this.selectedAutofill.id.toLowerCase(),
+      //Ojo con el id
+      // Verificar tipo de dato AtributeAutofill
+      const attributeAutofill: any = this.attributeAutofills.find(
+        (aa: any) =>
+          aa.attribute?.id.toLowerCase() === at.id?.toLowerCase() &&
+          aa.autofills.id.toLowerCase() === this.selectedAutofill.id?.toLowerCase(),
       );
-      this.autofillsService.deleteAttributeAutofill(attributeAutofill.id.toLowerCase()).subscribe((res) => {
+      this.autofillsService.deleteAttributeAutofill(attributeAutofill?.id.toLowerCase()).subscribe((res) => {
         if (res.error) {
           this.isBlock = false;
           this.message.emit({type: 'error', message: res.msg, life: 5000});
@@ -198,6 +214,8 @@ export class EntityAddAttributeComponent implements OnInit {
           this.isBlock = false;
           this.message.emit(
             {type: 'success', message: 'Creación Exitosa' + res.msg, life: 5000});
+          this.getAutofills();
+
         }
       });
     }

@@ -15,7 +15,7 @@ import {ReturnData} from "@app/modules/wizard/entidades/models/entities.models";
   styleUrls: ['./entity-add-dataset.component.scss']
 })
 export class EntityAddDatasetComponent implements OnInit {
-  @Input() attribute: Attribute;
+  @Input() attribute?: Attribute;
   @Output()
   public onSubmit: EventEmitter<ReturnData> = new EventEmitter<ReturnData>();
   @Output()
@@ -37,12 +37,11 @@ export class EntityAddDatasetComponent implements OnInit {
     this.datasetsService.getDatasets().subscribe((res) => {
       this.datasets = res.data;
       this.datasetsLoaded = true;
-      console.log(this.attribute)
-      if (this.attribute.entities_attributes_dataset) {
+      if (this.attribute?.entities_attributes_dataset) {
         const dataset = this.datasets.find(
-          (dts) => dts.id.toLowerCase() === this.attribute.entities_attributes_dataset.id.toLowerCase(),
+          (dts) => dts.id?.toLowerCase() === this.attribute?.entities_attributes_dataset?.id?.toLowerCase(),
         );
-        this.datasetForm.get('dataset')?.setValue(dataset.id);
+        this.datasetForm.get('dataset')?.setValue(dataset?.id);
       } else {
         this.datasetForm.get('dataset')?.value.setValue(null);
       }
@@ -56,7 +55,7 @@ export class EntityAddDatasetComponent implements OnInit {
     if (this.datasetForm.value) {
       const attributeDatasetPersistence = {
         id: uuidv4().toLowerCase(),
-        attributes_id: this.attribute.id.toLowerCase(),
+        attributes_id: this.attribute?.id?.toLowerCase(),
         dataset_id: this.datasetForm.get('dataset')?.value.toLowerCase(),
       };
       this.entityService.createAttributeDataset(attributeDatasetPersistence).subscribe((res) => {
@@ -64,7 +63,7 @@ export class EntityAddDatasetComponent implements OnInit {
           const attribute = {...this.attribute, entities_attributes_dataset: this.datasetForm.get('dataset')?.value};
           this.store.dispatch(editAttribute({attribute: attribute}));
           debugger
-          this.datasetForm.get('dataset').setValue(null);
+          this.datasetForm.get('dataset')?.setValue(null);
           debugger
           this.message.emit({
             type: 'success',
@@ -85,7 +84,7 @@ export class EntityAddDatasetComponent implements OnInit {
         }
       });
     } else {
-      const attribute = {...this.attribute, entities_attributes_dataset: null};
+      const attribute: any = {...this.attribute, entities_attributes_dataset: null};
       this.store.dispatch(editAttribute({attribute: attribute}));
       this.onSubmit.emit({
         id: 'atribute',
@@ -99,8 +98,8 @@ export class EntityAddDatasetComponent implements OnInit {
     return new Promise((resolv, rej) => {
       this.entityService
         .DeleteAttributeDatasetByAttIDAndDatasetID(
-          this.attribute.id.toLowerCase(),
-          this.attribute.entities_attributes_dataset.id.toLowerCase(),
+          this.attribute?.id?.toLowerCase() || '',
+          this.attribute?.entities_attributes_dataset?.id?.toLowerCase() || '',
         )
         .subscribe((res) => {
           if (res.error) {

@@ -27,6 +27,7 @@ export class EntityListCascadeComponent implements OnInit {
   public showCascadingList: boolean = true;
   public isDelete: boolean = false;
   public addAtribute: boolean = false;
+  public showAddAttribute: boolean = false;
 
   constructor(private _localStorage: LocalStorageService,
               private entityService: EntityService,
@@ -126,10 +127,12 @@ export class EntityListCascadeComponent implements OnInit {
   }
 
   showConfig(i: number) {
+    this.selectedCascading = this.cascadingDatasets[i];
     this.cascadingDatasets[i].showConfig = !this.cascadingDatasets[i].showConfig;
   }
 
   onAddAtributes(i: number) {
+    this.selectedCascading = this.cascadingDatasets[i];
     this.addAtribute = true;
     this.showCascadingList = false;
   }

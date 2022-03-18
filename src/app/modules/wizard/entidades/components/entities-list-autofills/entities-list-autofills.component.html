@@ -61,7 +61,7 @@
             <div class="flex flex-row p-2 rounded bg-mono-10 w-full space-x-2">
               <button (click)="onChangeOption('atribute')" class="b-ghost w-full h-8">Atributos</button>
               <button class="b-solid w-full h-8">Autofills</button>
-              <button (click)="onChangeOption('cascade')" class="b-ghost w-full h-8">Cascadings</button>
+              <button (click)="onChangeOption('cascadings')" class="b-ghost w-full h-8">Cascadings</button>
             </div>
             <div>
               <ul class="t-body-1 pl-4">
@@ -200,6 +200,7 @@
 <app-entity-add-attribute *ngIf="showAddAttribute" [selectedAutofill]="selectedAutofill" (isReturn)="onShowHome($event)"
                           [entity]="entity" (message)="toastMessage($event)"></app-entity-add-attribute>
 
+<app-entity-add-values *ngIf="showAddValues" (isReturn)="onShowHome($event)" [selectedAutofill]="selectedAutofill"></app-entity-add-values>
 <!--MODAL DELETE-->
 <div *ngIf="isDelete"
      class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"
