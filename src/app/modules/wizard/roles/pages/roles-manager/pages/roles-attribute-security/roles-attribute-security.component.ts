@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RolesAttributeSecurityComponent implements OnInit {
 
-  isEdit:boolean = true;
+  isEdit:boolean = false;
 
   constructor() { }
 
