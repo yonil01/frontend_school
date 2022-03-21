@@ -261,7 +261,7 @@
             </div>
           </form>
           <div class="flex flex-row space-x-4 lg:w-2/3 ">
-            <button class="flex-1 md:flex-none b-outline" (click)="isEditOrCreate = false">Cancelar</button>
+            <button class="flex-1 md:flex-none b-outline" (click)="isEditOrCreate = false; idParameter=0">Cancelar</button>
             <button class="flex-1 md:flex-none b-solid"
                     (click)="sendForm()">{{idParameter === 0 ? 'Crear' : 'Editar'}}</button>
           </div>

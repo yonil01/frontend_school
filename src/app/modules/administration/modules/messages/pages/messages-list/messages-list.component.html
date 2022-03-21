@@ -26,18 +26,17 @@
           <span routerLink="/wizard" class="t-body-2 cursor-pointer">Mensajes</span>
         </div>
       </div>
-      <div class="description mb-6 flex flex-col space-y-2">
+      <div *ngIf="!createOrEdit" class="description mb-6 flex flex-col space-y-2">
         <span class="t-h5 text-black dark:text-white">Mensajes</span>
         <div>
           <ul class="t-body-1 pl-4">
-            <li class="list-disc text-mono-70">25 mensajes registradas actualmente.</li>
-            <li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>
+            <li class="list-disc text-mono-70">{{messages.length}} mensajes registradas actualmente.</li>
           </ul>
         </div>
       </div>
       <div *ngIf="!createOrEdit" class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
         <div>
-          <button routerLink="/admin/message/create" class="b-solid w-full md:w-auto">Crear Mensaje</button>
+          <button (click)="createOrEdit = true" class="b-solid w-full md:w-auto">Crear Mensaje</button>
         </div>
         <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"></div>
       </div>
@@ -71,7 +70,7 @@
                   </svg>
                 </div>
               </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+              <button  class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -110,7 +109,7 @@
                       </svg>
                     </div>
                   </button>
-                  <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                  <button (click)="showDelete(message.id || 0) " class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -187,8 +186,8 @@
           </div>
         </form>
         <div class="flex flex-row space-x-4 lg:w-2/3">
-          <button routerLink="/admin/message/list" class="flex-1 md:flex-none b-outline">Cancelar</button>
-          <button class="flex-1 md:flex-none b-solid" (click)="editMessage()">Guardar</button>
+          <button  class="flex-1 md:flex-none b-outline" (click)="createOrEdit = false; idMessages=0">Cancelar</button>
+          <button class="flex-1 md:flex-none b-solid" (click)="sendForm()">Guardar</button>
         </div>
       </div>
     </div>
@@ -252,3 +251,6 @@
 </div>
 
 <app-block-page [show]="isShowBlockPage"></app-block-page>
+<app-confirm-dialog [show]="showAlert" type="warning" [title]="'Mensajes '" body="Desea eliminar el mensaje?"
+                    (onEvent)="cancelCloseDialog($event)"></app-confirm-dialog>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>

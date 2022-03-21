@@ -9,6 +9,7 @@ import {UiModule} from "@app/ui/ui.module";
 import { MessagesCreateComponent } from './pages/messages-create/messages-create.component';
 import {MessageServices} from "@app/modules/administration/services/message/message.service";
 import {ReactiveFormsModule} from "@angular/forms";
+import {ToastModule} from "ecapture-ng-ui";
 
 
 @NgModule({
@@ -18,12 +19,13 @@ import {ReactiveFormsModule} from "@angular/forms";
     MessagesCrudComponent,
     MessagesCreateComponent
   ],
-  imports: [
-    CommonModule,
-    MessagesRoutingModule,
-    UiModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        CommonModule,
+        MessagesRoutingModule,
+        UiModule,
+        ReactiveFormsModule,
+        ToastModule
+    ],
   providers: [MessageServices],
   exports: [
     MessagesComponent,
