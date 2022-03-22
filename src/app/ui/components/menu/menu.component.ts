@@ -78,7 +78,6 @@ export class MenuComponent implements OnInit {
         }),
       };
     });
-    console.log(this.items);
   }
 
   private getUrlLogo(): void {

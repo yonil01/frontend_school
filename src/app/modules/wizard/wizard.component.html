@@ -67,12 +67,12 @@
                     <div class="item flex-1 col-span-1">
                       <div class="label-dropdown">Cliente</div>
                       <ec-dropdown [dropStyle]="dropStyle" [icon]="true" [data]="clients"
-                                   (onChangeValue)="selectClient($event, dropdown2)"></ec-dropdown>
+                                   (onChangeValue)="selectClient($event, dropdown2)" placeholder="Seleccione un Cliente"></ec-dropdown>
                     </div>
                     <div class="item flex-1 col-span-1">
                       <div class="label-dropdown">Proyecto</div>
                       <ec-dropdown #dropdown2 [dropStyle]="dropStyle" [icon]="true" [data]="projects"
-                                   (onChangeValue)="selectProject($event)"></ec-dropdown>
+                                   (onChangeValue)="selectProject($event)" placeholder="Seleccione un Proyecto"></ec-dropdown>
                     </div>
                     <div class="col-span-2 md:col-span-1">
                       <button class="bg-brand-1 t-button-2 text-white w-full md:w-auto mt-2"

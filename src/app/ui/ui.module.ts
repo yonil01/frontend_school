@@ -8,8 +8,11 @@ import {FooterComponent} from "@app/ui/components/footer/footer.component";
 import {MenuComponent} from "@app/ui/components/menu/menu.component";
 import {MenuService} from "@app/ui/services/menu.service";
 import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
+import {PickTaskComponent} from './components/pick-task/pick-task.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {FilterService} from "@app/ui/services/filter.service";
 import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-dialog.component";
-
+import { SideTaskComponent } from './components/side-task/side-task.component';
 
 @NgModule({
   declarations: [
@@ -19,18 +22,23 @@ import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-
     SidebarComponent,
     BlockPageComponent,
     MenuComponent,
-    ConfirmDialogComponent
+    PickTaskComponent,
+    ConfirmDialogComponent,
+    SideTaskComponent
   ],
-  exports: [
-    FooterComponent,
-    BlockPageComponent,
-    LayoutComponent,
-    ConfirmDialogComponent
-  ],
+    exports: [
+        FooterComponent,
+        BlockPageComponent,
+        LayoutComponent,
+        PickTaskComponent,
+        ConfirmDialogComponent,
+        SideTaskComponent
+    ],
   imports: [
-    CommonModule
+    CommonModule,
+    DragDropModule
   ],
-  providers: [MenuService, LocalStorageService]
+  providers: [MenuService, LocalStorageService, FilterService]
 })
 export class UiModule {
 }
