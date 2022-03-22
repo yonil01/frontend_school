@@ -156,3 +156,14 @@ export interface ExecutionRole {
   role_id?: string;
   role?: Role;
 }
+
+export interface StepModel {
+  id: number;
+  name: string;
+  active: boolean;
+}
+
+export interface RolesDisplay {
+  role: Role;
+  active: boolean;
+}

@@ -1,20 +1,31 @@
-import {Component, Input, OnInit, OnChanges} from '@angular/core';
-import {Execution, Role, Queue, ExecutionRole} from '@app/core/models';
+import {Component, Input, OnInit, OnChanges, OnDestroy} from '@angular/core';
+import {Execution, Role, Queue, ExecutionRole, StepModel, RolesDisplay} from '@app/core/models';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {RoleService} from '@app/core/services/graphql/auth/role/role.service';
 import {ProcessService} from '@app/modules/wizard/services/process/process.service';
 import {v4 as uuidv4} from 'uuid';
 import {ToastService} from "ecapture-ng-ui";
 import {FilterService} from "@app/ui/services/filter.service";
+import {Subscription} from "rxjs/internal/Subscription";
+import {DataDrop, DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
+import {dropStyle} from "@app/core/models/dropdown/dropdown";
+import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
+import {toastDataStyle} from "@app/core/models/toast/toast";
 
 @Component({
   selector: 'app-config',
   templateUrl: './config.component.html',
   styleUrls: ['./config.component.scss']
 })
-export class ConfigComponent implements OnInit, OnChanges {
+export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
+
+  private _subscription: Subscription = new Subscription();
+  public createOrUpdate: boolean = false;
+  public readonly dropStyle: DropdownModel = dropStyle;
+  public readonly toastStyle: ToastStyleModel = toastDataStyle;
+  public positionStep: number = 0;
+
   @Input('queue-selected') parentQueue!: Queue;
-  taskTableColumns: any[];
   selectionTask!: Execution;
   taskForm: FormGroup;
   tasks: Execution[] = [];
@@ -23,7 +34,8 @@ export class ConfigComponent implements OnInit, OnChanges {
   selectionRoles: Role[] = [];
   selectedRolesForm = new FormControl([]);
   selectedRolesBefore: Role[] = [];
-  roles: Role[] = [];
+  public roles: Role[] = [];
+  public rolesDisplay: RolesDisplay[] = [];
   view: string;
   typeTask: number = 0;
   operation: string = '';
@@ -32,6 +44,21 @@ export class ConfigComponent implements OnInit, OnChanges {
   indexTask: number = 0;
   rolesAvailable: Role[];
   rolesSelected: Role[];
+  public timers: DataDrop[] = [
+    {value: 1, label: 'Notificar solicitud recibida'},
+    {value: 2, label: 'Crear template'},
+    {value: 3, label: 'Completitud documental'},
+    {value: 5, label: 'Timer Execution'},
+    {value: 35, label: 'Timer Execution daily'}
+  ];
+  public steps: StepModel[] = [
+    {id: 1, name: 'Información general', active: true},
+    {id: 2, name: 'Roles', active: false}
+  ];
+
+  public executionSelected!: Execution;
+  public showAlert: boolean = false;
+  public blockPage: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -40,27 +67,29 @@ export class ConfigComponent implements OnInit, OnChanges {
     private messageService: ToastService,
     private _filterService: FilterService
   ) {
-    this.taskTableColumns = [
-      {field: 'name', header: 'Nombre'},
-      {field: 'type', header: 'Tipo tarea'},
-    ];
     this.taskForm = fb.group({
-      class: [null, Validators.required],
-      name: [null, Validators.required],
-      type: [null, Validators.required],
-      description: [null, Validators.required],
+      class: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      type: ['', Validators.required],
+      timer: [''],
+      description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(8000)]],
     });
     this.view = 'tasks';
+    // TODO cargar desde el api
     this.typesTasks = [
-      {id: 1, name: 'Sistema'},
-      {id: 3, name: 'Usuario'},
-      {id: 2, name: 'Timer'},
+      {value: 1, label: 'Sistema'},
+      {value: 3, label: 'Usuario'},
+      {value: 2, label: 'Timer'},
     ];
     this.rolesSelected = [];
     this.rolesAvailable = [];
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
   }
 
   ngOnChanges(): void {
@@ -73,14 +102,35 @@ export class ConfigComponent implements OnInit, OnChanges {
   }
 
   private getRoles(): void {
-    this.roleService.getRoles().subscribe((res) => {
-      this.roles = res.data;
-      if (this.parentQueue.id) this.preloadRoles();
-    });
+    this._subscription.add(
+      this.roleService.getRoles().subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            this.roles = res.data;
+            // this.rolesDisplay = res.data;
+            if (this.parentQueue.id) this.preloadRoles();
+          }
+        },
+        error: (err: Error) => {
+          console.error(err.message);
+          this.messageService.add({type: 'error', message: 'No se pudo obtener el listado de roles!', life: 5000});
+        }
+      })
+    );
   }
 
   private preloadRoles(): void {
     this.selectionRoles = this.parentQueue.queue_roles ? this.roles.filter((rl) => this.parentQueue.queue_roles?.find((rq) => rq?.role.id.toLowerCase() === rl.id?.toLowerCase())) : [];
+    for (const rol of this.roles) {
+      const exist = this.selectionRoles.find((r) => r.id === rol.id);
+      if (exist) {
+        this.rolesDisplay.push({role: rol, active: true});
+      } else {
+        this.rolesDisplay.push({role: rol, active: false});
+      }
+    }
   }
 
   showTask(task: Execution, index: number): void {
@@ -96,7 +146,7 @@ export class ConfigComponent implements OnInit, OnChanges {
       delete taskValue.rules;
       delete taskValue.execution_roles;
       this.taskForm.setValue(taskValue);
-      const typeTasc = this.typesTasks.find((tt) => tt.id === taskValue.type);
+      const typeTasc = this.typesTasks.find((tt) => tt.value === taskValue.type);
       this.taskForm.get('type')?.setValue(typeTasc);
       this.taskForm.get('type')?.disable();
       const selectRoles = task.execution_roles ? this.selectionRoles.filter((sr) => task.execution_roles?.find((er) => er.role?.id?.toLowerCase() === sr.id?.toLowerCase())) : [];
@@ -151,39 +201,74 @@ export class ConfigComponent implements OnInit, OnChanges {
     }
   }
 
-  saveTask(): void {
-    if (this.operation === 'add') {
-      const execution: Execution = {
-        ...this.taskForm.value,
-        id: uuidv4().toLowerCase(),
-        queue_id: this.parentQueue.id?.toLowerCase(),
-        type: this.typeTask,
-      };
-      this.processService.createExecution(execution).subscribe((res) => {
-        if (!res.error) {
-          execution.execution_roles = [];
-          this.task = execution;
-          this.tasks.push(execution);
-          this.indexTask = this.tasks.length - 1;
-          this.notifyUser('success', '', res.msg, 6000);
-          if (this.typeTask !== 3) this.view = 'tasks';
-        } else {
-          this.notifyUser('error', '', res.msg, 6000);
-        }
-      });
+  public saveTask(): void {
+    if (this.taskForm.valid) {
+      if (this.operation === 'add') {
+        const execution: Execution = {
+          ...this.taskForm.value,
+          id: uuidv4().toLowerCase(),
+          queue_id: this.parentQueue.id?.toLowerCase(),
+        };
+        this.blockPage = true;
+        this._subscription.add(
+          this.processService.createExecution(execution).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                this.positionStep++;
+                execution.execution_roles = [];
+                this.task = execution;
+                this.executionSelected = execution;
+                this.tasks.push(execution);
+                this.indexTask = this.tasks.length - 1;
+                this.messageService.add({type: 'success', message: 'Ejecuión creada correctamente!', life: 5000});
+                this.steps[this.positionStep].active = true;
+                // if (this.typeTask !== 3) this.view = 'tasks';
+              }
+              this.blockPage = false;
+            },
+            error: (err: Error) => {
+              this.blockPage = false;
+              console.error(err.message);
+              this.messageService.add({type: 'error', message: 'No se pudo crear la ejecución!', life: 5000});
+            },
+          })
+        );
+      } else {
+        const execution: Execution = {
+          ...this.taskForm.value,
+          id: this.executionSelected.id?.toLowerCase(),
+          queue_id: this.parentQueue.id?.toLowerCase()
+        };
+        this.blockPage = true;
+        this._subscription.add(
+          this.processService.updateExecution(execution).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                this.positionStep++;
+                const indexExecution = this.tasks.findIndex((t) => t.id?.toLowerCase() === execution.id?.toLowerCase());
+                if (indexExecution !== -1) {
+                  this.tasks[indexExecution] = execution;
+                  this.executionSelected = execution;
+                }
+                this.steps[this.positionStep].active = true;
+                // if (this.typeTask !== 3) this.view = 'tasks';
+              }
+            },
+            error: (err: Error) => {
+              this.blockPage = false;
+              console.error(err.message);
+              this.messageService.add({type: 'error', message: 'No se pudo actualizar la ejecución!', life: 5000});
+            }
+          })
+        );
+      }
     } else {
-      const execution: Execution = {
-        ...this.taskForm.value,
-        id: this.task.id?.toLowerCase(),
-        queue_id: this.parentQueue.id?.toLowerCase(),
-        type: this.typeTask,
-      };
-      this.processService.updateExecution(execution).subscribe((res) => {
-        if (!res.error) {
-          this.tasks[this.indexTask].execution_roles = this.task.execution_roles;
-          if (this.typeTask !== 3) this.view = 'tasks';
-        }
-      });
+      this.taskForm.markAllAsTouched();
+      this.messageService.add({type: 'warning', message: 'Complete correctamente todos los campos!', life: 5000});
     }
   }
 
@@ -203,46 +288,63 @@ export class ConfigComponent implements OnInit, OnChanges {
     }
   }
 
-  onMoveToSelectedRoles(roles: Role[]): void {
-    for (const role of roles) {
-      const processRole: ExecutionRole = {
+  public changeRole($event: boolean, roleID: string): void {
+    if ($event) {
+      const executionRole: ExecutionRole = {
         id: uuidv4().toLowerCase(),
-        execution_id: this.task.id?.toLowerCase(),
-        role_id: role.id?.toLowerCase(),
+        execution_id: this.executionSelected.id?.toLowerCase(),
+        role_id: roleID.toLowerCase(),
       };
-      const currentProcessRole = JSON.parse(JSON.stringify(processRole));
-      currentProcessRole.role = role;
-      this.processService.createExecutionRole(processRole).subscribe((res) => {
-        if (res.error) {
-          this.notifyUser('error', '', res.msg, 5000);
-        } else {
-          this.notifyUser('success', '', res.msg, 5000);
-          this.tasks[this.indexTask].execution_roles = this.tasks[this.indexTask].execution_roles
-            ? this.tasks[this.indexTask].execution_roles
-            : [];
-          this.tasks[this.indexTask].execution_roles?.push(currentProcessRole);
-        }
-      });
-    }
-  }
-
-  onMoveToAvailableRoles(roles: Role[]): void {
-    const processRoles: ExecutionRole[] = [];
-    for (const dt of roles) {
-      const processRole = this.task.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === dt.id?.toLowerCase());
+      this.blockPage = true;
+      this._subscription.add(
+        this.processService.createExecutionRole(executionRole).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                this.messageService.add({type: 'success', message: 'Rol Asignado correctamente!', life: 5000});
+                const indexExecution = this.tasks.findIndex((r) => r.id?.toLowerCase() === this.executionSelected.id?.toLowerCase());
+                if (indexExecution !== -1) {
+                  this.tasks[indexExecution]?.execution_roles?.push(executionRole);
+                }
+              }
+              this.blockPage = false;
+            },
+            error: (err: Error) => {
+              this.blockPage = false;
+              console.error(err.message);
+              this.messageService.add({type: 'error', message: 'No se pudo asignar el rol!', life: 5000});
+            },
+          }
+        )
+      );
+    } else {
+      const processRole = this.task.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === roleID.toLowerCase());
       if (processRole) {
-        processRoles.push(processRole);
+        this.blockPage = true;
+        this._subscription.add(
+          this.processService.deleteExecutionRole(processRole.id?.toLowerCase() || '').subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                const indexExecution = this.tasks.findIndex((r) => r.id?.toLowerCase() === this.executionSelected.id?.toLowerCase());
+                if (indexExecution !== -1) {
+                  this.executionSelected.execution_roles = this.executionSelected.execution_roles?.filter((r) => r.id?.toLowerCase() !== processRole.id?.toLowerCase());
+                  this.tasks[indexExecution].execution_roles = this.executionSelected.execution_roles;
+                  this.messageService.add({type: 'success', message: 'Rol Desasignado correctamente!', life: 5000});
+                }
+              }
+              this.blockPage = false;
+            },
+            error: (err: Error) => {
+              this.blockPage = false;
+              console.error(err.message);
+              this.messageService.add({type: 'error', message: 'No se pudo eliminar el rol!', life: 5000});
+            },
+          })
+        );
       }
-    }
-    for (const prl of processRoles) {
-      this.processService.deleteExecutionRole(prl.id?.toLowerCase() || '').subscribe((res) => {
-        if (res.error) {
-          this.notifyUser('error', '', res.msg, 5000);
-        } else {
-          this.notifyUser('success', '', res.msg, 5000);
-          this.tasks[this.indexTask].execution_roles = this.tasks[this.indexTask].execution_roles?.filter((pdt) => pdt.id?.toLowerCase() !== prl.id?.toLowerCase());
-        }
-      });
     }
   }
 
@@ -251,15 +353,28 @@ export class ConfigComponent implements OnInit, OnChanges {
     this.task = task;
   }
 
-  deleteExecution(task: Execution, index: number): void {
-    this.processService.deleteExecution(task.id?.toLowerCase() || '').subscribe((res) => {
-      if (!res.error) {
-        this.tasks.splice(index, 1);
-        this.notifyUser('success', '', res.msg, 6000);
-      } else {
-        this.notifyUser('error', '', res.msg, 6000);
-      }
-    });
+  public deleteExecution(event: boolean): void {
+    if (event) {
+      this._subscription.add(
+        this.processService.deleteExecution(this.executionSelected.id?.toLowerCase() || '').subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.messageService.add({type: 'error', message: res.msg, life: 5000});
+            } else {
+              this.tasks = this.tasks.filter((pdt) => pdt.id?.toLowerCase() !== this.executionSelected.id?.toLowerCase());
+              this.messageService.add({type: 'success', message: 'Ejecución eliminada correctamente!', life: 5000});
+            }
+          },
+          error: (err: Error) => {
+            console.error(err.message);
+            this.messageService.add({type: 'error', message: 'No se pudo eliminar la ejecución!', life: 5000});
+          },
+        })
+      );
+    } else {
+      this.showAlert = false;
+      this.executionSelected = {};
+    }
   }
 
   confirmDeleteDataset(task: Execution, index: number) {
@@ -274,14 +389,6 @@ export class ConfigComponent implements OnInit, OnChanges {
     });*/
   }
 
-  private notifyUser(severity: string, summary: string, detail: string, life: number): void {
-    this.messageService.add({
-      type: severity,
-      message: detail,
-      life: life,
-    });
-  }
-
   public filterItemsTarget(event: any, dataToFilter: any): void {
     const filterValue = event.target.value;
     if (filterValue && filterValue.length) {
@@ -290,6 +397,45 @@ export class ConfigComponent implements OnInit, OnChanges {
     } else {
       this.tasksDisplay = this.tasks;
     }
+  }
+
+  public filterRoles(event: any, roles: any): void {
+    const filterValue = event.target.value;
+    if (filterValue && filterValue.length) {
+      const searchFields: string[] = ('name' || 'type' || 'label').split(',');
+      this.selectionRoles = this._filterService.filter(roles, searchFields, filterValue, 'contains');
+    } else {
+      this.selectionRoles = this.roles;
+    }
+  }
+
+  public activeTimers(event: any): void {
+    if (event === 2) {
+      this.taskForm.get('timer')?.setValidators([Validators.required]);
+      this.taskForm.get('timer')?.updateValueAndValidity();
+    } else {
+      this.taskForm.get('timer')?.clearValidators();
+      this.taskForm.get('timer')?.updateValueAndValidity();
+    }
+  }
+
+  public backStep(): void {
+    this.positionStep--;
+    this.steps[this.positionStep].active = false;
+  }
+
+  public cancelCreateOrEdit(): void {
+    this.createOrUpdate = false;
+    this.positionStep = 0;
+    this.steps[1].active = false;
+    this.taskForm.reset();
+    this.executionSelected = {};
+  }
+
+  public editExecution(execution: Execution): void {
+    this.executionSelected = execution;
+    this.createOrUpdate = true;
+
   }
 
 }

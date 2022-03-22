@@ -722,8 +722,25 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
    */
   private unlockBpmnDiagram(): void {
     this.isProcessLocked = true;
-    this.processService.unlockProcess(this.bpm.id?.toLowerCase() || '').subscribe((res) => {
-    });
+    this._subscription.add(
+      this.processService.unlockProcess(this.bpm.id?.toLowerCase() || '').subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            console.log('unlock process');
+          }
+        },
+        error: (err: Error) => {
+          console.error(err.message);
+          this.messageService.add({
+            type: 'error',
+            message: 'Hubo un error a la hora de desbloquear el proceso',
+            life: 5000
+          });
+        },
+      })
+    );
   }
 
   /**
@@ -960,9 +977,9 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     });
   }
 
-  private leave(): void {
+  public leave(): void {
     this.unlockBpmnDiagram();
-    this.router.navigate(['wizard/processes']);
+    this.router.navigateByUrl('/wizard/bpmn');
   }
 
   private notifyUser(severity: string, summary: string, detail: string, life: number): void {

@@ -1,4 +1,4 @@
-<div *ngIf="show" class="top-0 w-screen fixed h-screen flex justify-center"
+<div *ngIf="show" class="top-0 w-screen fixed h-screen flex justify-center left-0"
      style="background: rgba(0,0,0,0.4); z-index: 1190">
   <div [@dialogAnimation]="{value: 'visible', params: {transform: transformOptions, transition: transitionOptions}}"
        (@dialogAnimation.start)="onAnimationStart($event)" (@dialogAnimation.done)="onAnimationEnd($event)"

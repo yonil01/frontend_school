@@ -8,7 +8,7 @@ import {UiModule} from "@app/ui/ui.module";
 import {ProcessCreateComponent} from './process/Pages/process-create/process-create.component';
 import {ProcessShowComponent} from './process/Pages/process-show/process-show.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {IconsModule, ToastModule} from "ecapture-ng-ui";
+import {CheckboxModule, DropdownModule, IconsModule, ToastModule} from "ecapture-ng-ui";
 import {MatMenuModule} from "@angular/material/menu";
 import {ConfigComponent} from "@app/modules/wizard/process/process/components/config/config.component";
 import {TranslateModule} from "@ngx-translate/core";
@@ -31,7 +31,9 @@ import {TranslateModule} from "@ngx-translate/core";
     IconsModule,
     ToastModule,
     MatMenuModule,
-    TranslateModule
+    TranslateModule,
+    DropdownModule,
+    CheckboxModule
   ]
 })
 export class ProcessModule {
