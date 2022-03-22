@@ -42,7 +42,7 @@
       </div>
       <div *ngIf="!createOrEdit" class="data space-y-4 mt-4">
         <div class="table-v md:hidden flex flex-col space-y-4">
-          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+          <div   class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
             <span class="text-mono-70 t-caption-1">N° 1</span>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">ID</span>
@@ -92,7 +92,7 @@
             <div class="p-2 w-24">Opciones</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
-            <div *ngFor="let message of messages, let i = index" class="register-table w-full flex flex-row">
+            <div *ngFor="let message of messagesPagination, let i = index" class="register-table w-full flex flex-row">
               <div class="flex items-center p-2 w-16">{{i + 1}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{message.id}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{message.spa}}</div>
@@ -125,14 +125,15 @@
         </div>
         <div class="pagination flex flex-row items-center justify-between">
           <div class="left">
-            <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
+            <select class="h-8 w-16 bg-mono-10 t-body-2 text-black" (change)="resetPagination($event)">
               <option>10</option>
               <option>20</option>
               <option>30</option>
             </select>
           </div>
           <div class="right flex items-center flex-row space-x-1">
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
+            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === 1 || currentLengthPg === 1"
+                    (click)="beforePagination()">
               <div>
                 <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
@@ -142,9 +143,10 @@
               </div>
             </button>
             <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-              <span class="t-body-2">1/2</span>
+              <span class="t-body-2">{{currentPg}}/{{currentLengthPg}}</span>
             </div>
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
+            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === currentLengthPg"
+                    (click)="nextPagination()">
               <div>
                 <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
@@ -159,6 +161,7 @@
       <div *ngIf="createOrEdit" class="flex flex-col lg:items-center space-y-12">
         <span class="t-h5 text-black dark:text-white">{{idMessages === 0 ? 'Crear' : 'Editar'}} Mensaje</span>
         <form [formGroup]="messageForm" class="space-y-4 grid grid-cols-2 gap-4 lg:w-2/3">
+
           <div class="input flex flex-col space-y-1 col-span-2">
             <label class="t-caption-2 text-mono-70">Mensaje en Español</label>
             <input class="ec-input" type="text" formControlName="spa">
@@ -184,6 +187,7 @@
               </div>
             </div>
           </div>
+
         </form>
         <div class="flex flex-row space-x-4 lg:w-2/3">
           <button  class="flex-1 md:flex-none b-outline" (click)="createOrEdit = false; idMessages=0">Cancelar</button>

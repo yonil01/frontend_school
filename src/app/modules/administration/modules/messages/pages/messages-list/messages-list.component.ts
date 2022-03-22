@@ -6,6 +6,7 @@ import {MsgModel} from "@app/modules/administration/modules/messages/models/msg.
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
+import {Parameters} from "@app/modules/administration/modules/parameters/models/parameters.models";
 
 @Component({
   selector: 'app-messages-list',
@@ -16,6 +17,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
 
   private _subscription: Subscription = new Subscription();
   public messages: MsgModel[] = [];
+  public messagesPagination: MsgModel[] = [];
   public showAlert: boolean = false;
   public onShowEditMessages: boolean = false;
   public onShowMessagesList: boolean = true;
@@ -25,6 +27,11 @@ export class MessagesListComponent implements OnInit, OnDestroy {
   public idMessages: number = 0;
   public isShowBlockPage: boolean = false;
   public toastStyle: ToastStyleModel = toastDataStyle;
+  public leftLimit: number = 0;
+  public rightLimit: number = 5;
+  public currentPg: number = 1;
+  public paginationValue: number = 5;
+  public currentLengthPg: number = 0;
 
   constructor(
     private _messageService: MessageServices,
@@ -57,6 +64,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
             } else {
               if (res.data) {
                 this.messages = res.data;
+                this.initPagination();
                 console.log(this.messages);
               } else {
                 this._toastService.add({type: 'info', message: 'No hay mensajes creados', life: 5000});
@@ -88,6 +96,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
           } else {
             this._toastService.add({type: 'success', message: 'Mensage eliminado correctamente!', life: 500});
             this.messages = this.messages.filter(msg => msg.id !== id);
+            this.initPagination();
           }
           this.isShowBlockPage = false;
         },
@@ -124,6 +133,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
               }
               this.createOrEdit = false;
               this.idMessages = 0;
+              this.initPagination();
             }
             this.isShowBlockPage = false;
           },
@@ -165,6 +175,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
             this.messages.push(res.data)
             this.createOrEdit = false;
             this.messageForm.reset();
+            this.initPagination();
           }
           this.isShowBlockPage = false;
         },
@@ -206,7 +217,36 @@ export class MessagesListComponent implements OnInit, OnDestroy {
       this.idMessages = 0;
     }
   }
+  private initPagination(): void {
+    this.leftLimit = 0;
+    this.rightLimit = 5;
+    this.paginationValue = 5;
+    this.currentPg = 1;
+    this.currentLengthPg = Math.ceil(this.messages.length / this.paginationValue);
+    this.messagesPagination = this.messages.slice(this.leftLimit, this.rightLimit);
+  }
+  public beforePagination(): void {
+    this.currentPg--;
+    this.leftLimit -= this.paginationValue;
+    this.rightLimit -= this.paginationValue;
+    this.messagesPagination = this.messages.slice(this.leftLimit, this.rightLimit);
+  }
 
+  public nextPagination(): void {
+    this.currentPg++;
+    this.leftLimit = this.rightLimit;
+    this.rightLimit += this.paginationValue;
+    this.messagesPagination = this.messages.slice(this.leftLimit, this.rightLimit);
+  }
+
+  public resetPagination(event: any): void {
+    this.paginationValue = parseInt(event.target.value, 10);
+    this.leftLimit = 0;
+    this.rightLimit = this.paginationValue;
+    this.currentPg = 1;
+    this.currentLengthPg = Math.ceil(this.messages.length / this.paginationValue);
+    this.messagesPagination = this.messages.slice(this.leftLimit, this.rightLimit);
+  }
   showDelete(event: number) {
     this.idMessages = event;
     this.showAlert = true;
