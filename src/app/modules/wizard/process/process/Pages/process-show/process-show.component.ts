@@ -57,11 +57,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   public isPublishDialog: boolean = false;
   public existQueue: boolean = false;
   public showSide: boolean = false;
-  public itemsOptions: any[] = [];
-  public itemsPublishDB: any[] = [];
   public isChanged = {val: false};
   public contextMenuPosition: any;
-  public colors: string[];
   public viewSide: string = '';
   private bpmnJS: BpmnJSModeler = new BpmnJSModeler();
   private bpmnXML: string = '';
@@ -82,69 +79,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     private localStorage: LocalStorageService,
     private messageService: ToastService,
   ) {
-    this.colors = [
-      '#FFFFFF',
-      '#C8E6C9',
-      '#FFCDD2',
-      '#CC0000',
-      '#FF4444',
-      '#FF7F7F',
-      '#CC6C00',
-      '#FF8800',
-      '#FFBB33',
-      '#436500',
-      '#669900',
-      '#99CC00',
-      '#6B238E',
-      '#9933CC',
-      '#AA66CC',
-      '#007299',
-      '#0099CC',
-      '#33B5E5',
-      '#B20058',
-      '#E50072',
-      '#FF3298',
-    ];
     this.contextMenuPosition = {x: '0px', y: '0px'};
-    this.itemsOptions = [
-      {label: 'Maximizar', icon: 'pi pi-window-maximize', command: () => this.setFullScreen()},
-      {label: 'Descargar', icon: 'pi pi-download', command: () => this.downloadSVG()},
-      {label: 'Historial', icon: 'pi pi-list', command: () => this.getHistory()},
-      {separator: true},
-      // {label: 'Eliminar', icon: 'pi pi-trash', command: () => this.confirmDeleteBpm()},
-      {separator: true},
-      {separator: true},
-      {
-        label: 'Validar',
-        icon: 'pi pi-check',
-        command: () => {
-          if (this.validateBpmn()) {
-            this.notifyUser('success', '', 'Validación Correcta', 4000);
-          }
-        },
-      },
-      {label: 'Crear Versión', icon: 'pi pi-plus', command: () => this.insertBpm()},
-      // { label: 'Actualizar', icon: 'pi pi-refresh', command: () => this.updateChangeBpmn() },
-      {separator: true},
-      {label: 'Publicar', icon: 'pi pi-cloud-upload', command: () => this.publishBpm()},
-      {separator: true},
-      {label: 'Salir', icon: 'pi pi-sign-out', command: () => this.leave()},
-    ];
-    this.itemsPublishDB = [
-      {
-        label: 'Validar',
-        icon: 'pi pi-check',
-        command: () => {
-          if (this.validateBpmn()) {
-            this.notifyUser('success', '', 'Validación Correcta', 4000);
-          }
-        },
-      },
-      {label: 'Crear', icon: 'pi pi-plus', command: () => this.insertBpm()},
-      {label: 'Actualizar', icon: 'pi pi-refresh', command: () => this.updateChangeBpmn()},
-      {separator: true},
-      {label: 'Publicar', icon: 'pi pi-cloud-upload', command: () => this.publishBpm()},
-    ];
     this.store.select('bpm').subscribe((res) => {
       this.bpm = res.bpm;
       this.showSide = res.showSide;
@@ -189,17 +124,36 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     this.currentElement = null;
   }
 
-  selectedversion(bpm: Process): void {
+  private selectedVersion(bpm: Process): void {
     this.currentElement = null;
     if (bpm) {
       this.isChangedVersion = true;
       if (!this.bpm.is_locked) this.unlockBpmnDiagram();
-      this.processService.getProcessByID(bpm.id?.toLowerCase() || '').subscribe((res) => {
-        this.bpm = JSON.parse(JSON.stringify(res.data));
-        this.getDiagram();
-        this.initLockUnlockBpm();
-        this.versionBpm = this.versions.find((bpmv) => this.bpm.id === bpmv.id);
-      });
+      this._subscription.add(
+        this.processService.getProcessByID(bpm.id?.toLowerCase() || '').subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.messageService.add({type: 'error', message: res.msg, life: 5000});
+            } else {
+              this.bpm = res.data;
+              this.getDiagram();
+              this.initLockUnlockBpm();
+              const bpmnFind = this.versions.find((IBpmn) => this.bpm.id === IBpmn.id);
+              if (bpmnFind) {
+                this.versionBpm = bpmnFind;
+              }
+            }
+          },
+          error: (err: Error) => {
+            console.error(err.message);
+            this.messageService.add({
+              type: 'error',
+              message: 'Hubo un error a la hora de cargar el proceso seleccionado',
+              life: 5000
+            });
+          },
+        })
+      );
       this.bpmnJS.on('import.done', ({error}: any) => {
         if (!error) this.bpmnJS.get('canvas').zoom('fit-viewport');
       });
@@ -352,16 +306,10 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     await this.bpmnJS.importXML(xml);
   }
 
-  /**
-   * Get Action types from DB for BPMN history tracking
-   */
   private getActionTypes(): void {
     // TODO this._bpmnService.getByID('types').subscribe((res: any) => this.ActionsTypes = res.process);
   }
 
-  /**
-   * Init BPMN Modeler and import this.bpmnXML to the modeler
-   */
   private initModelerBPMN(): void {
     console.log(CustomRulesModules);
     this.bpmnJS.destroy();
@@ -375,9 +323,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     this.importDiagram(this.bpmnXML);
   }
 
-  /**
-   * Init BPMN Viewer and import this.bpmnXML to the viewer
-   */
   private initViewerBPMN(): void {
     this.bpmnJS.destroy();
     this.bpmnJS = new BpmnJSViewer();
@@ -390,7 +335,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
    * BPMN Diagram Events initilization
    */
   private initializeBpmnEvents() {
-    console.log('entro a los eventos');
     this.bpmnJS.on('commandStack.changed', () => this.stackElement());
     this.bpmnJS.on('element.changed', (event: any) => this.changeElement(event));
     this.bpmnJS.on('shape.added', (event: any) => this.addElement(event));
@@ -411,7 +355,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   private addElement(event: any): void {
-    debugger;
     this.isChanged.val = true;
     if (!this.bpmnXML.includes(event.element.id) && event.element.id.substr(-5) !== 'label') {
       this.elementAdded = true;
@@ -433,9 +376,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     this.currentElement =
       event.element.type.indexOf('Task') > -1 ||
       event.element.type.indexOf('IntermediateCatchEvent') > -1 ||
-      event.element.type.indexOf('Gateway') > -1
-        ? event.element
-        : null;
+      event.element.type.indexOf('Gateway') > -1 ? event.element : null;
   }
 
   private removeElement(event: any) {
@@ -600,6 +541,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     document.body.appendChild(svg);
     svg.click();
     document.body.removeChild(svg);
+    this.showOptions = false;
   }
 
   private exportSVGFile(): Promise<File> {
@@ -749,21 +691,40 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   public async insertBpm() {
     if (this.validateBpmn()) {
       [this.bpm.document_id_svg, this.bpm.document_id_bpmn] = await this.exportSaveDocuments();
-      const newBpmVersion: Process = JSON.parse(JSON.stringify(this.bpm));
+      const newBpmVersion: Process = this.bpm;
       newBpmVersion.process_root = this.bpm.process_root;
       newBpmVersion.version = this.versions.length + 1;
       delete newBpmVersion.id;
-      this.processService.createProcess(newBpmVersion).subscribe((res) => {
-        if (!res.error) {
-          this.getBpmVersions(this.bpm);
-          const bmp: Process = {
-            id: res.data,
-          };
-          this.selectedversion(bmp);
-          this.notifyUser('success', '', res.msg, 6000);
-        } else {
-          this.notifyUser('error', '', res.msg, 6000);
-        }
+      this.isBlockedPage = true;
+      this._subscription.add(
+        this.processService.createProcess(newBpmVersion).subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.notifyUser('error', '', res.msg, 6000);
+            } else {
+              this.getBpmVersions(this.bpm);
+              const bmp: Process = {id: res.data};
+              this.selectedVersion(bmp);
+              this.messageService.add({type: 'success', message: 'Versión creada correctamente!', life: 5000});
+            }
+            this.isBlockedPage = false;
+          },
+          error: (err: Error) => {
+            console.error(err.message);
+            this.isBlockedPage = false;
+            this.messageService.add({
+              type: 'error',
+              message: 'Hubo un error a la hora de guardar el proceso',
+              life: 5000
+            });
+          },
+        })
+      );
+    } else {
+      this.messageService.add({
+        type: 'warning',
+        message: 'El proceso no puede ser guardado porque no es valido!',
+        life: 5000
       });
     }
   }
@@ -824,16 +785,41 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     // }
   }
 
-  private async publishBpm() {
+  public publishBpm(): void {
     if (this.validateBpmn()) {
-      this.processService
-        .publishBpm(this.bpm.id?.toLocaleLowerCase() || '', this.bpm.process_root?.toLocaleLowerCase() || '')
-        .subscribe((res: Response) => {
-          if (!res.error) {
-            this.bpm.is_published = true;
-          }
-          this.notifyUser(res.type, '', res.msg, 6000);
-        });
+      this.isBlockedPage = true;
+      this._subscription.add(
+        this.processService.publishBpm(this.bpm.id?.toLocaleLowerCase() || '', this.bpm.process_root?.toLocaleLowerCase() || '').subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.messageService.add({type: 'error', message: res.msg, life: 5000});
+            } else {
+              this.bpm.is_published = true;
+              this.messageService.add({
+                type: 'success',
+                message: 'Versión del BPMN publicada correctamente',
+                life: 5000
+              });
+            }
+            this.isBlockedPage = false;
+          },
+          error: (err: Error) => {
+            this.isBlockedPage = false;
+            console.error(err.message);
+            this.messageService.add({
+              type: 'error',
+              message: 'Hubo un error a la hora de publicar la versión el proceso',
+              life: 5000
+            });
+          },
+        })
+      );
+    } else {
+      this.messageService.add({
+        type: 'warning',
+        message: 'El proceso no puede ser publicado porque no es valido!',
+        life: 5000
+      });
     }
   }
 
@@ -848,19 +834,18 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       (xmlText.match(/id="TimerEventDefinition_/g) || []).length +
       (xmlText.match(/id="Gateway_/g) || []).length;
     if (this.bpm.queues && qtyProcess !== this.bpm.queues.length) {
-      this.notifyUser('info', '', 'Debe configurar todas las colas del proceso', 6000);
+      this.messageService.add({type: 'warning', message: 'Debe configurar todas las colas del proceso!', life: 5000});
       return false;
     }
     const queueMap: any = {};
     if (this.bpm.queues) {
       for (const q of this.bpm.queues) {
         if (queueMap.hasOwnProperty(q.sequences || '')) {
-          this.notifyUser(
-            'warn',
-            '',
-            `La secuencia de la cola ${q.name} debe ser diferente a la secuencia de la cola ${queueMap[q.sequences || '']}`,
-            6000,
-          );
+          this.messageService.add({
+            type: 'warning',
+            message: `La secuencia de la cola ${q.name} debe ser diferente a la secuencia de la cola ${queueMap[q.sequences || '']}`,
+            life: 5000
+          });
           return false;
         } else {
           Object.assign(queueMap, {[q.sequences || '']: q.name});
@@ -868,12 +853,20 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
         if (q.executions && q.executions.length >= 1) {
           for (const e of q.executions) {
             if (!e.rules || e.rules.length < 1) {
-              this.notifyUser('warn', '', `Debe configurar las actividades de la Ejecución: ${e.name}`, 6000);
+              this.messageService.add({
+                type: 'warning',
+                message: `Debe configurar las actividades de la Ejecución: ${e.name}`,
+                life: 5000
+              });
               return false;
             }
           }
         } else {
-          this.notifyUser('warn', '', `Debe configurar las ejecuciones de la Cola de Proceso: ${q.name}`, 6000);
+          this.messageService.add({
+            type: 'warning',
+            message: `Debe configurar las actividades de la Cola de Proceso: ${q.name}`,
+            life: 5000
+          });
           return false;
         }
       }
@@ -882,7 +875,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     return true;
   }
 
-  private async exportSaveDocuments(): Promise<Array<any>> {
+  public async exportSaveDocuments(): Promise<Array<any>> {
     let svgFile;
     let xmlFile;
     try {
@@ -894,16 +887,12 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     const documentIdSVG = await this.saveDocument(svgFile);
     const documentIdBPMN = await this.saveDocument(xmlFile);
     if (!documentIdBPMN || !documentIdSVG) {
-      this.isAnnounceDialog = true;
-      this.isDeleteDialog = false;
-      /*this.confirmationService.confirm({
-        header: 'Anuncio',
-        message: 'Se presentó un error!',
-        accept: () => {
-        },
-      });*/
+      // this.isAnnounceDialog = true;
+      // this.isDeleteDialog = false;
+      this.messageService.add({type: 'error', life: 5000, message: 'Error al guardar los documentos'});
       return [0, 0];
     }
+    this.messageService.add({type: 'success', life: 5000, message: 'Documentos guardados correctamente'});
     return [documentIdSVG, documentIdBPMN];
   }
 
@@ -953,10 +942,23 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       new_version: 0
     };
     return new Promise((resolve, rej) => {
-      this.documentService.createDocument(document).subscribe((res) => {
-        if (res.error) rej(true);
-        resolve(res.data.id);
-      });
+      this._subscription.add(
+        this.documentService.createDocument(document).subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.messageService.add({type: 'error', life: 5000, message: res.msg});
+              rej(true);
+            } else {
+              resolve(res.data.id);
+            }
+          },
+          error: (err: Error) => {
+            console.error(err.message);
+            this.messageService.add({type: 'error', life: 5000, message: 'Error al guardar el documento'});
+            rej(true);
+          }
+        })
+      );
     });
   }
 
@@ -976,6 +978,15 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   public validateBpmnEvent(): void {
     if (this.validateBpmn()) {
       this.messageService.add({type: 'success', message: 'El diagrama BPMN es válido', life: 5000});
+    } else {
+      this.messageService.add({type: 'warning', message: 'El diagrama BPMN no es válido', life: 5000});
+    }
+    this.showOptions = false;
+  }
+
+  public saveBpmn(): void {
+    if (this.validateBpmn()) {
+      this.exportSaveDocuments();
     } else {
       this.messageService.add({type: 'warn', message: 'El diagrama BPMN no es válido', life: 5000});
     }
