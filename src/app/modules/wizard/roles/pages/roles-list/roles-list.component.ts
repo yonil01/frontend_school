@@ -5,6 +5,10 @@ import {ToastService} from "ecapture-ng-ui";
 import {Customer, Project, Role} from "@app/core/models";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
+import {Store} from "@ngrx/store";
+import {AppState} from "@app/core/store/app.reducers";
+import {Router} from "@angular/router";
+import {controlRole} from "@app/core/store/actions/roles.action";
 
 @Component({
   selector: 'app-roles-list',
@@ -19,13 +23,19 @@ export class RolesListComponent implements OnInit, OnDestroy {
   public roles: Role[] = [];
   private client: Customer;
   private project: Project;
+  public nameClient: string = '';
+  public nameProject: string = '';
 
   constructor(
     private _roleService: RoleService,
-    private _messageService: ToastService
+    private _messageService: ToastService,
+    private _router: Router,
+    private _store: Store<AppState>,
   ) {
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.client = JSON.parse(sessionStorage.getItem('client') || '');
+    this.nameClient = this.client.name + '';
+    this.nameProject = this.project.name + '';
   }
 
   ngOnInit(): void {
@@ -63,4 +73,8 @@ export class RolesListComponent implements OnInit, OnDestroy {
     this._subscription.unsubscribe();
   }
 
+  public showRole(role: Role): void {
+    this._store.dispatch(controlRole({ role: role, index: 0 }));
+    this._router.navigateByUrl('wizard/roles/manager');
+  }
 }

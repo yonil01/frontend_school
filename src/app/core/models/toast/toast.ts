@@ -25,7 +25,7 @@ export const toastDataStyle: ToastStyleModel = {
     }
   },
   text: {
-    color: 'text-mono-70',
+    color: 'text-mono-70 t-body-1',
     size: '',
     font: ''
   }

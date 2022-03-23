@@ -9,6 +9,7 @@ import { RolesSecurityPoliticComponent } from './pages/roles-security-politic/ro
 import { RolesDisabledDatesComponent } from './pages/roles-disabled-dates/roles-disabled-dates.component';
 import { RolesAttributeSecurityComponent } from './pages/roles-attribute-security/roles-attribute-security.component';
 import { RolesAllowedRolesComponent } from './pages/roles-allowed-roles/roles-allowed-roles.component';
+import {ToastModule} from "ecapture-ng-ui";
 
 
 
@@ -22,10 +23,11 @@ import { RolesAllowedRolesComponent } from './pages/roles-allowed-roles/roles-al
     RolesAttributeSecurityComponent,
     RolesAllowedRolesComponent
   ],
-  imports: [
-    RolesManagerRoutingModule,
-    CommonModule,
-    UiModule
-  ]
+    imports: [
+        RolesManagerRoutingModule,
+        CommonModule,
+        UiModule,
+        ToastModule
+    ]
 })
 export class RolesManagerModule { }
