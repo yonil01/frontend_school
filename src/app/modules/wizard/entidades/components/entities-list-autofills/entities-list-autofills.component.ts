@@ -42,10 +42,10 @@ export class EntitiesListAutofillsComponent implements OnInit {
       this.isBlock = true;
       this.autofillsService.getAutofillsByEntityID(this.entity.id).subscribe((res) => {
         this.autofills = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
-        this.isBlock = false;
         this.autofills.forEach((autofill) => {
           autofill.showConfig = false;
         });
+        this.isBlock = false;
       });
     }
   }
@@ -146,7 +146,7 @@ export class EntitiesListAutofillsComponent implements OnInit {
 
   onAddValues(i: number) {
     this.selectedAutofill = this.autofills[i];
-    this.showAddValues = true;
     this.showAutofillsList = false;
+    this.showAddValues = true;
   }
 }

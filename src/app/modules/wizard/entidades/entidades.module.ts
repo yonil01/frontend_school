@@ -18,6 +18,7 @@ import { EntityAddAttributeComponent } from './components/entity-add-attribute/e
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import { EntityListValuesComponent } from './components/entity-list-values/entity-list-values.component';
 import { EntityCreateValueComponent } from './components/entity-create-value/entity-create-value.component';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { EntityCreateValueComponent } from './components/entity-create-value/ent
     EntityAddAttributeComponent,
     EntityListValuesComponent,
     EntityCreateValueComponent,
+    ConfirmationModalComponent,
 
   ],
     imports: [

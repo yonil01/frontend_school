@@ -6,10 +6,12 @@ import {
   AttributeAutofill, AttributeResponse,
   Autofill,
   AutofillsValues,
-  DatasetValue, ResponseGetAttributesAutofill, ResponseGetValuesAtributtesAutofill,
+  DatasetValue, Response, ResponseGetAttributesAutofill, ResponseGetValuesAtributtesAutofill,
 } from "@app/core/models";
 import {AutofillsService} from "@app/modules/wizard/entidades/services/autofills/autofills.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {MessageServices} from "@app/modules/administration/services/message/message.service";
+import {ToastService} from "ecapture-ng-ui";
 
 @Component({
   selector: 'app-entity-list-values',
@@ -28,7 +30,7 @@ export class EntityListValuesComponent implements OnInit {
   public isDelete: boolean = false;
   public showValues: boolean = true;
   public attributeAutofills: AttributeAutofill[] = [];
-  public isBlock: boolean = false;
+  public isBlock: boolean = true;
   public ResponsevaluesAttributesAutofills: ResponseGetValuesAtributtesAutofill[] = [];
   public valuesAttributesAutofills: Array<any> = [];
   public ResponseAtrributesOfAutofills: ResponseGetAttributesAutofill[] = [];
@@ -37,38 +39,39 @@ export class EntityListValuesComponent implements OnInit {
   public columnsTable: any[] = [];
   public form = new FormGroup({});
   public showCreateValue: boolean = false;
+  public selectedValue: any;
 
   constructor(private _localStorage: LocalStorageService,
               private autofillsService: AutofillsService,
+              private messageService: ToastService,
   ) {
     this.nameClient = this._localStorage.getClient();
     this.nameProject = this._localStorage.getProject();
   }
 
   ngOnInit(): void {
-    this.isBlock = true;
     if (this.selectedAutofill) {
-      this.getAttributeAutofills();
       this.getAutofillValues();
     } else {
       this.isBlock = false;
     }
   }
 
+
   getAutofillValues(): void {
+    this.isBlock = true;
     this.valuesAttributesAutofills = [];
     this.autofillsService.getAllAutofillValues(this.selectedAutofill.id?.toLowerCase() || '').subscribe((res) => {
       if (res.data?.autofill_response?.length) {
-        this.ResponsevaluesAttributesAutofills = res.data.autofill_response;
-        this.ResponsevaluesAttributesAutofills.forEach((value) => {
-          let valueTemp = value
+        this.ResponsevaluesAttributesAutofills = JSON.parse(JSON.stringify((res.data.autofill_response)));
+        this.valuesAttributesAutofills = res.data.autofill_response;
+        this.valuesAttributesAutofills.forEach((value: ResponseGetValuesAtributtesAutofill) => {
           // @ts-ignore
-          delete valueTemp.id
+          delete value.id
           // @ts-ignore
-          delete valueTemp.created_at
+          delete value.created_at
           // @ts-ignore
-          delete valueTemp.updated_at
-          this.valuesAttributesAutofills.push(valueTemp);
+          delete value.updated_at
         });
         this.columnsTable = Object.keys(this.valuesAttributesAutofills[0])
         console.log('columnsTable')
@@ -78,22 +81,25 @@ export class EntityListValuesComponent implements OnInit {
       } else {
         this.ResponsevaluesAttributesAutofills = [];
       }
-    });
-  }
+      this.AttributesOfAutofills = [];
+      this.autofillsService.getAttributeAutofillsByAutofillID(this.selectedAutofill.id?.toLowerCase() || '').subscribe(
+        async (res) => {
+          this.ResponseAtrributesOfAutofills = res.data;
+          for (const autofill of this.ResponseAtrributesOfAutofills) {
+            this.AttributesOfAutofills.push(autofill.attribute);
+          }
+          console.log('AttributesOfAutofills')
+          console.log(this.AttributesOfAutofills);
+          this.isBlock = false;
+        }, (error) => {
+          console.log(error);
+          this.isBlock = false;
+        });
 
-  async getAttributeAutofills() {
-    this.AttributesOfAutofills = [];
-    this.autofillsService.getAttributeAutofillsByAutofillID(this.selectedAutofill.id?.toLowerCase() || '').subscribe(
-      async (res) => {
-        this.ResponseAtrributesOfAutofills = res.data;
-        for (const autofill of this.ResponseAtrributesOfAutofills) {
-          this.AttributesOfAutofills.push(autofill.attribute);
-        }
-        console.log('AttributesOfAutofills')
-        console.log(this.AttributesOfAutofills);
-        this.isBlock = false;
-      });
-    this.isBlock = false;
+    }, (error) => {
+      console.log(error);
+      this.isBlock = false;
+    });
   }
 
   onReturn() {
@@ -137,5 +143,29 @@ export class EntityListValuesComponent implements OnInit {
   onCreateValue() {
     this.showCreateValue = true;
     this.showValues = false;
+  }
+
+  confirmDelete(i: number) {
+    this.selectedValue = this.ResponsevaluesAttributesAutofills[i];
+    this.isDelete = true;
+  }
+
+  onDelete($event: boolean) {
+    console.log(this.selectedValue)
+    if ($event) {
+      if (this.selectedAutofill.id)
+        this.autofillsService.deleteAutofillValue(this.selectedValue.id, this.selectedAutofill.id.toLowerCase()).subscribe((res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: 'Error en la eliminación ' + res.msg, life: 5000});
+            this.isDelete = false;
+          } else {
+            this.messageService.add({type: 'success', message: 'Eliminación exitosa', life: 5000});
+            this.getAutofillValues();
+            this.isDelete = false;
+          }
+        });
+    } else {
+      this.isDelete = false;
+    }
   }
 }

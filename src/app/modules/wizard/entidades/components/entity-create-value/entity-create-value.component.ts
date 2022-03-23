@@ -14,10 +14,6 @@ export class EntityCreateValueComponent implements OnInit {
   @Output()
   public return: EventEmitter<any> = new EventEmitter();
   @Input()
-  public valuesAttributesAutofills: any
-  @Input()
-  public columnsTable: any
-  @Input()
   public AttributesOfAutofills: any;
   @Input()
   public selectedAutofill?: Autofill;

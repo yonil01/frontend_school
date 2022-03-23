@@ -15,25 +15,25 @@
       </div>
       <div class="form">
         {{newValuesForm.valid}}
-        <form [formGroup]="newValuesForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div *ngFor="let props of columnsTable">
-            <label class="t-caption-2 text-mono-70">{{props}}</label>
+        <form [formGroup]="newValuesForm">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div *ngFor="let attribute of AttributesOfAutofills" class="input flex flex-col">
-              <input formControlName="{{props}}" type="{{attribute.type.toLowerCase()}}"
-                     *ngIf="attribute.tag_html == 'Input' && props == attribute.name" class="ec-input">
-              <select formControlName="{{props}}" *ngIf="attribute.tag_html == 'Select' && props == attribute.name"
+              <label class="t-caption-2 text-mono-70">{{attribute.description}}</label>
+              <input formControlName="{{attribute.name}}" type="{{attribute.type.toLowerCase()}}"
+                     *ngIf="attribute.tag_html == 'Input'" class="ec-input">
+              <select formControlName="{{attribute.name}}" *ngIf="attribute.tag_html == 'Select'"
                       class="ec-input"></select>
-              <textarea formControlName="{{props}}" *ngIf="attribute.tag_html == 'Textarea' && props == attribute.name"
+              <textarea formControlName="{{attribute.name}}" *ngIf="attribute.tag_html == 'Textarea'"
                         class="ec-input"></textarea>
               <span
-                *ngIf="props == attribute.name && (newValuesForm.get(props)?.hasError('maxlength') || newValuesForm.get(props)?.hasError('minlength') )"
+                *ngIf="attribute.name == attribute.name && (newValuesForm.get(attribute.name)?.hasError('maxlength') || newValuesForm.get(attribute.name)?.hasError('minlength') )"
                 class="t-caption-2 text-alert-error">Este campo es invalido</span>
               <span
-                *ngIf="props == attribute.name && (newValuesForm.get(props)?.hasError('max') || newValuesForm.get(props)?.hasError('min') )"
+                *ngIf="attribute.name == attribute.name && (newValuesForm.get(attribute.name)?.hasError('max') || newValuesForm.get(attribute.name)?.hasError('min') )"
                 class="t-caption-2 text-alert-error">Este campo es invalido</span>
             </div>
           </div>
-          <div class="actions flex flex-row space-x-2">
+          <div class="actions flex flex-row space-x-2 mt-5">
             <button (click)="onReturn()" class="w-full md:w-auto b-outline">Cancelar</button>
             <button (click)="onSendForm()" class="w-full md:w-auto b-solid">Guardar</button>
           </div>
