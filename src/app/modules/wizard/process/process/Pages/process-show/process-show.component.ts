@@ -40,6 +40,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   private _subscription: Subscription = new Subscription();
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
   public isBlockedPage: boolean = false;
+  public showOptions: boolean = false;
 
   public bpm: Process = {};
   public versions: any[] = [];
@@ -62,7 +63,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   public contextMenuPosition: any;
   public colors: string[];
   public viewSide: string = '';
-  // Private
   private bpmnJS: BpmnJSModeler = new BpmnJSModeler();
   private bpmnXML: string = '';
   private elementAdded: boolean = false;
@@ -70,6 +70,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   @ViewChild('bpmn', {static: true}) private elementBpmn!: ElementRef;
   @ViewChild('configContainer', {read: ViewContainerRef}) configContainer!: ViewContainerRef;
   public showMenu: boolean = false;
+  public showConfirm: boolean = false;
 
   constructor(
     private router: Router,
@@ -110,7 +111,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       {label: 'Descargar', icon: 'pi pi-download', command: () => this.downloadSVG()},
       {label: 'Historial', icon: 'pi pi-list', command: () => this.getHistory()},
       {separator: true},
-      {label: 'Eliminar', icon: 'pi pi-trash', command: () => this.confirmDeleteBpm()},
+      // {label: 'Eliminar', icon: 'pi pi-trash', command: () => this.confirmDeleteBpm()},
       {separator: true},
       {separator: true},
       {
@@ -295,9 +296,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     }
   }
 
-  /**
-   * Load diagram XML document from ecatchDB
-   */
   private getBpmnDiagram(documentID: string) {
     this._subscription.add(
       this.documentService.getDocumentByID(documentID).subscribe({
@@ -322,10 +320,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     );
   }
 
-  /**
-   * Load Default diagram from assets when no BPMN diagram exist
-   * @Input proc Process for data processELS object initialization
-   */
   private getDefaultDiagram() {
     this.processService.getDefaultBPMN().then((res: any) => {
       res.getElementById('def').setAttribute('name', this.bpm.name);
@@ -354,17 +348,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     }
   }
 
-  /**
-   * Import xml string to BPMN Diagrama
-   * @Input xml in string
-   */
   private async importDiagram(xml: any) {
     await this.bpmnJS.importXML(xml);
-    /*this.bpmnJS.importXML(xml, () => {
-      console.log('Diagrama cargado');
-      this.isReloading = false;
-      this.isChanged.val = false;
-    });*/
   }
 
   /**
@@ -426,6 +411,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   private addElement(event: any): void {
+    debugger;
     this.isChanged.val = true;
     if (!this.bpmnXML.includes(event.element.id) && event.element.id.substr(-5) !== 'label') {
       this.elementAdded = true;
@@ -603,10 +589,10 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     });
   }
 
-  private setFullScreen() {
+  public setFullScreen() {
   }
 
-  private async downloadSVG() {
+  public async downloadSVG() {
     const svgFile = await this.exportSVGFile();
     const svg = document.createElement('a');
     svg.href = window.URL.createObjectURL(svgFile);
@@ -630,21 +616,18 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     });
   }
 
-  private getHistory() {
+  public getHistory() {
   }
 
-  private confirmDeleteBpm() {
-    this.isDeleteDialog = true;
-    this.isAnnounceDialog = false;
-    /*this.confirmationService.confirm({
-      header: 'Anuncio',
-      message: `Está seguro de eliminar el proceso ${this.bpm.name}`,
-      accept: () => this.deleteProcess(),
-      reject: () => null,
-    });*/
+  public confirmDeleteBpm(event: boolean): void {
+    if (event) {
+      this.deleteProcess();
+    } else {
+      this.showConfirm = false;
+    }
   }
 
-  private deleteProcess() {
+  public deleteProcess(): void {
     this.processService.deleteBpm(this.bpm.id || '').subscribe((res) => {
       this.notifyUser(res.type, '', res.msg, 6000);
     });
@@ -763,7 +746,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     this.store.dispatch(controlSide({showSide: side}));
   }
 
-  private async insertBpm() {
+  public async insertBpm() {
     if (this.validateBpmn()) {
       [this.bpm.document_id_svg, this.bpm.document_id_bpmn] = await this.exportSaveDocuments();
       const newBpmVersion: Process = JSON.parse(JSON.stringify(this.bpm));
@@ -988,6 +971,14 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       message: detail,
       life: life,
     });
+  }
+
+  public validateBpmnEvent(): void {
+    if (this.validateBpmn()) {
+      this.messageService.add({type: 'success', message: 'El diagrama BPMN es válido', life: 5000});
+    } else {
+      this.messageService.add({type: 'warn', message: 'El diagrama BPMN no es válido', life: 5000});
+    }
   }
 
 }
