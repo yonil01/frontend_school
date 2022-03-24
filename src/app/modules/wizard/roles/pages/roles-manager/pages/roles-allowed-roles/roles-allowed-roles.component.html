@@ -2,7 +2,7 @@
   <ng-container layoutBody>
     <div class="ec-container py-6 md:py-12 bg-white space-y-12">
       <div class="title flex flex-col">
-        <span class="text-mono-70 t-body-1">Nombre del Rol</span>
+        <span class="text-mono-70 t-body-1">{{role.description}}</span>
         <div class="flex flex-row items-center space-x-1">
           <div>
             <svg class="text-brand-2" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,58 +47,37 @@
               <div class="rounded bg-mono-10 p-3 space-y-2">
                 <div><input class="w-full h-10 px-2 rounded t-body-2 border border-mono-30 text-black" type="text" placeholder="Buscar"></div>
                 <div class="flex flex-col space-y-2 overflow-y-auto" style="max-height: 240px;">
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 1</label>
+                  <div *ngIf="sourceRoleNew.length === 0" class="flex-1  items-center justify-center py-2">
+                    <span class="t-body-2 text-mono-70">No hay roles disponible</span>
                   </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 2</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 3</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 4</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 5</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 6</label>
-                  </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 7</label>
+                  <div *ngFor="let source of sourceRoleNew" class="flex-1 py-2 flex flex-row space-x-2 items-center">
+                    <input id="{{source.name}}" class="w-4 h-4" type="checkbox">
+                    <label for="{{source.name}}" class="flex-1 t-body-2 text-black">{{source.description}}</label>
                   </div>
                 </div>
               </div>
             </div>
             <div class="flex pt-7 flex-row md:flex-col md:space-x-0 md:space-y-2 md:w-12 space-x-2">
-              <button class="b-solid flex-1">
+              <button (click)="passSelected()" class="b-solid flex-1">
                 <div class="transform md:-rotate-90"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14.543 5.73271C14.8287 6.03263 14.8172 6.50737 14.5172 6.79306L9.26678 11.7944C8.97711 12.0703 8.52187 12.0703 8.2322 11.7944L2.98173 6.79306C2.68181 6.50737 2.67028 6.03263 2.95597 5.73271C3.24166 5.43279 3.71639 5.42125 4.01631 5.70694L8.74949 10.2155L13.4827 5.70694C13.7826 5.42125 14.2573 5.43279 14.543 5.73271Z"/>
                 </svg>
                 </div>
               </button>
-              <button class="b-solid flex-1">
+              <button (click)="passAll()" class="b-solid flex-1">
                 <div class="transform md:-rotate-90"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14.044 7.23271C14.3297 7.53263 14.3181 8.00737 14.0182 8.29306L8.76776 13.2944C8.47809 13.5703 8.02285 13.5703 7.73318 13.2944L2.48271 8.29306C2.18279 8.00737 2.17125 7.53263 2.45694 7.23271C2.74264 6.93279 3.21737 6.92125 3.51729 7.20694L8.25047 11.7155L12.9836 7.20694C13.2836 6.92125 13.7583 6.93279 14.044 7.23271Z"/>
                   <path d="M14.044 2.23271C14.3297 2.53263 14.3181 3.00737 14.0182 3.29306L8.76776 8.29439C8.47809 8.57032 8.02285 8.57032 7.73318 8.29439L2.48271 3.29306C2.18279 3.00737 2.17125 2.53263 2.45694 2.23271C2.74264 1.93279 3.21737 1.92125 3.51729 2.20694L8.25047 6.71553L12.9836 2.20694C13.2836 1.92125 13.7583 1.93279 14.044 2.23271Z"/>
                 </svg>
                 </div>
               </button>
-              <button class="b-solid flex-1">
+              <button (click)="returnSelected()" class="b-solid flex-1">
                 <div class="transform md:-rotate-90"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M2.95694 10.2673C2.67125 9.96736 2.68279 9.49263 2.98271 9.20693L8.23318 4.2056C8.52285 3.92968 8.97809 3.92968 9.26776 4.2056L14.5182 9.20693C14.8181 9.49263 14.8297 9.96736 14.544 10.2673C14.2583 10.5672 13.7836 10.5787 13.4836 10.293L8.75047 5.78446L4.01729 10.293C3.71737 10.5787 3.24264 10.5672 2.95694 10.2673Z"/>
                 </svg>
                 </div>
               </button>
-              <button class="b-solid flex-1">
+              <button (click)="returnAll()" class="b-solid flex-1">
                 <div class="transform md:-rotate-90"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M2.45601 8.26862C2.17032 7.9687 2.18186 7.49397 2.48178 7.20828L7.73224 2.20694C8.02191 1.93102 8.47715 1.93102 8.76682 2.20694L14.0173 7.20828C14.3172 7.49397 14.3287 7.9687 14.0431 8.26862C13.7574 8.56855 13.2826 8.58008 12.9827 8.29439L8.24953 3.7858L3.51636 8.29439C3.21643 8.58008 2.7417 8.56855 2.45601 8.26862Z"/>
                   <path d="M2.45601 13.2686C2.17032 12.9687 2.18186 12.494 2.48178 12.2083L7.73224 7.20694C8.02191 6.93102 8.47715 6.93102 8.76682 7.20694L14.0173 12.2083C14.3172 12.494 14.3287 12.9687 14.0431 13.2686C13.7574 13.5685 13.2826 13.5801 12.9827 13.2944L8.24953 8.7858L3.51636 13.2944C3.21643 13.5801 2.7417 13.5685 2.45601 13.2686Z"/>
@@ -111,13 +90,12 @@
               <div class="rounded bg-mono-10 p-3 space-y-2">
                 <div><input class="w-full h-10 px-2 rounded t-body-2 border border-mono-30 text-black" type="text" placeholder="Buscar"></div>
                 <div class="flex flex-col space-y-2 overflow-y-auto" style="max-height: 240px;">
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 1</label>
+                  <div *ngIf="targetRoleNew.length === 0" class="flex-1  items-center justify-center py-2">
+                    <span class="t-body-2 text-mono-70">No hay roles seleccionados</span>
                   </div>
-                  <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                    <input class="w-4 h-4" type="checkbox">
-                    <label class="t-body-2 text-black">Rol 2</label>
+                  <div *ngFor="let target of targetRoleNew" class="flex-1 py-2 flex flex-row space-x-2 items-center">
+                    <input id="{{target.name}}" class="w-4 h-4" type="checkbox">
+                    <label for="{{target.name}}" class="t-body-2 flex-1 text-black">{{target.description}}</label>
                   </div>
                 </div>
               </div>
@@ -133,3 +111,6 @@
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
+
+<app-block-page [show]="isBlockPage"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>

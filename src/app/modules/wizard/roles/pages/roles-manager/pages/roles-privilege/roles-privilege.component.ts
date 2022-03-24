@@ -6,7 +6,6 @@ import {Response, Role} from "@app/core/models";
 import {FormBuilder} from "@angular/forms";
 import {EntityService} from "@app/modules/wizard/services/entity/entity.service";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
-import {CreateRoleService} from "@app/modules/wizard/services/forms/dynamic-forms.service";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
@@ -33,7 +32,6 @@ interface Elemento {
   component_id: string;
 }
 
-
 @Component({
   selector: 'app-roles-privilege',
   templateUrl: './roles-privilege.component.html',
@@ -50,6 +48,8 @@ export class RolesPrivilegeComponent implements OnInit {
   moduloElemento: Modulo[] = [];
   componenteElemento: Componente[] = [];
   elemento: Elemento[] = [];
+
+  public moduloSelected: Modulo = this.moduloElemento[0];
 
   constructor(
     private formBulder: FormBuilder,
@@ -74,7 +74,6 @@ export class RolesPrivilegeComponent implements OnInit {
     if (this.role !== null) {
       this.isBlockPage = true;
       this._roleService.getModules().subscribe((res: Response) => {
-        let typeMsg = '';
         if(!res.error){
           const dat = res.data;
           this.moduloElemento = [];
@@ -107,19 +106,24 @@ export class RolesPrivilegeComponent implements OnInit {
               this.moduloElemento.push({idM: dat[h].id, nameModulo: dat[h].name, component: this.componenteElemento});
             }
           }
-          typeMsg = 'success';
         }else{
-          typeMsg = 'error';
+          this._messageService.add({
+            type: 'error',
+            message: res.msg,
+            life: 5000
+          });
         }
         this.isBlockPage = false;
-        this._messageService.add({
-          type: typeMsg,
-          message: res.msg,
-          life: 5000
-        });
+
       });
     }
   }
   //initRoles end
+
+  showPrivileges(modulo: Modulo): void {
+    this.moduloSelected = modulo;
+    this.isActivePrivilege = true;
+  }
+  //showPrivileges end
 
 }
