@@ -10,6 +10,7 @@ import { RolesDisabledDatesComponent } from './pages/roles-disabled-dates/roles-
 import { RolesAttributeSecurityComponent } from './pages/roles-attribute-security/roles-attribute-security.component';
 import { RolesAllowedRolesComponent } from './pages/roles-allowed-roles/roles-allowed-roles.component';
 import {ToastModule} from "ecapture-ng-ui";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -27,7 +28,8 @@ import {ToastModule} from "ecapture-ng-ui";
         RolesManagerRoutingModule,
         CommonModule,
         UiModule,
-        ToastModule
+        ToastModule,
+        ReactiveFormsModule
     ]
 })
 export class RolesManagerModule { }

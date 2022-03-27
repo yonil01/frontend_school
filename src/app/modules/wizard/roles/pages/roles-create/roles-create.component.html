@@ -1,31 +1,42 @@
 <app-layout>
   <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white">
+    <div [formGroup]="roleForm" (ngSubmit)="saveRole()" class="ec-container py-6 md:py-12 bg-white">
       <form action="" class="flex flex-col space-y-12">
-        <span class="t-h5 text-black dark:text-white">Crear Rol</span>
+        <span class="t-h5 text-black dark:text-white">{{isEdit ? 'Editar' : 'Crear'}} Rol</span>
         <div class="grid gap-4">
           <div class="flex flex-col space-y-1 lg:w-1/2">
-            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Nombre</label>
-            <input type="text" class="ec-input">
+            <label class="t-caption-2 text-mono-70" for="name">Nombre</label>
+            <input type="text" formControlName="name" id="name" value="{{role.name}}" class="ec-input">
+            <!--<span *ngIf="nameRole.invalid && nameRole.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>-->
           </div>
           <div class="flex flex-col space-y-1 lg:w-1/2">
-            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Descripción</label>
-            <input type="text" class="ec-input">
+            <label class="t-caption-2 text-mono-70">Descripción</label>
+            <input type="text" formControlName="description" id="description" value="{{role.description}}" class="ec-input">
+            <!--<span *ngIf="descriptionRole.invalid && descriptionRole.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>-->
           </div>
           <div class="flex flex-col space-y-1 lg:w-1/2">
-            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Sesiones</label>
-            <input type="number" class="ec-input">
+            <label class="t-caption-2 text-mono-70">Sesiones</label>
+            <input type="number" formControlName="sessions_allowed" id="sessions_allowed" value="{{role.sessions_allowed}}" class="ec-input">
+            <!--<span *ngIf="sessionsRole.invalid && sessionsRole.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>-->
           </div>
           <div class="flex flex-row space-x-2 items-center">
-            <input class="w-4 h-4" type="checkbox">
-            <label class="t-body-2 text-black">Ver todos los usuarios</label>
+            <input id="see_all_users" formControlName="see_all_users" id="see_all_users" value="{{role.see_all_users}}" class="w-4 h-4" type="checkbox">
+            <label for="see_all_users" class="t-body-2 text-black">Ver todos los usuarios</label>
           </div>
         </div>
-        <div class="flex flex-row space-x-4">
-          <button routerLink="/wizard/roles" class="flex-1 md:flex-none b-outline">Cancelar</button>
-          <button class="flex-1 md:flex-none b-solid">Guardar</button>
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+          <div *ngIf="isEdit"><button type="reset" class="w-full md:w-auto b-ghost">Reestablecer Valores</button></div>
+          <div class="flex flex-row space-x-4">
+            <button routerLink="/wizard/roles" class="flex-1 md:flex-none b-outline">Cancelar</button>
+            <button type="submit" class="flex-1 md:flex-none b-solid">Guardar</button>
+          </div>
         </div>
       </form>
     </div>
+    <app-footer></app-footer>
   </ng-container>
 </app-layout>
+
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-confirm-dialog [show]="showConfirm" type="warning" title="Confirmación" body="¿Está seguro(a) de {{isEdit ? 'Editar':'Crear'}} este Rol?" (onEvent)="confirmDialog($event)"></app-confirm-dialog>
+<app-block-page [show]="isBlockPage"></app-block-page>
