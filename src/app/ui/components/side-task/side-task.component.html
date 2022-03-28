@@ -1,7 +1,7 @@
-<div class=" modal-lateral" [@overlayState]="{value: 'visible', params: {transform: transformOptions, transition: transitionOptions}}">
+<div class="modal-lateral" [@overlayState]="{value: 'visible', params: {transform: transformOptions, transition: transitionOptions}}">
   <div class="block-ui z-40 bg-black opacity-60 absolute top-0 left-0 w-full h-screen">
   </div>
-  <div class="modal z-50 absolute bg-white right-0 top-0 h-screen w-2/5 border-l border-mono-30 dark:border-mono-70">
+  <div class="modal z-50 absolute bg-white right-0 top-0 h-screen sm:w-full md:w-3/5 lg:w-2/5 border-l border-mono-30 dark:border-mono-70">
     <div class="sub-header flex flex-row items-center justify-between pl-4 border-b border-mono-30 dark:border-mono-70 h-12">
       <span class="t-body-1 text-black dark:text-white capitalize">{{title}}</span>
       <button class="text-black p-0 w-10 dark:text-white hover:opacity-60" (click)="close.emit(true)">

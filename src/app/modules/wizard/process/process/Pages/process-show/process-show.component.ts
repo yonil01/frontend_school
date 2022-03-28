@@ -29,6 +29,7 @@ import {Subscription} from "rxjs/internal/Subscription";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {MatMenuTrigger} from "@angular/material/menu";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-process-show',
@@ -36,6 +37,10 @@ import {MatMenuTrigger} from "@angular/material/menu";
   styleUrls: ['./process-show.component.scss']
 })
 export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy {
+
+  @ViewChild(MatMenuTrigger, {static: true}) contextMenu!: MatMenuTrigger;
+  @ViewChild('bpmn', {static: true}) private elementBpmn!: ElementRef;
+  @ViewChild('configContainer', {read: ViewContainerRef}) configContainer!: ViewContainerRef;
 
   private _subscription: Subscription = new Subscription();
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
@@ -47,8 +52,38 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   public isShowVersions = false;
   public versionBpm: any;
   public isChangedVersion = false;
-  public queueSelected: Queue = {};
-  public execution: Execution = {};
+  public queueSelected: Queue = {
+    ans: 0,
+    balance_type: 0,
+    class: "",
+    comments: [],
+    description: "",
+    entities: [],
+    executions: [],
+    id: "",
+    id_bpmn_element: "",
+    must_confirm_comment: false,
+    name: "",
+    percent_alert: 0,
+    process_id: "",
+    queue_attributes: [],
+    queue_roles: [],
+    roles: [],
+    sequences: 0,
+    status: 0,
+    type: 0
+  };
+  public execution: Execution = {
+    class: "",
+    description: "",
+    execution_roles: [],
+    id: "",
+    name: "",
+    queue_id: "",
+    rules: [],
+    timer: {},
+    type: 0
+  };
   public isProcessLocked: boolean = false;
   public isReloading: boolean = false;
   public currentElement: any;
@@ -63,11 +98,11 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   private bpmnJS: BpmnJSModeler = new BpmnJSModeler();
   private bpmnXML: string = '';
   private elementAdded: boolean = false;
-  @ViewChild(MatMenuTrigger, {static: true}) contextMenu!: MatMenuTrigger;
-  @ViewChild('bpmn', {static: true}) private elementBpmn!: ElementRef;
-  @ViewChild('configContainer', {read: ViewContainerRef}) configContainer!: ViewContainerRef;
   public showMenu: boolean = false;
   public showConfirm: boolean = false;
+  public showConfirmExit: boolean = false;
+  public showConfirmDeleteQueue: boolean = false;
+  private queueDelete!: Queue;
 
   constructor(
     private router: Router,
@@ -81,7 +116,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   ) {
     this.contextMenuPosition = {x: '0px', y: '0px'};
     this.store.select('bpm').subscribe((res) => {
-      this.bpm = res.bpm;
+      this.bpm = JSON.parse(JSON.stringify(res.bpm));
       this.showSide = res.showSide;
       if (!this.bpm || Object.keys(this.bpm).length === 0) this.router.navigateByUrl('wizard/bpmn');
     });
@@ -160,7 +195,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     }
   }
 
-  loadProcess(): void {
+  private loadProcess(): void {
     this.isBlockedPage = true;
     this._subscription.add(
       this.processService.getProcessByID(this.bpm.id?.toLowerCase() || '').subscribe({
@@ -290,12 +325,11 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       const userLocked = this.bpm.locked_info?.split('|')[1];
       this.initViewerBPMN();
       this.isProcessLocked = true;
-      this.notifyUser(
-        'error',
-        'Diagrama Bloqueado',
-        `El Modelo está bloqueado por el usuario ${userLocked} en otra sesión`,
-        6000,
-      );
+      this.messageService.add({
+        type: 'warning',
+        message: `El Modelo está bloqueado por el usuario ${userLocked} en otra sesión`,
+        life: 5000
+      });
     } else {
       this.isProcessLocked = false;
       this.initModelerBPMN();
@@ -304,10 +338,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
 
   private async importDiagram(xml: any) {
     await this.bpmnJS.importXML(xml);
-  }
-
-  private getActionTypes(): void {
-    // TODO this._bpmnService.getByID('types').subscribe((res: any) => this.ActionsTypes = res.process);
   }
 
   private initModelerBPMN(): void {
@@ -355,8 +385,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   private addElement(event: any): void {
-    this.isChanged.val = true;
     if (!this.bpmnXML.includes(event.element.id) && event.element.id.substr(-5) !== 'label') {
+      this.isChanged.val = true;
       this.elementAdded = true;
       if (event.element.type.substr(-4) === 'Task') {
         this.currentElement = event.element;
@@ -388,12 +418,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       ) {
         this.isAnnounceDialog = false;
         this.isDeleteDialog = true;
-        /*this.confirmationService.confirm({
-          header: 'Confirmación',
-          message: `¿Está seguro de eliminar la Cola de Proceso?`,
-          accept: () => this.deleteQueue(event),
-          reject: () => this.importDiagram(this.bpmnXML),
-        });*/
+        this.showConfirmDeleteQueue = true;
+        this.queueDelete = event;
       }
     } else if (!this.elementAdded) {
       // TODO History
@@ -405,36 +431,44 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   private deleteQueue(event: any): void {
     const index = this.bpm.queues?.findIndex((q: Queue) => q.id_bpmn_element === event.element.id);
     if (index && index > -1) {
-      // Valida si hay referencias a ese queue en las actividades
       // @ts-ignore
       const queueE = this.bpm.queues[index];
       if (queueE) {
         if (queueE.executions?.length) {
           this.initModelerBPMN();
-          this.notifyUser('info', '', `No se puede eliminar, hay ejecuciones relacionadas.`, 6000);
+          this.messageService.add({
+            type: 'waning',
+            message: 'No se puede eliminar, hay ejecuciones relacionadas.',
+            life: 5000
+          });
           return;
         }
         if (queueE.queue_attributes?.length) {
           this.initModelerBPMN();
-          this.notifyUser('info', '', `No se puede eliminar, hay atributos relacionados.`, 6000);
+          this.messageService.add({
+            type: 'waning',
+            message: 'No se puede eliminar, hay atributos relacionados.',
+            life: 5000
+          });
           return;
         }
         if (queueE.queue_roles?.length) {
           this.initModelerBPMN();
-          this.notifyUser('info', '', `No se puede eliminar, hay roles relacionados.`, 6000);
+          this.messageService.add({
+            type: 'waning',
+            message: 'No se puede eliminar, hay roles relacionados.',
+            life: 5000
+          });
           return;
         }
         const {queue, activity} = this.validateHasQueueReferences(queueE);
         if (activity) {
-          // Init modeler Again with the Queue deleted
           this.initModelerBPMN();
-          this.notifyUser(
-            'info',
-            '',
-            `No se puede eliminar la cola de proceso porque es referenciada en:\nCola de proceso: ${queue}\n
-        Actividad: ${activity}\nPara continuar debe actualizar la referencia.`,
-            6000,
-          );
+          this.messageService.add({
+            type: 'waning',
+            message: `No se puede eliminar la cola de proceso porque es referenciada en: Cola de proceso: ${queue} Actividad: ${activity} Para continuar debe actualizar la referencia.`,
+            life: 5000
+          });
           return;
         }
         // TODO
@@ -442,17 +476,28 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
         // const history = new HistoryBPMN(null, null, event.element.id, JSON.stringify(queueE), null, executions, null, event.element.id);
         // const succcessHistoryReg = this.addHistoryRegister(history, 'equ');
         // if (!succcessHistoryReg) return;
-        this.processService.deleteQueue(queueE.id?.toLowerCase() || '').subscribe((res) => {
-          if (res.error) {
-            this.initModelerBPMN();
-            this.notifyUser('error', '', res.msg, 6000);
-          } else {
-            this.notifyUser('success', '', res.msg, 6000);
-            this.bpm.queues?.splice(index, 1);
-            this.updateBpm();
-            this.store.dispatch(controlBpm({bpm: this.bpm}));
-          }
-        });
+        this.isBlockedPage = true;
+        this._subscription.add(
+          this.processService.deleteQueue(queueE.id?.toLowerCase() || '').subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.initModelerBPMN();
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                this.messageService.add({type: 'success', message: res.msg, life: 5000});
+                this.bpm.queues?.splice(index, 1);
+                this.updateBpm();
+                this.store.dispatch(controlBpm({bpm: this.bpm}));
+              }
+            },
+            error: (err: HttpErrorResponse) => {
+              this.initModelerBPMN();
+              this.isBlockedPage = false;
+              console.error(err);
+              this.messageService.add({type: 'error', message: err.message, life: 5000});
+            },
+          })
+        );
       }
     }
     this.isChanged.val = true;
@@ -480,8 +525,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
         }
       }
     }
-    // TODO
-    // return resp ? resp : { queue: null, execution: null, activity: null };
     return {queue: null, execution: null, activity: null};
   }
 
@@ -496,9 +539,10 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       if (this.bpm.queues?.length) {
         const queueFind = this.bpm.queues.find((q: Queue) => q.id_bpmn_element === this.currentElement.id);
         if (queueFind) {
-          this.queueSelected = queueFind;
+          this.queueSelected = {...queueFind};
+        } else {
+          this.queueSelected = ({} as Queue);
         }
-        this.queueSelected = this.queueSelected ? this.queueSelected : ({} as Queue);
         this.existQueue = !!Object.entries(this.queueSelected).length;
       } else {
         this.existQueue = false;
@@ -513,24 +557,15 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     }
   }
 
-  private avoidContextMenu() {
+  private avoidContextMenu(): void {
     this.bpmnJS.on('element.contextmenu', (event: any) => {
       event.originalEvent.preventDefault();
       event.originalEvent.stopPropagation();
     });
   }
 
-  updateColor(color: string): void {
-    const modeling = this.bpmnJS.get('modeling');
-    const elements = [];
-    elements.push(this.currentElement);
-    modeling.setColor(elements, {
-      // stroke: 'green',
-      fill: color,
-    });
-  }
-
-  public setFullScreen() {
+  // TODO implement full screen bpmn modeler
+  public setFullScreen(): void {
   }
 
   public async downloadSVG() {
@@ -558,6 +593,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     });
   }
 
+  // TODO implement get history
   public getHistory() {
   }
 
@@ -570,13 +606,28 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   public deleteProcess(): void {
-    this.processService.deleteBpm(this.bpm.id || '').subscribe((res) => {
-      this.notifyUser(res.type, '', res.msg, 6000);
-    });
+    this.isBlockedPage = true;
+    this._subscription.add(
+      this.processService.deleteBpm(this.bpm.id || '').subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            this.messageService.add({type: 'success', message: res.msg, life: 5000});
+            this.router.navigateByUrl('/wizard/bpmn');
+          }
+          this.isBlockedPage = false;
+        },
+        error: (err: HttpErrorResponse) => {
+          this.isBlockedPage = false;
+          this.messageService.add({type: 'error', message: err.message, life: 5000});
+          console.error(err)
+        }
+      })
+    );
   }
 
-  /** Context menu options functions */
-  initTaskForm() {
+  public initTaskForm(): void {
     switch (this.currentElement.type) {
       case 'bpmn:IntermediateCatchEvent':
       case 'bpmn:ExclusiveGateway':
@@ -600,16 +651,16 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       case 'bpmn:SubProcess':
         return;
       default:
-        this.notifyUser('warn', '', 'Seleccione el tipo de Actividad', 5000);
+        this.messageService.add({type: 'warning', message: 'Seleccione el tipo de Actividad', life: 5000});
     }
   }
 
-  async initActivitiesForm() {
+  public initActivitiesForm(): void {
     this.viewSide = 'activities';
   }
 
-  // Function for Lock/Unlock Process and Diagram
-  disableDiagram(lockLocal: boolean): void {
+  // TODO implement disable bpmn diagram
+  private disableDiagram(lockLocal: boolean): void {
     // this.showSide = false;
     this.viewSide = '';
     // this.dispatchSideState(this.showSide);
@@ -620,31 +671,39 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       this.initViewerBPMN();
       return;
     }
-    this.processService.getLockInfo(this.bpm.id?.toLowerCase() || '').subscribe((res) => {
-      if (res.data.is_locked && !this.validateSessionLockedELS()) {
-        const user = res.data.locked_info.split('|')[1];
-        this.notifyUser('info', `El proceso está bloqueado por el usuario ${user}`, 'Aceptar', 5000);
-        return;
-      }
-      this.isProcessLocked = lockLocal;
-      this.lockBpmnDiagram();
-      this.initModelerBPMN();
-    });
+    this.isBlockedPage = true;
+    this._subscription.add(
+      this.processService.getLockInfo(this.bpm.id?.toLowerCase() || '').subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            if (res.data.is_locked && !this.validateSessionLockedELS()) {
+              const user = res.data.locked_info.split('|')[1];
+              this.messageService.add({type: 'warning', message: `El proceso está bloqueado por ${user}`, life: 5000});
+              return;
+            }
+            this.isProcessLocked = lockLocal;
+            this.lockBpmnDiagram();
+            this.initModelerBPMN();
+          }
+          this.isBlockedPage = false;
+        },
+        error: (err: HttpErrorResponse) => {
+          this.isBlockedPage = false;
+          this.messageService.add({type: 'error', message: err.message, life: 5000});
+          console.error(err)
+        }
+      })
+    );
   }
 
-  /**
-   * Lock the process in ELS, is disable for the other users
-   * hint: now is enable (in the modeler) for the current User.
-   */
+// TODO implement lock bpmn diagram
   private lockBpmnDiagram(): void {
     // this.isProcessLocked = false;
     // this.processService.lockProcess(this.bpm.id.toLowerCase()).subscribe((_: Response) => {});
   }
 
-  /**
-   * Unlock the process in ELS, is enable for the other users
-   * hint: now is disable for the current user just as viewer
-   */
   private unlockBpmnDiagram(): void {
     this.isProcessLocked = true;
     this._subscription.add(
@@ -668,24 +727,16 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     );
   }
 
-  /**
-   * Validate if current session_id has the diagram Locked in ELS
-   * @return true if current session has blocked it, false otherwise
-   */
   private validateSessionLockedELS(): boolean {
     const sessionLocked = this.bpm.locked_info ? this.bpm.locked_info.split('|')[0] : null;
     const sessionID = this.localStorage.getSessionID();
     return sessionID === sessionLocked;
   }
 
-  hideSide() {
+  public hideSide(): void {
     this.showSide = false;
     this.viewSide = '';
     this.loadProcess();
-  }
-
-  private dispatchSideState(side: boolean) {
-    this.store.dispatch(controlSide({showSide: side}));
   }
 
   public async insertBpm() {
@@ -700,7 +751,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
         this.processService.createProcess(newBpmVersion).subscribe({
           next: (res) => {
             if (res.error) {
-              this.notifyUser('error', '', res.msg, 6000);
+              this.messageService.add({type: 'error', message: res.msg, life: 5000});
             } else {
               this.getBpmVersions(this.bpm);
               const bmp: Process = {id: res.data};
@@ -729,60 +780,77 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     }
   }
 
-  responseCreateQueue(res: Response): void {
+  public responseCreateQueue(res: Response): void {
     if (res.error) {
-      this.notifyUser('error', '', res.msg, 6000);
+      this.messageService.add({type: 'error', message: res.msg, life: 5000});
     } else {
-      this.notifyUser('success', '', res.msg, 6000);
+      this.messageService.add({type: 'success', message: res.msg, life: 5000});
       this.updateBpm();
     }
   }
 
-  responseUpdateQueue(res: Response): void {
+  public responseUpdateQueue(res: Response): void {
     if (res.error) {
-      this.notifyUser('error', '', res.msg, 6000);
+      this.messageService.add({type: 'error', message: res.msg, life: 5000});
     } else {
-      this.notifyUser('success', '', res.msg, 6000);
+      this.messageService.add({type: 'success', message: res.msg, life: 5000});
       if (this.isChanged.val) this.updateBpm();
     }
   }
 
-  updateNameQueue(nameQueue: string): void {
+  public updateNameQueue(nameQueue: string): void {
     this.updateNameBpm(nameQueue);
   }
 
-  private async updateChangeBpmn() {
-    // const xmlFile = await this.exportXMLB64();
-  }
-
   private async updateBpm() {
-    // if (this.validateBpmn()) {
-    [this.bpm.document_id_svg, this.bpm.document_id_bpmn] = await this.exportSaveDocuments();
-    const bpmPersistense: Process = JSON.parse(JSON.stringify(this.bpm));
-    delete bpmPersistense.status;
-    delete bpmPersistense.is_locked;
-    delete bpmPersistense.is_published;
-    delete bpmPersistense.locked_info;
-    delete bpmPersistense.process_doctypes;
-    delete bpmPersistense.process_roles;
-    delete bpmPersistense.queues;
-    delete bpmPersistense.user_deletes;
-    delete bpmPersistense.project;
-    bpmPersistense.document_id_svg = this.bpm.document_id_svg?.toString();
-    bpmPersistense.document_id_bpmn = this.bpm.document_id_bpmn?.toString();
-    const idAns = bpmPersistense.document_id_ans ? parseInt(bpmPersistense.document_id_ans, 10) + 1 : 1;
-    bpmPersistense.document_id_ans = idAns.toString();
-    bpmPersistense.id = bpmPersistense.id?.toLowerCase();
-    bpmPersistense.project = this.bpm.project.id.toLowerCase();
-    this.processService.updateProcess(bpmPersistense).subscribe((res: Response) => {
-      if (res.error) {
-        this.notifyUser('error', '', res.msg, 6000);
-      } else {
-        this.notifyUser('success', '', res.msg, 6000);
-        this.isChanged.val = false;
-      }
-    });
-    // }
+    if (this.validateBpmn()) {
+      [this.bpm.document_id_svg, this.bpm.document_id_bpmn] = await this.exportSaveDocuments();
+      const bpmPersistense: Process = JSON.parse(JSON.stringify(this.bpm));
+      delete bpmPersistense.status;
+      delete bpmPersistense.is_locked;
+      delete bpmPersistense.is_published;
+      delete bpmPersistense.locked_info;
+      delete bpmPersistense.process_doctypes;
+      delete bpmPersistense.process_roles;
+      delete bpmPersistense.queues;
+      delete bpmPersistense.user_deletes;
+      delete bpmPersistense.project;
+      bpmPersistense.document_id_svg = this.bpm.document_id_svg?.toString();
+      bpmPersistense.document_id_bpmn = this.bpm.document_id_bpmn?.toString();
+      const idAns = bpmPersistense.document_id_ans ? parseInt(bpmPersistense.document_id_ans, 10) + 1 : 1;
+      bpmPersistense.document_id_ans = idAns.toString();
+      bpmPersistense.id = bpmPersistense.id?.toLowerCase();
+      bpmPersistense.project = this.bpm.project.id.toLowerCase();
+      this.isBlockedPage = true;
+      this._subscription.add(
+        this.processService.updateProcess(bpmPersistense).subscribe({
+          next: (res: Response) => {
+            if (res.error) {
+              this.messageService.add({type: 'error', message: res.msg, life: 5000});
+            } else {
+              this.messageService.add({type: 'success', message: res.msg, life: 5000});
+              this.isChanged.val = false;
+            }
+            this.isBlockedPage = false;
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error(err);
+            this.isBlockedPage = false;
+            this.messageService.add({
+              type: 'error',
+              message: 'Hubo un error a la hora de actualizar el proceso',
+              life: 5000
+            });
+          }
+        })
+      );
+    } else {
+      this.messageService.add({
+        type: 'warning',
+        message: 'El proceso no puede ser guardado porque no es valido!',
+        life: 5000
+      });
+    }
   }
 
   public publishBpm(): void {
@@ -876,6 +944,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   public async exportSaveDocuments(): Promise<Array<any>> {
+    this.isBlockedPage = true;
     let svgFile;
     let xmlFile;
     try {
@@ -892,6 +961,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       this.messageService.add({type: 'error', life: 5000, message: 'Error al guardar los documentos'});
       return [0, 0];
     }
+    this.isBlockedPage = false;
     this.messageService.add({type: 'success', life: 5000, message: 'Documentos guardados correctamente'});
     return [documentIdSVG, documentIdBPMN];
   }
@@ -967,14 +1037,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     this.router.navigateByUrl('/wizard/bpmn');
   }
 
-  private notifyUser(severity: string, summary: string, detail: string, life: number): void {
-    this.messageService.add({
-      type: severity,
-      message: detail,
-      life: life,
-    });
-  }
-
   public validateBpmnEvent(): void {
     if (this.validateBpmn()) {
       this.messageService.add({type: 'success', message: 'El diagrama BPMN es válido', life: 5000});
@@ -988,7 +1050,25 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     if (this.validateBpmn()) {
       this.exportSaveDocuments();
     } else {
-      this.messageService.add({type: 'warn', message: 'El diagrama BPMN no es válido', life: 5000});
+      this.messageService.add({type: 'warning', message: 'El diagrama BPMN no es válido', life: 5000});
+    }
+    this.showOptions = false;
+  }
+
+  public confirmExit(event: boolean) {
+    if (event) {
+      this.leave();
+    } else {
+      this.showConfirmExit = false;
+    }
+  }
+
+  public confirmDeleteQueue(event: boolean) {
+    if (event) {
+      this.deleteQueue(this.queueDelete);
+    } else {
+      this.showConfirmDeleteQueue = false;
+      this.importDiagram(this.bpmnXML)
     }
   }
 

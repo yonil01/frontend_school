@@ -1,12 +1,12 @@
 <div>
-  <div *ngIf="!createOrUpdate">
+  <div *ngIf="showView === 'list'">
 
     <div class="t-body-1 text-black dark:text-white mb-12 font-bold">
       <span>{{'TASK' | translate}}</span>
     </div>
 
     <div class="flex w-full items-center justify-between mb-6">
-      <button class="b-solid" (click)="createOrUpdate = true; operation = 'add'">{{'NEW_TASK' |  translate}}</button>
+      <button class="b-solid" (click)="showView = 'editOrCreate'; operation = 'add'">{{'NEW_TASK' |  translate}}</button>
       <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_TASK' | translate}}"
                   (input)="filterItemsTarget($event, tasks)"></div>
     </div>
@@ -20,7 +20,7 @@
           <div class="p-2 w-32 flex items-center justify-center">{{'OPTIONS' | translate}}</div>
         </div>
         <div class="table-body text-body-2 text-mono-70">
-          <div *ngFor="let task of tasksDisplay, let i = index" class="register-table w-full flex flex-row">
+          <div *ngFor="let task of tasksPagination, let i = index" class="register-table w-full flex flex-row">
             <div class="flex items-center p-2 w-16">{{i + 1}}</div>
             <div class="flex items-center p-2 flex-1 break-all">{{task.name}}</div>
             <div class="flex items-center p-2 flex-1 break-all" *ngIf="task.type === 1">{{'SYSTEM' | translate}}</div>
@@ -28,7 +28,7 @@
             <div class="flex items-center p-2 flex-1 break-all" *ngIf="task.type === 3">{{'USER' | translate}}</div>
             <div class="flex items-center p-2 w-32">
               <div class="w-full flex flex-row">
-                <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" (click)="editExecution(task)">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -47,7 +47,7 @@
                     </svg>
                   </div>
                 </button>
-                <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" (click)="showActivities(task)">
                   <div>
                     <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -61,47 +61,16 @@
           </div>
         </div>
       </div>
-      <div class="pagination flex flex-row items-center justify-between">
-        <div class="left">
-          <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
-            <option>10</option>
-            <option>20</option>
-            <option>30</option>
-          </select>
-        </div>
-        <div class="right flex items-center flex-row space-x-1">
-          <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
-            <div>
-              <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
-                   xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
-              </svg>
-            </div>
-          </button>
-          <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-            <span class="t-body-2">1/2</span>
-          </div>
-          <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
-            <div>
-              <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
-                   xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
-              </svg>
-            </div>
-          </button>
-        </div>
-      </div>
+      <app-paginator [data]="tasksDisplay" (current-data-page)="tasksPagination = $event"></app-paginator>
     </div>
   </div>
 
-  <div class="" *ngIf="createOrUpdate">
+  <div *ngIf="showView ==='createOrUpdate'">
     <div class="flex gap-4 mb-12">
       <div class="flex gap-1 items-center" *ngFor="let step of steps; let position = index">
         <div class="rounded-full h-8 w-8 {{step.active ? 'bg-brand-l-1 text-white' : 'bg-mono-10 text-black'}} flex items-center justify-center"><span>{{position + 1}}</span></div>
-        <div class="text-brand-d-1 t-subtitle-1">
-          <span>{{step.name}}</span>
+        <div class="text-brand-d-1 t-caption-1">
+          <span>{{step.name | translate}}</span>
         </div>
       </div>
     </div>
@@ -171,11 +140,11 @@
                 >{{'SAVE' | translate}}</button>
       </div>
     </div>
-    <div *ngIf="positionStep === 1">
+    <div *ngIf="positionStep === 1 && taskForm.get('type')?.value === 3">
       <div class="flex w-full items-center justify-between mb-5">
-        <button class="b-outline">{{'SELECT_ALL' |  translate}}</button>
+        <!--<button class="b-outline">{{'SELECT_ALL' |  translate}}</button>-->
         <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_ROL' | translate}}"
-                    (input)="filterRoles($event, roles)"></div>
+                    (input)="filterRoles($event)"></div>
       </div>
       <div class="w-full">
         <div class="table-h hidden md:block w-full">
@@ -185,7 +154,7 @@
             <div class="p-2 w-32 flex items-center justify-center">{{'SELECT' | translate}}</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
-            <div *ngFor="let rol of rolesDisplay, let i = index" class="register-table w-full flex flex-row">
+            <div *ngFor="let rol of rolesPagination, let i = index" class="register-table w-full flex flex-row">
               <div class="flex items-center p-2 w-16">{{i + 1}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{rol.role.name}}</div>
               <div class="flex items-center p-2 w-32 justify-center">
@@ -194,291 +163,28 @@
             </div>
           </div>
         </div>
-        <div class="pagination flex flex-row items-center justify-between">
-          <div class="left">
-            <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
-              <option>10</option>
-              <option>20</option>
-              <option>30</option>
-            </select>
-          </div>
-          <div class="right flex items-center flex-row space-x-1">
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
-              <div>
-                <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
-                </svg>
-              </div>
-            </button>
-            <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-              <span class="t-body-2">1/2</span>
-            </div>
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
-              <div>
-                <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
-                </svg>
-              </div>
-            </button>
-          </div>
-        </div>
+        <app-paginator [data]="rolesDisplay" (current-data-page)="rolesPagination = $event"></app-paginator>
       </div>
       <div class="flex flex-row space-x-4 lg:w-2/3 mt-4">
         <button class="flex-1 md:flex-none b-outline" (click)="backStep()">{{'BACK' | translate}}</button>
         <button class="flex-1 md:flex-none b-solid" (click)="positionStep = positionStep+1">
-        >{{'NEXT' | translate}}</button>
+        {{'NEXT' | translate}}</button>
       </div>
     </div>
   </div>
 
+  <div *ngIf="showView === 'activities'">
+    <div class="text-xl text-black">
+      <span>{{task.name}}</span>
+    </div>
+
+    <app-activities [executionInput]="task" [executions]="tasks" (backTasks)="backTasks($event)"></app-activities>
+  </div>
 
 </div>
+
 <app-confirm-dialog [show]="showAlert" (onEvent)="deleteExecution($event)" type="warning"
                     body="¿Desea eliminar esta ejecución?"></app-confirm-dialog>
 
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
-
-
-<!--<p-card [style]="{ margin: '1em 1em' }">
-  <div class="info">
-    <div>
-      <label
-        ><b>{{ parentQueue.name }}</b>
-      </label>
-    </div>
-    <div>
-      <label>Identificador: </label>
-      <label>
-        <b>{{ parentQueue.id.toLowerCase() }}</b>
-      </label>
-    </div>
-  </div>
-  <div [ngSwitch]="view">
-    <div *ngSwitchCase="'task'">
-      <button
-        pButton
-        type="button"
-        label="Regresar"
-        class="ui-button-secondary button-back"
-        icon="pi pi-angle-left"
-        (click)="backTasks(null)"
-      ></button>
-      <mat-horizontal-stepper labelPosition="bottom" linear #stepper>
-        <ng-template matStepperIcon="edit">
-          <mat-icon>done</mat-icon>
-        </ng-template>
-        <ng-template matStepperIcon="done">
-          <mat-icon>done_all</mat-icon>
-        </ng-template>
-        <mat-step [stepControl]="taskForm">
-          <ng-template matStepLabel>Información General</ng-template>
-          <form [formGroup]="taskForm" class="form">
-            <div class="id-task" *ngIf="task?.id">
-              <label><b>{{ task.name }} - <b>{{task.id.toLowerCase()}}</b></b>
-              </label>
-            </div>
-            <div>
-              <span>Tipo de tarea</span>
-              <p-dropdown
-                appendTo="body"
-                [options]="typesTasks"
-                optionLabel="name"
-                formControlName="type"
-                [style]="{ width: '100%', margin: '0 0 1em 0' }"
-                [showClear]="false"
-                placeholder="Tipo tarea"
-                filter="true"
-                (onChange)="selectTypeTask($event.value)"
-              >
-              </p-dropdown>
-            </div>
-            <div class="p-grid" *ngIf="typeTask">
-              <div class="p-col-12 p-md-6">
-                <span>Icono</span>
-                <p-dropdown
-                  appendTo="body"
-                  [options]="icons"
-                  name="class"
-                  formControlName="class"
-                  [style]="{ width: '100%' }"
-                  [showClear]="true"
-                  placeholder="Icono"
-                  filter="true"
-                >
-                  <ng-template let-item pTemplate="selectedItem">
-                    <img src="assets/img/raw-svg/{{ item['name'] }}.svg" style="width: 16px; vertical-align: middle;" />
-                    <span style="vertical-align: middle; margin-left: 0.5em;">{{ item['label'] }}</span>
-                  </ng-template>
-                  <ng-template let-icon pTemplate="item">
-                    <div class="ui-helper-clearfix" style="position: relative; height: 25px;">
-                      <img
-                        src="assets/img/raw-svg/{{ icon.name }}.svg"
-                        style="width: 24px; position: absolute; top: 1px; left: 5px;"
-                      />
-                      <div style="font-size: 14px; float: right; margin-top: 4px;">{{ icon.label }}</div>
-                    </div>
-                  </ng-template>
-                </p-dropdown>
-              </div>
-              <div class="p-col-12 p-md-6">
-                <span>Nombre</span>
-                <input
-                  type="text"
-                  name="name"
-                  formControlName="name"
-                  style="width: 100%;"
-                  pInputText
-                  placeholder="Nombre"
-                />
-              </div>
-              <div class="p-col-12 p-md-6" *ngIf="typeTask === 2">
-                <span>Timer</span>
-                <input type="text" name="timers" style="width: 100%;" pInputText placeholder="Nombre" />
-              </div>
-              <div class="p-col-12">
-                <span>Descripcion</span>
-                <textarea
-                  [rows]="2"
-                  formControlName="description"
-                  pInputTextarea
-                  autoResize="autoResize"
-                  style="width: 100%;"
-                ></textarea>
-              </div>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 1em; margin-bottom: 1em;">
-              <button
-                pButton
-                type="button"
-                label="Guardar"
-                appBtnPrimary
-                btnType="filled"
-                (click)="saveTask()"
-                [disabled]="taskForm.invalid"
-              ></button>
-              <button
-                pButton
-                matStepperNext
-                type="button"
-                icon="pi pi-angle-right"
-                [disabled]="taskForm.invalid"
-                label="Siguiente"
-                (click)="saveTask()"
-                *ngIf="this.typeTask === 3"
-              ></button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [completed]="rolesSelected.length >= 1" *ngIf="taskForm.get('type').value?.id === 3">
-          <ng-template matStepLabel>Roles</ng-template>
-          <p-pickList
-            [source]="rolesAvailable"
-            [target]="rolesSelected"
-            sourceHeader="Disponibles"
-            targetHeader="Seleccionados"
-            dragdrop="false"
-            [showSourceControls]="false"
-            [showTargetControls]="false"
-            [responsive]="true"
-            filterBy="name"
-            sourceFilterPlaceholder="Buscar por name"
-            targetFilterPlaceholder="Buscar por name"
-            (onMoveToTarget)="onMoveToSelectedRoles($event.items)"
-            (onMoveToSource)="onMoveToAvailableRoles($event.items)"
-          >
-            <ng-template let-attribute pTemplate="item">
-              <div class="ui-helper-clearfix">
-                <div style="font-size: 14px; margin: 0 0 0 0;">{{ attribute.name }}</div>
-              </div>
-            </ng-template>
-          </p-pickList>
-          <div style="display: flex; justify-content: space-between; margin-top: 2em; margin-bottom: 1em;">
-            <button pButton matStepperPrevious type="button" icon="pi pi-angle-left" label="Regresar"></button>
-          </div>
-        </mat-step>
-      </mat-horizontal-stepper>
-    </div>
-    <div *ngSwitchCase="'tasks'">
-      <div class="buttons-new">
-        <button pButton type="button" label="Nueva tarea" icon="pi pi-plus" (click)="showTask(null, null)"></button>
-      </div>
-      <div *ngIf="!tasks?.length">
-        <span>No hay tareas</span>
-      </div>
-      <p-table
-        [columns]="taskTableColumns"
-        [value]="tasks"
-        [paginator]="tasks && tasks.length > 7"
-        [rows]="7"
-        [(selection)]="selectionTask"
-        [autoLayout]="true"
-        [responsive]="true"
-        *ngIf="tasks?.length"
-      >
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th *ngFor="let col of columns" [ngSwitch]="col['field']">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                {{ col.header }}
-                <input *ngSwitchCase="'id'" [style]="{ width: '70%' }" pInputText type="text" placeholder="Buscar..." />
-              </div>
-            </th>
-            <th class="tb-options">Opciones</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
-          <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns">
-              <div [ngSwitch]="col.field">
-                <div *ngSwitchCase="'type'">
-                  <div [ngSwitch]="rowData[col.field]">
-                    <div *ngSwitchCase="1">Sistema</div>
-                    <div *ngSwitchCase="2">Timer</div>
-                    <div *ngSwitchCase="3">Usuario</div>
-                    <div *ngSwitchDefault></div>
-                  </div>
-                </div>
-                <div *ngSwitchDefault>{{ rowData[col.field] }}</div>
-              </div>
-            </td>
-            <td>
-              <a pButton icon="pi pi-pencil" class="icon-edit" (click)="showTask(rowData, index)"></a>
-              <a pButton icon="pi pi-share-alt" class="icon-options" (click)="showActivities(rowData)"></a>
-              <a pButton icon="pi pi-trash" class="icon-delete" (click)="confirmDeleteDataset(rowData, index)"></a>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-    <div *ngSwitchCase="'activities'">
-      <app-activities [executionInput]="task" [executions]="tasks" (backTasks)="backTasks($event)"></app-activities>
-    </div>
-    <div *ngSwitchDefault>output2</div>
-  </div>
-</p-card>
-<p-toast position="bottom-center" key="tc"></p-toast>
-<p-confirmDialog #cd styleClass="ce-dialog-width" appendTo="body" icon="pi pi-exclamation-triangle">
-  <p-footer>
-    <button
-      type="button"
-      pButton
-      icon="pi pi-times"
-      label="Cancelar"
-      class="ui-button-secondary"
-      (click)="cd.reject()"
-    ></button>
-    <button
-      type="button"
-      pButton
-      icon="pi pi-check"
-      label="Guardar"
-      appBtnPrimary
-      btnType="filled"
-      (click)="cd.accept()"
-    ></button>
-  </p-footer>
-</p-confirmDialog>-->
+<app-block-page [show]="blockPage"></app-block-page>

@@ -20,29 +20,30 @@ import {toastDataStyle} from "@app/core/models/toast/toast";
 export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
 
   private _subscription: Subscription = new Subscription();
-  public createOrUpdate: boolean = false;
+  public showView: string = 'list';
   public readonly dropStyle: DropdownModel = dropStyle;
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
   public positionStep: number = 0;
 
   @Input('queue-selected') parentQueue!: Queue;
   selectionTask!: Execution;
-  taskForm: FormGroup;
-  tasks: Execution[] = [];
-  tasksDisplay: Execution[] = [];
+  public taskForm: FormGroup;
+  public tasks: Execution[] = [];
+  public tasksDisplay: Execution[] = [];
+  public tasksPagination: Execution[] = [];
   icons: any[] = [];
-  selectionRoles: Role[] = [];
+  public selectionRoles: Role[] = [];
   selectedRolesForm = new FormControl([]);
   selectedRolesBefore: Role[] = [];
   public roles: Role[] = [];
   public rolesDisplay: RolesDisplay[] = [];
-  view: string;
+  public rolesPagination: RolesDisplay[] = [];
   typeTask: number = 0;
-  operation: string = '';
-  typesTasks: any[] = [];
+  public operation: string = 'add';
+  public typesTasks: any[] = [];
   task!: Execution;
   indexTask: number = 0;
-  rolesAvailable: Role[];
+  public rolesAvailable: RolesDisplay[];
   rolesSelected: Role[];
   public timers: DataDrop[] = [
     {value: 1, label: 'Notificar solicitud recibida'},
@@ -52,13 +53,15 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     {value: 35, label: 'Timer Execution daily'}
   ];
   public steps: StepModel[] = [
-    {id: 1, name: 'Información general', active: true},
-    {id: 2, name: 'Roles', active: false}
+    {id: 1, name: 'GENERAL_INFORMATION', active: true},
+    {id: 2, name: 'ROLES', active: false}
   ];
 
   public executionSelected!: Execution;
   public showAlert: boolean = false;
   public blockPage: boolean = false;
+
+  public showTaskManager: string = 'list';
 
   constructor(
     private fb: FormBuilder,
@@ -74,7 +77,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       timer: [''],
       description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(8000)]],
     });
-    this.view = 'tasks';
     // TODO cargar desde el api
     this.typesTasks = [
       {value: 1, label: 'Sistema'},
@@ -95,9 +97,9 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(): void {
     if (this.parentQueue) {
       this.getRoles();
-      const taskFind = this.parentQueue.executions ? this.parentQueue.executions : [];
-      this.tasks = taskFind;
-      this.tasksDisplay = taskFind
+      const taskFind = this.parentQueue.executions ? [...this.parentQueue.executions] : [];
+      this.tasks = JSON.parse(JSON.stringify(taskFind));
+      this.tasksDisplay = JSON.parse(JSON.stringify(taskFind));
     }
   }
 
@@ -123,14 +125,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
 
   private preloadRoles(): void {
     this.selectionRoles = this.parentQueue.queue_roles ? this.roles.filter((rl) => this.parentQueue.queue_roles?.find((rq) => rq?.role.id.toLowerCase() === rl.id?.toLowerCase())) : [];
-    for (const rol of this.roles) {
-      const exist = this.selectionRoles.find((r) => r.id === rol.id);
-      if (exist) {
-        this.rolesDisplay.push({role: rol, active: true});
-      } else {
-        this.rolesDisplay.push({role: rol, active: false});
-      }
-    }
   }
 
   showTask(task: Execution, index: number): void {
@@ -140,7 +134,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       this.indexTask = index;
       this.operation = 'edit';
       this.typeTask = task.type || 0;
-      const taskValue: Execution = JSON.parse(JSON.stringify(task));
+      const taskValue = JSON.parse(JSON.stringify(task));
       delete taskValue.id;
       delete taskValue.queue_id;
       delete taskValue.rules;
@@ -149,15 +143,14 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       const typeTasc = this.typesTasks.find((tt) => tt.value === taskValue.type);
       this.taskForm.get('type')?.setValue(typeTasc);
       this.taskForm.get('type')?.disable();
-      const selectRoles = task.execution_roles ? this.selectionRoles.filter((sr) => task.execution_roles?.find((er) => er.role?.id?.toLowerCase() === sr.id?.toLowerCase())) : [];
-      this.selectedRolesForm.setValue(selectRoles);
-      this.selectedRolesBefore = selectRoles;
+      //const selectRoles = task.execution_roles ? this.selectionRoles.filter((sr) => task.execution_roles?.find((er) => er.role?.id?.toLowerCase() === sr.id?.toLowerCase())) : [];
+      // this.selectedRolesForm.setValue(selectRoles);
+      // this.selectedRolesBefore = selectRoles;
     } else {
       this.operation = 'add';
       this.taskForm.reset();
       this.taskForm.get('type')?.enable();
     }
-    this.view = 'task';
   }
 
   selectTypeTask(value: any): void {
@@ -169,8 +162,8 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       this.typeTask = 0;
       const indexTask = this.tasks.findIndex((t) => t.id?.toLowerCase() === this.task.id?.toLowerCase());
       this.tasks[indexTask] = JSON.parse(JSON.stringify(task));
+      this.showView = 'list';
     }
-    this.view = 'tasks';
   }
 
   selectRoles(event: any): void {
@@ -224,7 +217,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
                 this.indexTask = this.tasks.length - 1;
                 this.messageService.add({type: 'success', message: 'Ejecuión creada correctamente!', life: 5000});
                 this.steps[this.positionStep].active = true;
-                // if (this.typeTask !== 3) this.view = 'tasks';
               }
               this.blockPage = false;
             },
@@ -251,12 +243,16 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
                 this.positionStep++;
                 const indexExecution = this.tasks.findIndex((t) => t.id?.toLowerCase() === execution.id?.toLowerCase());
                 if (indexExecution !== -1) {
-                  this.tasks[indexExecution] = execution;
+                  this.tasks[indexExecution].name = execution.name;
+                  this.tasks[indexExecution].type = execution.type;
+                  this.tasks[indexExecution].class = execution.class;
+                  this.tasks[indexExecution].description = execution.description;
+                  this.tasks[indexExecution].timer = execution.timer;
                   this.executionSelected = execution;
                 }
                 this.steps[this.positionStep].active = true;
-                // if (this.typeTask !== 3) this.view = 'tasks';
               }
+              this.blockPage = false;
             },
             error: (err: Error) => {
               this.blockPage = false;
@@ -273,18 +269,17 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private loadProcessProcessRoles(task: Execution): void {
-    this.rolesSelected = [];
+    this.rolesDisplay = [];
     this.rolesAvailable = [];
     if (task) {
       for (const r of this.roles) {
         if (task.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === r.id?.toLowerCase())) {
-          this.rolesSelected.push(r);
+          this.rolesDisplay.push({role: r, active: true});
         } else {
-          this.rolesAvailable.push(r);
+          this.rolesDisplay.push({role: r, active: false});
         }
       }
-    } else {
-      this.rolesAvailable = JSON.parse(JSON.stringify(this.roles));
+      this.rolesAvailable = [...this.rolesDisplay];
     }
   }
 
@@ -301,8 +296,18 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
             next: (res) => {
               if (res.error) {
                 this.messageService.add({type: 'error', message: res.msg, life: 5000});
+                const indexRoleDisplay = this.rolesDisplay.findIndex((r) => r.role.id?.toLowerCase() === roleID.toLowerCase());
+                if (indexRoleDisplay !== -1) {
+                  this.rolesDisplay[indexRoleDisplay].active = false;
+                  this.rolesAvailable = [...this.rolesDisplay];
+                }
               } else {
                 this.messageService.add({type: 'success', message: 'Rol Asignado correctamente!', life: 5000});
+                const indexRoleDisplay = this.rolesDisplay.findIndex((r) => r.role.id?.toLowerCase() === roleID.toLowerCase());
+                if (indexRoleDisplay !== -1) {
+                  this.rolesDisplay[indexRoleDisplay].active = true;
+                  this.rolesAvailable = [...this.rolesDisplay];
+                }
                 const indexExecution = this.tasks.findIndex((r) => r.id?.toLowerCase() === this.executionSelected.id?.toLowerCase());
                 if (indexExecution !== -1) {
                   this.tasks[indexExecution]?.execution_roles?.push(executionRole);
@@ -348,8 +353,8 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  showActivities(task: Execution): void {
-    this.view = 'activities';
+  public showActivities(task: Execution): void {
+    this.showView = 'activities';
     this.task = task;
   }
 
@@ -373,7 +378,17 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       );
     } else {
       this.showAlert = false;
-      this.executionSelected = {};
+      this.executionSelected = {
+        class: "",
+        description: "",
+        execution_roles: [],
+        id: "",
+        name: "",
+        queue_id: "",
+        rules: [],
+        timer: {},
+        type: 0
+      };
     }
   }
 
@@ -399,13 +414,13 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public filterRoles(event: any, roles: any): void {
+  public filterRoles(event: any): void {
     const filterValue = event.target.value;
     if (filterValue && filterValue.length) {
       const searchFields: string[] = ('name' || 'type' || 'label').split(',');
-      this.selectionRoles = this._filterService.filter(roles, searchFields, filterValue, 'contains');
+      this.rolesDisplay = this._filterService.filter(this.rolesAvailable, searchFields, filterValue, 'contains');
     } else {
-      this.selectionRoles = this.roles;
+      this.rolesDisplay = this.rolesAvailable;
     }
   }
 
@@ -425,17 +440,42 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public cancelCreateOrEdit(): void {
-    this.createOrUpdate = false;
+    this.showView = 'list';
     this.positionStep = 0;
+    if (!this.steps.find(step => step.id === 2)) {
+      this.steps.push({id: 2, name: 'ROLES', active: false});
+    }
     this.steps[1].active = false;
     this.taskForm.reset();
-    this.executionSelected = {};
+    this.operation = 'add';
+    this.executionSelected = {
+      class: "",
+      description: "",
+      execution_roles: [],
+      id: "",
+      name: "",
+      queue_id: "",
+      rules: [],
+      timer: {},
+      type: 0
+    };
   }
 
   public editExecution(execution: Execution): void {
+    this.loadProcessProcessRoles(execution);
     this.executionSelected = execution;
-    this.createOrUpdate = true;
-
+    this.showView = 'editOrCreate';
+    this.operation = 'edit';
+    this.taskForm.patchValue({
+      class: execution.class,
+      name: execution.name,
+      type: execution.type,
+      timer: execution.timer,
+      description: execution.description,
+    });
+    if (execution.type !== 3) {
+      this.steps.pop();
+    }
   }
 
 }

@@ -1,0 +1,33 @@
+<div class="pagination flex flex-row items-center justify-between w-full">
+  <div class="left">
+    <select class="h-8 w-16 bg-mono-10 t-body-2 text-black select-none" [(ngModel)]="initialRow"
+            (change)="changeRowPerPage($event)">
+      <option *ngFor="let row of rowsPerPage" [value]="row">{{row}}</option>
+    </select>
+  </div>
+  <div class="right flex items-center flex-row space-x-1">
+    <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30 select-none" (click)="previousPage()"
+            [disabled]="currentPage <= 1 || totalPagesInformation <= 1">
+      <div>
+        <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
+        </svg>
+      </div>
+    </button>
+    <div class="flex items-center bg-mono-10 px-2 rounded h-8 select-none">
+      <span class="t-body-2">{{currentPage}}/{{totalPagesInformation}}</span>
+    </div>
+    <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30 select-none" (click)="nextPage()"
+            [disabled]="currentPage === totalPagesInformation || totalPagesInformation <= 1">
+      <div>
+        <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
+        </svg>
+      </div>
+    </button>
+  </div>
+</div>
