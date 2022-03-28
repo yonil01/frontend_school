@@ -4,7 +4,7 @@ import {map} from 'rxjs/operators';
 import {Response, Role} from '@app/core/models';
 import {Observable} from 'rxjs';
 import {
-  GetEntitiesPruebaQuery, UpdateRoleMutation,
+  GetEntitiesPruebaQuery, UpdateRoleMutation, DeleteRolesPasswordPolicyMutation
 } from '../roles/role.queries.service';
 
 
@@ -18,6 +18,7 @@ export class CreateRoleService {
     /*private getRoleByIDQueryQuery: GetRoleByIDQueryQuery,*/
     private getEntitiesPruebaQuery: GetEntitiesPruebaQuery,
     private updateRoleMutation: UpdateRoleMutation,
+    private DeleteRolesPasswordPolicyMutation: DeleteRolesPasswordPolicyMutation,
     /*private createRoleQuery: CreateRoleQuery*/
   ) {
   }
@@ -25,7 +26,6 @@ export class CreateRoleService {
  /* public getRolesByProject(id: string): Observable<Response> {
     return this.getRoleByIDQueryQuery.watch({id}).valueChanges.pipe(map(({data}: any) => data.getRoleByIDQueryQuery));
   }*/
-
 
   getEntitiesPrueba(): Observable<Response> {
     return this.getEntitiesPruebaQuery

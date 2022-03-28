@@ -42,7 +42,6 @@ export class RolesPrivilegeComponent implements OnInit {
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
   public isBlockPage: boolean = false;
 
-  isActivePrivilege: boolean = false;
   public role: Role = {};
 
   moduloElemento: Modulo[] = [];
@@ -104,26 +103,26 @@ export class RolesPrivilegeComponent implements OnInit {
                 });
               }
               this.moduloElemento.push({idM: dat[h].id, nameModulo: dat[h].name, component: this.componenteElemento});
+              this.moduloSelected = this.moduloElemento[0];
             }
           }
+          this.isBlockPage = false;
         }else{
+          this.isBlockPage = false;
           this._messageService.add({
             type: 'error',
             message: res.msg,
             life: 5000
           });
         }
-        this.isBlockPage = false;
-
       });
     }
   }
   //initRoles end
 
-  showPrivileges(modulo: Modulo): void {
+  showPrivileges(modulo: Modulo) {
     this.moduloSelected = modulo;
-    this.isActivePrivilege = true;
   }
-  //showPrivileges end
+
 
 }

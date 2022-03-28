@@ -7,17 +7,17 @@
           <div class="flex flex-col space-y-1 lg:w-1/2">
             <label class="t-caption-2 text-mono-70" for="name">Nombre</label>
             <input type="text" formControlName="name" id="name" value="{{role.name}}" class="ec-input">
-            <!--<span *ngIf="nameRole.invalid && nameRole.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>-->
+            <span *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
           </div>
           <div class="flex flex-col space-y-1 lg:w-1/2">
             <label class="t-caption-2 text-mono-70">Descripción</label>
             <input type="text" formControlName="description" id="description" value="{{role.description}}" class="ec-input">
-            <!--<span *ngIf="descriptionRole.invalid && descriptionRole.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>-->
+            <span *ngIf="roleForm.get('description')?.invalid && roleForm.get('description')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
           </div>
           <div class="flex flex-col space-y-1 lg:w-1/2">
             <label class="t-caption-2 text-mono-70">Sesiones</label>
             <input type="number" formControlName="sessions_allowed" id="sessions_allowed" value="{{role.sessions_allowed}}" class="ec-input">
-            <!--<span *ngIf="sessionsRole.invalid && sessionsRole.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>-->
+            <span *ngIf="roleForm.get('sessions_allowed')?.invalid && roleForm.get('sessions_allowed')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
           </div>
           <div class="flex flex-row space-x-2 items-center">
             <input id="see_all_users" formControlName="see_all_users" id="see_all_users" value="{{role.see_all_users}}" class="w-4 h-4" type="checkbox">

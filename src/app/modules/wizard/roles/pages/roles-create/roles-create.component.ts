@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs/internal/Subscription";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
-import {Customer, Project, Role} from "@app/core/models";
+import {Customer, Project, Role, Response} from "@app/core/models";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {ToastService} from "ecapture-ng-ui";
 import {Store} from "@ngrx/store";
@@ -66,6 +66,7 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+
   }
 
   get nameRole() {
@@ -81,66 +82,47 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   }
 
   saveRole() {
-    this.role = {
-      ...this.roleForm.value,
-      id: uuidv4().toLowerCase(),
-    };
-    this.showConfirm = true;
+    if(!this.roleForm.invalid){
+      if(!this.isEdit){
+        this.role = {
+          id: uuidv4().toLowerCase(),
+          ...this.roleForm.value,
+        };
+      }else{
+        this.role = {
+          id: this.role.id,
+          ...this.roleForm.value,
+        };
+      }
+      this.showConfirm = true;
+    }else{
+      this._messageService.add({type: 'error', message: 'Complete los campos correctamente.', life: 5000});
+    }
   }
 
   public confirmDialog(event: boolean): void {
-    debugger;
     if (event) {
       if (!this.isEdit) {
-        this._subscription.add(
-          this._roleService.createRole(this.role).subscribe({
-            next: (res) => {
-              if (res.error) {
-                this._messageService.add({type: 'error', message: res.msg, life: 5000});
-              } else {
-                this.roleForm.reset();
-                this._router.navigateByUrl('wizard/roles');
-                this._messageService.add({type: 'info', message: 'Rol Creado Correctamente', life: 5000});
-              }
-              this.isBlockPage = false;
-              this.showConfirm = false;
-            },
-            error: (err: Error) => {
-              this._messageService.add({
-                type: 'error',
-                message: 'No se pudo obtener los roles para el proyecto!',
-                life: 5000
-              });
-              this.isBlockPage = false;
-              this.showConfirm = false;
-            }
-          })
-        );
+        this._roleService.createRole(this.role).subscribe((res: Response) => {
+          if (res.error) {
+            this._messageService.add({type: 'error', message: 'Error en la creación ' + res.msg, life: 5000});
+          } else {
+            this._messageService.add({type: 'success', message: 'Rol Creado Correctamente', life: 5000});
+            this._router.navigateByUrl('wizard/roles');
+          }
+          this.showConfirm = false;
+        });
       } else {
         //Service Edit Role
-        this._subscription.add(
-          this._roleService.updateRole(this.role).subscribe({
-            next: (res) => {
-              if (res.error) {
-                this._messageService.add({type: 'error', message: res.msg, life: 5000});
-              } else {
-                this._messageService.add({type: 'success', message: 'Rol Editado Correctamente', life: 5000});
-                this._router.navigateByUrl('wizard/roles');
-              }
-              this.isBlockPage = false;
-              this.showConfirm = false;
-            },
-            error: (err: Error) => {
-              this._messageService.add({
-                type: 'error',
-                message: 'No se pudo obtener los roles para el proyecto!',
-                life: 5000
-              });
-              this.isBlockPage = false;
-              this.showConfirm = false;
-            }
-          })
-        );
+        this._roleService.updateRole(this.role).subscribe((res: Response) => {
+          if (res.error) {
+            this._messageService.add({type: 'error', message: 'Error en la actualización ' + res.msg, life: 5000});
+          } else {
+            this._messageService.add({type: 'success', message: 'Rol Editado Correctamente', life: 5000});
+            this._router.navigateByUrl('wizard/roles');
+          }
+          this.showConfirm = false;
+        });
       }
     } else {
       this.showConfirm = false;
