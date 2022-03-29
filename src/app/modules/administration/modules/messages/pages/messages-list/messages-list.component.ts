@@ -7,6 +7,9 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {Parameters} from "@app/modules/administration/modules/parameters/models/parameters.models";
+import {FilterService} from "@app/ui/services/filter.service";
+import {ExcelType} from "@app/ui/utils/constants/constants";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: 'app-messages-list',
@@ -23,20 +26,22 @@ export class MessagesListComponent implements OnInit, OnDestroy {
   public onShowMessagesList: boolean = true;
   public selectedMessage!: MsgModel;
   public messageForm: FormGroup;
+  public exportColumns: any[] = [];
   public createOrEdit: boolean = false;
   public idMessages: number = 0;
   public isShowBlockPage: boolean = false;
   public toastStyle: ToastStyleModel = toastDataStyle;
   public leftLimit: number = 0;
-  public rightLimit: number = 5;
+  public rightLimit: number = 10;
   public currentPg: number = 1;
-  public paginationValue: number = 5;
+  public paginationValue: number = 10;
   public currentLengthPg: number = 0;
 
   constructor(
     private _messageService: MessageServices,
     private _toastService: ToastService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private filterService: FilterService
   ) {
     this.messageForm = _fb.group({
       eng: ["", [Validators.required, Validators.maxLength(50), Validators.minLength(4)]],
@@ -219,8 +224,8 @@ export class MessagesListComponent implements OnInit, OnDestroy {
   }
   private initPagination(): void {
     this.leftLimit = 0;
-    this.rightLimit = 5;
-    this.paginationValue = 5;
+    this.rightLimit = 10;
+    this.paginationValue = 10;
     this.currentPg = 1;
     this.currentLengthPg = Math.ceil(this.messages.length / this.paginationValue);
     this.messagesPagination = this.messages.slice(this.leftLimit, this.rightLimit);
@@ -240,7 +245,7 @@ export class MessagesListComponent implements OnInit, OnDestroy {
   }
 
   public resetPagination(event: any): void {
-    this.paginationValue = parseInt(event.target.value, 10);
+    this.paginationValue = event.target.value
     this.leftLimit = 0;
     this.rightLimit = this.paginationValue;
     this.currentPg = 1;
@@ -252,6 +257,64 @@ export class MessagesListComponent implements OnInit, OnDestroy {
     this.showAlert = true;
 
   }
+
+  filterMessages(event: any) {
+    const value = event.target.value;
+    if (value && value.length ){
+      const searchFields = ('eng' || 'spa' || 'id').split(',');
+      this.messagesPagination = this.filterService.filter(this.messages,searchFields,value,"contains" )
+    }
+    else {
+      this.initPagination();
+    }
+  }
+
+  public exportPdf(): void {
+    import("jspdf").then(jsPDF => {
+      import("jspdf-autotable").then(x => {
+        const doc = new jsPDF.default('landscape', 'mm', 'a4');
+        this.exportColumns = ['id', 'eng', 'spa', 'type_message'];
+        const msgOrder = this.messages.map( (document: any) => {
+          return Object.keys(document).map( (key: string) => document[key]);
+        });
+        // @ts-ignore
+        doc.autoTable({
+          head: [this.exportColumns],
+          body: msgOrder,
+          theme: 'grid',
+        })
+        doc.save('messages.pdf');
+      })
+    })
+  }
+
+  public exportExcel(): void {
+    // @ts-ignore
+    import('xlsx').then((xlsx) => {
+      const worksheet = xlsx.utils.json_to_sheet([...this.messages]);
+      const workbook = {Sheets: {data: worksheet}, SheetNames: ['data']};
+      const excelBuffer: any = xlsx.write(workbook, {bookType: 'xlsx', type: 'array'});
+      this.saveAsExcelFile(excelBuffer, 'messages' || '');
+    });
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {type: ExcelType});
+    saveAs(data, fileName + '_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  public exportCSV(): void {
+    const replacer = (key: any, value: any) => (value === null ? '' : value);
+    const header = ['id', 'eng', 'spa', 'type_message'];
+    const csv = this.messages.map((row: any) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','));
+    csv.unshift(header.join(','));
+    const csvArray = csv.join('\r\n');
+    const blob = new Blob([csvArray], {type: 'text/csv'});
+    saveAs(blob, 'message' + '.csv');
+  }
+
+
 }
 
 
