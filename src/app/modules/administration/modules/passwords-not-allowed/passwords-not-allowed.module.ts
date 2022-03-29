@@ -10,6 +10,8 @@ import {
 } from "@app/modules/administration/modules/passwords-not-allowed/services/password-not-allowed.service";
 import {HttpClientModule} from "@angular/common/http";
 import {UiModule} from "@app/ui/ui.module";
+import {ToastModule} from "ecapture-ng-ui";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import {UiModule} from "@app/ui/ui.module";
     CommonModule,
     PasswordsNotAllowedRoutingModule,
     HttpClientModule,
-    UiModule
+    UiModule,
+    ToastModule,
+    ReactiveFormsModule
   ],
   providers:[PasswordNotAllowedService]
 

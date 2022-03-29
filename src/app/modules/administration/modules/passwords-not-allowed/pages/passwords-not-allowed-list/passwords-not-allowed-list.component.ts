@@ -6,6 +6,8 @@ import {Subscription} from "rxjs/internal/Subscription";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastService} from "ecapture-ng-ui";
 import {Parameters} from "@app/modules/administration/modules/parameters/models/parameters.models";
+import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
+import {toastDataStyle} from "@app/core/models/toast/toast";
 
 
 interface Password {
@@ -26,15 +28,16 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
   public passwords: Password[] = [];
   public formPasswordNotAllowedService: FormGroup;
   public isShowBlockPage: boolean = false;
-  private isEditOrCreate: boolean = false;
-  private idPassword: number= 0;
-  private showAlert: boolean = false;
+  public isEditOrCreate: boolean = false;
+  public idPassword: number= 0;
+  public showAlert: boolean = false;
   private leftLimit: number = 0;
   private rightLimit: number = 5;
   private paginationValue: number = 5;
   private currentPg: number= 1;
   private currentLengthPg: number =0;
   private passwordPagination: Password[] = [];
+  public toastStyle: ToastStyleModel = toastDataStyle;
 
 
 
@@ -84,6 +87,7 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
 
   public  deletePwdNotAllowed():void{
     this.isShowBlockPage = true;
+    this.showAlert = false;
     this.subscription.add(
       this.passwordNotAllowedService.DeleteBlackListPwd(this.idPassword).subscribe({
         next: (res ) => {
@@ -93,6 +97,7 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
             this.passwords = this.passwords.filter((password) => password.id);
             this.initPagination();
             this.idPassword =0;
+
           }
           this.isShowBlockPage = false;
         },
@@ -106,7 +111,7 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
   }
   private createBlackListPwd(): void {
     if (this.formPasswordNotAllowedService.valid) {
-      const password= this.formPasswordNotAllowedService.value.password
+      const password= this.formPasswordNotAllowedService.value.password.toString()
 
       this.isShowBlockPage = true;
       this.subscription.add(
@@ -143,7 +148,10 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
 
   private updateBlackListPwd(): void {
     if (this.formPasswordNotAllowedService.valid) {
-      const password= this.formPasswordNotAllowedService.value.password
+      const password={
+        password:this.formPasswordNotAllowedService.value.password.toString(),
+        id:this.idPassword
+      }
       this.isShowBlockPage = true;
       this.subscription.add(
         this.passwordNotAllowedService.UpdateBlackListPwd(password).subscribe(
@@ -208,13 +216,22 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
     const password = this.passwords.find(item => item.id === id);
     if (password) {
       this.idPassword = id;
-      this.formPasswordNotAllowedService.patchValue(password);
+      this.formPasswordNotAllowedService.get("password")?.setValue(password.password);
     }
   }
   showDelete(event: number) {
     this.idPassword = event;
     this.showAlert = true;
 
+  }
+  cancelCloseDialog($event: boolean) {
+    if ($event) {
+      this.deletePwdNotAllowed();
+
+    } else {
+      this.showAlert = false;
+      this.idPassword = 0;
+    }
   }
 
 }

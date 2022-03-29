@@ -49,10 +49,9 @@ export class PasswordNotAllowedService {
 
   public UpdateBlackListPwd(password:PwdNotAllowed): Observable<ResponseCreateBlackListPwd> {
     return this.updateBlackListPwdQry.mutate({
-        req: {
-          data:{
-          password
-          }
+        rq: {
+          data:password
+          
         }
       }).pipe(map(({ data }: any) => data.updateBlackListPwd));
   }

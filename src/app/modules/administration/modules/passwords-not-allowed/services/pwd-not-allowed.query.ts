@@ -51,8 +51,8 @@ export class CreateBlackListPwd extends Mutation{
 })
 export class DeleteBlackListPwd extends Mutation {
   document =gql`
-  mutation deleteBlackListPwd($rq:Int!) {
-  deleteBlackListPwd (id:$rq){
+  mutation deleteBlackListPwd($id:Int!) {
+  deleteBlackListPwd (id:$id){
     error
     data {
       id
