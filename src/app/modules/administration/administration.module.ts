@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AdministrationRoutingModule } from './administration-routing.module';
 import { AdministrationComponent } from './administration.component';
 import {MessagesModule} from "@app/modules/administration/modules/messages/messages.module";
+import {UiModule} from "@app/ui/ui.module";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {MessagesModule} from "@app/modules/administration/modules/messages/messa
   imports: [
     CommonModule,
     AdministrationRoutingModule,
-    MessagesModule
+    MessagesModule,
+    UiModule
   ]
 })
 export class AdministrationModule { }

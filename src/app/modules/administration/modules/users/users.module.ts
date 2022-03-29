@@ -8,6 +8,7 @@ import { UserCrudComponent } from './pages/user-crud/user-crud.component';
 import { BasicInformationComponent } from './pages/user-crud/components/basic-information/basic-information.component';
 import { RoleComponent } from './pages/user-crud/components/role/role.component';
 import { SecurityEntitiesComponent } from './pages/user-crud/components/security-entities/security-entities.component';
+import {UiModule} from "@app/ui/ui.module";
 
 
 @NgModule({
@@ -17,11 +18,12 @@ import { SecurityEntitiesComponent } from './pages/user-crud/components/security
     UserCrudComponent,
     BasicInformationComponent,
     RoleComponent,
-    SecurityEntitiesComponent
+    SecurityEntitiesComponent,
   ],
   imports: [
     CommonModule,
-    UsersRoutingModule
+    UsersRoutingModule,
+    UiModule
   ]
 })
 export class UsersModule { }
