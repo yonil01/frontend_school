@@ -76,8 +76,19 @@ export class EntityListCascadeComponent implements OnInit {
     // @ts-ignore
     delete this.selectedCascading;
     this.ngOnInit();
-    this.showCascadingList = true;
-    this.showCreateEditCascading = false;
+    switch($event.id) {
+      case 'cascading':
+        this.showCascadingList = true
+        break;
+    }
+    switch ($event.from){
+      case 'addAtribute':
+        this.addAtribute = false;
+        break;
+      case 'create':
+        this.showCreateEditCascading = false;
+        break;
+    }
   }
 
   cancelDelete() {

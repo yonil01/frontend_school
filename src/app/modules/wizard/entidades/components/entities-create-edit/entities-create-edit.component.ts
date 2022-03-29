@@ -10,6 +10,7 @@ import {addEntity, editEntity} from "@app/core/store/actions/entity.action";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Client, Project} from "@app/core/models/wizard/wizard";
 import {ToastModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
+import {noWhitespaceValidator} from "@app/modules/wizard/entidades/utils/validators";
 
 @Component({
   selector: 'app-entities-create-edit',
@@ -38,7 +39,7 @@ export class EntitiesCreateEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.createEditForm = this._fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, noWhitespaceValidator()]],
       is_unique: [false]
     })
     if (this.selectedEntity) {
@@ -71,32 +72,40 @@ export class EntitiesCreateEditComponent implements OnInit {
   }
 
   onCreateEntity(entity: Entity) {
-    if (entity) {
-      const entity: Entity = {
-        ...this.createEditForm.value,
-        id: uuidv4().toLowerCase(),
-        project_id: this.project.id.toLowerCase(),
-      };
-      this.isBlock = true;
-      // @ts-ignore
-      this.entityService.createEntity(entity).subscribe((res: Response) => {
-        if (res.error) {
-          this.message.emit({
-            type: 'error',
-            message: res.msg,
-            life: 5000,
-          });
-          this.isBlock = false;
-        } else {
-          this.message.emit({
-            type: 'sucess',
-            message: "Created entity successfully",
-            life: 5000,
-          });
-          this.store.dispatch(addEntity({entity}));
-          this.isBlock = false;
-          this.onReturn();
-        }
+    if(this.createEditForm.valid) {
+      if (entity) {
+        const entity: Entity = {
+          ...this.createEditForm.value,
+          id: uuidv4().toLowerCase(),
+          project_id: this.project.id.toLowerCase(),
+        };
+        this.isBlock = true;
+        // @ts-ignore
+        this.entityService.createEntity(entity).subscribe((res: Response) => {
+          if (res.error) {
+            this.message.emit({
+              type: 'error',
+              message: res.msg,
+              life: 5000,
+            });
+            this.isBlock = false;
+          } else {
+            this.message.emit({
+              type: 'sucess',
+              message: "Created entity successfully",
+              life: 5000,
+            });
+            this.store.dispatch(addEntity({entity}));
+            this.isBlock = false;
+            this.onReturn();
+          }
+        });
+      }
+    } else {
+      this.message.emit({
+        type: 'error',
+        message: 'Please fill all the required fields',
+        life: 5000,
       });
     }
   }

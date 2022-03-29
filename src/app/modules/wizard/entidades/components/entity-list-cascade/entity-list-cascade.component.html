@@ -93,7 +93,8 @@
                 <div class="flex items-center p-2 flex-1 break-all">{{cascade.process}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
-                    <button *ngIf="false" (click)="onCreateEditCascade(i)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                    <button *ngIf="false" (click)="onCreateEditCascade(i)"
+                            class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -104,7 +105,7 @@
                     </button>
                     <div class="relative w-10 h-10">
                       <button (click)="showConfig(i)"
-                        class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
+                              class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
                         <div>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                xmlns="http://www.w3.org/2000/svg">
@@ -115,11 +116,11 @@
                         </div>
                       </button>
                       <div *ngIf="cascade.showConfig"
-                        class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
+                           class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
                         <button (click)="onAddAtributes(i)" class="b-ghost">Atributos</button>
                       </div>
                     </div>
-                    <button (click)="sureDelete(i)"  class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                    <button (click)="sureDelete(i)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -176,12 +177,6 @@
                                   [selectedCascading]="selectedCascading"
                                   (isReturn)="onShowHome($event)"
                                   (message)="toastMessage($event)"></app-entity-create-edit-cascading>
-
-<app-entity-add-attribute *ngIf="showAddAttribute"
-                          [selectedCascading]="selectedCascading"
-                          [entity]="entity"
-                          (isReturn)="onShowHome($event)"
-                          (message)="toastMessage($event)"></app-entity-add-attribute>
 
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
 <!--IS BLOCKED PAGE-->
@@ -241,4 +236,5 @@
 </div>
 <!--MODAL DELETE-->
 
-<app-entity-add-attribute *ngIf="addAtribute"></app-entity-add-attribute>
+<app-entity-add-attribute *ngIf="addAtribute" [selectedCascading]="selectedCascading" (isReturn)="onShowHome($event)"
+                          [entity]="entity" (message)="toastMessage($event)"></app-entity-add-attribute>

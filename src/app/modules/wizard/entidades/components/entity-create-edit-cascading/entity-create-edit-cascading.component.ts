@@ -74,7 +74,7 @@ export class EntityCreateEditCascadingComponent implements OnInit {
 
   onReturn() {
     this.isReturn.emit({
-      id: 'cascade',
+      id: 'cascading',
       from: 'create',
       value: true
     });

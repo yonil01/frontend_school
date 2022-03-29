@@ -135,6 +135,7 @@ export class EntidadesComponent implements OnInit {
   }
 
   cancelDelete() {
+    this.selectedEntity = '';
     this.isDelete = false;
   }
 
@@ -151,13 +152,36 @@ export class EntidadesComponent implements OnInit {
   }
 
   deleteEntity() {
-    this.isDelete = false;
-    this.isBlock = true;
-    // @ts-ignore
-    this.entityService.deleteEntity(this.selectedEntity.id.toLowerCase()).subscribe((res: Response) => {
-      this.isBlock = false;
-      this.getEntitiesByProject();
-    });
+    debugger
+    if (this.selectedEntity.attributes && this.selectedEntity.attributes.length) {
+      this.messageService.add({
+          message: 'No se puede eliminar la entidad porque cotiene atributos',
+          type: 'error',
+          life: 5000,
+        }
+      );
+    } else {
+      this.isDelete = false;
+      this.isBlock = true;
+      this.entityService.deleteEntity(this.selectedEntity.id.toLowerCase()).subscribe((res: Response) => {
+        if (res.error) {
+          this.messageService.add({
+            message: res.msg,
+            type: 'error',
+            life: 3000
+          });
+          this.isBlock = false;
+        } else {
+          this.messageService.add({
+            message: "Eliminación exitosa",
+            type: 'sucess',
+            life: 3000
+          });
+          this.isBlock = false;
+          this.getEntitiesByProject();
+        }
+      });
+    }
   }
 
   toastMessage($event: ToastModel) {

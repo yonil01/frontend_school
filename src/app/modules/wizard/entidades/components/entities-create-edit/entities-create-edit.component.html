@@ -21,6 +21,9 @@
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70" for="name">Nombre</label>
             <input formControlName="name" class="h-10 w-full lg:w-1/2 px-2 text-black t-body-2 bg-mono-10 rounded" type="text" id="name">
+            <span
+              *ngIf="createEditForm.get('name')?.hasError('noWhiteSpace')"
+              class="t-caption-2 text-alert-error">Este campo no puede contener espacios.</span>
           </div>
           <div class="flex flex-row space-x-2 items-center">
             <input formControlName="is_unique" class="w-4 h-4" id="unique" type="checkbox">

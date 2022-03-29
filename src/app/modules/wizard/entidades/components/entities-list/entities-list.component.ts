@@ -183,8 +183,8 @@ export class EntitiesListComponent implements OnInit {
 
   deleteAttribute() {
     if (this.selectedAttribute.id) {
-      // @ts-ignore
       this.entityService.deleteAttribute(this.selectedAttribute.id.toLowerCase()).subscribe((res: Response) => {
+        debugger
         if (res.error) {
           this.messageService.add({
             message: res.msg,
