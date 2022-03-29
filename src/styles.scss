@@ -1,3 +1,5 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -311,7 +313,6 @@ button:disabled{
 .option-combo:active, .border-input:active {
   @apply bg-mono-30
 }
-
 
 .toast-item-container {
   z-index: 1113 !important;
