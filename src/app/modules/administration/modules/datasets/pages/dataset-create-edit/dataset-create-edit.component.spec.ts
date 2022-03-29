@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatasetCrudComponent } from './dataset-crud.component';
+import { DatasetCreateEditComponent } from './dataset-create-edit.component';
 
-describe('DatasetCrudComponent', () => {
-  let component: DatasetCrudComponent;
-  let fixture: ComponentFixture<DatasetCrudComponent>;
+describe('DatasetCreateEditComponent', () => {
+  let component: DatasetCreateEditComponent;
+  let fixture: ComponentFixture<DatasetCreateEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DatasetCrudComponent ]
+      declarations: [ DatasetCreateEditComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DatasetCrudComponent);
+    fixture = TestBed.createComponent(DatasetCreateEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

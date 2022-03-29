@@ -11,7 +11,7 @@
           <span class="text-black t-h5">Políticas de Seguridad</span>
         </div>
       </div>
-      <form [formGroup]="DocumentsPoliticiesForm" class="body">
+      <form [formGroup]="DocumentsPoliticiesForm" (ngSubmit)="confirmCreatePassPolicy($event)" class="body">
         <div class="parameters space-y-2 md:space-y-0 border-b border-mono-30 pb-6 mb-6 md:flex md:flex-row md:space-x-2 md:items-end">
           <div>
             <div class="w-full h-10 hover:bg-mono-10 flex flex-row items-center space-x-2 bg-white border border-mono-30 px-2 rounded text-black">
@@ -154,8 +154,8 @@
           </div>
         </div>
         <div class="action flex flex-row space-x-2 md:justify-end mt-12">
-          <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cancelar</button>
-          <button class="flex-1 md:flex-none b-solid">Guardar</button>
+          <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cerrar</button>
+          <button [disabled]="DocumentsPoliticiesForm.invalid" class="flex-1 md:flex-none b-solid">{{role.password_policy?.id ? 'Actualizar' : 'Guardar'}}</button>
         </div>
       </form>
     </div>
@@ -164,5 +164,6 @@
 </app-layout>
 
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
-<app-confirm-dialog [show]="showConfirm" type="warning" title="Confirmación" body="¿Está seguro(a) de eliminar las políticas de seguridad?" (onEvent)="confirmDialog($event)"></app-confirm-dialog>
+<app-confirm-dialog [show]="showConfirm" type="warning" title="Confimar Eliminación de Seguridad" body="¿Está seguro(a) de Eliminar Politicas de Seguridad?, Además se limpiaran todos los campos" (onEvent)="confirmDialog($event)"></app-confirm-dialog>
+<app-confirm-dialog [show]="showConfirmSave" type="warning" title="Confimar Asignación Politicas de Seguridad" body="¿Está seguro de Asignar Politicas de Seguridad?" (onEvent)="confirmSaveDialog($event)"></app-confirm-dialog>
 <app-block-page [show]="isBlockPage"></app-block-page>
