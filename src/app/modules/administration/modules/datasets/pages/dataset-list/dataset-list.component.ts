@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Dataset} from "@app/core/models";
 import {cols, fieldTypes} from "@app/modules/administration/modules/datasets/utils/consts";
 import {DatasetsService} from "@app/modules/administration/modules/datasets/services/datasets.service";
+import {ToastService} from "ecapture-ng-ui";
 
 @Component({
   selector: 'app-dataset-list',
@@ -15,6 +16,7 @@ export class DatasetListComponent implements OnInit {
   public fieldTypes = fieldTypes;
 
   constructor(private datasetsService: DatasetsService,
+              private messageService: ToastService
   ) {
   }
 
