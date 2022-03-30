@@ -1,0 +1,26 @@
+<div class="ec-container py-6 md:py-12 bg-white dark:bg-black space-y-6">
+  <div class="flex flex-col space-y-2 w-full mb-4">
+    <span class="t-h5 text-black dark:text-white">Entidades a Tipo Documental</span>
+    <div>
+      <div class="flex flex-row space-x-2">
+        <div class="bg-brand-2 rounded-sm w-2"></div>
+        <div class="w-full text-mono-70 py-1">
+          <span>Las entidades deshabilitadas están siendo usados por otros tipos documentales.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-pick-task [filter]="true" optional-label="name" optional-value="id"
+                 [source-task]="{title: 'Entidades disponibles', data: sourceNewEntities}"
+                 [target-task]="{title: 'Entidades Seleccionadas', data: targetEntities}"
+                  (un-assign)="selectTargetEntity($event)"
+  ></app-pick-task>
+  <div class="w-full pt-6 lg:pt-12 flex flex-row justify-end space-x-2">
+    <button class="b-outline flex-1 md:flex-none" (click)="cancel()">{{'CANCEL' | translate}}</button>
+  </div>
+</div>
+
+
+<app-block-page [show]="isBlockPage"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+

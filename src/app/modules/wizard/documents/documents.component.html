@@ -105,7 +105,6 @@
   </ng-container>
 </app-layout>
 
-
 <!--Grupo Documental - Create-->
 <app-layout *ngIf="view === 'docTypesGroupCreate' || view === 'docTypesGroupEdit'">
   <ng-container layoutBody>
@@ -189,7 +188,7 @@
         </div>
       </div>
       <div class="description mb-6 flex flex-col space-y-2">
-        <span class="t-h5 text-black dark:text-white">{{(docTypeGroupSelected.name || '') | replace: '_': ' '}}</span>
+        <span class="t-h5 text-black dark:text-white capitalize">{{(docTypeGroupSelected.name || '') | replace: '_': ' '}}</span>
         <Span class="t-body-2 text-mono-70 dark:text-mono-30">Cree un tipo documental para este grupo documental con el siguiente botón.</Span>
       </div>
       <div class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
@@ -233,8 +232,8 @@
                   </div>
                 </button>
                 <div *ngIf="docType.active" class=" absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 bottom-10 right-0 transform translate-1/2">
-                  <button class="b-ghost">Autoname</button>
-                  <button class="b-ghost">Entidades</button>
+                  <button class="b-ghost" (click)="selectTyeConfig('autoname', docType.docType)">Autoname</button>
+                  <button class="b-ghost" (click)="selectTyeConfig('entities', docType.docType)">Entidades</button>
                 </div>
               </div>
               <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip tooltip="Eliminar el tipo documental">
@@ -277,8 +276,8 @@
                       </div>
                     </button>
                     <div *ngIf="docType.active" class=" absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 bottom-10 right-0 transform translate-1/2">
-                      <button class="b-ghost">Autoname</button>
-                      <button class="b-ghost">Entidades</button>
+                      <button class="b-ghost" (click)="selectTyeConfig('autoname', docType.docType)">Autoname</button>
+                      <button class="b-ghost" (click)="selectTyeConfig('entities', docType.docType)">Entidades</button>
                     </div>
                   </div>
                   <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip tooltip="Eliminar el tipo documental">
@@ -471,205 +470,24 @@
 -->
 
 <!--Autoname de Tipo Documental-->
-<!--
-<app-layout>
+<app-layout *ngIf="view === 'autoname'">
   <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black space-y-6">
-      <div class="flex flex-col space-y-2 w-full">
-        <span class="t-h5 text-black dark:text-white">Autoname a Tipo Documental</span>
-        <div>
-          <div class="flex flex-row space-x-2">
-            <div class="bg-brand-2 rounded-sm w-2"></div>
-            <div class="w-full text-mono-70 py-1">
-              <span>Puedes agregar autonames a la lista mediante el tipo documental, texto y atributos.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="list flex flex-col space-y-2">
-        <span class="t-caption-2 text-mono-70 dark:text-mono-30">Lista de Autoname's</span>
-        <div class="w-full flex flex-row flex-wrap pt-4 pl-4 rounded bg-mono-10 dark:bg-mono-100">
-          <!-<span class="t-body-1 mb-4 mr-4 text-mono-70 dark:text-mono-30">Lista vacía</span>-> <!-Mostrar cuando no hay ningún autoname->
-          <button class="b-solid mb-4 mr-4 px-2 h-8 flex flex-row space-x-2 items-center">
-            <span>doctype</span>
-            <div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.39705 2.55379L2.46967 2.46967C2.73594 2.2034 3.1526 2.1792 3.44621 2.39705L3.53033 2.46967L8 6.939L12.4697 2.46967C12.7626 2.17678 13.2374 2.17678 13.5303 2.46967C13.8232 2.76256 13.8232 3.23744 13.5303 3.53033L9.061 8L13.5303 12.4697C13.7966 12.7359 13.8208 13.1526 13.6029 13.4462L13.5303 13.5303C13.2641 13.7966 12.8474 13.8208 12.5538 13.6029L12.4697 13.5303L8 9.061L3.53033 13.5303C3.23744 13.8232 2.76256 13.8232 2.46967 13.5303C2.17678 13.2374 2.17678 12.7626 2.46967 12.4697L6.939 8L2.46967 3.53033C2.2034 3.26406 2.1792 2.8474 2.39705 2.55379L2.46967 2.46967L2.39705 2.55379Z"/>
-            </svg>
-            </div>
-          </button>
-        </div>
-        <div class="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:justify-between">
-          <div class="flex flex-col pt-2">
-            <span class="t-caption-2 text-mono-70 dark:text-mono-30">Vista previa del autoname</span>
-            <span class="t-body-1 text-black dark:text-white">doctype</span>
-          </div>
-          <div class="flex flex-col space-y-2 md:pt-2 md:flex-row md:space-y-0 lg:space-x-2 md:justify-between">
-            <div>
-              <button class="w-full md:w-auto h-10 hover:bg-alert-error hover:text-white px-4 rounded disabled:text-mono-30 text-alert-error">Borrar toda la lista</button>
-            </div>
-            <div class="pt-2 md:p-0">
-              <button class="b-outline w-full md:w-auto">Agregar Tipo Documental</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-col space-y-6 md:flex-row md:space-y-0 md:border-t md:border-mono-30">
-        <div class="pt-6 md:pr-4 flex-1 border-t md:border-t-0 md:border-r border-mono-30 space-y-4">
-          <span class="t-body-1 text-black dark:text-white">Agregar Texto Fijo</span>
-          <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70 dark:text-mono-30">Autoname</label>
-            <input type="text" class="ec-input">
-          </div>
-          <button class="b-outline w-full md:auto">Agregar a la lista</button>
-        </div>
-        <div class="pt-6 md:pl-4 flex-1 border-t md:border-t-0 border-mono-30 space-y-4">
-          <span class="t-body-1 text-black dark:text-white">Agregar Atributo</span>
-          <div class="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
-            <div class="flex lg:flex-1 flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70 dark:text-mono-30">Entidad</label>
-              <select type="text" class="ec-input"></select>
-            </div>
-            <div class="flex lg:flex-1 flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70 dark:text-mono-30">Atributo</label>
-              <select type="text" class="ec-input"></select>
-            </div>
-          </div>
-          <button class="b-outline w-full">Agregar a la lista</button>
-        </div>
-      </div>
-      <div class="w-full pt-6 lg:pt-12 flex flex-row justify-end space-x-2">
-        <button class="b-outline flex-1 md:flex-none">Cancelar</button>
-        <button class="b-solid flex-1 md:flex-none">Guardar</button>
-      </div>
-    </div>
+    <app-autoname
+      [data_doctype]="docTypeSelected"
+      (updateDoctype)="updateDoctype($event)"
+      (cancelAndReturn)="view = 'docTypesList'"
+    ></app-autoname>
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
--->
 
 <!--Entidades Tipo Documental-->
-
 <app-layout *ngIf="view === 'entities'">
   <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black space-y-6">
-      <div class="flex flex-col space-y-2 w-full">
-        <span class="t-h5 text-black dark:text-white">Entidades a Tipo Documental</span>
-        <div>
-          <div class="flex flex-row space-x-2">
-            <div class="bg-brand-2 rounded-sm w-2"></div>
-            <div class="w-full text-mono-70 py-1">
-              <span>Las entidades deshabilitadas están siendo usados por otros tipos documentales.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="data flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-        <div class="data-A flex-1 space-y-1">
-          <span class="t-caption-2 text-mono-70">Atributos Disponibles</span>
-          <div class="rounded bg-mono-10 p-3 space-y-2">
-            <div><input class="w-full h-10 px-2 rounded t-body-2 border border-mono-30 text-black" type="text" placeholder="Buscar"></div>
-            <div class="flex flex-col space-y-2 overflow-y-auto" style="max-height: 240px;">
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 1</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 2</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 3</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 4</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 5</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 6</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 7</label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="flex pt-7 flex-row md:flex-col md:space-x-0 md:space-y-2 md:w-12 space-x-2">
-          <button class="b-solid flex-1">
-            <div class="transform md:-rotate-90"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.543 5.73271C14.8287 6.03263 14.8172 6.50737 14.5172 6.79306L9.26678 11.7944C8.97711 12.0703 8.52187 12.0703 8.2322 11.7944L2.98173 6.79306C2.68181 6.50737 2.67028 6.03263 2.95597 5.73271C3.24166 5.43279 3.71639 5.42125 4.01631 5.70694L8.74949 10.2155L13.4827 5.70694C13.7826 5.42125 14.2573 5.43279 14.543 5.73271Z" fill="#F4F5F6"/>
-            </svg>
-            </div>
-          </button>
-          <button class="b-solid flex-1">
-            <div class="transform md:-rotate-90"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.044 7.23271C14.3297 7.53263 14.3181 8.00737 14.0182 8.29306L8.76776 13.2944C8.47809 13.5703 8.02285 13.5703 7.73318 13.2944L2.48271 8.29306C2.18279 8.00737 2.17125 7.53263 2.45694 7.23271C2.74264 6.93279 3.21737 6.92125 3.51729 7.20694L8.25047 11.7155L12.9836 7.20694C13.2836 6.92125 13.7583 6.93279 14.044 7.23271Z" fill="#F4F5F6"/>
-              <path d="M14.044 2.23271C14.3297 2.53263 14.3181 3.00737 14.0182 3.29306L8.76776 8.29439C8.47809 8.57032 8.02285 8.57032 7.73318 8.29439L2.48271 3.29306C2.18279 3.00737 2.17125 2.53263 2.45694 2.23271C2.74264 1.93279 3.21737 1.92125 3.51729 2.20694L8.25047 6.71553L12.9836 2.20694C13.2836 1.92125 13.7583 1.93279 14.044 2.23271Z" fill="#F4F5F6"/>
-            </svg>
-            </div>
-          </button>
-          <button class="b-solid flex-1">
-            <div class="transform md:-rotate-90"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.95694 10.2673C2.67125 9.96736 2.68279 9.49263 2.98271 9.20693L8.23318 4.2056C8.52285 3.92968 8.97809 3.92968 9.26776 4.2056L14.5182 9.20693C14.8181 9.49263 14.8297 9.96736 14.544 10.2673C14.2583 10.5672 13.7836 10.5787 13.4836 10.293L8.75047 5.78446L4.01729 10.293C3.71737 10.5787 3.24264 10.5672 2.95694 10.2673Z" fill="#F4F5F6"/>
-            </svg>
-            </div>
-          </button>
-          <button class="b-solid flex-1">
-            <div class="transform md:-rotate-90"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.45601 8.26862C2.17032 7.9687 2.18186 7.49397 2.48178 7.20828L7.73224 2.20694C8.02191 1.93102 8.47715 1.93102 8.76682 2.20694L14.0173 7.20828C14.3172 7.49397 14.3287 7.9687 14.0431 8.26862C13.7574 8.56855 13.2826 8.58008 12.9827 8.29439L8.24953 3.7858L3.51636 8.29439C3.21643 8.58008 2.7417 8.56855 2.45601 8.26862Z" fill="#F4F5F6"/>
-              <path d="M2.45601 13.2686C2.17032 12.9687 2.18186 12.494 2.48178 12.2083L7.73224 7.20694C8.02191 6.93102 8.47715 6.93102 8.76682 7.20694L14.0173 12.2083C14.3172 12.494 14.3287 12.9687 14.0431 13.2686C13.7574 13.5685 13.2826 13.5801 12.9827 13.2944L8.24953 8.7858L3.51636 13.2944C3.21643 13.5801 2.7417 13.5685 2.45601 13.2686Z" fill="#F4F5F6"/>
-            </svg>
-            </div>
-          </button>
-        </div>
-        <div class="data-B flex-1 space-y-1">
-          <span class="t-caption-2 text-mono-70">Atributos Seleccionados</span>
-          <div class="rounded bg-mono-10 p-3 space-y-2">
-            <div><input class="w-full h-10 px-2 rounded t-body-2 border border-mono-30 text-black" type="text" placeholder="Buscar"></div>
-            <div class="flex flex-col space-y-2 overflow-y-auto" style="max-height: 240px;">
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 1</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 2</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 3</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 4</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 5</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 6</label>
-              </div>
-              <div class="flex-1 py-2 flex flex-row space-x-2 items-center">
-                <input class="w-4 h-4" type="checkbox">
-                <label class="t-body-2 text-black">Atribute 7</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-full pt-6 lg:pt-12 flex flex-row justify-end space-x-2">
-        <button class="b-outline flex-1 md:flex-none">Cancelar</button>
-        <button class="b-solid flex-1 md:flex-none">Guardar</button>
-      </div>
-    </div>
+    <app-doc-entity
+      [dataDoctype]="docTypeSelected"
+      (cancelAndReturn)="view = 'docTypesList'"
+    ></app-doc-entity>
     <app-footer></app-footer>
   </ng-container>
 </app-layout>

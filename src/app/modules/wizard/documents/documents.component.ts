@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   Attribute,
   Customer,
-  DoctypeEntities,
   DocTypeGroups,
   DocTypes,
   DocTypesDisplay,
@@ -15,11 +14,8 @@ import {AppState} from "@app/core/store/app.reducers";
 import {ToastService} from "ecapture-ng-ui";
 import {
   addDoctype,
-  addDoctypegroup,
   controlDoctype,
-  controlDoctypegroup,
-  controlDoctypegroups,
-  controlDoctypes, deleteDocType, editDoctype, editDoctypegroup, editEntity,
+  controlDoctypegroups, editDoctype,
   showDoctypegroup
 } from "@app/core/store/actions/doctype.action";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
@@ -55,7 +51,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   docTypeGroupForm: FormGroup;
   doctypeGruop!: DocTypeGroups;
   autoName: DocTypes = {};
-  docEntity: DocTypes = {};
+  public docEntity: DocTypes = {};
   indexAutoname: number = 0;
   project: Project = {
     customers_id: "",
@@ -69,7 +65,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   };
   client: Customer = {};
   valorCode: string = '';
-  items: any[] = [];
   selectedAttribute!: Attribute;
   indexAttribute: number = 0;
   validateAutoname: string[] = [];
@@ -86,8 +81,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   isShowAddAutoname = false;
   isShowEditEntity = false;
 
-  // isShowEditEntity: boolean;
-
   columnsDocTypes: any[] = [];
   public view: string = 'docTypesGroup';
   public showAlertDeleteDtg: boolean = false;
@@ -97,20 +90,19 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     private doctypegroupService: DoctypegroupService,
     private fb: FormBuilder,
     private store: Store<AppState>,
-    // private confirmationService: ConfirmationService,
     private messageService: ToastService,
   ) {
 
     this.disposition_final = [
-      { label: 'Conservación Total', value: 'CT' },
-      { label: 'Microfilmación', value: 'M' },
-      { label: 'Digitalización', value: 'D' },
-      { label: 'Eliminar', value: 'E' },
+      {label: 'Conservación Total', value: 'CT'},
+      {label: 'Microfilmación', value: 'M'},
+      {label: 'Digitalización', value: 'D'},
+      {label: 'Eliminar', value: 'E'},
     ];
 
     this.typeSupport = [
-      { label: 'Electrónico', value: 'E' },
-      { label: 'Físico', value: 'F' },
+      {label: 'Electrónico', value: 'E'},
+      {label: 'Físico', value: 'F'},
     ];
 
     this.docTypeGroupForm = this.fb.group({
@@ -118,19 +110,19 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     });
 
     this.format = [
-      { label: 'dcs', value: 'dcs' },
-      { label: 'frm', value: 'frm' },
-      { label: 'wkf', value: 'wkf' },
-      { label: 'tif', value: 'tif' },
-      { label: 'jpg', value: 'jpg' },
-      { label: 'png', value: 'png' },
-      { label: 'pdf', value: 'pdf' },
-      { label: 'doc', value: 'doc' },
-      { label: 'sys', value: 'sys' },
-      { label: 'dsb', value: 'dsb' },
-      { label: 'vsr', value: 'vsr' },
-      { label: 'tpl', value: 'tpl' },
-      { label: 'rpt', value: 'rpt' },
+      {label: 'dcs', value: 'dcs'},
+      {label: 'frm', value: 'frm'},
+      {label: 'wkf', value: 'wkf'},
+      {label: 'tif', value: 'tif'},
+      {label: 'jpg', value: 'jpg'},
+      {label: 'png', value: 'png'},
+      {label: 'pdf', value: 'pdf'},
+      {label: 'doc', value: 'doc'},
+      {label: 'sys', value: 'sys'},
+      {label: 'dsb', value: 'dsb'},
+      {label: 'vsr', value: 'vsr'},
+      {label: 'tpl', value: 'tpl'},
+      {label: 'rpt', value: 'rpt'},
     ];
 
     this.doctypeForm = this.fb.group(
@@ -175,12 +167,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       {field: 'format', header: 'Formato'},
     ];
 
-    this.items = [
-      {label: 'Autoname', icon: 'pi pi-pencil', command: () => this.showAddAutoname()},
-      {separator: true},
-      {label: 'Entidades', icon: 'pi pi-pencil', command: () => this.showEditEntity()},
-      {separator: true},
-    ];
     this.getStorage();
   }
 
@@ -264,23 +250,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     );
   }
 
-  showEditDocType(rowData: DocTypes, indexDocType: number): void {
-    this.view = 'doctype';
-    this.store.dispatch(controlDoctypes({docType: rowData, indexDocType, operation: 'edit'}));
-    // this.isShowAddDocType = true;
-  }
-
   private showAddAutoname(): void {
     this.view = 'autoname';
     this.store.dispatch(controlDoctype({docType: this.autoName, indexDocType: this.indexAutoname}));
     // this.isShowAddAutoname = true;
-  }
-
-  private showEditEntity(): void {
-    // this.store.dispatch(controlDoctypes({ docType: this.docEntity, indexDocType: this.indexAutoname , operation: 'edit' }));
-    this.store.dispatch(controlDoctype({docType: this.docEntity, indexDocType: this.indexAutoname}));
-    // this.isShowEditEntity = true;
-    this.view = 'docEntity';
   }
 
   showOptions(event: any, option: any, rowData: any, indexDocType: number): void {
@@ -468,7 +441,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private updateDoctype(doctype: DocTypes): void {
+  public updateDoctype(doctype: DocTypes): void {
     this.isShowAddAutoname = false;
     const data = JSON.parse(JSON.stringify(doctype));
     delete data.doctypes_entities;
@@ -492,23 +465,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         }
       })
     );
-  }
-
-  createDoctypeEntities(doctypeEntitieRedux: DoctypeEntities[]) {
-    this.isShowEditEntity = false;
-    this.store.dispatch(editEntity({docEntity: doctypeEntitieRedux, indexDocType: 0}));
-  }
-
-  cancelDoctype(): void {
-    this.view = 'doctypes';
-  }
-
-  cancelDoctypeEntity(): void {
-    this.view = 'doctypes';
-  }
-
-  cancelAutoname(): void {
-    this.view = 'doctypes';
   }
 
   public saveDocTypeGroups(): void {
@@ -591,9 +547,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       next: (res) => {
         if (res.error) {
           this.messageService.add({type: 'error', message: res.msg, life: 5000});
-        } else  {
+        } else {
           for (const data of res.data) {
-            this.storages = [{ label: data.name, value: data.id.toLocaleLowerCase() }];
+            this.storages = [{label: data.name, value: data.id.toLocaleLowerCase()}];
           }
         }
       },
@@ -602,6 +558,12 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         this.messageService.add({message: err.message, type: 'error', life: 5000});
       }
     });
+  }
+
+  public selectTyeConfig(type: string, docType: DocTypes): void {
+    this.view = type;
+    this.docTypeSelected = docType;
+    this.docTypesDisplay = this.docTypesDisplay.map((doc) => ({...doc, active: false}));
   }
 
 }
