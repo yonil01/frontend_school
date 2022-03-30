@@ -55,18 +55,18 @@ export class RolesPrivilegeComponent implements OnInit {
 
   public role: Role = {};
 
+  rolesElementsDisplay: {active:boolean, roleElement: Elements}[] = [];
+
   moduloElemento: Modulo[] = [];
   rolesElements: Elements[] = [];
   componenteElemento: Componente[] = [];
   elemento: Elemento[] = [];
 
   selectedValues: Elemento[] = [];
-  // @ts-ignore
-  dataElemenRedux: ReduxElement;
-  // @ts-ignore
-  dataRolesElement: Elemento;
+  dataElemenRedux: ReduxElement = {element: {id: '', name: '', description: '', url_back: '', component_id: '', checked: 0}, id: ""};
+  dataRolesElement: Elemento = {checked: 0, component_id: "", description: "", id: "", name: "", url_back: ""};
 
-  public moduloSelected: Modulo = this.moduloElemento[0];
+  public moduloSelected: Modulo = {components: [], description: "", id: "", name: ""};
 
   constructor(
     private formBulder: FormBuilder,
@@ -98,7 +98,16 @@ export class RolesPrivilegeComponent implements OnInit {
           }
 
           this.moduloElemento = dat;
-          console.log(this.moduloElemento[3].components.length);
+          this.moduloSelected = this.moduloElemento[0];
+
+          for(let item of this.moduloElemento){
+
+            const elementFind = this.rolesElements.find(r => r.name = item.name);
+            this.rolesElementsDisplay.push({
+              active : !!elementFind,
+              roleElement : elementFind ? elementFind : {}
+            });
+          }
 
           console.log(dat);
           console.log(this.moduloElemento);
