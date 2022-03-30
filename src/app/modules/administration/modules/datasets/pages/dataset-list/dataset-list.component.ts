@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Dataset} from "@app/core/models";
-import {cols, fieldTypes} from "@app/modules/administration/modules/datasets/utils/consts";
 import {DatasetsService} from "@app/modules/administration/modules/datasets/services/datasets.service";
 import {ToastService} from "ecapture-ng-ui";
+import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
+import {toastDataStyle} from "@app/core/models/toast/toast";
+import {returnEvent} from "@app/modules/administration/modules/datasets/models/models";
 
 @Component({
   selector: 'app-dataset-list',
@@ -11,9 +13,11 @@ import {ToastService} from "ecapture-ng-ui";
 })
 export class DatasetListComponent implements OnInit {
   public datasets: Dataset[] = [];
-  public dataset?: Dataset;
-  public cols = cols;
-  public fieldTypes = fieldTypes;
+  public selectedDataset?: Dataset;
+
+  public toastStyle: ToastStyleModel = toastDataStyle;
+  public showDatasets: boolean = true;
+  public showCreateDataset: boolean = false;
 
   constructor(private datasetsService: DatasetsService,
               private messageService: ToastService
@@ -27,12 +31,44 @@ export class DatasetListComponent implements OnInit {
   private getDatasets(): void {
     this.datasetsService.getDatasets().subscribe((res) => {
       if (res.error) {
-        console.log("Hubo un error");
+        this.messageService.add({type: 'error', message: res.msg, life: 5000});
       }
       this.datasets = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
-      console.log(this.datasets);
     });
   }
 
+  returnHome($event: returnEvent) {
+    switch ($event.id) {
+      case 'dataset-list':
+        this.showDatasets = true;
+        break;
+    }
+    switch ($event.from) {
+      case 'createDataset':
+        this.getDatasets();
+        if(this.selectedDataset){
+          this.selectedDataset = undefined;
+        }
+        this.showCreateDataset = false;
+        break;
+    }
+  }
 
+  onCreateDataset() {
+    if (this.selectedDataset) {
+      this.selectedDataset = undefined;
+    }
+    this.showDatasets = false;
+    this.showCreateDataset = true;
+  }
+
+  onEditDataset(i: number) {
+    this.selectedDataset = this.datasets[i];
+    this.showDatasets = false;
+    this.showCreateDataset = true;
+  }
+
+  onDeleteDataset(i: number) {
+    
+  }
 }

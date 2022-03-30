@@ -9,6 +9,8 @@ import {UiModule} from "@app/ui/ui.module";
 import { DatasetCreateEditComponent } from './pages/dataset-create-edit/dataset-create-edit.component';
 import { DatasetConfigListComponent } from './pages/dataset-config/components/dataset-config-list/dataset-config-list.component';
 import { DatasetConfigCreateEditComponent } from './pages/dataset-config/components/dataset-config-create-edit/dataset-config-create-edit.component';
+import {ToastModule} from "ecapture-ng-ui";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -20,10 +22,12 @@ import { DatasetConfigCreateEditComponent } from './pages/dataset-config/compone
     DatasetConfigListComponent,
     DatasetConfigCreateEditComponent
   ],
-    imports: [
-        CommonModule,
-        DatasetsRoutingModule,
-        UiModule
-    ]
+  imports: [
+    CommonModule,
+    DatasetsRoutingModule,
+    UiModule,
+    ToastModule,
+    ReactiveFormsModule
+  ]
 })
 export class DatasetsModule { }
