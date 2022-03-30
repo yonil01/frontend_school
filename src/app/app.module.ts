@@ -15,6 +15,7 @@ import {environment} from "@env/environment";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {AuthenticationGuard} from "@app/core/services/guards/authentication.guard";
 import {ComponentGuard} from "@app/core/services/guards/component.guard";
+import {DatePipe} from "@angular/common";
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -41,7 +42,7 @@ export function createTranslateLoader(http: HttpClient): any {
     }),
     ReactiveFormsModule,
   ],
-  providers: [AuthenticationGuard, ComponentGuard],
+  providers: [AuthenticationGuard, ComponentGuard, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

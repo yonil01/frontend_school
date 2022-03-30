@@ -17,6 +17,7 @@
             <div class="w-full h-10 hover:bg-mono-10 flex flex-row items-center space-x-2 bg-white border border-mono-30 px-2 rounded text-black">
               <input (click)="handleChange()" id="enable" formControlName="enable" type="checkbox">
               <label for="enable" class="t-body-1 flex-1 text-left">{{isActive === true ? 'Activado' : 'Desactivado'}}</label>
+              <span *ngIf="DocumentsPoliticiesForm.get('enable')?.invalid && DocumentsPoliticiesForm.get('enable')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
             </div>
           </div>
         </div>
@@ -45,14 +46,17 @@
                 <div class="flex flex-col space-y-1">
                   <label for="min_length" class="t-caption-2 text-mono-70">Tamaño mínimo</label>
                   <input id="min_length" formControlName="min_length" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('min_length')?.invalid && DocumentsPoliticiesForm.get('min_length')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
                   <label for="max_length" class="t-caption-2 text-mono-70">Tamaño Máximo</label>
                   <input id="max_length" formControlName="max_length" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('max_length')?.invalid && DocumentsPoliticiesForm.get('max_length')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col col-span-2 space-y-1">
                   <label for="failed_attempts" class="t-caption-2 text-mono-70">Historial</label>
                   <input id="failed_attempts" formControlName="failed_attempts" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('failed_attempts')?.invalid && DocumentsPoliticiesForm.get('failed_attempts')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
               </div>
             </div>
@@ -76,14 +80,17 @@
                 <div class="flex flex-col space-y-1">
                   <label for="days_pass_valid" class="t-caption-2 text-mono-70">Días Hábiles</label>
                   <input id="days_pass_valid" formControlName="days_pass_valid" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('days_pass_valid')?.invalid && DocumentsPoliticiesForm.get('days_pass_valid')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
                   <label for="inactivity_time" class="t-caption-2 text-mono-70">Tiempo de Inactividad</label>
                   <input id="inactivity_time" formControlName="inactivity_time" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('inactivity_time')?.invalid && DocumentsPoliticiesForm.get('inactivity_time')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col col-span-2 space-y-1">
                   <label for="timeout" class="t-caption-2 text-mono-70">Timeout</label>
                   <input id="timeout" formControlName="timeout" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('timeout')?.invalid && DocumentsPoliticiesForm.get('timeout')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
               </div>
             </div>
@@ -106,10 +113,12 @@
                 <div class="flex flex-col space-y-1">
                   <label for="store_pass_not_repeated" class="t-caption-2 text-mono-70">Cantidad</label>
                   <input id="store_pass_not_repeated" formControlName="store_pass_not_repeated" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('store_pass_not_repeated')?.invalid && DocumentsPoliticiesForm.get('store_pass_not_repeated')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
                   <label for="time_unlock" class="t-caption-2 text-mono-70">Tiempo de Bloqueo</label>
                   <input id="time_unlock" formControlName="time_unlock" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('time_unlock')?.invalid && DocumentsPoliticiesForm.get('time_unlock')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
               </div>
             </div>
@@ -132,22 +141,27 @@
                 <div class="flex flex-col space-y-1">
                   <label for="alpha" class="t-caption-2 text-mono-70">Cantidad Alpha</label>
                   <input id="alpha" formControlName="alpha" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('alpha')?.invalid && DocumentsPoliticiesForm.get('alpha')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
                   <label for="digits" class="t-caption-2 text-mono-70">Cantidad Dígitos</label>
                   <input id="digits" formControlName="digits" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('digits')?.invalid && DocumentsPoliticiesForm.get('digits')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
                   <label for="lower_case" class="t-caption-2 text-mono-70">Cantidad Minúsculas</label>
                   <input id="lower_case" formControlName="lower_case" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('lower_case')?.invalid && DocumentsPoliticiesForm.get('lower_case')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
                   <label for="upper_case" class="t-caption-2 text-mono-70">Cantidad Mayúsculas</label>
                   <input id="upper_case" formControlName="upper_case" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('upper_case')?.invalid && DocumentsPoliticiesForm.get('upper_case')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col col-span-2 space-y-1">
                   <label for="special" class="t-caption-2 text-mono-70">Cantidad Caracteres Especiales</label>
                   <input id="special" formControlName="special" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('special')?.invalid && DocumentsPoliticiesForm.get('special')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
               </div>
             </div>

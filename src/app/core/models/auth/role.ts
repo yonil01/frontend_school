@@ -74,6 +74,7 @@ export interface Elements {
   id?: string;
   role_id?: string;
   element_id?: string;
+  name?: string;
 }
 
 export interface RoleAllowed {
