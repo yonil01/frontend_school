@@ -8,6 +8,7 @@ import {ToastService} from "ecapture-ng-ui";
 import {Parameters} from "@app/modules/administration/modules/parameters/models/parameters.models";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
+import {FilterService} from "@app/ui/services/filter.service";
 
 
 interface Password {
@@ -31,14 +32,13 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
   public isEditOrCreate: boolean = false;
   public idPassword: number= 0;
   public showAlert: boolean = false;
-  private leftLimit: number = 0;
-  private rightLimit: number = 5;
   private paginationValue: number = 5;
-  private currentPg: number= 1;
   private currentLengthPg: number =0;
-  private passwordPagination: Password[] = [];
   public toastStyle: ToastStyleModel = toastDataStyle;
-
+  public passwordPagination: Password[]= [];
+  public leftLimit: number = 0;
+  public rightLimit: number = 5;
+  public currentPg: number = 1;
 
 
 
@@ -46,6 +46,7 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
     private passwordNotAllowedService: PasswordNotAllowedService,
     private _fb: FormBuilder,
     private _messageService: ToastService,
+    private filterService: FilterService,
 
   ) {
     this.formPasswordNotAllowedService = _fb.group({
@@ -210,6 +211,29 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
     this.passwordPagination = this.passwords.slice(this.leftLimit, this.rightLimit);
   }
 
+  public beforePagination(): void {
+    this.currentPg--;
+    this.leftLimit -= this.paginationValue;
+    this.rightLimit -= this.paginationValue;
+    this.passwordPagination = this.passwords.slice(this.leftLimit, this.rightLimit);
+  }
+
+  public nextPagination(): void {
+    this.currentPg++;
+    this.leftLimit = this.rightLimit;
+    this.rightLimit += this.paginationValue;
+    this.passwordPagination = this.passwords.slice(this.leftLimit, this.rightLimit);
+  }
+
+  public resetPagination(event: any): void {
+    this.paginationValue = event.target.value;
+    this.leftLimit = 0;
+    this.rightLimit = this.paginationValue;
+    this.currentPg = 1;
+    this.currentLengthPg = Math.ceil(this.passwords.length / this.paginationValue);
+    this.passwordPagination = this.passwords.slice(this.leftLimit, this.rightLimit);
+  }
+
 
   public isEdit(id: number): void {
     this.isEditOrCreate = true;
@@ -233,5 +257,14 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
       this.idPassword = 0;
     }
   }
-
+  filterMessages(event: any) {
+    const value = event.target.value;
+    if (value && value.length ){
+      const searchFields = ('id' || 'password').split(',');
+      this.passwordPagination = this.filterService.filter(this.passwords,searchFields,value,"contains" )
+    }
+    else {
+      this.initPagination();
+    }
+  }
 }
