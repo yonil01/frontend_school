@@ -110,4 +110,8 @@ export class WizardComponent implements OnInit {
     // this.router.navigate([route], {relativeTo: this.route}).then((_) => {});
   }
 
+  public selectItem(item: any): void {
+
+  }
+
 }

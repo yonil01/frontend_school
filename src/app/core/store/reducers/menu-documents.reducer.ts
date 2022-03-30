@@ -98,6 +98,6 @@ const menuDocumentReducer = createReducer(
   })),
 );
 
-export function MenuDocumentReducer(state:any, action:any) {
+export function MenuDocumentReducer(state: any, action: any) {
   return menuDocumentReducer(state, action);
 }

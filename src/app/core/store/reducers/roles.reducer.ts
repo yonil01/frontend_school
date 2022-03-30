@@ -259,7 +259,7 @@ const roleReducer = createReducer(
   })),
 );
 
-export function RoleReducer(state:any, action:any) {
+export function RoleReducer(state: any, action: any) {
   return roleReducer(state, action);
 }
 
@@ -285,7 +285,7 @@ function deleteInRole(roles: Role[], indexRole: number) {
 
 // Agregar Date_Disallowed
 function addInDatedisallowed(roles: Role[], indexRole: number, datedisallowed: DateDisallowed) {
-  const roleList: any[] = JSON.parse(JSON.stringify(roles)); // Role[]
+  const roleList: Role[] = JSON.parse(JSON.stringify(roles));
   roleList[indexRole].date_disallowed = roleList[indexRole].date_disallowed ? roleList[indexRole].date_disallowed : [];
   // @ts-ignore
   roleList[indexRole].date_disallowed = [...roleList[indexRole].date_disallowed, datedisallowed];
@@ -293,18 +293,22 @@ function addInDatedisallowed(roles: Role[], indexRole: number, datedisallowed: D
 }
 
 function updateInDatedisallowed(roles: Role[], indexRole: number, indexDate: number, datedisallowed: DateDisallowed) {
-  const roleList: any[] = JSON.parse(JSON.stringify(roles)); // Role[]
+  const roleList: Role[] = JSON.parse(JSON.stringify(roles));
   roleList[indexRole].date_disallowed = roleList[indexRole].date_disallowed ? roleList[indexRole].date_disallowed : [];
+  // @ts-ignore
   roleList[indexRole].date_disallowed[indexDate] = datedisallowed;
   return { roles: roleList, role: roleList[indexRole] };
 }
 
 function deleteInDatedisallowed(roles: Role[], indexRole: number, index: number) {
   const roleList: Role[] = JSON.parse(JSON.stringify(roles));
-  roleList[indexRole].date_disallowed?.splice(index, 1);
+  // @ts-ignore
+  roleList[indexRole].date_disallowed.splice(index, 1);
   const dat = roleList[indexRole].date_disallowed;
-  if (dat?.length === 0) {
-    roleList[indexRole].date_disallowed = [];
+  // @ts-ignore
+  if (dat.length === 0) {
+    // @ts-ignore
+    roleList[indexRole].date_disallowed = null;
   }
   return { roles: roleList, role: roleList[indexRole] };
 }
@@ -318,18 +322,22 @@ function addInPasswordPolicy(roles: Role[], indexRole: number, passwordpolicy: P
 
 // Agregar politicas de Seguridad - PasswordPolicy
 function addInElement(roles: Role[], indexRole: number, element: Elements) {
-  const roleList: any[] = JSON.parse(JSON.stringify(roles)); // Role[]
+  const roleList: Role[] = JSON.parse(JSON.stringify(roles));
   roleList[indexRole].role_elements = roleList[indexRole].role_elements ? roleList[indexRole].role_elements : [];
+  // @ts-ignore
   roleList[indexRole].role_elements = [...roleList[indexRole].role_elements, element];
   return { roles: roleList, role: roleList[indexRole] };
 }
 
 function deleteInElement(roles: Role[], indexRole: number, indexRoleElement: number) {
   const roleList: Role[] = JSON.parse(JSON.stringify(roles));
-  roleList[indexRole].role_elements?.splice(indexRoleElement, 1);
+  // @ts-ignore
+  roleList[indexRole].role_elements.splice(indexRoleElement, 1);
   const dat = roleList[indexRole].role_elements;
-  if (dat?.length === 0) {
-    roleList[indexRole].role_elements = [];
+  // @ts-ignore
+  if (dat.length === 0) {
+    // @ts-ignore
+    roleList[indexRole].role_elements = null;
   }
   // doctypegroupList[indexDoctypegroup].is_update = !doctypegroupList[indexDoctypegroup].is_new;
   return { roles: roleList, role: roleList[indexRole] };
@@ -338,30 +346,34 @@ function deleteInElement(roles: Role[], indexRole: number, indexRoleElement: num
 // Eliminar Paswword Policy
 function deletePassword(roles: Role[], indexRole: number) {
   const roleList: Role[] = JSON.parse(JSON.stringify(roles));
-  roleList[indexRole].password_policy = {};
+  // @ts-ignore
+  roleList[indexRole].password_policy = null;
   return { roles: roleList, role: roleList[indexRole] };
 }
 
 // Agregar Entidades de Se
 function addInSecurityEntities(roles: Role[], indexRole: number, securityentities: SecurityEntity) {
-  const roleList: any[] = JSON.parse(JSON.stringify(roles)); // Role[]
+  const roleList: Role[] = JSON.parse(JSON.stringify(roles));
   roleList[indexRole].security_entities = roleList[indexRole].security_entities
     ? roleList[indexRole].security_entities
     : [];
+  // @ts-ignore
   roleList[indexRole].security_entities = [...roleList[indexRole].security_entities, securityentities];
   return { roles: roleList, role: roleList[indexRole] };
 }
 
 // Actualizar security
 function updateSecurityEntities(roles: Role[], indexRole: number, indexSecurityE: number, attrEntities: RoleAttribute) {
-  const roleList: any[] = JSON.parse(JSON.stringify(roles)); // Role[]
+  const roleList: Role[] = JSON.parse(JSON.stringify(roles));
+  // @ts-ignore
   roleList[indexRole].security_entities[indexSecurityE].role_attribute = roleList[indexRole].security_entities[
     indexSecurityE
   ].role_attribute
-    ? roleList[indexRole].security_entities[indexSecurityE].role_attribute
+    ?  roleList[indexRole].security_entities![indexSecurityE].role_attribute
     : [];
+  // @ts-ignore
   roleList[indexRole].security_entities[indexSecurityE].role_attribute = [
-    ...roleList[indexRole].security_entities[indexSecurityE].role_attribute,
+    ...roleList[indexRole].security_entities![indexSecurityE].role_attribute!,
     attrEntities,
   ];
   return { roles: roleList, role: roleList[indexRole] };
@@ -374,27 +386,35 @@ function updateAttributeEntities(
   indexRoleAtribu: number,
   attrEntities: RoleAttribute,
 ) {
-  const roleList: any[] = JSON.parse(JSON.stringify(roles)); // Role[]
+  const roleList: Role[] = JSON.parse(JSON.stringify(roles));
+  // @ts-ignore
   roleList[indexRole].security_entities[indexSecurityE].role_attribute[indexRoleAtribu] = attrEntities;
   return { roles: roleList, role: roleList[indexRole] };
 }
 
 function deleteAttributeEntities(roles: Role[], indexRole: number, indexSecurityE: number, indexRoleAtribu: number) {
-  const roleList: any[] = JSON.parse(JSON.stringify(roles)); // Role[]
-  roleList[indexRole].security_entities[indexSecurityE].role_attribute?.splice(indexRoleAtribu, 1);
+  const roleList: Role[] = JSON.parse(JSON.stringify(roles));
+  // @ts-ignore
+  roleList[indexRole].security_entities[indexSecurityE].role_attribute.splice(indexRoleAtribu, 1);
+  // @ts-ignore
   const dat = roleList[indexRole].security_entities[indexSecurityE].role_attribute;
-  if (dat?.length === 0) {
-    roleList[indexRole].security_entities[indexSecurityE].role_attribute = [];
+  // @ts-ignore
+  if (dat.length === 0) {
+    // @ts-ignore
+    roleList[indexRole].security_entities[indexSecurityE].role_attribute = null;
   }
   return { roles: roleList, role: roleList[indexRole] };
 }
 // Eliminar Security
 function deleteSecurityEntities(roles: Role[], indexRole: number, indexSecurityE: number) {
   const roleList: Role[] = JSON.parse(JSON.stringify(roles));
-  roleList[indexRole].security_entities?.splice(indexSecurityE, 1);
+  // @ts-ignore
+  roleList[indexRole].security_entities.splice(indexSecurityE, 1);
   const dat = roleList[indexRole].security_entities;
-  if (dat?.length === 0) {
-    roleList[indexRole].security_entities = [];
+  // @ts-ignore
+  if (dat.length === 0) {
+    // @ts-ignore
+    roleList[indexRole].security_entities = null;
   }
   return { roles: roleList, role: roleList[indexRole] };
 }
@@ -410,10 +430,13 @@ function addInDoctype(roles: Role[], indexRole: number, doctype: RolesDoctype[])
 // Eliminar Doctypes
 function deleteInRoleDocType(roles: Role[], indexRole: number, indexRoleDocType: number) {
   const roleList: Role[] = JSON.parse(JSON.stringify(roles));
-  roleList[indexRole].roles_doc_types?.splice(indexRoleDocType, 1);
+  // @ts-ignore
+  roleList[indexRole].roles_doc_types.splice(indexRoleDocType, 1);
   const dat = roleList[indexRole].roles_doc_types;
-  if (dat?.length === 0) {
-    roleList[indexRole].roles_doc_types = [];
+  // @ts-ignore
+  if (dat.length === 0) {
+    // @ts-ignore
+    roleList[indexRole].roles_doc_types = null;
   }
   return { roles: roleList, role: roleList[indexRole] };
 }
@@ -428,10 +451,13 @@ function addRoleallow(roles: Role[], indexRole: number, roleallow: RoleAllowed[]
 
 function deleteInRoleAllow(roles: Role[], indexRole: number, indexRoleAllow: number) {
   const roleList: Role[] = JSON.parse(JSON.stringify(roles));
-  roleList[indexRole].role_allow?.splice(indexRoleAllow, 1);
+  // @ts-ignore
+  roleList[indexRole].role_allow.splice(indexRoleAllow, 1);
   const dat = roleList[indexRole].role_allow;
-  if (dat?.length === 0) {
-    roleList[indexRole].role_allow = [];
+  // @ts-ignore
+  if (dat.length === 0) {
+    // @ts-ignore
+    roleList[indexRole].role_allow = null;
   }
   return { roles: roleList, role: roleList[indexRole] };
 }

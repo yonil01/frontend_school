@@ -11,6 +11,10 @@ import {LocalStorageService} from "@app/core/services/local-storage/local-storag
 import { TableComponent } from './components/table/table.component';
 import {IconDirective} from "@app/ui/directivas/icon.directive";
 import { ButtonComponent } from './components/button/button.component';
+import {RouterModule} from "@angular/router";
+import {TranslateModule} from "@ngx-translate/core";
+import {DropdownModule, InputTextModule} from "ecapture-ng-ui";
+import { StepComponent } from './components/step/step.component';
 
 
 @NgModule({
@@ -23,17 +27,24 @@ import { ButtonComponent } from './components/button/button.component';
     MenuComponent,
     TableComponent,
     IconDirective,
-    ButtonComponent
+    ButtonComponent,
+    StepComponent,
   ],
     exports: [
         FooterComponent,
         BlockPageComponent,
         LayoutComponent,
         TableComponent,
-      IconDirective
+        IconDirective,
+        ButtonComponent,
+        StepComponent,
     ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    InputTextModule,
+    DropdownModule
   ],
   providers: [MenuService, LocalStorageService]
 })

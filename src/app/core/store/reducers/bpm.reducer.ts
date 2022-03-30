@@ -1,13 +1,6 @@
-import {createReducer, on} from '@ngrx/store';
-import {
-  controlBpm,
-  controlElement,
-  controlSide,
-  controlTask,
-  isChanged,
-  controlBpmVersions
-} from '@app/core/store/actions/bpm.action';
-import {Process, Queue} from '@app/core/models';
+import { createReducer, on } from '@ngrx/store';
+import { controlBpm, controlElement, controlSide, controlTask, isChanged, controlBpmVersions } from '@app/core/store/actions/bpm.action';
+import { Process, Queue } from '@app/core/models';
 
 export interface BpmState {
   bpm: Process;
@@ -27,29 +20,29 @@ export const BpmInitialState: BpmState = {
   versions: []
 };
 
-const _bpmReducer = createReducer(
+const bpmReducer = createReducer(
   BpmInitialState,
-  on(controlBpm, (state, {bpm}) => ({
+  on(controlBpm, (state, { bpm }) => ({
     ...state,
-    bpm: {...bpm},
+    bpm: { ...bpm },
   })),
 
-  on(controlBpmVersions, (state, {versions}) => ({
+  on(controlBpmVersions, (state, { versions }) => ({
     ...state,
     versions
   })),
 
-  on(controlTask, (state, {task}) => ({
+  on(controlTask, (state, { task }) => ({
     ...state,
-    task: {...task},
+    task: { ...task },
   })),
 
-  on(controlElement, (state, {element}) => ({
+  on(controlElement, (state, { element }) => ({
     ...state,
-    element: {...element},
+    element: { ...element },
   })),
 
-  on(controlSide, (state, {showSide}) => ({
+  on(controlSide, (state, { showSide }) => ({
     ...state,
     showSide: showSide,
   })),
@@ -61,5 +54,5 @@ const _bpmReducer = createReducer(
 );
 
 export function BpmReducer(state: any, action: any) {
-  return _bpmReducer(state, action);
+  return bpmReducer(state, action);
 }

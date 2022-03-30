@@ -50,7 +50,7 @@
         </div>
       </div>
       <div>
-        <app-table></app-table>
+        <app-table [tableStyle]="styleTable" (dataReturn)="eventTableOption($event)"></app-table>
       </div>
     </div>
     <!--<app-footer></app-footer>-->

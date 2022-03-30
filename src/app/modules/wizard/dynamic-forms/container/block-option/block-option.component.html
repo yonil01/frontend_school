@@ -1,0 +1,27 @@
+<div class="w-full h-full md:space-x-4">
+  <div class=" w-full h-full md:space-y-4">
+    <div class="bg-outline-gray-50 px-4 py-8 rounded-md border border-mono-70">
+      <div id="dropdown" *ngFor="let data of dataModelFileManager.folder ;index as i" class="grid grid-cols-1 divide-y divide-mono-70">
+        <div class="w-full">
+          <div class="container-center px-6 py-2 flex justify-between w-full cursor-pointer items-center hover:bg-gray-800" (click)="changeStatusDisplay(i)">
+            <div class="flex space-x-4 items-center">
+              <span appIcon iconName="desktop 32" iconColor="text-blue-600"></span>
+              <span class="text-content-4 text-black single-line">{{ data.option.name }}</span>
+            </div>
+            <div>
+              <span *ngIf="data.display" appIcon iconName="chevron top" iconColor="text-mono-70"></span>
+              <span *ngIf="!data.display" appIcon iconName="chevron bottom" iconColor="text-mono-70"></span>
+            </div>
+          </div>
+          <div  *ngFor="let dataChild of data.documents;index as indexChild" class="flex justify-between cursor-pointer" [ngClass]="data.display ? 'on-display' : 'off-display'" (click)="showSelectedItem(i, indexChild)" >
+            <div class="flex space-x-4 items-center py-2 px-10 hover:bg-gray-800 rounded-sm w-full bg-outline-gray-50 " [ngClass]="dataChild.option.disabled ? 'cursor-default opacity-70' : ''">
+              <span  appIcon iconName="{{ dataChild.option.icon }}" iconColor="{{dataChild.option.iconColor}}"></span>
+              <span class="text-content-4 text-black single-line">{{ dataChild.option.name }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="border border-black m-2"></div>
+      </div>
+    </div>
+  </div>
+</div>

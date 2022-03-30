@@ -1,6 +1,6 @@
-import {Entity, Attribute, Dataset} from '@app/core/models';
-import {createReducer, on} from '@ngrx/store';
-import {cancelDatasets, savedEntity, editAutofill, editCascadingdt, deleteAttribute} from '../actions/entity.action';
+import { Entity, Attribute, Dataset } from '@app/core/models';
+import { createReducer, on } from '@ngrx/store';
+import { cancelDatasets, savedEntity, editAutofill, editCascadingdt, deleteAttribute } from '../actions/entity.action';
 import {
   controlAttribute,
   showEntity,
@@ -50,7 +50,7 @@ export const EntityInitialState: EntityState = {
 
 const entityReducer = createReducer(
   EntityInitialState,
-  on(controlEntity, (state, {entity, index}) => ({
+  on(controlEntity, (state, { entity, index }) => ({
     ...state,
     isShowEntity: false,
     indexEntity: index,
@@ -58,30 +58,30 @@ const entityReducer = createReducer(
     operation: '',
   })),
 
-  on(showEntity, (state, {operation}) => ({
+  on(showEntity, (state, { operation }) => ({
     ...state,
     isShowEntity: true,
     operation,
   })),
 
-  on(controlEntities, (state, {entities}) => ({
+  on(controlEntities, (state, { entities }) => ({
     ...state,
     isShowEntity: false,
     entities,
   })),
 
-  on(editEntity, (state, {entity}) => ({
+  on(editEntity, (state, { entity }) => ({
     ...state,
     isShowEntity: false,
-    entity: {...entity},
+    entity: { ...entity },
     entities: updateEntities(state.entities, state.indexEntity, entity),
     operation: '',
   })),
 
-  on(addEntity, (state, {entity}) => ({
+  on(addEntity, (state, { entity }) => ({
     ...state,
     isShowEntity: false,
-    entity: {...entity},
+    entity: { ...entity },
     entities: [...state.entities, entity],
     indexEntity: state.entities.length,
     operation: '',
@@ -92,15 +92,15 @@ const entityReducer = createReducer(
     isShowEntity: false,
   })),
 
-  on(controlAttribute, (state, {attribute, index, operation}) => ({
+  on(controlAttribute, (state, { attribute, index, operation }) => ({
     ...state,
     isShowAttribute: true,
     indexAttribute: index,
-    attribute: attribute ? {...attribute} : {},
+    attribute: attribute ? { ...attribute } : {},
     operation,
   })),
 
-  on(editAttribute, (state, {attribute}) => ({
+  on(editAttribute, (state, { attribute }) => ({
     ...state,
     isShowAttribute: false,
     attribute: {},
@@ -108,7 +108,7 @@ const entityReducer = createReducer(
     operation: '',
   })),
 
-  on(addAttribute, (state, {attribute}) => ({
+  on(addAttribute, (state, { attribute }) => ({
     ...state,
     isShowAttribute: false,
     attribute: {},
@@ -116,7 +116,7 @@ const entityReducer = createReducer(
     operation: '',
   })),
 
-  on(deleteAttribute, (state, {indexAttribute}) => ({
+  on(deleteAttribute, (state, { indexAttribute }) => ({
     ...state,
     ...deleteInAttributes(state.entities, state.indexEntity, indexAttribute),
     operation: '',
@@ -128,14 +128,14 @@ const entityReducer = createReducer(
     attribute: {},
   })),
 
-  on(controlDatasets, (state, {datasets, index}) => ({
+  on(controlDatasets, (state, { datasets, index }) => ({
     ...state,
     isShowDatasets: true,
     indexAttribute: index,
     datasets: [...datasets],
   })),
 
-  on(editDatasets, (state, {datasets}) => ({
+  on(editDatasets, (state, { datasets }) => ({
     ...state,
     isShowDatasets: false,
     attribute: {},
@@ -150,12 +150,12 @@ const entityReducer = createReducer(
     datasets: [],
   })),
 
-  on(editAutofill, (state, {autofills, indexAttribute}) => ({
+  on(editAutofill, (state, { autofills, indexAttribute }) => ({
     ...state,
     ...updateAutofill(state.entities, state.indexEntity, indexAttribute, autofills),
   })),
 
-  on(editCascadingdt, (state, {cascadingdt, indexAttribute}) => ({
+  on(editCascadingdt, (state, { cascadingdt, indexAttribute }) => ({
     ...state,
     ...updateCascadingdt(state.entities, state.indexEntity, indexAttribute, cascadingdt),
   })),
@@ -177,43 +177,48 @@ function updateEntities(entities: Entity[], index: number, entity: Entity) {
 }
 
 function updateInAttributes(entities: Entity[], indexEntity: number, indexAttribute: number, attribute: Attribute) {
-  const entitiesList: any[] = JSON.parse(JSON.stringify(entities)); // Entity[]
+  const entitiesList: Entity[] = JSON.parse(JSON.stringify(entities));
+  // @ts-ignore
   entitiesList[indexEntity].attributes[indexAttribute] = attribute;
-  return {entities: entitiesList, entity: entitiesList[indexEntity]};
+  return { entities: entitiesList, entity: entitiesList[indexEntity] };
 }
 
 function addInAttributes(entities: Entity[], indexEntity: number, attribute: Attribute) {
-  const entitiesList: any[] = JSON.parse(JSON.stringify(entities)); // Entity[]
+  const entitiesList: Entity[] = JSON.parse(JSON.stringify(entities));
   entitiesList[indexEntity].attributes = entitiesList[indexEntity].attributes ? entitiesList[indexEntity].attributes : [];
+  // @ts-ignore
   entitiesList[indexEntity].attributes = [...entitiesList[indexEntity].attributes, attribute];
-  return {entities: entitiesList, entity: entitiesList[indexEntity]};
+  return { entities: entitiesList, entity: entitiesList[indexEntity] };
 }
 
 function deleteInAttributes(entities: Entity[], indexEntity: number, indexAttribute: number) {
   const entitiesList: Entity[] = JSON.parse(JSON.stringify(entities));
-  entitiesList[indexEntity].attributes?.splice(indexAttribute, 1);
-  return {entities: entitiesList, entity: entitiesList[indexEntity]};
+  // @ts-ignore
+  entitiesList[indexEntity].attributes.splice(indexAttribute, 1);
+  return { entities: entitiesList, entity: entitiesList[indexEntity] };
 }
 
 function updateDatasets(entities: Entity[], indexEntity: number, indexAttribute: number, datasets: Dataset[]) {
   const entitiesList: Entity[] = JSON.parse(JSON.stringify(entities));
   // entitiesList[indexEntity].attributes[indexAttribute].data_sets = datasets;
-  return {entities: entitiesList, entity: entitiesList[indexEntity]};
+  return { entities: entitiesList, entity: entitiesList[indexEntity] };
 }
 
 function saveEntity(entities: Entity[], indexEntity: number) {
   const entitiesList: Entity[] = JSON.parse(JSON.stringify(entities));
-  return {entities: entitiesList, entity: entitiesList[indexEntity]};
+  return { entities: entitiesList, entity: entitiesList[indexEntity] };
 }
 
 function updateAutofill(entities: Entity[], indexEntity: number, indexAttribute: number, autofills: string[]) {
-  const entitiesList: any[] = JSON.parse(JSON.stringify(entities)); // Entity[]
+  const entitiesList: Entity[] = JSON.parse(JSON.stringify(entities));
+  // @ts-ignore
   entitiesList[indexEntity].attributes[indexAttribute].autofill = autofills;
-  return {entities: entitiesList, entity: entitiesList[indexEntity]};
+  return { entities: entitiesList, entity: entitiesList[indexEntity] };
 }
 
 function updateCascadingdt(entities: Entity[], indexEntity: number, indexAttribute: number, cascadingdt: string[]) {
-  const entitiesList: any[] = JSON.parse(JSON.stringify(entities)); // Entity[]
+  const entitiesList: Entity[] = JSON.parse(JSON.stringify(entities));
+  // @ts-ignore
   entitiesList[indexEntity].attributes[indexAttribute].cascading_datasets = cascadingdt;
-  return {entities: entitiesList, entity: entitiesList[indexEntity]};
+  return { entities: entitiesList, entity: entitiesList[indexEntity] };
 }

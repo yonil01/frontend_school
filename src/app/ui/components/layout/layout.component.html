@@ -1,15 +1,16 @@
 <div class="Layout">
   <app-menu *ngIf="activeSidebar" (close-menu)="activeSidebar = $event" class="z-30"></app-menu>
-
   <div class="content">
     <div class="Layout-header z-40">
       <header *ngIf="styleSidebar === ''" class="top-0 bg-white w-screen h-12 border-b border-mono-30 flex justify-between items-center pr-6 md:pr-12 lg:pr-12 xl:pr-16 2xl:pr-24">
         <div class="action">
-          <button class="flex justify-center items-center w-12 h-12" (click)="changeStatusSidebar()">
+          <button *ngIf="typeButton == 0" class="flex justify-center items-center w-12 h-12" (click)="changeStatusSidebar()">
             <svg class="fill-current text-mono-70" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M2.75232 17.9999H21.2523C21.6665 17.9999 22.0023 18.3357 22.0023 18.7499C22.0023 19.1296 21.7202 19.4434 21.3541 19.4931L21.2523 19.4999H2.75232C2.33811 19.4999 2.00232 19.1641 2.00232 18.7499C2.00232 18.3702 2.28448 18.0564 2.65055 18.0068L2.75232 17.9999H21.2523H2.75232ZM2.75232 11.5029H21.2523C21.6665 11.5029 22.0023 11.8387 22.0023 12.2529C22.0023 12.6326 21.7202 12.9464 21.3541 12.9961L21.2523 13.0029H2.75232C2.33811 13.0029 2.00232 12.6672 2.00232 12.2529C2.00232 11.8732 2.28448 11.5595 2.65055 11.5098L2.75232 11.5029H21.2523H2.75232ZM2.75146 5.00317H21.2515C21.6657 5.00317 22.0015 5.33896 22.0015 5.75317C22.0015 6.13287 21.7193 6.44666 21.3532 6.49633L21.2515 6.50317H2.75146C2.33725 6.50317 2.00146 6.16739 2.00146 5.75317C2.00146 5.37348 2.28362 5.05968 2.64969 5.01002L2.75146 5.00317H21.2515H2.75146Z"/>
             </svg>
           </button>
+          <span *ngIf="typeButton === 1" class="flex justify-center items-center w-12 h-12" appIcon iconName="arrow left-20" iconColor="text-mono-70"> </span>
+          <span *ngIf="typeButton === 2" class="flex justify-center items-center w-12 h-12" appIcon iconName="exit 20" iconColor="text-mono-70"> </span>
         </div>
         <div class="brand">
           <svg xmlns="http://www.w3.org/2000/svg" width="80" height="24" viewBox="0 0 80 24" fill="none">

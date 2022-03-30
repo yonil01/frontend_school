@@ -1,6 +1,8 @@
 import { ActionReducerMap } from '@ngrx/store';
 import * as reducers from './reducers';
 
+
+
 export interface AppState {
   bpm: reducers.BpmState;
   role: reducers.RoleState;
@@ -8,7 +10,7 @@ export interface AppState {
   doctype: reducers.DoctypeState;
   doctypeGroup: reducers.DoctypeGroup;
   menuDocuments: reducers.MenuDocumentsState;
-  // dynamicForms: reducers.DynamicFormsState;
+  dynamicForms: reducers.DynamicFormsState;
   documentSource: reducers.DocumentSourceState;
   token: reducers.TokenState;
   component: reducers.ComponentState;
@@ -23,7 +25,7 @@ export const appReducers: ActionReducerMap<AppState> = {
   role: reducers.RoleReducer,
   doctypeGroup: reducers.DoctypeGroupReducer,
   menuDocuments: reducers.MenuDocumentReducer,
-  // dynamicForms: reducers.DynamicFormsReducer,
+  dynamicForms: reducers.DynamicFormsReducer,
   documentSource: reducers.DocumentSourceReducer,
   token: reducers.TokenReducer,
   component: reducers.ComponentReducer,

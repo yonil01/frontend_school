@@ -7,9 +7,10 @@ import {UiModule} from "@app/ui/ui.module";
 import {DropdownModule} from "ecapture-ng-ui";
 
 
+
 @NgModule({
   declarations: [
-    WizardComponent
+    WizardComponent,
   ],
   imports: [
     CommonModule,

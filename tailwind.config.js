@@ -8,6 +8,12 @@ module.exports = {
         'black-fx': 'var(--c-black)',
         white: 'var(--c-fl-white)',
         black: 'var(--c-fl-black)',
+        blue: {
+          core: {
+            l1: 'var(--c-fl-brand-l-1)',
+            l2: 'var(--c-fl-brand-l-2)',
+          }
+        },
         mono: {
           10: 'var(--c-fl-mono-10)',
           30: 'var(--c-fl-mono-30)',

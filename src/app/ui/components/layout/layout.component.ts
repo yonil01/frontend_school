@@ -8,9 +8,12 @@ import {Component, Input, OnInit} from '@angular/core';
 export class LayoutComponent implements OnInit {
   public openMenu = true;
   public activeSidebar: boolean = false;
+  @Input() typeButton: number;
   @Input() styleSidebar: string = '';
 
-  constructor() {}
+  constructor() {
+    this.typeButton = 0;
+  }
 
   ngOnInit(): void {}
 

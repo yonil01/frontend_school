@@ -1,0 +1,42 @@
+<div class="w-full space-y-12 py-6">
+  <div class="flex {{StyleStep.style?.size}} justify-between">
+    <div class="w-full " *ngFor="let data of StyleStep.dataSourceStep; index as i ">
+
+        <div *ngIf="data.status === 'Active'" class="mb-2 flex space-x-4 p-2 hover:bg-mono-10 cursor-pointer" (click)="changeUbication(i)">
+          <div class="w-10 h-10 bg-blue-core-l2 rounded-full text-lg text-white flex items-center">
+            <span class="text-center font-bold text-mono-10 w-full">
+              {{ i + 1 }}
+            </span>
+          </div>
+          <div class="flex align-center text-blue-core-l2 items-center  content-center" >
+            <span>{{ data.title }}</span>
+          </div>
+        </div>
+      <div *ngIf="data.status === 'Pending'" class="mb-2 flex space-x-4 p-2 hover:bg-mono-10 cursor-pointer" (click)="changeUbication(i)">
+        <div class="w-10 h-10 bg-mono-10 rounded-full text-lg text-white flex items-center">
+            <span class="text-center font-bold text-mono-30 w-full">
+              {{ i + 1}}
+            </span>
+        </div>
+        <div class="flex align-center text-mono-30 items-center  content-center" >
+          <span>{{ data.title }}</span>
+        </div>
+      </div>
+      <div *ngIf="data.status === 'Completed'" class="mb-2 flex space-x-4 cursor-pointer" (click)="changeUbication(i)">
+        <div class="w-10 h-10 bg-transparent rounded-full text-lg text-white flex items-center border-2 border-blue-core-l2">
+            <span class="text-center font-bold text-blue-core-l2 w-full">
+              {{ i + 1 }}
+            </span>
+        </div>
+        <div class="flex align-center text-blue-core-l2 items-center  content-center" >
+          <span>{{ data.title }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="Step z-0">
+    <ng-content select="[step]"></ng-content>
+  </div>
+</div>
+
+

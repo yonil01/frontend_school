@@ -1,1 +1,96 @@
-<p>basic-information works!</p>
+<div class="w-full space-x-4 flex">
+  <form [formGroup]="formBasicInfo" class="w-full space-y-10">
+    <div class="w-full">
+      <div class="flex lg:space-x-4 w-full">
+        <ec-input-text label="Nombre de Usuario"
+                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
+                       brContainerColor="border-outline-gray-50"
+                       class="w-full"
+                       formControlName="username"
+        ></ec-input-text>
+        <ec-input-text label="Correo Electronico"
+                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
+                       brContainerColor="border-outline-gray-50"
+                       class="w-full"
+                       formControlName="email_notifications"
+        ></ec-input-text>
+      </div>
+      <div class="flex lg:space-x-4 w-full">
+        <ec-input-text label="Tipo de Identificación"
+                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
+                       brContainerColor="border-outline-gray-50"
+                       class="w-full"
+                       formControlName="identification_type"
+        ></ec-input-text>
+        <ec-input-text label="Numero de Identificación"
+                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
+                       brContainerColor="border-outline-gray-50"
+                       class="w-full"
+                       formControlName="identification_number"
+        ></ec-input-text>
+      </div>
+      <div class="flex lg:space-x-4 w-full">
+        <ec-input-text label="Nombre"
+                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
+                       brContainerColor="border-outline-gray-50"
+                       class="w-full"
+                       formControlName="name"
+        ></ec-input-text>
+        <ec-input-text label="Apellido"
+                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
+                       brContainerColor="border-outline-gray-50"
+                       class="w-full"
+                       formControlName="last_name"
+        ></ec-input-text>
+      </div>
+      <div class="flex lg:space-x-4 w-full">
+        <ec-input-text label="password"
+                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
+                       brContainerColor="border-outline-gray-50"
+                       class="w-full"
+                       formControlName="password"
+        ></ec-input-text>
+        <ec-input-text label="Confirmar Contraseña"
+                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
+                       brContainerColor="border-outline-gray-50"
+                       class="w-full"
+                       formControlName="password_comfirm"
+        ></ec-input-text>
+      </div>
+    </div>
+    <div class="flex space-x-4 w-1/2">
+      <app-button routerLink="/admin/user/list" type="button" label="Guardar"
+                  brColor="border-blue-600"
+                  bgColor="bg-transparent"
+                  txtColor="text-blue-600" class="h-12 w-full"></app-button>
+      <app-button type="button" label="Siguiente"
+                  brColor="border-blue-600"
+                  bgColor="bg-blue-600"
+                  txtColor="text-gray-900" class="h-12 w-full" (click)="nextStep(0)"></app-button>
+    </div>
+  </form>
+
+
+  <div class="w-full grid p-4 content-center h-100 ">
+    <div class="w-1/2">
+      <div class="flex">
+        <span appIcon iconName="alert-on 32" iconColor="text-blue-core-l1"></span>
+        <span class="text-mono-70">
+                  Si quieres cancelar presiona la ‘X’ de la parte superior izquierda.
+                </span>
+      </div>
+      <div class="flex">
+        <span appIcon iconName="alert-on 32" iconColor="text-blue-core-l1"></span>
+        <span class="text-mono-70">
+                  El botón ‘Guardar’ realiza el registro hasta este punto y te dirige a la pantalla anterior.
+                </span>
+      </div>
+      <div class="flex">
+        <span appIcon iconName="alert-on 32" iconColor="text-blue-core-l1"></span>
+        <span class="text-mono-70">
+                  El botón ‘Siguiente’ también realiza el registro, pero te dirige a la asignación de roles y entidades de seguridad, esos pasos son opcionales.
+                </span>
+      </div>
+    </div>
+  </div>
+</div>
