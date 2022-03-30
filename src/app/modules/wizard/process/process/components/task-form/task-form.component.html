@@ -25,7 +25,7 @@
       </div>
       <div class="input flex flex-col space-y-1">
         <label class="t-caption-2 text-mono-70">{{'TYPE_BALANCING' | translate}}</label>
-        <ec-dropdown [filter]="true" placeholder="{{'SELECT_TYPE_BALANCING' | translate}}" formControlName="balance_type" [icon]="true" optionLabel="label" [data]="balanceType" [dropStyle]="dropStyle"></ec-dropdown>
+        <ec-dropdown [filter]="true" placeholder="{{'SELECT_TYPE_BALANCING' | translate}}" formControlName="balance_type" [icon]="true" optionLabel="label" optionValue="value" [data]="balanceType" [dropStyle]="dropStyle"></ec-dropdown>
         <div class="text-alert-error" *ngIf="queueForm.get('balance_type')?.invalid && queueForm.get('balance_type')?.touched && queueForm.get('balance_type')?.hasError('required')">
           <span>El campo es requerido</span>
         </div>

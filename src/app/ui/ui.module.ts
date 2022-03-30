@@ -15,6 +15,7 @@ import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-
 import {SideTaskComponent} from './components/side-task/side-task.component';
 import {PaginatorComponent} from './components/paginator/paginator.component';
 import {FormsModule} from "@angular/forms";
+import { EcTooltipDirective } from './directives/ec-tooltip.directive';
 
 @NgModule({
   declarations: [
@@ -27,17 +28,19 @@ import {FormsModule} from "@angular/forms";
     PickTaskComponent,
     ConfirmDialogComponent,
     SideTaskComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    EcTooltipDirective
   ],
-  exports: [
-    FooterComponent,
-    BlockPageComponent,
-    LayoutComponent,
-    PickTaskComponent,
-    ConfirmDialogComponent,
-    SideTaskComponent,
-    PaginatorComponent
-  ],
+    exports: [
+        FooterComponent,
+        BlockPageComponent,
+        LayoutComponent,
+        PickTaskComponent,
+        ConfirmDialogComponent,
+        SideTaskComponent,
+        PaginatorComponent,
+        EcTooltipDirective
+    ],
   imports: [
     CommonModule,
     DragDropModule,

@@ -9,6 +9,11 @@ export interface DocTypeGroups {
   doctypes?: DocTypes[];
 }
 
+export interface DocTypesDisplay {
+  active: boolean;
+  docType: DocTypes;
+}
+
 export interface DocTypes {
   id?: string;
   code?: string;
