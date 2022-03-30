@@ -32,13 +32,10 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
   public isEditOrCreate: boolean = false;
   public idPassword: number= 0;
   public showAlert: boolean = false;
-  private paginationValue: number = 5;
-  private currentLengthPg: number =0;
   public toastStyle: ToastStyleModel = toastDataStyle;
   public passwordPagination: Password[]= [];
-  public leftLimit: number = 0;
-  public rightLimit: number = 5;
-  public currentPg: number = 1;
+  public passwordsFilter: Password[] = [];
+
 
 
 
@@ -63,7 +60,7 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
             } else {
               if (res.data) {
                 this.passwords = res.data;
-                this.initPagination();
+                this.passwordsFilter = res.data;
               }
             }
             this.isShowBlockPage = false;
@@ -96,9 +93,8 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
             this._messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
             this.passwords = this.passwords.filter((password) => password.id);
-            this.initPagination();
             this.idPassword =0;
-
+            this.passwordsFilter =[...this.passwords];
           }
           this.isShowBlockPage = false;
         },
@@ -125,7 +121,7 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
                 this.isEditOrCreate = false;
                 this.passwords.push(res.data);
                 this.formPasswordNotAllowedService.reset();
-                this.initPagination();
+                this.passwordsFilter =[...this.passwords];
               }
               this.isShowBlockPage = false;
             },
@@ -166,7 +162,7 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
                   this.passwords[indexParameter] = password;
                   this.formPasswordNotAllowedService.reset();
                   this.idPassword = 0;
-                  this.initPagination();
+
                 }
                 this.isEditOrCreate = false;
               }
@@ -202,39 +198,6 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
   }
 
 
-  private initPagination(): void {
-    this.leftLimit = 0;
-    this.rightLimit = 5;
-    this.paginationValue = 5;
-    this.currentPg = 1;
-    this.currentLengthPg = Math.ceil(this.passwords.length / this.paginationValue);
-    this.passwordPagination = this.passwords.slice(this.leftLimit, this.rightLimit);
-  }
-
-  public beforePagination(): void {
-    this.currentPg--;
-    this.leftLimit -= this.paginationValue;
-    this.rightLimit -= this.paginationValue;
-    this.passwordPagination = this.passwords.slice(this.leftLimit, this.rightLimit);
-  }
-
-  public nextPagination(): void {
-    this.currentPg++;
-    this.leftLimit = this.rightLimit;
-    this.rightLimit += this.paginationValue;
-    this.passwordPagination = this.passwords.slice(this.leftLimit, this.rightLimit);
-  }
-
-  public resetPagination(event: any): void {
-    this.paginationValue = event.target.value;
-    this.leftLimit = 0;
-    this.rightLimit = this.paginationValue;
-    this.currentPg = 1;
-    this.currentLengthPg = Math.ceil(this.passwords.length / this.paginationValue);
-    this.passwordPagination = this.passwords.slice(this.leftLimit, this.rightLimit);
-  }
-
-
   public isEdit(id: number): void {
     this.isEditOrCreate = true;
     const password = this.passwords.find(item => item.id === id);
@@ -260,11 +223,11 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
   filterMessages(event: any) {
     const value = event.target.value;
     if (value && value.length ){
-      const searchFields = ('id' || 'password').split(',');
-      this.passwordPagination = this.filterService.filter(this.passwords,searchFields,value,"contains" )
+      const searchFields = ('id,password').split(',');
+      this.passwordsFilter = this.filterService.filter(this.passwords,searchFields,value,"contains" )
     }
     else {
-      this.initPagination();
+      this.passwordsFilter = [...this.passwords];
     }
   }
 }

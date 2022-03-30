@@ -8,6 +8,7 @@ import { RolesListComponent } from './pages/roles-list/roles-list.component';
 import { RolesCreateComponent } from './pages/roles-create/roles-create.component';
 import { RolesEditComponent } from './pages/roles-edit/roles-edit.component';
 import { RolesManagerComponent } from './pages/roles-manager/roles-manager.component';
+import {ToastModule} from "ecapture-ng-ui";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { RolesManagerComponent } from './pages/roles-manager/roles-manager.compo
     imports: [
         CommonModule,
         RolesRoutingModule,
-        UiModule
+        UiModule,
+        ToastModule
     ]
 })
 export class RolesModule { }
