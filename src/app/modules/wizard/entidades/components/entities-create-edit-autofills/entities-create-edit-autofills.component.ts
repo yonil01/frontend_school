@@ -11,6 +11,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Client, Project} from "@app/core/models/wizard/wizard";
 import {ToastModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {AutofillsService} from "@app/modules/wizard/entidades/services/autofills/autofills.service";
+import {nonUpperCaseValidator, noWhitespaceValidator} from "@app/modules/wizard/entidades/utils/validators";
 
 @Component({
   selector: 'app-entities-create-edit-autofills',
@@ -43,7 +44,7 @@ export class EntitiesCreateEditAutofillsComponent implements OnInit {
   ngOnInit(): void {
     this.entity = this.selectedEntity;
     this.createEditForm = this._fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, noWhitespaceValidator(), Validators.maxLength(50), Validators.minLength(3), nonUpperCaseValidator()]],
       description: ['', [Validators.required]],
       outside: [false, [Validators.required]],
       process: [''],

@@ -39,7 +39,7 @@ export class EntitiesCreateEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.createEditForm = this._fb.group({
-      name: ['', [Validators.required, noWhitespaceValidator()]],
+      name: ['', [Validators.required, noWhitespaceValidator(), Validators.minLength(3), Validators.maxLength(50)]],
       is_unique: [false]
     })
     if (this.selectedEntity) {
