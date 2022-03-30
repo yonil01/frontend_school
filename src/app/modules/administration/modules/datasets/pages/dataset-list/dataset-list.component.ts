@@ -46,7 +46,7 @@ export class DatasetListComponent implements OnInit {
     switch ($event.from) {
       case 'createDataset':
         this.getDatasets();
-        if(this.selectedDataset){
+        if (this.selectedDataset) {
           this.selectedDataset = undefined;
         }
         this.showCreateDataset = false;
@@ -69,6 +69,26 @@ export class DatasetListComponent implements OnInit {
   }
 
   onDeleteDataset(i: number) {
-    
+    this.selectedDataset = this.datasets[i];
+  }
+
+  deleteDataset(): void {
+    if (this.selectedDataset?.id)
+      this.datasetsService.deleteDataset(this.selectedDataset.id.toLowerCase()).subscribe((res) => {
+        if (res.error) {
+          this.messageService.add({
+            type: 'error',
+            message: res.msg,
+            life: 5000
+          });
+        } else {
+          this.messageService.add({
+            type: 'success',
+            message: 'Dataset deleted successfully',
+            life: 5000
+          });
+          this.getDatasets();
+        }
+      });
   }
 }
