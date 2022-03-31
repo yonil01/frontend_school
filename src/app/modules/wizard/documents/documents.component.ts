@@ -13,9 +13,7 @@ import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {ToastService} from "ecapture-ng-ui";
 import {
-  addDoctype,
-  controlDoctype,
-  controlDoctypegroups, editDoctype,
+  controlDoctypegroups,
   showDoctypegroup
 } from "@app/core/store/actions/doctype.action";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
@@ -40,8 +38,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public isBlockPage: boolean = false;
 
   public docTypeGroups: DocTypeGroups[] = [];
+  public docTypeGroupsPagination: DocTypeGroups[] = [];
   public docTypeGroupSelected!: DocTypeGroups;
   public docTypesDisplay: DocTypesDisplay[] = [];
+  public docTypesDisplayPagination: DocTypesDisplay[] = [];
   public docTypeSelected!: DocTypes;
   public storages: any[] = [];
   public typeSupport: any[] = [];
@@ -84,6 +84,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   columnsDocTypes: any[] = [];
   public view: string = 'docTypesGroup';
   public showAlertDeleteDtg: boolean = false;
+  public showAlertDeleteTg: boolean = false;
   public doctypeForm: FormGroup;
 
   constructor(
@@ -198,14 +199,12 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.doctypeGruop = doctypegroup;
     this.docTypeGroupSelected = doctypegroup;
     if (this.docTypeGroupSelected.doctypes) {
+      this.docTypesDisplay = [];
       for (const item of this.docTypeGroupSelected.doctypes) {
         this.docTypesDisplay.push({active: false, docType: item});
       }
     }
-    const index = this.docTypeGroups.indexOf(doctypegroup);
-    // this.store.dispatch(controlDoctypegroup({doctypegroup, index}));
     this.view = 'docTypesList';
-    // this.indexDelete = doctypegroup.id;
   }
 
   showAddDocTypeGroups(): void {
@@ -248,12 +247,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         }
       })
     );
-  }
-
-  private showAddAutoname(): void {
-    this.view = 'autoname';
-    this.store.dispatch(controlDoctype({docType: this.autoName, indexDocType: this.indexAutoname}));
-    // this.isShowAddAutoname = true;
   }
 
   showOptions(event: any, option: any, rowData: any, indexDocType: number): void {
@@ -327,19 +320,28 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private notifyUser(severity: string, summary: string, detail: string, life: number): void {
-    this.messageService.add({
-      type: severity,
-      message: detail,
-      life: life,
-    });
-  }
-
   public confirmDeleteDoctypeGroups(event: boolean): void {
     if (event) {
       this.deleteDoctypeGroups();
     } else {
       this.showAlertDeleteDtg = false;
+    }
+  }
+
+  public confirmDeleteDoctype(event: boolean): void {
+    if (event) {
+      if (!this.docTypeSelected.doctypes_entities || this.docTypeSelected.doctypes_entities.length === 0) {
+        this.deleteDocType();
+      } else {
+        this.showAlertDeleteTg = false;
+        this.messageService.add({
+          type: 'warning',
+          message: 'No se puede eliminar el tipo de documento porque tiene entidades asociadas',
+          life: 5000
+        });
+      }
+    } else {
+      this.showAlertDeleteTg = false;
     }
   }
 
@@ -390,30 +392,32 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteDocType(rowData: DocTypes, index: number): void {
-    const idDoctype = rowData.id?.toLocaleLowerCase();
-    if (rowData.doctypes_entities) {
-      this.notifyUser('error', 'El tipo documental tiene asignado Entidades', '', 4000);
-    } else {
-      /*this.confirmationService.confirm({
-        message: '¿Está seguro de Eliminar el Tipo Documental?',
-        header: 'Confimar Eliminación Tipo Documental',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.doctypegroupService.deleteDoctype(idDoctype).subscribe((res) => {
-            if (res.error) {
-              this.notifyUser('error', 'Error en la Eliminación', res.msg, 5000);
-            } else {
-              this.view = 'doctypes';
-              this.notifyUser('success', 'Eliminación Exitosa', res.msg, 5000);
-              this.store.dispatch(deleteDocType({indexDocType: index}));
+  private deleteDocType(): void {
+    this.isBlockPage = true;
+    this._subscription.add(
+      this.doctypegroupService.deleteDoctype(this.docTypeSelected.id || '').subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            this.messageService.add({type: 'success', message: res.msg, life: 5000});
+            this.docTypeGroupSelected.doctypes = this.docTypeGroupSelected.doctypes?.filter(d => d.id !== this.docTypeSelected.id);
+            this.docTypesDisplay = this.docTypesDisplay?.filter(d => d.docType.id !== this.docTypeSelected.id);
+            const index = this.docTypes.findIndex(d => d.id === this.docTypeSelected.id);
+            if (index !== -1) {
+              this.docTypes[index] = this.docTypeSelected;
             }
-          });
+            this.docTypeSelected = {};
+          }
+          this.isBlockPage = false;
         },
-        reject: () => {
-        },
-      });*/
-    }
+        error: (err: HttpErrorResponse) => {
+          this.isBlockPage = false;
+          console.error(err);
+          this.messageService.add({type: 'error', message: err.message, life: 5000});
+        }
+      })
+    );
   }
 
   public createDoctype(doctype: DocTypes): void {
@@ -428,7 +432,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           } else {
             this.view = 'doctypes';
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
-            this.store.dispatch(addDoctype({doctype: {...doctype}}));
+            this.docTypeGroupSelected.doctypes?.push(doctype);
+            const docTypeGroupIndex = this.docTypeGroups.findIndex((dtg) => dtg.id === this.docTypeGroupSelected.id);
+            if (docTypeGroupIndex > -1) {
+              this.docTypeGroups[docTypeGroupIndex].doctypes = this.docTypeGroupSelected.doctypes;
+            }
           }
           this.isBlockPage = false;
         },
@@ -443,7 +451,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   public updateDoctype(doctype: DocTypes): void {
     this.isShowAddAutoname = false;
-    const data = JSON.parse(JSON.stringify(doctype));
+    const data = doctype;
     delete data.doctypes_entities;
     this.isBlockPage = true;
     this._subscription.add(
@@ -454,7 +462,19 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           } else {
             this.view = 'doctypes';
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
-            this.store.dispatch(editDoctype({doctype: doctype}));
+            const docTypeIndex = this.docTypeGroupSelected.doctypes?.findIndex((dtg) => dtg.id === doctype.id);
+            if (docTypeIndex && docTypeIndex > -1) {
+              // @ts-ignore
+              this.docTypeGroupSelected.doctypes[docTypeIndex] = doctype;
+            }
+            const docTypeGroupIndex = this.docTypeGroups.findIndex((dtg) => dtg.id === this.docTypeGroupSelected.id);
+            if (docTypeGroupIndex > -1) {
+              this.docTypeGroups[docTypeGroupIndex].doctypes = this.docTypeGroupSelected.doctypes;
+            }
+            const index = this.docTypesDisplay.findIndex((item) => item.docType.id === doctype.id);
+            if (index !== -1) {
+              this.docTypesDisplay[index].docType = doctype;
+            }
           }
           this.isBlockPage = false;
         },
@@ -564,6 +584,47 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.view = type;
     this.docTypeSelected = docType;
     this.docTypesDisplay = this.docTypesDisplay.map((doc) => ({...doc, active: false}));
+  }
+
+  public saveDoctype(): void {
+    if (this.doctypeForm.invalid) {
+      this.doctypeForm.markAllAsTouched();
+      this.messageService.add({
+        type: 'warning',
+        message: 'Complete correctamete todos los campos del formulario',
+        life: 5000
+      });
+    } else {
+      if (this.view === 'doctypeEdit') {
+        const docTypes: DocTypes = {
+          ...this.docTypeSelected,
+          ...this.doctypeForm.value,
+          id: this.docTypeSelected.id?.toLocaleLowerCase(),
+          doctypes_groups_id: this.docTypeSelected.doctypes_groups_id?.toLocaleLowerCase(),
+        };
+        if (docTypes.format !== 'frm' && docTypes.format !== 'dsb' && docTypes.format !== 'rpt') {
+          docTypes.procedure = '';
+          docTypes.url_path = '';
+        } else if (docTypes.format === 'dsb' || docTypes.format === 'rpt') {
+          docTypes.url_path = '';
+        }
+        this.updateDoctype(docTypes);
+      } else {
+        const doctype: DocTypes = {
+          ...this.doctypeForm.value,
+          id: uuidv4().toLowerCase(),
+          doctypes_groups_id: this.docTypeGroupSelected.id?.toLocaleLowerCase(),
+          autoname: '',
+        };
+        if (doctype.format !== 'frm' && doctype.format !== 'dsb' && doctype.format !== 'rpt') {
+          doctype.procedure = '';
+          doctype.url_path = '';
+        } else if (doctype.format === 'dsb' || doctype.format === 'rpt') {
+          doctype.url_path = '';
+        }
+        this.createDoctype(doctype);
+      }
+    }
   }
 
 }

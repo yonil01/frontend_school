@@ -2,7 +2,7 @@ import {Component, OnInit, Input, EventEmitter, Output, OnDestroy} from '@angula
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {AppState} from '@app/core/store/app.reducers';
-import {Response, DocTypes, DocTypeGroups, Entity} from '@app/core/models';
+import {DocTypes, DocTypeGroups, Entity} from '@app/core/models';
 import {EntityService} from '@app/modules/wizard/services/entity/entity.service';
 import {DoctypegroupService} from '@app/modules/wizard/services/doctypegroup/doctypegroup.service';
 import {ToastService} from "ecapture-ng-ui";
@@ -10,6 +10,8 @@ import {Subscription} from "rxjs/internal/Subscription";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
+import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
+import {dropStyle} from "@app/core/models/dropdown/dropdown";
 
 @Component({
   selector: 'app-autoname',
@@ -20,6 +22,8 @@ export class AutonameComponent implements OnInit, OnDestroy {
 
   private _subscription: Subscription = new Subscription();
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
+  public readonly dropStyle: DropdownModel = dropStyle;
+  public showConfirmDelete: boolean = false;
   value: string = '';
   dataDoctype!: DocTypes;
   isShowAddAutoname: boolean = false;
@@ -36,11 +40,12 @@ export class AutonameComponent implements OnInit, OnDestroy {
   input = '';
   entities: Entity[] = [];
   entityList: Entity[] = [];
-  entitiesList: Entity[] = [];
+  public entitiesList: Entity[] = [];
+  public attributesSelected: Entity[] = [];
   atribute: any;
-  optionsValue: string = '';
-  optionsDescription: string = '';
-  dataAttrib: string = '';
+  public optionsValue: string = '';
+  public optionsDescription: string = '';
+  public dataAttributeRadio: string = '';
   project: any;
   doctype!: DocTypes;
   id: string = '';
@@ -48,6 +53,7 @@ export class AutonameComponent implements OnInit, OnDestroy {
   doctypeGruop!: DocTypeGroups;
 
   public autonames: string[] = [];
+  public showValuesAttributes: boolean = false;
 
   @Input() data_doctype!: DocTypes;
   @Output() cancelAndReturn = new EventEmitter<any>();
@@ -93,6 +99,8 @@ export class AutonameComponent implements OnInit, OnDestroy {
   }
 
   private getEntitiesByProjectID(doctype: DocTypes): void {
+    this.entities = [];
+    this.entityList = [];
     this.isBlockPage = true;
     this._subscription.add(
       this.entityService.getEntitiesByProject(this.project.id).subscribe({
@@ -131,24 +139,42 @@ export class AutonameComponent implements OnInit, OnDestroy {
     );
   }
 
-  docty() {
-    this.selectedKey.push('doctype');
+  public addDocType(): void {
+    this.autonames.push('doctype');
   }
 
-  onEnter(value: string) {
+  public onEnter(value: string): void {
     if (value) {
-      this.selectedKey.push('str|' + value);
+      this.autonames.push('str|' + value);
     }
   }
 
-  selectedEntity(event: any) {
+  public selectedEntity(event: any): void {
     this.selectAtributo = '';
     this.optionsDescription = '';
     this.optionsValue = '';
     if (event) {
-      this.doctypegroupService.getEntitiesByID(event.id.toLocaleLowerCase()).subscribe((res: Response) => {
-        this.listAttribut = res.data.attributes;
-      });
+      const entity = this.entitiesList.find((e: any) => e.id.toLowerCase() === event.toLowerCase());
+      if (entity) {
+        this.isBlockPage = true;
+        this._subscription.add(
+          this.doctypegroupService.getEntitiesByID(entity.id?.toLocaleLowerCase() || '').subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                this.attributesSelected = res.data.attributes;
+              }
+              this.isBlockPage = false;
+            },
+            error: (err: HttpErrorResponse) => {
+              this.isBlockPage = false;
+              console.error(err);
+              this.messageService.add({type: 'error', message: err.message, life: 5000});
+            }
+          })
+        );
+      }
     } else {
       this.selectAtributo = '';
       this.optionsDescription = '';
@@ -156,7 +182,8 @@ export class AutonameComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectedAtribute(event: any) {
+  public selectedAttribute(event: any): void {
+    this.showValuesAttributes = true;
     this.optionsDescription = '';
     this.optionsValue = '';
     if (event) {
@@ -168,61 +195,29 @@ export class AutonameComponent implements OnInit, OnDestroy {
     }
   }
 
-  dataAtribute() {
-    const value = this.dataAttrib;
-    if (!this.selectedKey.includes(value)) {
-      this.selectedKey.push(value);
+  public dataAttribute(): void {
+    if (!this.autonames.includes(this.dataAttributeRadio)) {
+      this.autonames.push(this.dataAttributeRadio);
     }
   }
 
-  verAutoname() {
-    this.viewAutoname = '';
-    let autoName = '';
-    for (const key of this.autonameForm.get('auto_name')?.value) {
-      autoName = autoName + key + '*';
-      const array = key.replace('str|', '');
-    }
-    autoName = autoName.slice(0, -1);
-    this.viewAutoname = autoName;
-  }
-
-  saveAutoname() {
-    let autoName = '';
-    for (const key of this.autonameForm.get('auto_name')?.value) {
-      autoName = autoName + key + '*';
-    }
-    autoName = autoName.slice(0, -1);
-    const doctypes: DocTypes = {
+  public saveAutoname(): void {
+    const docTypes: DocTypes = {
       ...this.data_doctype,
       id: this.data_doctype.id?.toLocaleLowerCase(),
       storage_id: this.data_doctype.storage_id?.toLocaleLowerCase(),
       doctypes_groups_id: this.data_doctype.doctypes_groups_id?.toLocaleLowerCase(),
-      autoname: autoName,
+      autoname: this.autonames.join('*'),
     };
-    this.confirmUpdateDoctype(doctypes);
-    // this.store.dispatch(addAutoname({ autoName: autoName, indexDocType: this.indexDocType }));
+    this.updateDoctype.emit(docTypes);
   }
 
-  confirmUpdateDoctype(doctype: DocTypes) {
-    /*this.confirmationService.confirm({
-      message: '¿Está seguro de Agregar el Autoname?',
-      header: 'Confimar Actualización Tipo Documental',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.updateDoctype.emit(doctype);
-        this.cancel();
-      },
-      reject: () => {},
-    });*/
-  }
-
-  cancelAutoname(): void {
+  public cancelAutoname(): void {
     this.cancel();
     this.cancelAndReturn.emit();
-    // this.store.dispatch(cancelAutoname());
   }
 
-  cancel() {
+  private cancel(): void {
     this.selectedKey = [];
     this.viewAutoname = '';
     this.optionsDescription = '';
@@ -230,11 +225,23 @@ export class AutonameComponent implements OnInit, OnDestroy {
     this.atribute = [];
   }
 
-  private notifyUser(severity: string, summary: string, detail: string, life: number): void {
-    this.messageService.add({
-      type: severity,
-      message: detail,
-      life: life,
-    });
+  public confirmDeleteAutoname(event: boolean): void {
+    if (event) {
+      const docTypes: DocTypes = {
+        ...this.data_doctype,
+        id: this.data_doctype.id?.toLocaleLowerCase(),
+        storage_id: this.data_doctype.storage_id?.toLocaleLowerCase(),
+        doctypes_groups_id: this.data_doctype.doctypes_groups_id?.toLocaleLowerCase(),
+        autoname: '',
+      };
+      this.updateDoctype.emit(docTypes);
+      this.cancel();
+    } else {
+      this.showConfirmDelete = false;
+    }
+  }
+
+  public removeAutoname(index: number): void {
+    this.autonames.splice(index, 1);
   }
 }

@@ -78,7 +78,7 @@ export class PaginatorComponent implements OnInit, OnChanges {
   public changeRowPerPage(event: any): void {
     const currentRowPerPage = event.target.value;
     if (currentRowPerPage) {
-      this.initialRow = currentRowPerPage;
+      this.initialRow = parseInt(currentRowPerPage, 10);
       this.currentRowPage.emit(this.initialRow);
       this.initPaginator();
     }

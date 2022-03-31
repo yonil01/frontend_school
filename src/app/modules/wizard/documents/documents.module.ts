@@ -6,7 +6,7 @@ import {DocumentsComponent} from './documents.component';
 import {UiModule} from "@app/ui/ui.module";
 import {PipesModule} from "@app/core/pipes/pipes.module";
 import {TranslateModule} from "@ngx-translate/core";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DropdownModule, ToastModule} from "ecapture-ng-ui";
 import {DocEntityComponent} from "@app/modules/wizard/documents/components/doc-entity/doc-entity.component";
 import {AutonameComponent} from "@app/modules/wizard/documents/components/autoname/autoname.component";
@@ -18,16 +18,17 @@ import {AutonameComponent} from "@app/modules/wizard/documents/components/autona
     DocEntityComponent,
     AutonameComponent
   ],
-  imports: [
-    CommonModule,
-    DocumentsRoutingModule,
-    UiModule,
-    PipesModule,
-    TranslateModule,
-    ReactiveFormsModule,
-    ToastModule,
-    DropdownModule
-  ]
+    imports: [
+        CommonModule,
+        DocumentsRoutingModule,
+        UiModule,
+        PipesModule,
+        TranslateModule,
+        ReactiveFormsModule,
+        ToastModule,
+        DropdownModule,
+        FormsModule
+    ]
 })
 export class DocumentsModule {
 }
