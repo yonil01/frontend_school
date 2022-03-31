@@ -431,9 +431,9 @@ export class ProcessListComponent implements OnInit, OnDestroy {
               life: 5000
             });
             for (const doc of processRole) {
-              debugger;
               const roles = this.roles.find(d => d.id === doc.role_id);
               if (roles) {
+                this.currentProcess.process.process_roles?.push(doc);
                 this.rolesSelected.push(roles);
                 this.rolesAvailable = this.rolesAvailable.filter(d => d.id !== roles.id);
               }
