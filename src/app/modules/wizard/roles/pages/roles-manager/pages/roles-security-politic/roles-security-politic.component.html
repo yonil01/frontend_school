@@ -2,7 +2,7 @@
   <ng-container layoutBody>
     <div class="ec-container py-6 md:py-12 bg-white space-y-12">
       <div class="title flex flex-col">
-        <span class="text-mono-70 t-body-1">Nombre del Rol</span>
+        <span class="text-mono-70 t-body-1">{{role.description}}</span>
         <div class="flex flex-row items-center space-x-1">
           <div><svg class="text-brand-2" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.9092 2.78216C11.949 2.20625 13.247 2.54089 13.8848 3.5224L13.9676 3.66023L21.7266 17.6685C21.9114 18.0021 22.0084 18.3773 22.0084 18.7587C22.0084 19.9495 21.0832 20.9243 19.9124 21.0035L19.7584 21.0087H4.2426C3.86129 21.0087 3.48623 20.9118 3.15265 20.7271C2.11281 20.1513 1.70777 18.8734 2.20133 17.812L2.27422 17.6687L10.031 3.66046C10.2355 3.2911 10.5399 2.98674 10.9092 2.78216ZM20.4144 18.3953L12.6555 4.38702C12.4548 4.02467 11.9983 3.89363 11.636 4.09433C11.5437 4.14547 11.4635 4.21533 11.4005 4.299L11.3433 4.3871L3.58647 18.3954C3.38582 18.7577 3.51692 19.2141 3.87928 19.4148C3.96268 19.461 4.05385 19.4907 4.14785 19.5027L4.2426 19.5087H19.7584C20.1726 19.5087 20.5084 19.1729 20.5084 18.7587C20.5084 18.6633 20.4902 18.5691 20.4551 18.4811L20.4144 18.3953L12.6555 4.38702L20.4144 18.3953ZM12.0003 16.0018C12.5518 16.0018 12.9989 16.4489 12.9989 17.0004C12.9989 17.552 12.5518 17.9991 12.0003 17.9991C11.4487 17.9991 11.0016 17.552 11.0016 17.0004C11.0016 16.4489 11.4487 16.0018 12.0003 16.0018ZM11.9961 8.49955C12.3758 8.49925 12.6898 8.78115 12.7397 9.14718L12.7467 9.24895L12.7503 13.7505C12.7506 14.1648 12.4151 14.5008 12.0009 14.5011C11.6212 14.5014 11.3072 14.2195 11.2572 13.8535L11.2503 13.7517L11.2467 9.25015C11.2463 8.83594 11.5819 8.49988 11.9961 8.49955Z"/>
@@ -11,19 +11,14 @@
           <span class="text-black t-h5">Políticas de Seguridad</span>
         </div>
       </div>
-      <div class="body">
+      <form [formGroup]="DocumentsPoliticiesForm" (ngSubmit)="confirmCreatePassPolicy($event)" class="body">
         <div class="parameters space-y-2 md:space-y-0 border-b border-mono-30 pb-6 mb-6 md:flex md:flex-row md:space-x-2 md:items-end">
           <div>
-            <button (click)="isActive = !isActive" class="w-full h-10 hover:bg-mono-10 flex flex-row items-center space-x-2 bg-white border border-mono-30 px-2 rounded text-black">
-              <div><svg class="{{isActive === true ? '' : 'hidden'}} text-brand-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.25 3C19.7688 3 21 4.23122 21 5.75V18.25C21 19.7688 19.7688 21 18.25 21H5.75C4.23122 21 3 19.7688 3 18.25V5.75C3 4.23122 4.23122 3 5.75 3H18.25ZM18.25 4.5H5.75C5.05964 4.5 4.5 5.05964 4.5 5.75V18.25C4.5 18.9404 5.05964 19.5 5.75 19.5H18.25C18.9404 19.5 19.5 18.9404 19.5 18.25V5.75C19.5 5.05964 18.9404 4.5 18.25 4.5ZM10 14.4393L16.4697 7.96967C16.7626 7.67678 17.2374 7.67678 17.5303 7.96967C17.7966 8.23594 17.8208 8.6526 17.6029 8.94621L17.5303 9.03033L10.5303 16.0303C10.2641 16.2966 9.8474 16.3208 9.55379 16.1029L9.46967 16.0303L6.46967 13.0303C6.17678 12.7374 6.17678 12.2626 6.46967 11.9697C6.73594 11.7034 7.1526 11.6792 7.44621 11.8971L7.53033 11.9697L10 14.4393L16.4697 7.96967L10 14.4393Z"/>
-              </svg>
-                <svg class="{{isActive === true ? 'hidden' : ''}} text-brand-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5.75 3H18.25C19.7688 3 21 4.23122 21 5.75V18.25C21 19.7688 19.7688 21 18.25 21H5.75C4.23122 21 3 19.7688 3 18.25V5.75C3 4.23122 4.23122 3 5.75 3ZM5.75 4.5C5.05964 4.5 4.5 5.05964 4.5 5.75V18.25C4.5 18.9404 5.05964 19.5 5.75 19.5H18.25C18.9404 19.5 19.5 18.9404 19.5 18.25V5.75C19.5 5.05964 18.9404 4.5 18.25 4.5H5.75Z"/>
-                </svg>
-              </div>
-              <span class="t-body-1 flex-1 text-left">{{isActive === true ? 'Activado' : 'Desactivado'}}</span>
-            </button>
+            <div class="w-full h-10 hover:bg-mono-10 flex flex-row items-center space-x-2 bg-white border border-mono-30 px-2 rounded text-black">
+              <input (click)="handleChange()" id="enable" formControlName="enable" type="checkbox">
+              <label for="enable" class="t-body-1 flex-1 text-left">{{isActive === true ? 'Activado' : 'Desactivado'}}</label>
+              <span *ngIf="DocumentsPoliticiesForm.get('enable')?.invalid && DocumentsPoliticiesForm.get('enable')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
+            </div>
           </div>
         </div>
         <div *ngIf="!isActive" class="notify flex items-center justify-center py-6 space-y-2 flex-col">
@@ -42,23 +37,26 @@
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.0001 1.99897C17.5238 1.99897 22.0016 6.47682 22.0016 12.0005C22.0016 17.5242 17.5238 22.0021 12.0001 22.0021C6.47638 22.0021 1.99854 17.5242 1.99854 12.0005C1.99854 6.47682 6.47638 1.99897 12.0001 1.99897ZM12.0001 3.49897C7.30481 3.49897 3.49854 7.30524 3.49854 12.0005C3.49854 16.6958 7.30481 20.5021 12.0001 20.5021C16.6954 20.5021 20.5016 16.6958 20.5016 12.0005C20.5016 7.30524 16.6954 3.49897 12.0001 3.49897ZM11.9964 10.4996C12.3761 10.4993 12.6901 10.7813 12.74 11.1473L12.7469 11.2491L12.7505 16.7507C12.7508 17.1649 12.4152 17.5009 12.001 17.5011C11.6213 17.5014 11.3073 17.2194 11.2574 16.8534L11.2505 16.7516L11.2469 11.25C11.2467 10.8358 11.5822 10.4998 11.9964 10.4996ZM12.0005 7.00179C12.5521 7.00179 12.9992 7.4489 12.9992 8.00045C12.9992 8.552 12.5521 8.99911 12.0005 8.99911C11.449 8.99911 11.0019 8.552 11.0019 8.00045C11.0019 7.4489 11.449 7.00179 12.0005 7.00179Z"/>
                   </svg>
-                  <div class="hidden text-black t-body-1 w-40 group-hover:block absolute right-0 bottom-8 border border-mono-30 rounded bg-white shadow-lg p-2">
-                    <span>Nota</span>
+                  <div class="hidden text-black t-body-1 w-72 md:w-96 group-hover:block absolute right-0 bottom-8 border border-mono-30 rounded bg-white shadow-lg p-2">
+                    <span><b>Historial:</b> Cantidad de contraseñas almacenadas que no puede repetir el usuario.</span>
                   </div>
                 </div>
               </div>
               <div class="permissions grid grid-cols-2 gap-4">
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Tamaño mínimo</label>
-                  <input type="number" class="ec-input">
+                  <label for="min_length" class="t-caption-2 text-mono-70">Tamaño mínimo</label>
+                  <input id="min_length" formControlName="min_length" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('min_length')?.invalid && DocumentsPoliticiesForm.get('min_length')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Tamaño Máximo</label>
-                  <input type="number" class="ec-input">
+                  <label for="max_length" class="t-caption-2 text-mono-70">Tamaño Máximo</label>
+                  <input id="max_length" formControlName="max_length" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('max_length')?.invalid && DocumentsPoliticiesForm.get('max_length')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col col-span-2 space-y-1">
-                  <label class="t-caption-2 text-mono-70">Historial</label>
-                  <input type="number" class="ec-input">
+                  <label for="failed_attempts" class="t-caption-2 text-mono-70">Historial</label>
+                  <input id="failed_attempts" formControlName="failed_attempts" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('failed_attempts')?.invalid && DocumentsPoliticiesForm.get('failed_attempts')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
               </div>
             </div>
@@ -69,23 +67,30 @@
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.0001 1.99897C17.5238 1.99897 22.0016 6.47682 22.0016 12.0005C22.0016 17.5242 17.5238 22.0021 12.0001 22.0021C6.47638 22.0021 1.99854 17.5242 1.99854 12.0005C1.99854 6.47682 6.47638 1.99897 12.0001 1.99897ZM12.0001 3.49897C7.30481 3.49897 3.49854 7.30524 3.49854 12.0005C3.49854 16.6958 7.30481 20.5021 12.0001 20.5021C16.6954 20.5021 20.5016 16.6958 20.5016 12.0005C20.5016 7.30524 16.6954 3.49897 12.0001 3.49897ZM11.9964 10.4996C12.3761 10.4993 12.6901 10.7813 12.74 11.1473L12.7469 11.2491L12.7505 16.7507C12.7508 17.1649 12.4152 17.5009 12.001 17.5011C11.6213 17.5014 11.3073 17.2194 11.2574 16.8534L11.2505 16.7516L11.2469 11.25C11.2467 10.8358 11.5822 10.4998 11.9964 10.4996ZM12.0005 7.00179C12.5521 7.00179 12.9992 7.4489 12.9992 8.00045C12.9992 8.552 12.5521 8.99911 12.0005 8.99911C11.449 8.99911 11.0019 8.552 11.0019 8.00045C11.0019 7.4489 11.449 7.00179 12.0005 7.00179Z"/>
                   </svg>
-                  <div class="hidden text-black t-body-1 w-40 group-hover:block absolute right-0 bottom-8 border border-mono-30 rounded bg-white shadow-lg p-2">
-                    <span>Nota</span>
+                  <div class="hidden text-black t-body-1 w-72 md:w-96 group-hover:block absolute right-0 bottom-8 border border-mono-30 rounded bg-white shadow-lg p-2">
+                    <span>
+                      <b>Días Hábiles:</b> Cantidad de días que una contraseña es válida.<br>
+                      <b>Tiempo de inactividad:</b> Tiempo máximo que un usuario puede tener sin haberse logueado al sistema.<br>
+                      <b>Timeout:</b> Tiempo de inactividad de una sesión activa (minutos).
+                    </span>
                   </div>
                 </div>
               </div>
               <div class="permissions grid grid-cols-2 gap-4">
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Días Hábiles</label>
-                  <input type="number" class="ec-input">
+                  <label for="days_pass_valid" class="t-caption-2 text-mono-70">Días Hábiles</label>
+                  <input id="days_pass_valid" formControlName="days_pass_valid" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('days_pass_valid')?.invalid && DocumentsPoliticiesForm.get('days_pass_valid')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Tiempo de Inactividad</label>
-                  <input type="number" class="ec-input">
+                  <label for="inactivity_time" class="t-caption-2 text-mono-70">Tiempo de Inactividad</label>
+                  <input id="inactivity_time" formControlName="inactivity_time" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('inactivity_time')?.invalid && DocumentsPoliticiesForm.get('inactivity_time')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col col-span-2 space-y-1">
-                  <label class="t-caption-2 text-mono-70">Timeout</label>
-                  <input type="number" class="ec-input">
+                  <label for="timeout" class="t-caption-2 text-mono-70">Timeout</label>
+                  <input id="timeout" formControlName="timeout" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('timeout')?.invalid && DocumentsPoliticiesForm.get('timeout')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
               </div>
             </div>
@@ -96,19 +101,24 @@
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.0001 1.99897C17.5238 1.99897 22.0016 6.47682 22.0016 12.0005C22.0016 17.5242 17.5238 22.0021 12.0001 22.0021C6.47638 22.0021 1.99854 17.5242 1.99854 12.0005C1.99854 6.47682 6.47638 1.99897 12.0001 1.99897ZM12.0001 3.49897C7.30481 3.49897 3.49854 7.30524 3.49854 12.0005C3.49854 16.6958 7.30481 20.5021 12.0001 20.5021C16.6954 20.5021 20.5016 16.6958 20.5016 12.0005C20.5016 7.30524 16.6954 3.49897 12.0001 3.49897ZM11.9964 10.4996C12.3761 10.4993 12.6901 10.7813 12.74 11.1473L12.7469 11.2491L12.7505 16.7507C12.7508 17.1649 12.4152 17.5009 12.001 17.5011C11.6213 17.5014 11.3073 17.2194 11.2574 16.8534L11.2505 16.7516L11.2469 11.25C11.2467 10.8358 11.5822 10.4998 11.9964 10.4996ZM12.0005 7.00179C12.5521 7.00179 12.9992 7.4489 12.9992 8.00045C12.9992 8.552 12.5521 8.99911 12.0005 8.99911C11.449 8.99911 11.0019 8.552 11.0019 8.00045C11.0019 7.4489 11.449 7.00179 12.0005 7.00179Z"/>
                   </svg>
-                  <div class="hidden text-black t-body-1 w-40 group-hover:block absolute right-0 bottom-8 border border-mono-30 rounded bg-white shadow-lg p-2">
-                    <span>Nota</span>
+                  <div class="hidden text-black t-body-1 w-72 md:w-96 group-hover:block absolute right-0 bottom-8 border border-mono-30 rounded bg-white shadow-lg p-2">
+                    <span>
+                      <b>Cantidad:</b> Cantidad máxima de intentos fallidos de Inicio de Sesión (Login)<br>
+                      <b>Tiempo de Bloqueo:</b> Tiempo que un usuario estará bloqueado (minutos).<br>
+                    </span>
                   </div>
                 </div>
               </div>
               <div class="permissions grid grid-cols-2 gap-4">
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Cantidad</label>
-                  <input type="number" class="ec-input">
+                  <label for="store_pass_not_repeated" class="t-caption-2 text-mono-70">Cantidad</label>
+                  <input id="store_pass_not_repeated" formControlName="store_pass_not_repeated" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('store_pass_not_repeated')?.invalid && DocumentsPoliticiesForm.get('store_pass_not_repeated')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Tiempo de Bloqueo</label>
-                  <input type="number" class="ec-input">
+                  <label for="time_unlock" class="t-caption-2 text-mono-70">Tiempo de Bloqueo</label>
+                  <input id="time_unlock" formControlName="time_unlock" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('time_unlock')?.invalid && DocumentsPoliticiesForm.get('time_unlock')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
               </div>
             </div>
@@ -119,42 +129,55 @@
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.0001 1.99897C17.5238 1.99897 22.0016 6.47682 22.0016 12.0005C22.0016 17.5242 17.5238 22.0021 12.0001 22.0021C6.47638 22.0021 1.99854 17.5242 1.99854 12.0005C1.99854 6.47682 6.47638 1.99897 12.0001 1.99897ZM12.0001 3.49897C7.30481 3.49897 3.49854 7.30524 3.49854 12.0005C3.49854 16.6958 7.30481 20.5021 12.0001 20.5021C16.6954 20.5021 20.5016 16.6958 20.5016 12.0005C20.5016 7.30524 16.6954 3.49897 12.0001 3.49897ZM11.9964 10.4996C12.3761 10.4993 12.6901 10.7813 12.74 11.1473L12.7469 11.2491L12.7505 16.7507C12.7508 17.1649 12.4152 17.5009 12.001 17.5011C11.6213 17.5014 11.3073 17.2194 11.2574 16.8534L11.2505 16.7516L11.2469 11.25C11.2467 10.8358 11.5822 10.4998 11.9964 10.4996ZM12.0005 7.00179C12.5521 7.00179 12.9992 7.4489 12.9992 8.00045C12.9992 8.552 12.5521 8.99911 12.0005 8.99911C11.449 8.99911 11.0019 8.552 11.0019 8.00045C11.0019 7.4489 11.449 7.00179 12.0005 7.00179Z"/>
                   </svg>
-                  <div class="hidden text-black t-body-1 w-40 group-hover:block absolute right-0 bottom-8 border border-mono-30 rounded bg-white shadow-lg p-2">
-                    <span>Nota</span>
+                  <div class="hidden text-black t-body-1 w-72 md:w-96 group-hover:block absolute right-0 bottom-8 border border-mono-30 rounded bg-white shadow-lg p-2">
+                    <span>
+                      <b>Cantidad Alpha:</b> Letras a la 'A' al a 'Z'<br>
+                      <b>Caracteres Especiales como:</b> - * ? !
+                    </span>
                   </div>
                 </div>
               </div>
               <div class="permissions grid grid-cols-2 gap-4">
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Cantidad Alpha</label>
-                  <input type="number" class="ec-input">
+                  <label for="alpha" class="t-caption-2 text-mono-70">Cantidad Alpha</label>
+                  <input id="alpha" formControlName="alpha" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('alpha')?.invalid && DocumentsPoliticiesForm.get('alpha')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Cantidad Dígitos</label>
-                  <input type="number" class="ec-input">
+                  <label for="digits" class="t-caption-2 text-mono-70">Cantidad Dígitos</label>
+                  <input id="digits" formControlName="digits" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('digits')?.invalid && DocumentsPoliticiesForm.get('digits')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Cantidad Minúsculas</label>
-                  <input type="number" class="ec-input">
+                  <label for="lower_case" class="t-caption-2 text-mono-70">Cantidad Minúsculas</label>
+                  <input id="lower_case" formControlName="lower_case" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('lower_case')?.invalid && DocumentsPoliticiesForm.get('lower_case')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col space-y-1">
-                  <label class="t-caption-2 text-mono-70">Cantidad Mayúsculas</label>
-                  <input type="number" class="ec-input">
+                  <label for="upper_case" class="t-caption-2 text-mono-70">Cantidad Mayúsculas</label>
+                  <input id="upper_case" formControlName="upper_case" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('upper_case')?.invalid && DocumentsPoliticiesForm.get('upper_case')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
                 <div class="flex flex-col col-span-2 space-y-1">
-                  <label class="t-caption-2 text-mono-70">Cantidad Caracteres Especiales</label>
-                  <input type="number" class="ec-input">
+                  <label for="special" class="t-caption-2 text-mono-70">Cantidad Caracteres Especiales</label>
+                  <input id="special" formControlName="special" type="number" class="ec-input">
+                  <span *ngIf="DocumentsPoliticiesForm.get('special')?.invalid && DocumentsPoliticiesForm.get('special')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="action flex flex-row space-x-2 md:justify-end mt-12">
-          <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cancelar</button>
-          <button class="flex-1 md:flex-none b-solid">Guardar</button>
+          <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cerrar</button>
+          <button [disabled]="DocumentsPoliticiesForm.invalid" class="flex-1 md:flex-none b-solid">{{role.password_policy?.id ? 'Actualizar' : 'Guardar'}}</button>
         </div>
-      </div>
+      </form>
     </div>
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
+
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-confirm-dialog [show]="showConfirm" type="warning" title="Confimar Eliminación de Seguridad" body="¿Está seguro(a) de Eliminar Politicas de Seguridad?, Además se limpiaran todos los campos" (onEvent)="confirmDialog($event)"></app-confirm-dialog>
+<app-confirm-dialog [show]="showConfirmSave" type="warning" title="Confimar Asignación Politicas de Seguridad" body="¿Está seguro de Asignar Politicas de Seguridad?" (onEvent)="confirmSaveDialog($event)"></app-confirm-dialog>
+<app-block-page [show]="isBlockPage"></app-block-page>

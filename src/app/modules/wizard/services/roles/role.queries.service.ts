@@ -317,6 +317,37 @@ export class GetRolesDoctypeQuery extends Query<Response> {
 @Injectable({
   providedIn: 'root',
 })
+export class GetRoleById extends Query<Response> {
+  document = gql`
+    query getRolesDoctype {
+      getRolesDoctype {
+        error
+        data {
+          id
+          doctype {
+            id
+            name
+            description
+            sessions_allowed
+            role_allow {
+              id
+              role_allow {
+
+              }
+            }
+          }
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class CreateRolesDoctypeMutation extends Mutation {
   document = gql`
     mutation createRolesDoctypes($rq: RequestNewRolesDoctypes!) {

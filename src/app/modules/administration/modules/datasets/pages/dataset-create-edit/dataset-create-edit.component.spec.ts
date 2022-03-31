@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RolesEditComponent } from './roles-edit.component';
+import { DatasetCreateEditComponent } from './dataset-create-edit.component';
 
-describe('RolesEditComponent', () => {
-  let component: RolesEditComponent;
-  let fixture: ComponentFixture<RolesEditComponent>;
+describe('DatasetCreateEditComponent', () => {
+  let component: DatasetCreateEditComponent;
+  let fixture: ComponentFixture<DatasetCreateEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RolesEditComponent ]
+      declarations: [ DatasetCreateEditComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RolesEditComponent);
+    fixture = TestBed.createComponent(DatasetCreateEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

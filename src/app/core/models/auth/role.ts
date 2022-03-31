@@ -9,7 +9,7 @@ export interface Role {
   date_disallowed?: DateDisallowed[];
   password_policy?: PasswordPolicy;
   roles_doc_types?: RolesDoctype[]; // Validar para Borrar
-  role_elements?: Elements[];
+  role_elements?: any[];
   projects?: string[];
   process?: string[];
   security_entities?: SecurityEntity[];
@@ -28,10 +28,10 @@ export interface RolesDoctype {
 
 export interface DateDisallowed {
   id?: string;
-  description?: string;
-  begins_at?: Date;
-  ends_at?: Date;
-  role_id?: string;
+  description: string;
+  begins_at: Date;
+  ends_at: Date;
+  role_id: string;
 }
 
 export interface PasswordPolicy {
@@ -74,6 +74,7 @@ export interface Elements {
   id?: string;
   role_id?: string;
   element_id?: string;
+  name?: string;
 }
 
 export interface RoleAllowed {

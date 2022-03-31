@@ -9,6 +9,9 @@ import { RolesSecurityPoliticComponent } from './pages/roles-security-politic/ro
 import { RolesDisabledDatesComponent } from './pages/roles-disabled-dates/roles-disabled-dates.component';
 import { RolesAttributeSecurityComponent } from './pages/roles-attribute-security/roles-attribute-security.component';
 import { RolesAllowedRolesComponent } from './pages/roles-allowed-roles/roles-allowed-roles.component';
+import {CheckboxModule, DropdownModule, ToastModule} from "ecapture-ng-ui";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 
@@ -25,7 +28,13 @@ import { RolesAllowedRolesComponent } from './pages/roles-allowed-roles/roles-al
   imports: [
     RolesManagerRoutingModule,
     CommonModule,
-    UiModule
+    UiModule,
+    ToastModule,
+    ReactiveFormsModule,
+    FormsModule,
+    DropdownModule,
+    CheckboxModule,
+    TranslateModule
   ]
 })
 export class RolesManagerModule { }
