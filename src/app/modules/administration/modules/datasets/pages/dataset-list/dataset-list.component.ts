@@ -18,6 +18,9 @@ export class DatasetListComponent implements OnInit {
   public toastStyle: ToastStyleModel = toastDataStyle;
   public showDatasets: boolean = true;
   public showCreateDataset: boolean = false;
+  public showDelete: boolean = false;
+  public showConfig: boolean = false;
+  public isBlockPage: boolean = false;
 
   constructor(private datasetsService: DatasetsService,
               private messageService: ToastService
@@ -29,10 +32,13 @@ export class DatasetListComponent implements OnInit {
   }
 
   private getDatasets(): void {
+    this.isBlockPage = true
     this.datasetsService.getDatasets().subscribe((res) => {
       if (res.error) {
+        this.isBlockPage = false
         this.messageService.add({type: 'error', message: res.msg, life: 5000});
       }
+      this.isBlockPage = false
       this.datasets = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
     });
   }
@@ -70,25 +76,39 @@ export class DatasetListComponent implements OnInit {
 
   onDeleteDataset(i: number) {
     this.selectedDataset = this.datasets[i];
+    this.showDelete = true;
   }
 
-  deleteDataset(): void {
-    if (this.selectedDataset?.id)
-      this.datasetsService.deleteDataset(this.selectedDataset.id.toLowerCase()).subscribe((res) => {
-        if (res.error) {
-          this.messageService.add({
-            type: 'error',
-            message: res.msg,
-            life: 5000
-          });
-        } else {
-          this.messageService.add({
-            type: 'success',
-            message: 'Dataset deleted successfully',
-            life: 5000
-          });
-          this.getDatasets();
-        }
-      });
+  onConfigDataset(i: number) {
+    this.selectedDataset = this.datasets[i];
+    this.showDatasets = false;
+    this.showConfig = true;
   }
+
+  deleteDataset($event: any): void {
+    if ($event) {
+      if (this.selectedDataset?.id)
+        this.datasetsService.deleteDataset(this.selectedDataset.id.toLowerCase()).subscribe((res) => {
+          if (res.error) {
+            this.messageService.add({
+              type: 'error',
+              message: res.msg,
+              life: 5000
+            });
+          } else {
+            this.messageService.add({
+              type: 'success',
+              message: 'Dataset deleted successfully',
+              life: 5000
+            });
+            this.showDelete = false
+            this.getDatasets();
+          }
+        });
+    } else {
+      this.showDelete = false;
+    }
+  }
+
+
 }

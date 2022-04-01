@@ -11,6 +11,9 @@ import { DatasetConfigListComponent } from './pages/dataset-config/components/da
 import { DatasetConfigCreateEditComponent } from './pages/dataset-config/components/dataset-config-create-edit/dataset-config-create-edit.component';
 import {ToastModule} from "ecapture-ng-ui";
 import {ReactiveFormsModule} from "@angular/forms";
+import {
+  ConfirmationModalComponent
+} from "@app/modules/administration/modules/datasets/components/confirmation-modal/confirmation-modal.component";
 
 
 @NgModule({
@@ -20,7 +23,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     DatasetConfigComponent,
     DatasetCreateEditComponent,
     DatasetConfigListComponent,
-    DatasetConfigCreateEditComponent
+    DatasetConfigCreateEditComponent,
+    ConfirmationModalComponent
   ],
   imports: [
     CommonModule,

@@ -112,7 +112,7 @@
                         </svg>
                       </div>
                     </button>
-                    <button class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
+                    <button (click)="onConfigDataset(i)" class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -142,7 +142,22 @@
 </app-layout>
 
 <!--Create/Edit Dataset-->
-<app-dataset-create-edit *ngIf="showCreateDataset" (onSubmit)="returnHome($event)" [dataset]="selectedDataset"></app-dataset-create-edit>
+<app-dataset-create-edit *ngIf="showCreateDataset" (onSubmit)="returnHome($event)"
+                         [dataset]="selectedDataset"></app-dataset-create-edit>
 <!--Create/Edit Dataset-->
 
+<!--Block Page-->
+<app-block-page [show]="isBlockPage"></app-block-page>
+<!--Block Page-->
+
+<!--Config Dataset-->
+<app-dataset-config-list *ngIf="showConfig" [dataset]="selectedDataset"></app-dataset-config-list>
+<!--Config Dataset-->
+
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
+
+<!--Confirmation Modal-->
+<app-confirmation-modal *ngIf="showDelete" (stateEvent)="deleteDataset($event)"></app-confirmation-modal>
+<!--Confirmation Modal-->
+
+
