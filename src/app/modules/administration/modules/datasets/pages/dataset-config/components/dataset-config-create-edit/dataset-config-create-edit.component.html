@@ -3,30 +3,33 @@
   <ng-container layoutBody>
     <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
       <div class="flex flex-col space-y-12">
-        <span class="t-h5 text-black dark:text-white">Crear Registro</span>
-        <form class="space-y-4" class="grid grid-cols-2 gap-4 lg:w-1/2">
+        <span class="t-h5 text-black dark:text-white" *ngIf="!datasetValue">Crear Registro</span>
+        <span class="t-h5 text-black dark:text-white" *ngIf="datasetValue">Editar Registro</span>
+        <form [formGroup]="datasetForm" class="space-y-4" class="grid grid-cols-2 gap-4 lg:w-1/2">
           <div class="input flex flex-col space-y-1 col-span-2">
             <label class="t-caption-2 text-mono-70">Valor</label>
-            <input class="ec-input" type="text">
+            <input formControlName="value" class="ec-input" type="text">
           </div>
           <div class="input flex flex-col space-y-1 col-span-2">
             <label class="t-caption-2 text-mono-70">Descripción</label>
-            <input class="ec-input" type="text">
+            <input formControlName="description" class="ec-input" type="text">
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Código</label>
-            <input class="ec-input" type="number">
+            <input formControlName="code" class="ec-input" type="number">
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Secuencia</label>
-            <input class="ec-input" type="number">
+            <input formControlName="sequence" class="ec-input" type="number">
           </div>
         </form>
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <div *ngIf="false"><button type="reset" class="w-full md:w-auto b-ghost">Reestablecer Valores</button></div><!--Activar si es para Editar-->
+          <div *ngIf="false">
+            <button type="reset" class="w-full md:w-auto b-ghost">Reestablecer Valores</button>
+          </div><!--Activar si es para Editar-->
           <div class="flex flex-row space-x-4">
-            <button routerLink="/admin/datasets" class="flex-1 md:flex-none b-outline">Cancelar</button>
-            <button type="submit" class="flex-1 md:flex-none b-solid">Guardar</button>
+            <button (click)="onReturnClick()" class="flex-1 md:flex-none b-outline">Cancelar</button>
+            <button (click)="onSubmitForm()" class="flex-1 md:flex-none b-solid">Guardar</button>
           </div>
         </div>
       </div>
@@ -34,3 +37,7 @@
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
+
+<!--Block Page-->
+<app-block-page [show]="isBlockPage"></app-block-page>
+<!--Block Page-->
