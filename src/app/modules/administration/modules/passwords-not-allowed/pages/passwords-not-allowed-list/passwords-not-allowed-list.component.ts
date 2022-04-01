@@ -9,6 +9,8 @@ import {Parameters} from "@app/modules/administration/modules/parameters/models/
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {FilterService} from "@app/ui/services/filter.service";
+import {ExcelType} from "@app/ui/utils/constants/constants";
+import {saveAs} from "file-saver";
 
 
 interface Password {
@@ -35,7 +37,7 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
   public toastStyle: ToastStyleModel = toastDataStyle;
   public passwordPagination: Password[]= [];
   public passwordsFilter: Password[] = [];
-
+  public exportColumns: any[] = [];
 
 
 
@@ -229,5 +231,50 @@ export class PasswordsNotAllowedListComponent implements OnInit, OnDestroy {
     else {
       this.passwordsFilter = [...this.passwords];
     }
+  }
+
+  public exportPdf(): void {
+    import("jspdf").then(jsPDF => {
+      import("jspdf-autotable").then(x => {
+        const doc = new jsPDF.default('landscape', 'mm', 'a4');
+        this.exportColumns = ['ip', 'description'];
+        const passwordsOrder = this.passwords.map((document: any) => {
+          return Object.keys(document).map((key: string) => document[key]);
+        });
+        // @ts-ignore
+        doc.autoTable({
+          head: [this.exportColumns],
+          body: passwordsOrder,
+          theme: 'grid',
+        })
+        doc.save('messages.pdf');
+      })
+    })
+  }
+
+  public exportExcel(): void {
+    // @ts-ignore
+    import('xlsx').then((xlsx) => {
+      const worksheet = xlsx.utils.json_to_sheet([...this.passwords]);
+      const workbook = {Sheets: {data: worksheet}, SheetNames: ['data']};
+      const excelBuffer: any = xlsx.write(workbook, {bookType: 'xlsx', type: 'array'});
+      this.saveAsExcelFile(excelBuffer, 'whiteList' || '');
+    });
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {type: ExcelType});
+    saveAs(data, fileName + '_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  public exportCSV(): void {
+    const replacer = (key: any, value: any) => (value === null ? '' : value);
+    const header = ['ip', 'description'];
+    const csv = this.passwords.map((row: any) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','));
+    csv.unshift(header.join(','));
+    const csvArray = csv.join('\r\n');
+    const blob = new Blob([csvArray], {type: 'text/csv'});
+    saveAs(blob, 'whiteList' + '.csv');
   }
 }
