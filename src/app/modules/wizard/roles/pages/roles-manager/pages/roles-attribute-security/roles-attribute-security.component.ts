@@ -53,6 +53,7 @@ export class RolesAttributeSecurityComponent implements OnInit {
 
   public attributesRole: RoleAttribute[] = [];
   public attributeSelected: RoleAttribute = this.attributesRole[0];
+  public indexAttributeSelected: number = 0;
   public attributeForm: FormGroup;
   public isAttribute: boolean = false;
   public isExistAttributes: boolean = false;
@@ -225,12 +226,6 @@ export class RolesAttributeSecurityComponent implements OnInit {
         this.entitiesRole.push({
           id: dataEntity.id,
           entity: this.entityCreate,
-          role_attribute: this.entityCreate.attributes
-        });
-
-        this.entitiesRole.push({
-          entity: this.entityCreate,
-          id: dataEntity.id
         });
         this.role.security_entities = this.entitiesRole;
       }
@@ -310,7 +305,7 @@ export class RolesAttributeSecurityComponent implements OnInit {
             this._messageService.add({type: 'success', message: 'Creación de Atributo Exitosa' + res.msg, life: 5000});
             const entity = this.entitiesGlobal.find(entity => entity.id === this.entitySelected.entity?.id);
             const attribute = entity?.attributes?.find(attribute => attribute.id === dataAttribute.attribute);
-            this.isBlockPage = false;
+
             this.attributesRole.push({
               id: dataAttribute.attribute,
               value: dataAttribute.value,
@@ -332,19 +327,64 @@ export class RolesAttributeSecurityComponent implements OnInit {
 
             this.isExistAttributes = true;
             this.attributeForm.reset();
+            this.isBlockPage = false;
           }
         });
     }
   }
-  /*
-  editAttribute(attribute: RoleAttribute) {
 
+  editAttribute(index: number, attribute: RoleAttribute) {
+    this.indexAttributeSelected = index;
+    this.attributeSelected = attribute;
+    this.isEditAttribute = true;
+    if(attribute){
+      this.attributeForm.patchValue({attribute_id:attribute.attribute?.id})
+      this.attributeForm.patchValue({value:attribute.value})
+    }
   }
 
-  updateAttribute(){
+  updateAttribute() {
+    this.isBlockPage = true;
+    if(!this.attributeForm.invalid){
+      const dataAttribute: Attributes = {
+        id: this.attributeSelected.id,
+        attribute: this.attributeForm.value.attribute_id,
+        value: this.attributeForm.value.value,
+        roles_security_entities_id: this.entitySelected.id,
+      };
+      this._roleService.updateRolesAttribute(dataAttribute)
+        .subscribe((res: Response) =>{
+          if (res.error) {
+            this._messageService.add({type: 'error', message: 'Error, no se actualizó el atributo' + res.msg, life: 5000});
+          } else {
+            this._messageService.add({type: 'success', message: 'Actualización de Atributo Exitosa' + res.msg, life: 5000});
+            const entity = this.entitiesGlobal.find(entity => entity.id === this.entitySelected.entity?.id);
+            const attribute = entity?.attributes?.find(attribute => attribute.id === dataAttribute.attribute);
 
+            this.attributesRole[this.indexAttributeSelected].value = dataAttribute.value;
+            this.attributesRole[this.indexAttributeSelected].attribute = attribute;
+
+            if(this.attributesRole.length > 0){
+              this.isExistAttributes = true;
+            }
+
+            this.entitySelected.role_attribute = this.attributesRole;
+            for(let i = 0; i < this.entitiesRole.length; i++){
+              if(this.entitiesRole[i].id === this.entitySelected.id){
+                this.entitiesRole[i] = this.entitySelected;
+                break;
+              }
+            }
+            this.role.security_entities = this.entitiesRole;
+
+            this.isEditAttribute = false;
+            this.attributeForm.reset();
+            this.isBlockPage = false;
+          }
+        });
+    }
   }
-  */
+
   deleteAttribute(attribute: RoleAttribute) {
     this.attributeSelected = attribute;
     this.showConfirmDeleteAttribute = true;
