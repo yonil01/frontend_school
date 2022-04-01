@@ -24,7 +24,7 @@ export class EntityListCascadeComponent implements OnInit {
   public selectedCascading!: Autofill;
   public toastStyle: ToastStyleModel = toastDataStyle;
   public isBlock: boolean = false;
-  public showCascadingList: boolean = false;
+  public showCascadingList: boolean = true;
   public isDelete: boolean = false;
   public addAtribute: boolean = false;
   public showAddAttribute: boolean = false;
