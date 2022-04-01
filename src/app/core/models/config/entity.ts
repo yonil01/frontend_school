@@ -56,6 +56,7 @@ export interface AttributeCascadingDataset {
 }
 
 export interface CascadingDataset {
+  showConfig?: boolean;
   id?: string;
   name?: string;
   description?: string;

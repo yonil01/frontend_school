@@ -1,4 +1,4 @@
-import {Component, OnInit, HostBinding, Input, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, HostBinding, Input, Output, EventEmitter} from '@angular/core';
 // import { MenuService } from '@app/core/ui/services/menu.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Router} from '@angular/router';
