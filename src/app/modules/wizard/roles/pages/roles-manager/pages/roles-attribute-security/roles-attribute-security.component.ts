@@ -7,10 +7,11 @@ import {ToastService} from "ecapture-ng-ui";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
-import {Role, SecurityEntities, Response, Entity} from "@app/core/models";
+import {Role, SecurityEntities, Response, Entity, Attributes} from "@app/core/models";
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
-import {deleteSecurity} from "@app/core/store/actions/roles.action";
+import {addSecurityEntities, deleteSecurity} from "@app/core/store/actions/roles.action";
 import { v4 as uuidv4 } from 'uuid';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 interface OptionsDropdown {
   label: string;
@@ -25,21 +26,26 @@ interface OptionsDropdown {
 
 export class RolesAttributeSecurityComponent implements OnInit {
 
-  public dropStyle: DropdownModel = dropStyle;
-
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
+  public dropStyle: DropdownModel = dropStyle;
   public isBlockPage: boolean = false;
   public showConfirmDelete: boolean = false;
   public role: Role = {};
   public indexEntity = 0;
-  public indexAtributte = 0;
+
+  securityEntitiesForm: FormGroup;
 
   entitiesList: Entity[] = [];
+  public indexEntityGlobal = 0;
 
   listEntity: SecurityEntities[] = [];
   newEntity: SecurityEntities = {};
   securityEntity: SecurityEntities[] = [];
   listEntityDrop: OptionsDropdown[] = [];
+
+  listAttributes: Attributes[] = [];
+  listAttributesDrop: OptionsDropdown[] = [];
+  newAttribute: Attributes = {};
 
   isAtributtes:boolean = false;
   isEditAtributte:boolean = false;
@@ -49,7 +55,16 @@ export class RolesAttributeSecurityComponent implements OnInit {
     private router: Router,
     private _roleService: RoleService,
     private _messageService: ToastService,
-  ) { }
+    private formBulder: FormBuilder,
+  ) {
+    this.securityEntitiesForm = this.formBulder.group({
+      Entidad: ['', [Validators.required]],
+      Nombre: ['', [Validators.required]],
+      Valor: ['', [Validators.required]],
+      name_attrib: [''],
+      name_entidad: [''],
+    });
+  }
 
   ngOnInit(): void {
     this.isBlockPage = true;
@@ -70,6 +85,20 @@ export class RolesAttributeSecurityComponent implements OnInit {
     });
 
     this.initRolesSecurity();
+  }
+
+  getInitAttributes(index:number, entity: Entity){
+    const entityTemp = this.entitiesList.find((el) => el.id?.toLocaleLowerCase() === entity.id?.toLocaleLowerCase());
+    if(entityTemp?.attributes){
+      this.listAttributes = entityTemp.attributes;
+      for(let item of this.listAttributes){
+        this.listAttributesDrop.push({
+          label: item.name_attribute+'',
+          value: item.id+''
+        });
+      }
+    }
+    this.isAtributtes = true;
   }
 
   initRolesSecurity(): void {
@@ -102,6 +131,18 @@ export class RolesAttributeSecurityComponent implements OnInit {
 
 
   findEntities(event: string): void {
+    console.log(event);
+    for (const entity of this.entitiesList) {
+      if(entity.id === event){
+        this.newEntity.id = '';
+        this.newEntity.entity = entity.id;
+        this.newEntity.name_entities = entity.name;
+        this.newEntity.role_attribute = entity.attributes;
+      }
+    }
+  }
+
+  findAttributes(event: string): void {
     console.log(event);
     for (const entity of this.entitiesList) {
       if(entity.id === event){
@@ -166,6 +207,22 @@ export class RolesAttributeSecurityComponent implements OnInit {
         });
       }
     });
+  }
+
+  SECreateEntitiesAtribute(OpcEvent: Event) {
+/*
+    this.createRoleService.createRolesAttribute(attribut).subscribe((res: Response) => {
+      if (res.error) {
+        this.notifyUser('error', 'Error en la Creación', res.msg, 5000);
+      } else {
+        this.notifyUser('success', 'Creación Exitosa Atributos', res.msg, 5000);
+        this.store.dispatch(addSecurityEntities({ securityEntities: { ...obj } }));
+        this.isEnabledHeaderEntidad = true;
+        this.isEnabledBtnEntidad = false;
+        this.ngmEntities = null;
+      }
+    });*/
+    this.securityEntitiesForm.reset();
   }
 
 

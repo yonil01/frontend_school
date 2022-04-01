@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {
   addDatedisallowed,
-  controlDatedisallowed,
+  controlDatedisallowed, controlRole,
   deleteDatedisallowed,
   updateDatedisallowed
 } from "@app/core/store/actions/roles.action";
@@ -42,6 +42,7 @@ export class RolesDisabledDatesComponent implements OnInit {
   public fechas: DateDisallowed[] = [];
   OpcFechas: DateDisallowed = this.fechas[0];
   indexDate = 0;
+  contador = 0;
 
   public role: Role = {};
 
@@ -72,6 +73,30 @@ export class RolesDisabledDatesComponent implements OnInit {
       this.isBlockPage = false;
     });
     this.initFechas();
+  }
+
+  onKey(event: any){
+    this.contador = event.target.value.length;
+  }
+
+  getRoleDates(){
+    this.isBlockPage = true;
+    this._roleService.getRoles().subscribe((res: Response) => {
+      if(!res.error){
+        const roles = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
+        this.role = roles.find((doc: Role) => doc.id?.toLowerCase() === this.role.id?.toLowerCase()) || this.role;
+        this.store.dispatch(controlRole({ role: this.role, index: 0 }));
+        this.fechas = [];
+        this.initFechas();
+      }else{
+        this._messageService.add({
+          type: 'error',
+          message: 'Recargue la página - '+res.msg,
+          life: 5000
+        });
+      }
+      this.isBlockPage = false;
+    });
   }
 
   initFechas(): void {
@@ -110,6 +135,7 @@ export class RolesDisabledDatesComponent implements OnInit {
       if (FechaI <= FechaF) {
         this.DocumentsFechasForm.value.begins_at = this.DocumentsFechasForm.value.begins_at + 'T00:00:01Z';
         this.DocumentsFechasForm.value.ends_at = this.DocumentsFechasForm.value.ends_at + 'T00:00:01Z';
+        this.DocumentsFechasForm.value.description = this.DocumentsFechasForm.value.description || '';
         const dateDisall: DateDisallowed = {
           ...this.DocumentsFechasForm.value,
           id: uuidv4().toLowerCase(),
@@ -124,13 +150,7 @@ export class RolesDisabledDatesComponent implements OnInit {
             this.store.dispatch(addDatedisallowed({datedisallowed: dataDateD}));
             this.DocumentsFechasForm.reset();
             this._messageService.add({type: 'success', message: res.msg, life: 5000});
-            this.fechas.push({
-              begins_at: this.DocumentsFechasForm.value.begins_at,
-              ends_at: this.DocumentsFechasForm.value.ends_at,
-              description: this.DocumentsFechasForm.value.description,
-              id: this.DocumentsFechasForm.value.idDate,
-              role_id: this.DocumentsFechasForm.value.idRol,
-            });
+            this.getRoleDates();
           }
           this.isBlockPage = false;
         });
@@ -141,6 +161,48 @@ export class RolesDisabledDatesComponent implements OnInit {
           life: 5000
         });
       }
+    }
+  }
+
+  updateDateDisallowed(event: Event) {
+    event.preventDefault();
+    // Se actualiza el form en el  this.tableModificacionItem =index;
+    const FechaF = this.DocumentsFechasForm.value.ends_at;
+    const FechaI = this.DocumentsFechasForm.value.begins_at;
+    if (FechaI > FechaF) {
+      this._messageService.add({
+        type: 'error',
+        message: 'La Fecha Inicial debe ser Menor a la Fecha Final',
+        life: 5000
+      });
+    } else {
+      if (this.indexDate !== 9999) {
+        const id_Date = this.fechas[this.indexDate].id;
+        this.DocumentsFechasForm.value.begins_at = this.DocumentsFechasForm.value.begins_at + 'T00:00:01Z';
+        this.DocumentsFechasForm.value.ends_at = this.DocumentsFechasForm.value.ends_at + 'T00:00:01Z';
+        this.DocumentsFechasForm.value.description = this.DocumentsFechasForm.value.description || '';
+        const dateDisall: DateDisallowed = {
+          ...this.DocumentsFechasForm.value,
+          id: id_Date?.toLocaleLowerCase(),
+          role_id: this.role.id?.toLocaleLowerCase(),
+        };
+        const dataDateD = JSON.parse(JSON.stringify(dateDisall));
+        this._roleService.updateRolesDateDisallowed(dataDateD).subscribe((res: Response) => {
+          if (res.error) {
+            this._messageService.add({type: 'error', message: 'Error en la Actualización', life: 5000});
+          } else {
+            this._messageService.add({type: 'success', message: 'Actualización Exitosa', life: 5000});
+            this.store.dispatch(controlDatedisallowed({index: this.indexDate}));
+            this.store.dispatch(updateDatedisallowed({datedisallowed: dataDateD}));
+
+            this.getRoleDates();
+
+            this.isEdit = false;
+          }
+          this.isBlockPage = false;
+        });
+      }
+      this.DocumentsFechasForm.reset();
     }
   }
 
@@ -161,11 +223,11 @@ export class RolesDisabledDatesComponent implements OnInit {
     });
   }
 
-  OpcionTableDelete(event: Event, OpcFechas: FechasDisall, index: number) {
-    /*event.preventDefault();
+  OpcionTableDelete(event: Event, OpcFechas: DateDisallowed, index: number) {
+    event.preventDefault();
     this.OpcFechas = OpcFechas;
     this.indexDate = index;
-    this.showConfirmDelete = true;*/
+    this.showConfirmDelete = true;
   }
 
   confirmDialogDelete(event: boolean) {
@@ -178,6 +240,7 @@ export class RolesDisabledDatesComponent implements OnInit {
           this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
           this.fechas.splice(this.indexDate, 1);
           this.store.dispatch(deleteDatedisallowed({index: this.indexDate}));
+          this.getRoleDates();
           this.DocumentsFechasForm.reset();
         }
         this.showConfirmDelete = false;
@@ -186,52 +249,5 @@ export class RolesDisabledDatesComponent implements OnInit {
       this.showConfirmDelete = false;
     }
   }
-
-
-  updateDateDisallowed(event: Event) {
-    event.preventDefault();
-    // Se actualiza el form en el  this.tableModificacionItem =index;
-    const FechaF = this.DocumentsFechasForm.value.ends_at;
-    const FechaI = this.DocumentsFechasForm.value.begins_at;
-    if (FechaI > FechaF) {
-      this._messageService.add({
-        type: 'error',
-        message: 'La Fecha Inicial debe ser Menor a la Fecha Final',
-        life: 5000
-      });
-    } else {
-      if (this.indexDate !== 9999) {
-        const id_Date = this.fechas[this.indexDate].id;
-        this.DocumentsFechasForm.value.begins_at = this.DocumentsFechasForm.value.begins_at + 'T00:00:01Z';
-        this.DocumentsFechasForm.value.ends_at = this.DocumentsFechasForm.value.ends_at + 'T00:00:01Z';
-        const dateDisall: DateDisallowed = {
-          ...this.DocumentsFechasForm.value,
-          id: id_Date?.toLocaleLowerCase(),
-          role_id: this.role.id?.toLocaleLowerCase(),
-        };
-        const dataDateD = JSON.parse(JSON.stringify(dateDisall));
-        this._roleService.updateRolesDateDisallowed(dataDateD).subscribe((res: Response) => {
-          if (res.error) {
-            this._messageService.add({type: 'error', message: 'Error en la Actualización', life: 5000});
-          } else {
-            this._messageService.add({type: 'success', message: 'Actualización Exitosa', life: 5000});
-            this.store.dispatch(controlDatedisallowed({index: this.indexDate}));
-            this.store.dispatch(updateDatedisallowed({datedisallowed: dataDateD}));
-
-            this.fechas[this.indexDate].begins_at = this.DocumentsFechasForm.value.begins_at;
-            this.fechas[this.indexDate].ends_at = this.DocumentsFechasForm.value.ends_at;
-            this.fechas[this.indexDate].description = this.DocumentsFechasForm.value.description;
-            this.fechas[this.indexDate].id = this.DocumentsFechasForm.value.idDate;
-            this.fechas[this.indexDate].role_id = this.DocumentsFechasForm.value.idRol;
-
-            this.isEdit = false;
-          }
-          this.isBlockPage = false;
-        });
-      }
-      this.DocumentsFechasForm.reset();
-    }
-  }
-
 
 }

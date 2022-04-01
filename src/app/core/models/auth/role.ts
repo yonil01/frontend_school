@@ -8,7 +8,7 @@ export interface Role {
   sessions_allowed?: number;
   date_disallowed?: DateDisallowed[];
   password_policy?: PasswordPolicy;
-  roles_doc_types?: RolesDoctype[]; // Validar para Borrar
+  roles_doc_types?: RolesAllow[]; // Validar para Borrar
   role_elements?: any[];
   projects?: string[];
   process?: string[];
@@ -20,7 +20,7 @@ export interface Role {
   // is_update?: boolean;
 }
 
-export interface RolesDoctype {
+export interface RolesAllow {
   id?: string;
   doctype_id?: string;
   role_id?: string;

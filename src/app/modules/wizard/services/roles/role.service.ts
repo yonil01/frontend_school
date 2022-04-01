@@ -4,7 +4,7 @@ import {map} from 'rxjs/operators';
 import {
   Response,
   Role,
-  RolesDoctype,
+  RolesAllowUser,
   PasswordPolicy,
   DateDisallowed,
   Elements,
@@ -115,7 +115,7 @@ export class RoleService {
     return this.getRolesDoctypeQuery.watch().valueChanges.pipe(map(({data}: any) => data.getRolesDoctype));
   }
 
-  createRolesDoctype(roleDt: RolesDoctype[]): Observable<Response> {
+  createRolesDoctype(roleDt: RolesAllowUser[]): Observable<Response> {
     return this.createRolesDoctypeMutation
       .mutate({
         rq: {data: roleDt},
