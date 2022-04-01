@@ -98,6 +98,8 @@ export class DatasetCreateEditComponent implements OnInit {
   ngOnInit(): void {
     if(this.dataset){
       this.datasetForm.patchValue(this.dataset);
+      this.datasetForm.controls['name'].disable();
+      this.datasetForm.controls['field_type'].disable();
     }
   }
 
