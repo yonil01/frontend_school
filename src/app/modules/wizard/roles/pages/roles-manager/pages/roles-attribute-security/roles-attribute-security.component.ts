@@ -89,7 +89,8 @@ export class RolesAttributeSecurityComponent implements OnInit {
   ngOnInit(): void {
     this.isBlockPage = true;
     this.store.select('role').subscribe((res) => {
-      this.role = res.role;
+      const data = res.role
+      this.role = JSON.parse(JSON.stringify(data));
       if (!this.role || Object.keys(this.role).length === 0) {
         this.router.navigateByUrl('wizard/roles');
       } else{
@@ -226,6 +227,12 @@ export class RolesAttributeSecurityComponent implements OnInit {
           entity: this.entityCreate,
           role_attribute: this.entityCreate.attributes
         });
+
+        this.entitiesRole.push({
+          entity: this.entityCreate,
+          id: dataEntity.id
+        });
+        this.role.security_entities = this.entitiesRole;
       }
       this.isBlockPage = false;
     });
@@ -242,14 +249,17 @@ export class RolesAttributeSecurityComponent implements OnInit {
         this.showConfirmDeleteEntity = false;
         this._messageService.add({type: 'error', message: 'No se pudo eliminar, la entidad tiene atributos', life: 5000});
       }else{
+        console.log('ID Entidad Seleccionada:');
+        console.log(this.entitySelected.id);
         this._roleService
-          .deleteRolesSecurityEntity(this.entitySelected.id?.toLocaleLowerCase() || '')
+          .deleteRolesSecurityEntity(this.entitySelected.id || '')
           .subscribe((res: Response) => {
             if (res.error) {
               this._messageService.add({type: 'error', message: 'Error en la Eliminación' + res.msg, life: 5000});
             } else {
               this._messageService.add({type: 'success', message: 'Eliminación Exitosa Entidad' + res.msg, life: 5000});
               this.entitiesRole = this.entitiesRole.filter(d => d.id !== this.entitySelected.id);
+              this.role.security_entities = this.entitiesRole;
             }
             this.showConfirmDeleteEntity = false;
           });
@@ -261,10 +271,15 @@ export class RolesAttributeSecurityComponent implements OnInit {
 
   showEntity(entity: SecurityEntity) {
     this.isBlockPage = true;
-    this.entitySelected = entity;
+
+    this.attributesRole = [];
+    this.entityAttributesGlobalDrop = [];
+    const entityTemp = entity;
+    this.entitySelected = JSON.parse(JSON.stringify(entityTemp));
     this.isAttribute = true;
-    if(this.entitySelected.role_attribute){
-      this.attributesRole = this.entitySelected.role_attribute;
+    if(this.entitySelected.role_attribute && this.entitySelected.role_attribute.length > 0){
+      const attributes = this.entitySelected.role_attribute;
+      this.attributesRole = JSON.parse(JSON.stringify(attributes));
       this.isExistAttributes = true;
     }
     this.entityAttributesGlobal = this.entitiesGlobal.find(entityGlobal => entityGlobal.id === entity.entity?.id)?.attributes || [];
@@ -295,13 +310,28 @@ export class RolesAttributeSecurityComponent implements OnInit {
             this._messageService.add({type: 'success', message: 'Creación de Atributo Exitosa' + res.msg, life: 5000});
             const entity = this.entitiesGlobal.find(entity => entity.id === this.entitySelected.entity?.id);
             const attribute = entity?.attributes?.find(attribute => attribute.id === dataAttribute.attribute);
-            this.attributeForm.value.value = '';
             this.isBlockPage = false;
             this.attributesRole.push({
               id: dataAttribute.attribute,
               value: dataAttribute.value,
               attribute: attribute
             });
+
+            if(this.attributesRole.length > 0){
+              this.isExistAttributes = true;
+            }
+
+            this.entitySelected.role_attribute = this.attributesRole;
+            for(let i = 0; i < this.entitiesRole.length; i++){
+              if(this.entitiesRole[i].id === this.entitySelected.id){
+                this.entitiesRole[i] = this.entitySelected;
+                break;
+              }
+            }
+            this.role.security_entities = this.entitiesRole;
+
+            this.isExistAttributes = true;
+            this.attributeForm.reset();
           }
         });
     }
@@ -330,6 +360,18 @@ export class RolesAttributeSecurityComponent implements OnInit {
           } else {
             this._messageService.add({type: 'success', message: 'Eliminación Exitosa de Atributo' + res.msg, life: 5000});
             this.attributesRole = this.attributesRole.filter(d => d.id !== this.attributeSelected.id);
+            if(this.attributesRole.length < 1){
+              this.isExistAttributes = false;
+            }
+
+            this.entitySelected.role_attribute = this.attributesRole;
+            for(let i = 0; i < this.entitiesRole.length; i++){
+              if(this.entitiesRole[i].id === this.entitySelected.id){
+                this.entitiesRole[i] = this.entitySelected;
+                break;
+              }
+            }
+            this.role.security_entities = this.entitiesRole;
           }
           this.showConfirmDeleteAttribute = false;
         });
