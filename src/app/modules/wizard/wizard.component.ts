@@ -19,6 +19,9 @@ export class WizardComponent implements OnInit {
   clients!: DataDrop[];
   projects!: DataDrop[];
 
+  projectName: string = '';
+  clientName: string = '';
+
   items = [];
   configList: any = [];
   display = false;
@@ -85,6 +88,7 @@ export class WizardComponent implements OnInit {
 
   selectClient(client: any, dropdown: DropdownComponent) {
     if (client) {
+      this.clientName = client.name;
       const projects = client.projects;
       this.projects = projects.map((project: Project) => ({label: project.name, value: project}))
     } else {
@@ -99,6 +103,7 @@ export class WizardComponent implements OnInit {
 
   selectProject(project: any) {
     if (project) {
+      this.projectName = project.name;
       this.isDisableGenerated = false;
     } else {
       this.isDisableGenerated = true;
