@@ -51,6 +51,8 @@ export class RolesListComponent implements OnInit, OnDestroy {
           } else {
             if (res.data) {
               this.roles = res.data;
+              console.log(this.roles);
+              console.log(res.data);
             } else {
               this._messageService.add({type: 'error', message: 'No roles found', life: 5000});
             }

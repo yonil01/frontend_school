@@ -20,6 +20,12 @@ export interface Role {
   // is_update?: boolean;
 }
 
+export interface NewRolesProject {
+  id: string,
+  project: string,
+  role_id: string
+}
+
 export interface RolesAllow {
   id?: string;
   doctype_id?: string;

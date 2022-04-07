@@ -10,12 +10,13 @@ import {
   Elements,
   RoleAllowed,
   SecurityEntities,
-  Attributes,
+  Attributes, NewRolesProject,
 } from '@app/core/models';
 import {Observable} from 'rxjs';
 import {
   GetRolesQuery,
   CreateRoleMutation,
+  CreateRoleProjectMutation,
   UpdateRoleMutation,
   DeleteRoleMutation,
   CreateRolesDoctypeMutation,
@@ -51,6 +52,7 @@ export class RoleService {
     private getRolesQuery: GetRolesQuery,
     private getRolesByProjectIDQuery: GetRolesByProjectIDQuery,
     private createRoleQuery: CreateRoleMutation,
+    private createRoleProjectQuery: CreateRoleProjectMutation,
     private updateRoleMutation: UpdateRoleMutation,
     private deleteRoleQuery: DeleteRoleMutation,
     private createRolesDoctypeMutation: CreateRolesDoctypeMutation,
@@ -88,6 +90,14 @@ export class RoleService {
   // CRUD Roles
   createRole(roles: Role): Observable<Response> {
     return this.createRoleQuery
+      .mutate({
+        rq: {data: roles},
+      })
+      .pipe(map(({data}: any) => data.createRole));
+  }
+
+  createRoleProject(roles: NewRolesProject): Observable<Response> {
+    return this.createRoleProjectQuery
       .mutate({
         rq: {data: roles},
       })

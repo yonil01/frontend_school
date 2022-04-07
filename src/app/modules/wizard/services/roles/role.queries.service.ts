@@ -239,6 +239,25 @@ export class CreateRoleMutation extends Mutation {
 @Injectable({
   providedIn: 'root',
 })
+export class CreateRoleProjectMutation extends Mutation {
+  document = gql`
+    mutation createRolesProject($rq: RequestNewRolesProject!) {
+      createRolesProject(input: $rq) {
+        error
+        data {
+          id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class UpdateRoleMutation extends Mutation {
   document = gql`
     mutation updateRole($rq: RequestUpdateRole!) {

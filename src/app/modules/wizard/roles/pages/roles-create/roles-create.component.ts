@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs/internal/Subscription";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
-import {Customer, Project, Role, Response} from "@app/core/models";
+import {Customer, Project, Role, NewRolesProject, Response} from "@app/core/models";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {ToastService} from "ecapture-ng-ui";
 import {Store} from "@ngrx/store";
@@ -27,6 +27,7 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   public showConfirm: boolean = false;
 
   public role: Role = {};
+  public roleProject: NewRolesProject = {id: "", project: "", role_id: ""};
 
   private client: Customer;
   private project: Project;
@@ -47,6 +48,8 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
 
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.client = JSON.parse(sessionStorage.getItem('client') || '');
+
+    console.log(this.project);
   }
 
   ngOnInit(): void {
@@ -107,6 +110,16 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
           if (res.error) {
             this._messageService.add({type: 'error', message: 'Error en la creación ' + res.msg, life: 5000});
           } else {
+            const roleProject: NewRolesProject = {
+              id: uuidv4().toLowerCase(),
+              project: this.project.id,
+              role_id: res.data.id
+            };
+            this._roleService.createRoleProject(roleProject).subscribe((res: Response) => {
+              if(res.error){
+                this._messageService.add({type: 'error', message: 'No se pudo asignar el rol al proyecto - ' + res.msg, life: 5000});
+              }
+            });
             this._messageService.add({type: 'success', message: 'Rol Creado Correctamente', life: 5000});
             this._router.navigateByUrl('wizard/roles');
           }
