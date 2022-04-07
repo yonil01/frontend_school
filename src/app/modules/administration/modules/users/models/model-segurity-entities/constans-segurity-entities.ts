@@ -4,50 +4,22 @@ export const styleTableEntitySegurity: TableModel = {
   type: 2,
   columns: [
     {
-      label: 'Formulario',
+      label: 'Entidad',
+    },
+    {
+      label: 'Valor',
     },
     {
       label: 'Options',
     },
   ],
-  dataSources: [
-    {
-      title: 'Informacion fidecomiso',
-      datasource: [
-        {
-          name: 'primero'
-        },
-        {
-          name: 'primero'
-        },
-        {
-          name: 'primero'
-        }
-      ]
-
-    },
-    {
-      title: 'Informacion Basica',
-      datasource: [
-        {
-          name: 'primero'
-        },
-        {
-          name: 'primero'
-        },
-        {
-          name: 'primero'
-        }
-      ]
-
-    }
-  ],
-  options: [
+  dataSources: [],
+  optionsStander: [
     {
       icon: 'delete 32',
-      color: 'text-gray-400',
+      color: 'text-mono-70',
       visibility: true,
-      type: 'normally'
+      type: 'Delete'
     },
   ],
   optionMax: [
@@ -55,7 +27,32 @@ export const styleTableEntitySegurity: TableModel = {
       icon: 'delete 32',
       color: 'text-alert-error',
       visibility: true,
-      type: 'normally'
+      type: 'Delete Max'
     },
   ]
 }
+
+export const styleDropdown: any = {
+  textColor: 'text-mono-70',
+  container: {
+    background: 'bg-mono-10',
+    border: {
+      color: '',
+      size: '',
+      round: 'rounded-md',
+      style: '',
+      hover: ''
+    }
+  },
+  optionContainer: {
+    background: 'bg-mono-10',
+    border: {
+      color: 'border-red-70',
+      size: 'border-2',
+      round: 'rounded-md',
+      style: '',
+      hover: 'bg-white'
+    }
+  },
+}
+

@@ -1,0 +1,27 @@
+:host /deep/ .p-picklist-filter-container {
+  padding: 1rem;
+  background-color: #313335!important;
+  border: none;
+  border-bottom: 0 none;
+}
+
+:host /deep/ .p-picklist-filter-input {
+  background-color: #313335!important;
+}
+
+:host /deep/ .p-ripple {
+  color: #ffffff!important;
+}
+
+
+:host /deep/ .p-ripple:hover {
+  background: #2c4464!important;
+}
+
+:host /deep/ .p-ripple:focus {
+  background: #2c4464!important;
+}
+
+:host /deep/ .p-picklist-item.p-highlight {
+  background: #2c4464!important;
+}

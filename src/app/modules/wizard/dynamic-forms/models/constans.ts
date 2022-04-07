@@ -13,7 +13,7 @@ export const styleTableFirst: TableModel = {
   dataSource: [
 
   ],
-  options: [
+  optionsStander: [
     {
       icon: 'broad-activity-feed',
       color: 'text-alert-success',
@@ -40,7 +40,7 @@ export const styleTableForms: TableModel = {
   },
   dataSource: [
   ],
-  options: [
+  optionsStander: [
     {
       icon: 'edit',
       color: 'text-brand-2',

@@ -6,11 +6,10 @@ import {
   BasicInformationComponent
 } from "@app/modules/administration/modules/users/pages/user-crud/components/basic-information/basic-information.component";
 import {RoleComponent} from "@app/modules/administration/modules/users/pages/user-crud/components/role/role.component";
+import {UsersComponent} from "@app/modules/administration/modules/users/users.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: 'list'},
-  {path: 'list', component: UserListComponent},
-  {path: 'detail', component: UserCrudComponent},
+  {path: '', component: UsersComponent},
 
 ];
 

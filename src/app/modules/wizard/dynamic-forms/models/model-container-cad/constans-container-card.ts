@@ -13,13 +13,13 @@ export const acTypeIdentification: any = {
     }
   },
   optionContainer: {
-    background: '',
+    background: 'bg-mono-10',
     border: {
-      color: '',
-      size: '',
-      round: '',
+      color: 'border-red-70',
+      size: 'border-2',
+      round: 'rounded-md',
       style: '',
-      hover: ''
+      hover: 'bg-white'
     }
   },
 }

@@ -1,32 +1,34 @@
-import {DocTypes} from "@app/core/models";
+export interface TableStander {
+
+}
+
+
 
 export interface TableModel {
   type?: number;
   isSearch?: boolean;
-  buttonTittle?: buttonTittle,
+  buttonTittle?: ButtonStyle,
   dataSource?: any[];
-  dataSources?:data[];
-  options?: option[];
-  optionMax?: option[];
+  dataSources?:Data[];
+  optionsStander?: Option[];
+  optionMax?: Option[];
   columns: Column[];
 }
 
-export interface data {
-  title: string,
-  datasource: DocTypes[]
+export interface Data {
+  name: string,
+  value: any,
+  datasource: any[]
 }
 
-export interface unitTable {
-  value: string;
-}
 
-export interface option {
+export interface Option {
   icon: string;
   color: string;
   visibility: boolean,
   type: string
 }
-export interface buttonTittle {
+export interface ButtonStyle {
   showButton: boolean,
   label: string,
   route: string

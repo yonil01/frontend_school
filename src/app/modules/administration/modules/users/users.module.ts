@@ -9,9 +9,41 @@ import { BasicInformationComponent } from './pages/user-crud/components/basic-in
 import { RoleComponent } from './pages/user-crud/components/role/role.component';
 import { SecurityEntitiesComponent } from './pages/user-crud/components/security-entities/security-entities.component';
 import {UiModule} from "@app/ui/ui.module";
-import {DropdownModule, InputTextModule, StepModule} from "ecapture-ng-ui";
+import {
+  DropdownModule, IconsModule,
+  InputPasswordModule,
+  InputTextModule,
+  StepModule,
+  ToastModule,
+  ToastService
+} from "ecapture-ng-ui";
 import {ReactiveFormsModule} from "@angular/forms";
-import {PickListModule} from 'primeng/picklist';
+
+//  primeng module
+
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { TabViewModule } from 'primeng/tabview';
+import { PanelModule } from 'primeng/panel';
+import { PasswordModule } from 'primeng/password';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MenubarModule } from 'primeng/menubar';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { CheckboxModule } from 'primeng/checkbox';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CardModule } from 'primeng/card';
+import { PickListModule } from 'primeng/picklist';
+import { StepsModule } from 'primeng/steps';
+import { FileUploadModule } from 'primeng/fileupload';
+import { TooltipModule } from 'primeng/tooltip';
+import {TranslateModule} from "@ngx-translate/core";
+import {
+  ChangePasswordComponent
+} from "@app/modules/administration/modules/users/pages/change-password/change-password.component";
+
 
 @NgModule({
   declarations: [
@@ -20,16 +52,44 @@ import {PickListModule} from 'primeng/picklist';
     UserCrudComponent,
     BasicInformationComponent,
     RoleComponent,
-    SecurityEntitiesComponent
+    SecurityEntitiesComponent,
+    ChangePasswordComponent
   ],
-    imports: [
-        CommonModule,
-        UsersRoutingModule,
-        UiModule,
-        StepModule,
-        InputTextModule,
-        DropdownModule,
-        ReactiveFormsModule,
-    ]
+  exports: [
+    UserCrudComponent
+  ],
+  imports: [
+    CommonModule,
+    UsersRoutingModule,
+    UiModule,
+    StepModule,
+    InputTextModule,
+    DropdownModule,
+    ReactiveFormsModule,
+    PickListModule,
+    TableModule,
+    ButtonModule,
+    TabViewModule,
+    PanelModule,
+    PasswordModule,
+    DialogModule,
+    ConfirmDialogModule,
+    MenubarModule,
+    ToastModule,
+    RadioButtonModule,
+    CheckboxModule,
+    KeyFilterModule,
+    MultiSelectModule,
+    ProgressSpinnerModule,
+    CardModule,
+    StepsModule,
+    FileUploadModule,
+    TooltipModule,
+    PickListModule,
+    InputPasswordModule,
+    IconsModule,
+    TranslateModule
+  ],
+  providers: [ToastService]
 })
 export class UsersModule { }

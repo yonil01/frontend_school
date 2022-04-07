@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {TableModel} from "@app/ui/components/table/model/table.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-table',
@@ -8,13 +9,16 @@ import {TableModel} from "@app/ui/components/table/model/table.model";
 })
 export class TableComponent implements OnInit, OnChanges {
   @Input() tableStyle: TableModel;
+  @Output() dataReturnOne = new EventEmitter<any>();
   @Output() dataReturn = new EventEmitter<any>();
+  @Output() eventButton = new EventEmitter<any>();
   public valueSelect: number;
   public rangeMin: number;
   public rangeMax: number;
-  public items: any[]
+  public items: any[];
+  public filterTerm!: string;
 
-  constructor() {
+  constructor(private route: Router) {
     this.tableStyle = {
       columns: [],
       type: 1,
@@ -24,8 +28,9 @@ export class TableComponent implements OnInit, OnChanges {
         label: '',
         route: ''
       },
-      dataSource: [],
-      options: []
+      dataSource: [
+      ],
+      optionsStander: []
     }
 
     this.items =[];
@@ -40,51 +45,28 @@ export class TableComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any) {
   }
 
-  public showChangeTable(e: any): void {
-    this.valueSelect = Number(e);
-    this.rangeMin = 0;
-    this.rangeMax = e;
+
+
+  public eventRunOption(data: any) {
+    this.dataReturn.emit({value: data.value, type: data.type});
   }
 
-  public showNextTable(): void {
-    if (this.rangeMin === 0) {
-      this.rangeMin = this.valueSelect;
-      this.rangeMax = this.valueSelect*2;
+  public emitEventButton(route: string): void {
+    if (route === '') {
+      this.eventButton.emit(true);
     } else {
-      this.rangeMin = this.rangeMin + this.valueSelect;
-      this.rangeMax = this.rangeMax + this.valueSelect;
+      this.route.navigate(['route']);
     }
+
   }
 
-  public showBackTable() {
-    if (this.rangeMin !== 0) {
-      this.rangeMin = this.rangeMin - this.valueSelect;
-      this.rangeMax = this.rangeMax - this.valueSelect;
+  public eventRunOptionOne(data: any, type: string): void {
+    const dataSend = {
+      type: type,
+      value: data,
     }
+    this.dataReturnOne.emit(dataSend);
   }
 
-  public showSectionNumber(): number {
-    // @ts-ignore
-    if ((this.tableStyle.type === 2 ? this.tableStyle.dataSources?.length :this.tableStyle.dataSource?.length) <= this.valueSelect) {
-      return 1;
-    }
-    // @ts-ignore
-    const newNumber = Math.round((this.tableStyle.type === 2 ? this.tableStyle.dataSources?.length :this.tableStyle.dataSource?.length) / this.valueSelect);
-    // @ts-ignore
-    const data = ((this.tableStyle.type === 2 ? this.tableStyle.dataSources?.length :this.tableStyle.dataSource?.length) / this.valueSelect) - newNumber;
-    if (data >0) {
-      return newNumber + 1;
-    }
-    return newNumber;
-  }
-
-  public eventRunOption(data: any, index: number, type: string) {
-    const dataReturn = {
-      form :data,
-      index: index,
-      type: type
-    }
-    this.dataReturn.emit(dataReturn);
-  }
 
 }

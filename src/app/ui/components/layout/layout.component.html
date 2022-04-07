@@ -10,7 +10,7 @@
             </svg>
           </button>
           <span *ngIf="typeButton === 1" class="flex justify-center items-center w-12 h-12" appIcon iconName="arrow left-20" iconColor="text-mono-70"> </span>
-          <span *ngIf="typeButton === 2" class="flex justify-center items-center w-12 h-12" appIcon iconName="exit 20" iconColor="text-mono-70"> </span>
+          <span *ngIf="typeButton === 2" class="flex justify-center items-center w-12 h-12" appIcon iconName="exit 20" iconColor="text-mono-70" (click)="loadUrl()"> </span>
         </div>
         <div class="brand">
           <svg xmlns="http://www.w3.org/2000/svg" width="80" height="24" viewBox="0 0 80 24" fill="none">

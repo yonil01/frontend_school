@@ -1,92 +1,165 @@
-<div class="w-full space-x-4 flex">
-  <form [formGroup]="formBasicInfo" class="w-full space-y-10">
-    <div class="w-full">
-      <div class="flex lg:space-x-4 w-full">
-        <ec-input-text label="Nombre de Usuario"
-                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
-                       brContainerColor="border-outline-gray-50"
-                       class="w-full"
-                       formControlName="username"
-        ></ec-input-text>
-        <ec-input-text label="Correo Electronico"
-                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
-                       brContainerColor="border-outline-gray-50"
-                       class="w-full"
-                       formControlName="email_notifications"
-        ></ec-input-text>
+<div class="w-full grid space-y-8 lg:space-x-4 lg:flex lg:space-y-0">
+  <form [formGroup]="formBasicInfo" class="w-full space-y-10" novalidate>
+    <div class="w-full space-y-4">
+      <div class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full">
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Nombre de Usuario</span>
+            <input formControlName="username"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-mono-10 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('username')?.dirty && (formBasicInfo.get('username')?.errors || formBasicInfo.get('username')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('username')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('required')">El descripción es requerido</span>
+          </div>
+        </div>
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Correo Electronico</span>
+            <input formControlName="email_notifications" type="email_notifications" id="email_notifications"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('email_notifications')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('email_notifications')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span
+              *ngIf="formBasicInfo.get('email_notifications')?.hasError('required')">El descripción es requerido</span>
+            <span
+              *ngIf="formBasicInfo.get('email_notifications')?.hasError('pattern')">El campo debe tener @</span>
+
+          </div>
+        </div>
       </div>
-      <div class="flex lg:space-x-4 w-full">
-        <ec-input-text label="Tipo de Identificación"
-                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
-                       brContainerColor="border-outline-gray-50"
-                       class="w-full"
-                       formControlName="identification_type"
-        ></ec-input-text>
-        <ec-input-text label="Numero de Identificación"
-                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
-                       brContainerColor="border-outline-gray-50"
-                       class="w-full"
-                       formControlName="identification_number"
-        ></ec-input-text>
+      <div class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full">
+        <div class="w-full grid space-y-2">
+          <span class="text-mono-70">Tipo de Identificación</span>
+          <ec-dropdown
+            [data]="dataDropIdentification"
+            [dropStyle]="styleDropdown" [icon]="true"
+            [filter]="true"
+            placeholder="Seleccione"
+            formControlName="identification_type"
+          ></ec-dropdown>
+        </div>
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Numero de Identificación</span>
+            <input formControlName="identification_number" type="number" id="identification_number"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('identification_number')?.dirty && (formBasicInfo.get('identification_number')?.errors || formBasicInfo.get('identification_number')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span
+              *ngIf="formBasicInfo.get('identification_number')?.hasError('required')">El descripción es requerido</span>
+          </div>
+        </div>
       </div>
-      <div class="flex lg:space-x-4 w-full">
-        <ec-input-text label="Nombre"
-                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
-                       brContainerColor="border-outline-gray-50"
-                       class="w-full"
-                       formControlName="name"
-        ></ec-input-text>
-        <ec-input-text label="Apellido"
-                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
-                       brContainerColor="border-outline-gray-50"
-                       class="w-full"
-                       formControlName="last_name"
-        ></ec-input-text>
+      <div class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full">
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Nombre</span>
+            <input formControlName="name" type="name" id="name"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('name')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('name')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('required')">El descripción es requerido</span>
+          </div>
+        </div>
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Apellido</span>
+            <input formControlName="last_name" type="last_name" id="last_name"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('last_name')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('required')">El descripción es requerido</span>
+          </div>
+        </div>
       </div>
-      <div class="flex lg:space-x-4 w-full">
-        <ec-input-text label="password"
-                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
-                       brContainerColor="border-outline-gray-50"
-                       class="w-full"
-                       formControlName="password"
-        ></ec-input-text>
-        <ec-input-text label="Confirmar Contraseña"
-                       txtColor="text-mono-70" bgContainerColor="bg-mono-10"
-                       brContainerColor="border-outline-gray-50"
-                       class="w-full"
-                       formControlName="password_comfirm"
-        ></ec-input-text>
+      <div *ngIf="!returnExistUser()" class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full ">
+        <ec-input-password label="password"
+                           bgContainerColor="bg-mono-10"
+                           brContainerColor="border-outline-gray-50"
+                           txtColor="text-mono-70"
+                           formControlName="password"
+                           class="w-full"
+        ></ec-input-password>
+        <ec-input-password label="Confirmar Contraseña"
+                           bgContainerColor="bg-mono-10"
+                           brContainerColor="border-outline-gray-50"
+                           txtColor="text-mono-70"
+                           formControlName="password_comfirm"
+                           class="w-full"
+        ></ec-input-password>
       </div>
     </div>
-    <div class="flex space-x-4 w-1/2">
-      <app-button routerLink="/admin/user/list" type="button" label="Guardar"
+    <div class="flex w-full space-x-4 md:w-1/2">
+      <app-button type="button" label="Guardar"
                   brColor="border-blue-600"
                   bgColor="bg-transparent"
-                  txtColor="text-blue-600" class="h-12 w-full"></app-button>
-      <app-button type="button" label="Siguiente"
+                  txtColor="text-blue-600" class="h-12 w-full" (click)="saveForm();typeExecution=0"></app-button>
+      <app-button [disabled]="formBasicInfo.invalid"
+                  type="button" label="Siguiente"
                   brColor="border-blue-600"
                   bgColor="bg-blue-600"
-                  txtColor="text-gray-900" class="h-12 w-full" (click)="nextStep(0)"></app-button>
+                  txtColor="text-gray-900" class="h-12 w-full" (click)="nextStep();typeExecution=1"></app-button>
     </div>
   </form>
 
+  <div class="w-full  lg:p-4 content-center h-100 ">
+    <span appIcon iconName="alert-on 32" iconColor="text-mono-70"></span>
 
-  <div class="w-full grid p-4 content-center h-100 ">
-    <div class="w-1/2">
-      <div class="flex">
-        <span appIcon iconName="alert-on 32" iconColor="text-blue-core-l1"></span>
+    <div class=" space-y-4">
+      <div class="flex space-x-2">
+        <span><svg width="24" height="21" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path
+  d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"
+  fill="#3377FF"/>
+</svg>
+</span>
         <span class="text-mono-70">
                   Si quieres cancelar presiona la ‘X’ de la parte superior izquierda.
                 </span>
       </div>
-      <div class="flex">
-        <span appIcon iconName="alert-on 32" iconColor="text-blue-core-l1"></span>
+      <div class="flex space-x-2">
+        <span><svg width="24" height="21" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path
+  d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"
+  fill="#3377FF"/>
+</svg>
+</span>
         <span class="text-mono-70">
                   El botón ‘Guardar’ realiza el registro hasta este punto y te dirige a la pantalla anterior.
                 </span>
       </div>
-      <div class="flex">
-        <span appIcon iconName="alert-on 32" iconColor="text-blue-core-l1"></span>
+      <div class="flex space-x-2">
+        <span>
+          <svg width="24" height="21" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"
+              fill="#3377FF"/>
+          </svg>
+      </span>
         <span class="text-mono-70">
                   El botón ‘Siguiente’ también realiza el registro, pero te dirige a la asignación de roles y entidades de seguridad, esos pasos son opcionales.
                 </span>
@@ -94,3 +167,5 @@
     </div>
   </div>
 </div>
+
+

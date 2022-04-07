@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {TableModel} from "@app/ui/components/table/model/table.model";
 import {styleTableFirst} from "@app/modules/wizard/dynamic-forms/models/constans";
 import {Router} from "@angular/router";
-import {styleTableUser} from "@app/modules/administration/modules/users/models/model-user-list/constans-user-list";
+import {styleTableUser} from "@app/modules/administration/modules/users/models/model-user/constans-user";
 import {UsersService} from "@app/modules/administration/modules/users/service/user/users.service";
 import {User} from "@app/core/models";
 import {userSelect} from "@app/modules/administration/modules/users/models/user-crud-model/user-crud-constans";
@@ -28,7 +28,6 @@ export class UserListComponent implements OnInit {
     this.userService.getUsersByRolesAllow().subscribe((res) => {
       if (!res.error) {
         this.users = res.data;
-        debugger
         this.users.forEach((user: any) => {
           const newUser = {
             id: user.id,

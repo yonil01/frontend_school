@@ -12,4 +12,6 @@ export interface DataStep {
   index: number,
   title: string,
   status: string
+  block: boolean;
+  focus:boolean;
 }

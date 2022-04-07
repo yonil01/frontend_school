@@ -1,27 +1,45 @@
 <div class="w-full space-y-10">
-  <div class="w-full flex justify-between space-x-4 border-b-2 border-gray-400  pb-4 ">
-    <div class="w-1/3 space-y-6 text-mono-70 space-y-2 ">
-      <div class="space-y-2">
-        <div>
-          <span class="text-mono-70">Entidad</span>
-          <ec-dropdown
-            [dropStyle]="typeIdentificationStyle" [icon]="true"
-            placeholder="Seleccion un contenedor"
-          ></ec-dropdown>
+  <div class="w-full lg:flex lg:justify-between lg:space-x-4 border-b-2 border-gray-400 space-y-4 lg:space-y-0 pb-4 ">
+    <div class="w-full lg:w-1/3">
+      <div class="w-full grid md:flex lg:space-y-4 space-x-2 md:space-y-0 lg:grid md:space-x-4 lg:space-x-0 space-y-0 text-mono-70 ">
+        <div class="w-full grid space-y-2">
+          <div>
+            <span class="text-mono-70">Entidad</span>
+            <ec-dropdown
+              [data]="dataDropIdentity"
+              [filter]="true"
+              [dropStyle]="styleDropdown" [icon]="true"
+              placeholder="Seleccion una Entidad"
+              [formControl]='securityEntitiesSelectedForm'
+            ></ec-dropdown>
+          </div>
+          <div class="w-1/2" *ngIf="showCreateSecurityEntity">
+            <app-button type="button" label="Agregar"
+                        brColor="border-blue-600"
+                        bgColor="bg-transparent"
+                        txtColor="text-blue-600" class="h-10 w-full" (click)="createSecurityEntity()"></app-button>
+          </div>
         </div>
-        <div>
-          <span class="text-mono-70">Atributos</span>
-          <ec-dropdown
-            [dropStyle]="typeIdentificationStyle" [icon]="true"
-            placeholder="Seleccion un contenedor"
-          ></ec-dropdown>
+        <div class="w-full grid space-y-2">
+          <div>
+            <span class="text-mono-70">Atributos</span>
+            <ec-dropdown
+              [data]="dataDropAttribute"
+              [dropStyle]="styleDropdown" [icon]="true"
+              [formControl]='securityEntityAttributeSelectedForm'
+              placeholder="Seleccion un Atributo"
+            ></ec-dropdown>
+          </div>
+          <div class="w-1/2" *ngIf="securityEntityAttributeSelected">
+            <app-button
+              type="button" label="Agregar"
+              brColor="border-blue-600"
+              bgColor="bg-transparent"
+              txtColor="text-blue-600" class="h-10 w-full"
+              (click)='createSecurityEntityAttribute()'
+            ></app-button>
+          </div>
         </div>
-      </div>
-      <div class="w-1/2">
-        <app-button routerLink="/wizard/dymanic-forms/forms" type="button" label="Agregar a la lista"
-                    brColor="border-blue-600"
-                    bgColor="bg-transparent"
-                    txtColor="text-blue-600" class="h-12 w-full"></app-button>
       </div>
     </div>
     <div class="w-full text-mono-70 space-y-2">
@@ -33,9 +51,7 @@
                 brColor="border-blue-600"
                 bgColor="bg-transparent"
                 txtColor="text-blue-600" class="h-12 w-full" (click)="backStep(2)"></app-button>
-    <app-button type="button" label="Guardar"
-                brColor="border-blue-600"
-                bgColor="bg-blue-600"
-                txtColor="text-gray-900" class="h-12 w-full" ></app-button>
   </div>
 </div>
+
+
