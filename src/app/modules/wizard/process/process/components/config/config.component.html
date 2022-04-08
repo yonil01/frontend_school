@@ -6,12 +6,12 @@
     </div>
 
     <div class="flex w-full items-center justify-between mb-6">
-      <button class="b-solid" (click)="showView = 'editOrCreate'; operation = 'add'">{{'NEW_TASK' |  translate}}</button>
-      <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_TASK' | translate}}"
+      <button class="b-solid" (click)="showView = 'createOrUpdate'; operation = 'add'">{{'NEW_TASK' |  translate}}</button>
+      <div><input [disabled]="tasks.length <= 0 " class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_TASK' | translate}}"
                   (input)="filterItemsTarget($event, tasks)"></div>
     </div>
 
-    <div class="w-full">
+    <div *ngIf="tasks.length > 0" class="w-full">
       <div class="table-h hidden md:block w-full">
         <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
           <div class="p-2 w-16">N°</div>
@@ -62,6 +62,9 @@
         </div>
       </div>
       <app-paginator [data]="tasksDisplay" (current-data-page)="tasksPagination = $event"></app-paginator>
+    </div>
+    <div *ngIf="tasks.length === 0" class="w-full flex items-center justify-center text-brand-d-1 text-xl">
+      <span>No hay tareas creadas!</span>
     </div>
   </div>
 
@@ -167,8 +170,8 @@
       </div>
       <div class="flex flex-row space-x-4 lg:w-2/3 mt-4">
         <button class="flex-1 md:flex-none b-outline" (click)="backStep()">{{'BACK' | translate}}</button>
-        <button class="flex-1 md:flex-none b-solid" (click)="positionStep = positionStep+1">
-        {{'NEXT' | translate}}</button>
+        <button class="flex-1 md:flex-none b-solid" (click)="cancelCreateOrEdit()">
+        {{'EXIT' | translate}}</button>
       </div>
     </div>
   </div>

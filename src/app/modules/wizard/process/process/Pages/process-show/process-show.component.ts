@@ -531,7 +531,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   private async openMenu(event: any) {
     event.originalEvent.preventDefault();
     event.originalEvent.stopPropagation();
-    debugger;
     this.existQueue = false;
     const type = event.element.type;
     if (type.indexOf('Task') > -1 || type.indexOf('IntermediateCatchEvent') > -1 || type.indexOf('Gateway') > -1) {
@@ -552,6 +551,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       const result = await this.bpmnJS.saveXML({format: true});
       this.bpmnXML = result.xml;
 
+
+      console.log(this.queueSelected);
       this.store.dispatch(controlTask({task: this.queueSelected}));
       this.store.dispatch(controlElement({element: JSON.parse(JSON.stringify(this.currentElement.businessObject))}));
       this.contextMenu.openMenu();
@@ -782,20 +783,22 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   public responseCreateQueue(res: Response): void {
-    if (res.error) {
-      this.messageService.add({type: 'error', message: res.msg, life: 5000});
-    } else {
-      this.messageService.add({type: 'success', message: res.msg, life: 5000});
+    if (!res.error) {
+      this.bpm.queues?.push(res.data);
       this.updateBpm();
     }
   }
 
   public responseUpdateQueue(res: Response): void {
-    if (res.error) {
-      this.messageService.add({type: 'error', message: res.msg, life: 5000});
-    } else {
-      this.messageService.add({type: 'success', message: res.msg, life: 5000});
-      if (this.isChanged.val) this.updateBpm();
+    if (!res.error) {
+      if (this.isChanged.val) {
+        const queueIndex = this.bpm.queues?.findIndex(q => q.id === res.data.id);
+        if (queueIndex !== -1) {
+          // @ts-ignore
+          this.bpm.queues[queueIndex] = res.data;
+        }
+        this.updateBpm();
+      }
     }
   }
 
