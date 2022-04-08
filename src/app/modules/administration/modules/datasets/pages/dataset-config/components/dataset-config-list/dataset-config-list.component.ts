@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Dataset, DatasetValue} from "@app/core/models";
 import {DatasetsService} from "@app/modules/administration/modules/datasets/services/datasets.service";
 import {returnEvent} from "@app/modules/administration/modules/datasets/models/models";
@@ -12,6 +12,8 @@ import {ToastService} from "ecapture-ng-ui";
 export class DatasetConfigListComponent implements OnInit {
   @Input()
   public dataset?: Dataset;
+  @Output()
+  public backHome: EventEmitter<any> = new EventEmitter();
   public datasetsValues: DatasetValue[] = [];
   public showValuesList: boolean = true;
   public showCreateValue: boolean = false;
@@ -165,7 +167,7 @@ export class DatasetConfigListComponent implements OnInit {
         const csv: string = reader.result as string;
         let datasetsValuesPersistense: DatasetValue[] = [];
         datasetsValuesPersistense = csv.split('\n').map((row) => {
-          const data = row.split(';');
+          const data = row.split(','); // split by comma
           data[data.length - 1] = data[data.length - 1].replace('\r', '');
           return {
             value: data[0],
@@ -199,5 +201,9 @@ export class DatasetConfigListComponent implements OnInit {
         });
       };
     }
+  }
+
+  onShowHome() {
+    this.backHome.emit(true);
   }
 }

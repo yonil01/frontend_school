@@ -151,7 +151,7 @@
 <!--Block Page-->
 
 <!--Config Dataset-->
-<app-dataset-config-list *ngIf="showConfig" [dataset]="selectedDataset"></app-dataset-config-list>
+<app-dataset-config-list *ngIf="showConfig" [dataset]="selectedDataset" (backHome)="showHome($event)"></app-dataset-config-list>
 <!--Config Dataset-->
 
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
