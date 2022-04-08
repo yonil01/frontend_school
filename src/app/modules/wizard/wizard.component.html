@@ -1,0 +1,126 @@
+<app-layout>
+  <ng-container layoutBody>
+    <div class="w-full bg-white pb-8">
+      <div style="background-image: url('assets/img/banner-web-config.jpg'); background-position: top"
+           class="banner bg-black h-48 bg-cover bg-center"></div>
+      <div class="ec-container py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-6 gap-x-2">
+          <span class="text-black t-h5 font-bold">Configurador</span>
+          <div class="admi flex-1 space-y-2 lg:col-span-2">
+            <div class="w-full flex flex-row items-center space-x-2">
+              <div class="w-2 h-6 rounded-sm bg-brand-2"></div>
+              <span class="text-mono-70 t-subtitle-1">Administración</span>
+            </div>
+            <div class="item-group">
+              <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                <div class="item flex-1">
+                  <button class="w-full btn-item-home" routerLink="/workflow/inbox">
+                    <div>
+                      <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40"
+                           xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M22 20C24.2091 20 26 21.7909 26 24V27C26 31.1089 21.8239 34 15 34C8.17609 34 4 31.1089 4 27V24C4 21.7909 5.79086 20 8 20H22ZM22 22H8C6.89543 22 6 22.8954 6 24V27C6 29.8142 9.15724 32 15 32C20.8428 32 24 29.8142 24 27V24C24 22.8954 23.1046 22 22 22ZM32 20C34.2091 20 36 21.7909 36 24V25C36 29.1772 32.8635 32 27 32C26.7174 32 26.4411 31.9934 26.1712 31.9805C26.5875 31.4963 26.9369 30.975 27.2153 30.4181L27.41 29.992L27.4876 29.993C31.9521 29.8624 34 27.9186 34 25V24C34 22.8954 33.1046 22 32 22L27.658 21.9982C27.3943 21.2529 26.9875 20.5753 26.4706 19.9982L32 20ZM15 4C18.866 4 22 7.13401 22 11C22 14.866 18.866 18 15 18C11.134 18 8 14.866 8 11C8 7.13401 11.134 4 15 4ZM29 8C31.7614 8 34 10.2386 34 13C34 15.7614 31.7614 18 29 18C26.2386 18 24 15.7614 24 13C24 10.2386 26.2386 8 29 8ZM15 6C12.2386 6 10 8.23858 10 11C10 13.7614 12.2386 16 15 16C17.7614 16 20 13.7614 20 11C20 8.23858 17.7614 6 15 6ZM29 10C27.3431 10 26 11.3431 26 13C26 14.6569 27.3431 16 29 16C30.6569 16 32 14.6569 32 13C32 11.3431 30.6569 10 29 10Z"
+                        />
+                      </svg>
+                    </div>
+                    <span class="t-body-2 flex-1 text-left">Usuarios</span>
+                  </button>
+                </div>
+                <div class="item flex-1">
+                  <button class="w-full btn-item-home" routerLink="/form">
+                    <div>
+                      <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M20 4C23.3137 4 26 6.68629 26 10V12H28C30.2091 12 32 13.7909 32 16V30C32 32.2091 30.2091 34 28 34H12C9.79086 34 8 32.2091 8 30V16C8 13.7909 9.79086 12 12 12H14V10C14 6.68629 16.6863 4 20 4ZM28 14H12C10.8954 14 10 14.8954 10 16V30C10 31.1046 10.8954 32 12 32H28C29.1046 32 30 31.1046 30 30V16C30 14.8954 29.1046 14 28 14ZM20 21C21.1046 21 22 21.8954 22 23C22 24.1046 21.1046 25 20 25C18.8954 25 18 24.1046 18 23C18 21.8954 18.8954 21 20 21ZM20 6C17.7909 6 16 7.79086 16 10V12H24V10C24 7.79086 22.2091 6 20 6Z"/>
+                      </svg>
+                    </div>
+                    <span class="t-body-2 flex-1 text-left">Contraseñas</span>
+                  </button>
+                </div>
+                <div class="item flex-1">
+                  <button class="w-full btn-item-home" routerLink="/admin/message">
+                    <div>
+                      <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M20 4C28.8366 4 36 11.1634 36 20C36 28.8366 28.8366 36 20 36C17.4536 36 14.9918 35.4037 12.7734 34.2787L12.532 34.15L5.24218 35.9702C4.62254 36.1249 4.05245 35.6737 4.00262 35.0877L4.00228 34.9248L4.02987 34.7574L5.85 27.47L5.72338 27.2306C4.8132 25.4371 4.24866 23.4845 4.06549 21.4565L4.01475 20.6927L4 20C4 11.1634 11.1634 4 20 4ZM20 6C12.268 6 6 12.268 6 20C6 22.4341 6.62109 24.7756 7.78705 26.8497C7.88093 27.0167 7.92421 27.2059 7.91384 27.3946L7.88548 27.5823L6.374 33.624L12.4221 32.1167C12.5459 32.0858 12.6732 32.0791 12.7975 32.0958L12.9806 32.1383L13.154 32.215C15.2272 33.3797 17.5674 34 20 34C27.732 34 34 27.732 34 20C34 12.268 27.732 6 20 6ZM21 22C21.5523 22 22 22.4477 22 23C22 23.4909 21.6462 23.8992 21.1798 23.9839L21 24H15C14.4477 24 14 23.5523 14 23C14 22.5091 14.3538 22.1008 14.8202 22.0161L15 22H21ZM25 16C25.5523 16 26 16.4477 26 17C26 17.4909 25.6462 17.8992 25.1798 17.9839L25 18H15C14.4477 18 14 17.5523 14 17C14 16.5091 14.3538 16.1008 14.8202 16.0161L15 16H25Z"/>
+                      </svg>
+                    </div>
+                    <span class="t-body-2 flex-1 text-left">Mensajes</span>
+                  </button>
+                </div>
+                <div class="item flex-1">
+                  <button class="w-full btn-item-home" routerLink="/admin/datasets">
+                    <div>
+                      <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M14.1667 8.71679C14.1667 6.64573 15.8456 4.9668 17.9167 4.9668H22.0833C24.1544 4.9668 25.8333 6.64573 25.8333 8.7168V11.6668H31.25C33.3211 11.6668 35 13.3457 35 15.4168V33.7501C35 34.4405 34.4404 35.0001 33.75 35.0001H6.25C5.55964 35.0001 5 34.4405 5 33.7501V20.4168C5 18.3457 6.67893 16.6668 8.75 16.6668H14.1667V8.71679ZM16.6667 32.5001H23.3333V8.7168C23.3333 8.02644 22.7737 7.4668 22.0833 7.4668H17.9167C17.2263 7.4668 16.6667 8.02644 16.6667 8.71679V32.5001ZM14.1667 19.1668H8.75C8.05964 19.1668 7.5 19.7264 7.5 20.4168V32.5001H14.1667V19.1668ZM25.8333 32.5001H32.5V15.4168C32.5 14.7264 31.9404 14.1668 31.25 14.1668H25.8333V32.5001Z"/>
+                      </svg>
+                    </div>
+                    <span class="t-body-2 flex-1 text-left">Datasets</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wizard flex-1 lg:col-span-2">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-y-6 gap-x-4">
+              <div class="doc flex-1 space-y-2">
+                <div class="w-full flex flex-row items-center space-x-2">
+                  <div class="w-2 h-6 rounded-sm bg-brand-2"></div>
+                  <span class="text-mono-70 t-subtitle-1">Wizard</span>
+                </div>
+                <div class="item-group">
+                  <div class="grid grid-cols-2 lg:grid-cols-1 gap-2">
+                    <div class="item flex-1 col-span-1">
+                      <div class="label-dropdown">Cliente</div>
+                      <ec-dropdown [dropStyle]="dropStyle" [data]="clients"
+                                   (onChangeValue)="selectClient($event, dropdown2)" placeholder="Seleccione un Cliente" optionLabel="label"></ec-dropdown>
+                    </div>
+                    <div class="item flex-1 col-span-1">
+                      <div class="label-dropdown">Proyecto</div>
+                      <ec-dropdown #dropdown2 [dropStyle]="dropStyle" [icon]="true" [data]="projects"
+                                   (onChangeValue)="selectProject($event)" placeholder="Seleccione un Proyecto" optionLabel="label"></ec-dropdown>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                      <button class="bg-brand-1 t-button-2 text-white w-full md:w-auto mt-2"
+                              [disabled]="isDisableGenerated" (click)="isGenerate = true">Generar Accesos
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="proc col-span-2 flex-1 space-y-2">
+                <div class="flex flex-col lg:flex-row h-full">
+                  <div class="line-separator"></div>
+                  <div *ngIf="isGenerate">
+                    <span class="t-subtitle-1 text-mono-70">Accesos de {{clientName+' - '+projectName}}</span>
+                    <div class="item-group">
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div *ngFor="let conf of configList" class="item flex-1 col-span-1">
+                          <a class="card-config btn-item-home cursor-pointer" [routerLink]="conf.route">
+                            <img [src]="conf.icon">
+                            <div class="block pl-4">
+                              <span class="card-config-title">{{conf.name}}</span>
+                              <div class="card-config-body">{{conf.description}}</div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="!isGenerate" class="flex justify-center items-center w-full">
+                    <div class="flex flex-col items-center space-y-4">
+                      <img src="assets/img/touch-icon.svg" class="text-mono-70">
+                      <span class="text-mono-70">Seleccione "Generar Accesos"</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </ng-container>
+</app-layout>

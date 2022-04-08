@@ -1,0 +1,186 @@
+<div class="bg-mono-10 h-screen flex flex-col">
+  <header class="ec-header">
+    <div class="action">
+      <button class="flex justify-center items-center w-12 h-12" routerLink="">
+        <span appIcon iconName="chevron left" iconColor="text-mono-70" class=""></span>
+      </button>
+    </div>
+    <div class="brand">
+      <img src="assets/img/header.svg">
+    </div>
+  </header>
+  <div class="ec-container flex flex-col lg:flex-row flex-1 bg-white pt-6 pb-12">
+    <div class="layer-A flex-1 space-y-12">
+      <span class="t-subtitle-1 text-black text-center">Recuperación de Cuenta</span>
+      <div class="form space-y-4">
+        <div class="note-form flex flex-row space-x-2">
+          <div class="w-2 rounded-sm bg-brand-2"></div>
+          <span class="my-1 t-caption-2 text-mono-70">Ingrese su usuario para solicitar la recuperación de cuenta.</span>
+        </div>
+        <form action="" class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+          <div class="flex flex-col flex-1 space-y-1">
+            <label>{{ 'USERNAME' | translate}}</label>
+            <input class="input-style" type="text">
+          </div>
+          <div class="flex flex-col flex-1 space-y-1">
+            <label>{{ 'EMAIL' | translate}}</label>
+            <input class="input-style" type="email">
+          </div>
+        </form>
+      </div>
+      <div class="flex flex-row space-x-2 md:space-x-4">
+        <button routerLink="" class="b-outline flex-1 md:flex-none">{{'CANCEL' | translate}}</button>
+        <button (click)="recovery()" class="b-solid flex-1 md:flex-none">{{'REQUEST' | translate}}</button>
+      </div>
+    </div>
+    <div class="border-b border-mono-30 my-6 lg:my-0 lg:mx-6 lg:border-b-0 lg:border-l"></div>
+    <div class="layer-B flex-1 space-y-6">
+      <span class="t-body-1 text-brand-2">Un poco de ECatch...</span>
+      <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 lg:space-x-0 lg:space-y-6 lg:flex-col">
+        <div class="flex flex-row space-x-4">
+          <div class="w-12 h-12">
+            <svg class="fill-current text-brand-2" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M19.2901 12.75C19.2901 11.2125 18.0391 9.95996 16.5001 9.95996C14.9611 9.95996 13.7101 11.2125 13.7101 12.75C13.7101 14.2875 14.9611 15.54 16.5001 15.54C17.1196 15.54 17.6866 15.33 18.1501 14.988L23.4601 19.743V28.5H24.5401V19.2585L18.8776 14.19C19.1341 13.767 19.2901 13.278 19.2901 12.75ZM16.5001 14.46C15.5581 14.46 14.7901 13.692 14.7901 12.75C14.7901 11.808 15.5581 11.04 16.5001 11.04C17.4421 11.04 18.2101 11.808 18.2101 12.75C18.2101 13.692 17.4421 14.46 16.5001 14.46Z"/>
+              <path d="M20.0401 27.75C20.0401 26.2125 18.7891 24.96 17.2501 24.96C15.7111 24.96 14.4601 26.211 14.4601 27.75C14.4601 29.289 15.7111 30.54 17.2501 30.54C17.9296 30.54 18.5431 30.2865 19.0276 29.8815L23.4601 33.2655V46.5H24.5401V32.733L19.7071 29.043C19.9126 28.6545 20.0401 28.2195 20.0401 27.75ZM17.2501 29.46C16.3081 29.46 15.5401 28.6935 15.5401 27.75C15.5401 26.8065 16.3081 26.04 17.2501 26.04C18.1921 26.04 18.9601 26.8065 18.9601 27.75C18.9601 28.6935 18.1921 29.46 17.2501 29.46Z"/>
+              <path d="M29.7901 8.24996C29.7901 6.71246 28.5376 5.45996 27.0001 5.45996C25.4626 5.45996 24.2101 6.71096 24.2101 8.24996C24.2101 9.60296 25.1791 10.7325 26.4601 10.9845V46.5H27.5416V10.9845C28.8211 10.7325 29.7901 9.60296 29.7901 8.24996ZM27.0001 9.95996C26.0566 9.95996 25.2901 9.19196 25.2901 8.24996C25.2901 7.30796 26.0566 6.53996 27.0001 6.53996C27.9436 6.53996 28.7101 7.30796 28.7101 8.24996C28.7101 9.19196 27.9436 9.95996 27.0001 9.95996Z"/>
+              <path d="M34.5001 32.46C32.9626 32.46 31.7101 33.7125 31.7101 35.25C31.7101 35.7165 31.8361 36.15 32.0386 36.5355L29.4601 38.7525V46.5H30.5416V39.2475L32.7181 37.3785C33.2026 37.785 33.8191 38.04 34.5001 38.04C36.0376 38.04 37.2901 36.7875 37.2901 35.25C37.2901 33.7125 36.0376 32.46 34.5001 32.46ZM34.5001 36.96C33.5566 36.96 32.7901 36.1935 32.7901 35.25C32.7901 34.3065 33.5566 33.54 34.5001 33.54C35.4436 33.54 36.2101 34.3065 36.2101 35.25C36.2101 36.1935 35.4436 36.96 34.5001 36.96Z"/>
+              <path d="M35.2501 17.46C33.7126 17.46 32.4601 18.711 32.4601 20.25C32.4601 20.5845 32.5291 20.901 32.6371 21.1995L29.4601 23.742V34.5H30.5416V24.2595L33.2026 22.1295C33.7126 22.6845 34.4386 23.04 35.2501 23.04C36.7876 23.04 38.0401 21.789 38.0401 20.25C38.0401 18.711 36.7876 17.46 35.2501 17.46ZM35.2501 21.96C34.3066 21.96 33.5401 21.192 33.5401 20.25C33.5401 19.308 34.3066 18.54 35.2501 18.54C36.1936 18.54 36.9601 19.308 36.9601 20.25C36.9601 21.192 36.1936 21.96 35.2501 21.96Z"/>
+              <path d="M26.25 0.959961C16.4865 0.959961 8.53502 8.86646 8.46002 18.612L3.60302 27.5865C3.28502 28.224 3.31802 28.9665 3.69152 29.571C4.06652 30.177 4.71452 30.54 5.42702 30.54H8.46002V34.5C8.46002 39.684 13.986 43.746 18.96 44.025V46.5H20.04V42.96H19.5C14.8935 42.96 9.54002 39.2655 9.54002 34.5V29.46H5.42702C5.08652 29.46 4.78952 29.295 4.61102 29.0055C4.43252 28.716 4.41752 28.3755 4.56002 28.086L9.47402 19.008L9.54002 18.75C9.54002 9.53546 17.037 2.03996 26.25 2.03996C35.463 2.03996 42.96 9.53546 42.96 18.75C42.96 22.923 41.4135 26.919 38.6055 30.0015L38.463 30.156L38.46 46.5H39.5415L39.5445 30.573C42.447 27.3135 44.0415 23.124 44.0415 18.75C44.04 8.93996 36.06 0.959961 26.25 0.959961Z"/>
+            </svg>
+          </div>
+          <div class="flex flex-col space-y-1">
+            <span class="t-body-1 text-black">BPO Documental</span>
+            <span class="t-caption-2 text-mono-70">Estructuramos, desarrollamos y operamos todos los procesos documentales de su empresa.</span>
+          </div>
+        </div>
+        <div class="flex flex-row space-x-4">
+          <div class="w-12 h-12">
+            <svg class="fill-current text-brand-2" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+              <path d="M8.61908 31.1175L9.73658 30L8.61908 28.8825L9.38258 28.1175L10.5001 29.2365L11.6191 28.1175L12.3826 28.8825L11.2636 30L12.3811 31.1175L11.6176 31.8825L10.5001 30.7635L9.38108 31.8825L8.61908 31.1175ZM40.1176 22.119L39.0001 23.2365L37.8826 22.119L37.1176 22.8825L38.2366 24L37.1176 25.119L37.8826 25.8825L39.0001 24.765L40.1176 25.8825L40.8826 25.119L39.7636 24L40.8826 22.881L40.1176 22.119ZM47.0401 24C47.0401 36.705 36.7036 47.04 24.0001 47.04C11.2966 47.04 0.960083 36.705 0.960083 24C0.960083 11.295 11.2951 0.959961 24.0001 0.959961C29.9731 0.959961 35.5996 3.21746 39.9061 7.33046L41.6191 5.61746L42.3841 6.38096L25.7656 22.9965C25.9366 23.295 26.0401 23.634 26.0401 24C26.0401 25.125 25.1251 26.04 24.0001 26.04C22.8751 26.04 21.9601 25.125 21.9601 24C21.9601 22.875 22.8751 21.96 24.0001 21.96C24.3661 21.96 24.7051 22.065 25.0021 22.2345L28.5241 18.711C26.6041 17.064 23.8261 16.626 21.4801 17.532C21.5161 17.6835 21.5401 17.838 21.5401 18C21.5401 19.125 20.6251 20.04 19.5001 20.04C19.1371 20.04 18.8026 19.9365 18.5071 19.77C17.5726 20.9835 17.0401 22.458 17.0401 24C17.0401 27.8385 20.1631 30.96 24.0001 30.96C27.8371 30.96 30.9601 27.8385 30.9601 24H32.0416C32.0416 28.4325 28.4341 32.04 24.0016 32.04C19.5676 32.04 15.9616 28.4325 15.9616 24C15.9616 22.173 16.6051 20.424 17.7361 19.0035C17.5651 18.7065 17.4601 18.3675 17.4601 18C17.4601 16.875 18.3751 15.96 19.5001 15.96C20.0716 15.96 20.5876 16.1985 20.9581 16.578C23.7241 15.453 27.0316 15.969 29.2906 17.946L33.8356 13.401C31.1536 10.9065 27.6796 9.53996 24.0001 9.53996C16.0276 9.53996 9.54008 16.0275 9.54008 24C9.54008 24.9825 9.63908 25.9635 9.83408 26.9145L8.77658 27.132C8.56658 26.1075 8.46008 25.0545 8.46008 24C8.46008 15.432 15.4306 8.45996 24.0001 8.45996C27.9691 8.45996 31.7131 9.93896 34.6006 12.636L39.1411 8.09546C35.0401 4.18646 29.6851 2.03996 24.0001 2.03996C11.8906 2.03996 2.04008 11.8905 2.04008 24C2.04008 36.108 11.8906 45.96 24.0001 45.96C36.1081 45.96 45.9601 36.1095 45.9601 24H47.0401ZM20.4601 18C20.4601 17.4705 20.0296 17.04 19.5001 17.04C18.9706 17.04 18.5401 17.4705 18.5401 18C18.5401 18.5295 18.9706 18.96 19.5001 18.96C20.0296 18.96 20.4601 18.5295 20.4601 18ZM24.9601 24C24.9601 23.4705 24.5296 23.04 24.0001 23.04C23.4706 23.04 23.0401 23.4705 23.0401 24C23.0401 24.5295 23.4706 24.96 24.0001 24.96C24.5296 24.96 24.9601 24.5295 24.9601 24ZM24.0001 39.54C31.3606 39.54 37.7671 34.311 39.2281 27.1065L38.1706 26.892C36.8101 33.594 30.8491 38.46 24.0001 38.46C19.4086 38.46 15.1921 36.3525 12.4321 32.6775L11.5681 33.3255C14.5336 37.275 19.0651 39.54 24.0001 39.54Z"/>
+            </svg>
+          </div>
+          <div class="flex flex-col space-y-1">
+            <span class="t-body-1 text-black">Soluciones BPM</span>
+            <span class="t-caption-2 text-mono-70">Líderes en soluciones de software para automatización, gestión y operación documental, ajustadas a las necesitades de nuestros clientes.</span>
+          </div>
+        </div>
+        <div class="flex flex-row space-x-4">
+          <div class="w-12 h-12">
+            <svg class="fill-current text-brand-2" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+              <path d="M6.14408 14.04H14.2216C13.4191 17.022 12.9601 20.406 12.9601 24H14.0401C14.0401 20.385 14.5036 16.9905 15.3076 14.04H23.4601V24H24.5401V14.04H32.6926C33.4966 16.9905 33.9601 20.385 33.9601 24H35.0416C35.0416 20.406 34.5826 17.022 33.7816 14.04H41.8576C43.5106 16.9905 44.4616 20.385 44.4616 24H45.5431C45.5431 12.123 35.8801 2.45996 24.0031 2.45996C12.1261 2.45996 2.46008 12.123 2.46008 24H3.54008C3.54008 20.385 4.49108 16.9905 6.14408 14.04ZM15.6271 12.96C17.3086 7.59596 20.1736 3.95996 23.4601 3.59546V12.96H15.6271ZM24.5401 12.96V3.59546C27.8266 3.95996 30.6901 7.59596 32.3731 12.96H24.5401ZM41.1991 12.96H33.4621C32.2066 8.88146 30.2851 5.68046 27.9856 3.93596C33.5191 5.03396 38.2441 8.37296 41.1991 12.96ZM20.0146 3.93596C17.7166 5.68046 15.7936 8.88146 14.5396 12.96H6.80108C9.75608 8.37296 14.4811 5.03396 20.0146 3.93596ZM33.9601 28.5V29.31L28.5001 27.96H24.3766C23.5186 27.96 22.6906 28.272 22.0471 28.8375L21.3361 29.46H14.0401V28.5C14.0401 28.2015 13.7986 27.96 13.5001 27.96H3.00008V29.0415H12.9601V41.46H3.00008V42.5415H13.5001C13.7986 42.5415 14.0401 42.3 14.0401 42.0015V41.0415H15.4711L18.6931 45.6045C19.0951 46.053 19.6531 46.284 20.2156 46.284C20.6236 46.284 21.0331 46.1625 21.3886 45.912L22.3531 45.234C22.4101 45.255 22.4551 45.297 22.5151 45.3135C22.6906 45.3585 22.8676 45.3825 23.0431 45.3825C23.3971 45.3825 23.7466 45.2895 24.0601 45.1065L25.3081 44.3865C25.5361 44.4705 25.7716 44.529 26.0161 44.529C26.3611 44.529 26.7121 44.4405 27.0331 44.256L28.2826 43.5345C28.5106 43.6185 28.7461 43.677 28.9906 43.677C29.3356 43.677 29.6881 43.5885 30.0091 43.404C30.8521 42.9165 31.1761 41.919 30.8986 41.04H33.9616V42C33.9616 42.2985 34.2031 42.54 34.5016 42.54H45.0016V41.46H35.0416V29.04H45.0001V27.96H34.5001C34.2016 27.96 33.9601 28.2015 33.9601 28.5ZM29.4676 42.4695C29.0101 42.7335 28.4191 42.576 28.1551 42.1185L25.9051 38.2215L24.9691 38.76L27.3241 42.84L26.4931 43.3185C26.0341 43.587 25.4461 43.4265 25.1806 42.969L23.6806 40.371L23.3056 39.7215L22.3711 40.26L22.7461 40.908L24.2461 43.506C24.2461 43.5075 24.2476 43.5075 24.2491 43.509L24.3526 43.6875L23.5201 44.1675C23.3011 44.2965 23.0431 44.3295 22.7956 44.2635C22.5481 44.1975 22.3426 44.04 22.2136 43.821L20.7106 41.2185L19.7746 41.757L21.2746 44.355C21.2761 44.3565 21.2776 44.358 21.2776 44.3595L21.4036 44.577L20.7676 45.0255C20.3701 45.306 19.8256 45.243 19.5376 44.9295L16.1926 40.1865C16.0906 40.0425 15.9271 39.957 15.7516 39.957H14.0401V30.54H20.1001L17.2711 33.015C17.0611 33.1965 16.9351 33.4605 16.9261 33.7365C16.9156 34.014 17.0221 34.2855 17.2201 34.482C18.4981 35.76 20.5261 35.871 21.9361 34.743L23.4406 33.5385H25.9201L29.8186 41.1555C30.0811 41.616 29.9236 42.2055 29.4676 42.4695ZM30.4156 39.96L26.7301 32.754C26.6371 32.574 26.4511 32.46 26.2501 32.46H23.2501C23.1271 32.46 23.0086 32.502 22.9126 32.5785L21.2596 33.9015C20.2801 34.6845 18.8731 34.6095 17.9806 33.8295L22.7581 29.649C23.2051 29.256 23.7796 29.0415 24.3766 29.0415L28.3696 29.025L33.9601 30.423V39.96H30.4156Z"/>
+            </svg>
+          </div>
+          <div class="flex flex-col space-y-1">
+            <span class="t-body-1 text-black">Implementación</span>
+            <span class="t-caption-2 text-mono-70">Proveemos servicios profesionales de consultoría técnica de implementación.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+
+<!--
+<div class="w-full pt-6 flex">
+  <div class="w-1/2 border-solid border-r-4 border-mono-10 pl-16 pr-12">
+    <div class="text-center t-subtitle-2">
+      <span>
+        Recuperación de Cuenta
+      </span>
+    </div>
+    <div class="flex mt-14">
+      <div class="h-6 w-2 bg-brand-1"></div>
+      <div class="text-mono-70 ml-2">
+        <span>
+          Ingrese su usuario para solicitar la recuperación de cuenta.
+        </span>
+      </div>
+    </div>
+    <form [formGroup]="recoverFrm">
+      <div class="w-full flex  sm:flex-col md:flex-row mt-4">
+        <div class="flex-grow">
+          <ec-input-text label="{{ 'USERNAME' | translate}}"
+                         txtColor="text-outline-gray-3" bgContainerColor="bg-mono-10"
+                         brContainerColor="border-mono-30" formControlName="username"></ec-input-text>
+        </div>
+        <div class="w-4 h-4">
+        </div>
+        <div class="flex-grow">
+          <ec-input-text label="{{ 'EMAIL' | translate}}"
+                         txtColor="text-outline-gray-3" bgContainerColor="bg-mono-10"
+                         brContainerColor="border-mono-30" formControlName="email"></ec-input-text>
+        </div>
+      </div>
+      <div class="flex mt-12 pb-4">
+        <div class="pr-2">
+          <ec-button label="{{'CANCEL' | translate}}" brColor="border-brand-1"
+                     txtColor="text-brand-1" ></ec-button>
+        </div>
+        <div class="pl-2">
+          <ec-button label="{{'REQUEST' | translate}}" bgContainerColor="bg-brand-1"
+                     brColor="border-brand-1" txtColor="text-white" (click)="recovery()"></ec-button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="w-1/2 pr-16 pl-12">
+    <div class="text-brand-1">
+      <span>
+        Un poco de ECatch...
+      </span>
+    </div>
+    <div class="flex mt-7">
+      <div>
+        <img src="assets/img/head.svg" class="w-11" alt="icon bpm">
+      </div>
+      <div class="ml-5">
+        <div class="t-subtitle-2">
+          <span>
+            BPO Documental
+          </span>
+        </div>
+        <div>
+          <span>
+            Estructuramos, desarrollamos y operamos todos los procesos documentales de su empresa.
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="flex mt-7">
+      <div>
+        <img src="assets/img/bpm.svg" class="w-11" alt="icon bpm">
+      </div>
+      <div class="ml-5">
+        <div class="t-subtitle-2">
+          <span>
+            Soluciones BPM
+          </span>
+        </div>
+        <div>
+          <span>
+            Líderes en soluciones de software para automatización, gestión y operación documental, ajustadas a las necesitades de nuestros clientes.
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="flex mt-7">
+      <div>
+        <img src="assets/img/global.svg" class="w-11" alt="icon bpm">
+      </div>
+      <div class="ml-5">
+        <div class="t-subtitle-2">
+          <span>
+            Implementación
+          </span>
+        </div>
+        <div>
+          <span>
+            Proveemos servicios profesionales de consultoría técnica de implementación.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->

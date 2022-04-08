@@ -1,0 +1,36 @@
+body,
+html {
+  margin: 0;
+  font-family: 'Roboto', serif;
+  color: $grey;
+}
+
+.ce-title {
+  font-weight: normal;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.ce-label {
+  font-size: $label-size;
+}
+
+.ce-control-error {
+  color: red;
+}
+
+.ce-border-error {
+  border-color: red !important;
+}
+
+.ce-width-full {
+  width: 100% !important;
+}
+
+.ce-dialog-width {
+  width: 50vw !important;
+}
+
+.ce-dialog-width-autoname {
+  width: 60vw !important;
+}

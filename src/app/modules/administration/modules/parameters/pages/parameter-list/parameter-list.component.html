@@ -1,0 +1,278 @@
+<app-layout>
+  <ng-container layoutBody>
+    <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
+      <div class="migas mb-4 text-brand-2 flex flex-row space-x-2 items-center flex-wrap">
+        <div class="home">
+          <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
+               height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"/>
+          </svg>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+          </svg>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">Gallagher</span>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+          </svg>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">Parameters</span>
+        </div>
+      </div>
+      <div class="description mb-6 flex flex-col space-y-2">
+        <span class="t-h5 text-black dark:text-white">Parameters</span>
+        <div>
+          <ul class="t-body-1 pl-4">
+            <li class="list-disc text-mono-70">{{parameters.length}} parametros registradas actualmente.</li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="!isEditOrCreate" class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
+        <div>
+          <button (click)="isEditOrCreate = true" class="b-solid w-full md:w-auto">Crear Parametro</button>
+        </div>
+        <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"></div>
+      </div>
+      <div *ngIf="!isEditOrCreate" class="data space-y-4 mt-4">
+        <div *ngFor="let parameter of parametersPagination; let position = index" class="table-v md:hidden flex flex-col space-y-4">
+          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+            <span class="text-mono-70 t-caption-1">N° {{position+1}}</span>
+            <div class="flex flex-col">
+              <span class="text-mono-70 t-caption-2">ID</span>
+              <span class="text-black t-body-1">{{parameter.id}}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-mono-70 t-caption-2">Name</span>
+              <span class="text-black t-body-1">{{parameter.name}}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-mono-70 t-caption-2">Value</span>
+              <span class="text-black t-body-1">{{parameter.value}}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-mono-70 t-caption-2">Type</span>
+              <span class="text-black t-body-1">{{parameter.type}}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-mono-70 t-caption-2">Description</span>
+              <span class="text-black t-body-1">{{parameter.description}}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-mono-70 t-caption-2">Client id</span>
+              <span class="text-black t-body-1">{{parameter.client_id}}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-mono-70 t-caption-2">is cipher</span>
+              <span class="text-black t-body-1">{{parameter.is_cipher}}</span>
+            </div>
+            <div class="actions border-t pt-2 border-mono-30 w-full flex flex-row">
+              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10" (click)="isEdit(parameter.id || 0)">
+                <div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"
+                      fill="#0150E5"/>
+                  </svg>
+                </div>
+              </button>
+              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10 "(click)="showDelete(parameter.id || 0)">
+                <div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"
+                      fill="#CA1C25"/>
+                  </svg>
+                </div>
+              </button>
+            </div>
+          </div> <!--Aquí se aplica el ngFor-->
+        </div>
+        <div class="table-h hidden md:block w-full">
+          <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
+            <div class="p-2 w-16">N°</div>
+            <div class="p-2 flex-1">ID</div>
+            <div class="p-2 flex-1">Nombre</div>
+            <div class="p-2 flex-1">Valor</div>
+            <div class="p-2 flex-1">Tipo</div>
+            <div class="p-2 flex-1">Descripcion</div>
+            <div class="p-2 flex-1">Id Cliente </div>
+            <div class="p-2 flex-1">Cifrado</div>
+            <div class="p-2 w-24">Opciones</div>
+          </div>
+          <div class="table-body text-body-2 text-mono-70">
+            <div class="register-table w-full flex flex-row"
+                 *ngFor="let parameter of parametersPagination; let position = index">
+              <div class="flex items-center p-2 w-16">{{position + 1}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{parameter.id}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{parameter.name}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{parameter.value}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{parameter.type}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{parameter.description}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{parameter.client_id}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{parameter.is_cipher}}</div>
+              <div class="flex items-center p-2 w-24">
+                <div class="w-full flex flex-row">
+                  <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" (click)="isEdit(parameter.id || 0)">
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"
+                          fill="#0150E5"/>
+                      </svg>
+                    </div>
+                  </button>
+                  <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10"
+                          (click)="showDelete(parameter.id || 0)">
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"
+                          fill="#CA1C25"/>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination flex flex-row items-center justify-between">
+          <div class="left">
+            <select class="h-8 w-16 bg-mono-10 t-body-2 text-black" (change)="resetPagination($event)">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+          </div>
+          <div class="right flex items-center flex-row space-x-1">
+            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === 1 || currentLengthPg === 1"
+                    (click)="beforePagination()">
+              <div>
+                <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
+                </svg>
+              </div>
+            </button>
+            <div class="flex items-center bg-mono-10 px-2 rounded h-8">
+              <span class="t-body-2">{{currentPg}}/{{currentLengthPg}}</span>
+            </div>
+            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === currentLengthPg"
+                    (click)="nextPagination()">
+              <div>
+                <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
+                </svg>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="ec-container w-full py-6 md:py-12 bg-white dark:bg-black" *ngIf="isEditOrCreate">
+        <div class="flex flex-col  space-y-12">
+          <span class="t-h5 text-black dark:text-white">{{idParameter === 0 ? 'Crear' : 'Editar'}} Parametro</span>
+          <form [formGroup]="formParameter" class=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Nombre</label>
+              <input class="ec-input" type="text" formControlName="name">
+              <div class="text-alert-error" *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error"
+                   *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('maxlength')">
+                <span>El tamaño del campo no puede ser mayor a 20 caracteres</span>
+              </div>
+              <div class="text-alert-error"
+                   *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('minlength')">
+                <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
+              </div>
+            </div>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Valor</label>
+              <input class="ec-input" type="text" formControlName="value">
+              <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('maxlength')">
+                <span>El tamaño del campo no puede ser mayor a 20 caracteres</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('minlength')">
+                <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
+              </div>
+            </div>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Tipo</label>
+              <input class="ec-input" type="text" formControlName="type">
+              <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('maxlength')">
+                <span>El tamaño del campo no puede ser mayor a 10 caracteres</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('minlength')">
+              <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
+            </div>
+            </div>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Descripcion</label>
+              <input class="ec-input" type="text" formControlName="description">
+              <div class="text-alert-error" *ngIf="formParameter.get('description')?.invalid && formParameter.get('description')?.touched && formParameter.get('description')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('description')?.invalid && formParameter.get('description')?.touched && formParameter.get('description')?.hasError('maxlength')">
+                <span>El tamaño del campo no puede ser mayor a 50 caracteres</span>
+              </div>
+            </div>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Id Client</label>
+              <input class="ec-input" type="number" formControlName="client_id">
+              <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('required')">
+                <span>El campo es requerido</span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('max')">
+                <span>El id del cliente no puede ser mayor a 100000 </span>
+              </div>
+              <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('min')">
+                <span>El id del cliente debe ser mayor a 0</span>
+              </div>
+            </div>
+            <div class="input flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Cifrado</label>
+              <div class="flex gap-4 items-center">
+                <div class="flex gap-4 items-center">
+                  <label class="t-caption-2 text-mono-70">verdadero</label>
+                  <input class="ec-input" type="radio" name="is_cipher" formControlName="is_cipher" [value]="true">
+                </div>
+                <div class="flex gap-4 items-center">
+                  <label class="t-caption-2 text-mono-70">falso</label>
+                  <input class="ec-input" type="radio" name="is_cipher" formControlName="is_cipher" [value]="false">
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="flex flex-row space-x-4 lg:w-2/3 ">
+            <button class="flex-1 md:flex-none b-outline" (click)="isEditOrCreate = false">Cancelar</button>
+            <button class="flex-1 md:flex-none b-solid"
+                    (click)="sendForm()">{{idParameter === 0 ? 'Crear' : 'Editar'}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </ng-container>
+</app-layout>
+
+<app-block-page [show]="isShowBlockPage"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-confirm-dialog [show]="showAlert" type="warning" [title]="'Parametros '" body="Desea eliminar el parametro?"
+                    (onEvent)="cancelCloseDialog($event)"></app-confirm-dialog>

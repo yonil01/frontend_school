@@ -1,0 +1,112 @@
+<app-layout>
+  <ng-container layoutBody>
+    <div class="ec-container py-6 md:py-12 bg-white space-y-6">
+      <div class="flex flex-col space-y-2 w-full">
+        <span class="t-h5 text-black">Autoname a Tipo Documental</span>
+        <div>
+          <div class="flex flex-row space-x-2">
+            <div class="bg-brand-2 rounded-sm w-2"></div>
+            <div class="w-full text-mono-70 py-1">
+              <span>Puedes agregar autonames a la lista mediante el tipo documental, texto y atributos.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list flex flex-col space-y-2">
+        <span class="t-caption-2 text-mono-70">Lista de Autoname's</span>
+        <div class="w-full flex flex-row flex-wrap pt-4 pl-4 rounded bg-mono-10">
+          <span *ngIf="autonames.length <= 0" class="t-body-1 mb-4 mr-4 text-mono-70">Lista vacía</span>
+          <div *ngFor="let autoname of autonames; let position = index"
+               class="b-solid mb-4 mr-4 px-2 h-8 flex flex-row space-x-2 items-center select-none">
+            <span>{{autoname}}</span>
+            <div (click)="removeAutoname(position)" class="cursor-pointer">
+              <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M2.39705 2.55379L2.46967 2.46967C2.73594 2.2034 3.1526 2.1792 3.44621 2.39705L3.53033 2.46967L8 6.939L12.4697 2.46967C12.7626 2.17678 13.2374 2.17678 13.5303 2.46967C13.8232 2.76256 13.8232 3.23744 13.5303 3.53033L9.061 8L13.5303 12.4697C13.7966 12.7359 13.8208 13.1526 13.6029 13.4462L13.5303 13.5303C13.2641 13.7966 12.8474 13.8208 12.5538 13.6029L12.4697 13.5303L8 9.061L3.53033 13.5303C3.23744 13.8232 2.76256 13.8232 2.46967 13.5303C2.17678 13.2374 2.17678 12.7626 2.46967 12.4697L6.939 8L2.46967 3.53033C2.2034 3.26406 2.1792 2.8474 2.39705 2.55379L2.46967 2.46967L2.39705 2.55379Z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:justify-between">
+          <div class="flex flex-col pt-2">
+            <span class="t-caption-2 text-mono-70">Vista previa del autoname</span>
+            <span class="t-body-1 text-black">{{viewAutoname}}</span>
+          </div>
+          <div class="flex flex-col space-y-2 md:pt-2 md:flex-row md:space-y-0 lg:space-x-2 md:justify-between">
+            <div>
+              <button (click)="showConfirmDelete = true"
+                      class="w-full md:w-auto h-10 hover:bg-alert-error hover:text-white px-4 rounded disabled:text-mono-30 text-alert-error">
+                Borrar toda la lista
+              </button>
+            </div>
+            <div class="pt-2 md:p-0">
+              <button class="b-outline w-full md:w-auto" (click)="addDocType()">Agregar Tipo Documental</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col space-y-6 md:flex-row md:space-y-0 md:border-t md:border-mono-30">
+        <div class="pt-6 md:pr-4 flex-1 border-t md:border-t-0 md:border-r border-mono-30 space-y-4">
+          <span class="t-body-1 text-black">Agregar Texto Fijo</span>
+          <div class="flex flex-col space-y-1">
+            <label class="t-caption-2 text-mono-70">Autoname</label>
+            <input #box type="text" class="ec-input" ecTooltip
+                   tooltip="Ingrese texto para agregar al autoname">
+          </div>
+          <button class="b-outline w-full md:auto" (click)="onEnter(box.value); box.value = ''">Agregar a la lista
+          </button>
+        </div>
+        <div class="pt-6 md:pl-4 flex-1 border-t md:border-t-0 border-mono-30 space-y-4">
+          <span class="t-body-1 text-black">Agregar Atributo</span>
+          <div class="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
+            <div class="flex lg:flex-1 flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Entidad</label>
+              <ec-dropdown [filter]="true" placeholder="{{'SELECT_ENTITY' | translate}}" [showClear]="true"
+                           optionLabel="name" optionValue="id"
+                           [data]="entitiesList" [dropStyle]="dropStyle"
+                           (onChangeValue)="selectedEntity($event)"></ec-dropdown>
+            </div>
+            <div class="flex lg:flex-1 flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Atributo</label>
+              <ec-dropdown [filter]="true" placeholder="{{'SELECT_ATTRIBUTE' | translate}}" [showClear]="true"
+                           optionLabel="name"
+                           optionValue="id" [data]="attributesSelected" [dropStyle]="dropStyle"
+                           (onChangeValue)="selectedAttribute($event)"></ec-dropdown>
+            </div>
+          </div>
+
+          <div *ngIf="showValuesAttributes">
+            <div class="flex gap-4 items-center mb-4">
+              <div class="flex gap-2 items-center">
+                <input [value]="optionsDescription" type="radio" name="type_attribute"
+                       [(ngModel)]="dataAttributeRadio">
+                <span class="t-caption-2 text-mono-70">{{'DESCRIPTION' | translate}}</span>
+              </div>
+              <div class="flex gap-2 items-center">
+                <input [value]="optionsValue" type="radio" name="type_attribute"
+                       [(ngModel)]="dataAttributeRadio">
+                <span class="t-caption-2 text-mono-70">{{'VALUE' | translate}}</span>
+              </div>
+            </div>
+            <button class="b-outline w-full" (click)="dataAttribute()">Agregar a la lista</button>
+          </div>
+
+        </div>
+      </div>
+      <div class="w-full pt-6 lg:pt-12 flex flex-row justify-end space-x-2">
+        <button class="b-outline flex-1 md:flex-none" (click)="cancelAutoname()">{{'CANCEL' | translate}}</button>
+        <button class="b-solid flex-1 md:flex-none" (click)="saveAutoname()">{{'SAVE' | translate}}</button>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </ng-container>
+</app-layout>
+
+<app-block-page [show]="isBlockPage"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-confirm-dialog [show]="showConfirmDelete" type="warning" title="¿Esta seguro de querrer borrar todo el autoname?"
+                    body="Si realiza esta acción se borrara permanentemente el autoname de este tipo documental!"
+                    (onEvent)="confirmDeleteAutoname($event)"></app-confirm-dialog>
+
+

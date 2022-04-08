@@ -1,0 +1,34 @@
+<div *ngIf="show" class="top-0 w-screen fixed h-screen flex justify-center left-0"
+     style="background: rgba(0,0,0,0.4); z-index: 1190">
+  <div [@dialogAnimation]="{value: 'visible', params: {transform: transformOptions, transition: transitionOptions}}"
+       (@dialogAnimation.start)="onAnimationStart($event)" (@dialogAnimation.done)="onAnimationEnd($event)"
+       class="bg-mono-10 border border-mono-30 m-4 sm:w-screen md:w-2/5 lg:w-2/5" style="max-height: 248px;z-index: 1190">
+    <div class="h-6 w-full bg-alert-{{type}}"></div>
+    <div class="p-6">
+      <div class="flex gap-3.5">
+        <div>
+          <span *ngIf="type === 'error'" appIcon iconColor="text-alert-error" iconName="dismiss circle"></span>
+          <span *ngIf="type === 'success'" appIcon iconColor="text-alert-success" iconName="checkmark circle"></span>
+          <span *ngIf="type === 'warning'" appIcon iconColor="text-alert-warning" iconName="warning"></span>
+          <span *ngIf="type === 'info'" appIcon iconColor="text-alert-info" iconName="info circle"></span>
+        </div>
+        <div class="text-black t-subtitle-1 capitalize">
+          <span>{{title}}</span>
+        </div>
+      </div>
+      <div class="text-mono-70 mt-4">
+        <span>{{body}}</span>
+      </div>
+      <div class="mt-12 flex items-center justify-center w-full gap-2">
+        <button class="btn-{{type}}-outline" (click)="action.emit(false)">
+          <span>Cancel</span>
+        </button>
+        <button class="btn-{{type}}-solid" (click)="action.emit(true)">
+          <span>Accept</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,161 @@
+.btn-success-solid {
+  @apply text-white border-4 border-solid border-alert-success bg-alert-success;
+  border-radius: 8px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-success-solid:hover {
+  @apply border-4 border-solid border-mono-30;
+}
+
+.btn-success-solid:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #C6C6C6;
+}
+
+
+.btn-success-outline {
+  @apply border-4 border-solid border-alert-success text-alert-success;
+  border-radius: 8px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-success-outline:hover {
+  @apply border-4 border-solid border-mono-30;
+}
+
+.btn-success-outline:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #C6C6C6;
+}
+
+
+.btn-error-solid {
+  @apply text-white border-4 border-solid border-alert-error bg-alert-error;
+  border-radius: 8px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-error-solid:hover {
+  @apply border-4 border-solid border-mono-30;
+}
+
+.btn-error-solid:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #C6C6C6;
+}
+
+.btn-error-outline {
+  @apply border-4 border-solid border-alert-error text-alert-error;
+  border-radius: 8px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-error-outline:hover {
+  @apply border-4 border-solid border-mono-30;
+}
+
+.btn-error-outline:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #C6C6C6;
+}
+
+.btn-info-solid {
+  @apply text-white border-4 border-solid border-alert-info bg-alert-info;
+  border-radius: 8px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-info-solid:hover {
+  @apply border-4 border-solid border-mono-30;
+}
+
+.btn-info-solid:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #C6C6C6;
+}
+
+.btn-info-outline {
+  @apply border-4 border-solid border-alert-info text-alert-info;
+  border-radius: 8px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-info-outline:hover {
+  @apply border-4 border-solid border-mono-30;
+}
+
+.btn-info-outline:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #C6C6C6;
+}
+
+.btn-warning-solid {
+  @apply text-white border-4 border-solid border-alert-warning bg-alert-warning;
+  border-radius: 8px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-warning-solid:hover {
+  @apply border-4 border-solid border-mono-30;
+}
+
+.btn-warning-solid:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #C6C6C6;
+}
+
+.btn-warning-outline {
+  @apply border-4 border-solid border-alert-warning text-alert-warning;
+  border-radius: 8px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-warning-outline:hover {
+  @apply border-4 border-solid border-mono-30;
+}
+
+.btn-warning-outline:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #C6C6C6;
+}

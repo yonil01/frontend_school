@@ -1,0 +1,106 @@
+.justify {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+:host ::ng-deep .p-button {
+  margin-right: .5rem;
+}
+
+:host ::ng-deep .p-buttonset {
+  .p-button {
+      margin-right: 0;
+  }
+}
+
+:host ::ng-deep .sizes {
+  .button {
+      margin-bottom: .5rem;
+      display: block;
+
+      &:last-child {
+          margin-bottom: 0;
+      }
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .p-button {
+      margin-bottom: .5rem;
+
+      &:not(.p-button-icon-only) {
+          display: flex;
+          width: 100%;
+      }
+  }
+
+  .p-buttonset {
+      .p-button {
+          margin-bottom: 0;
+      }
+  }
+}
+
+.documents {
+  margin: 10px;
+}
+
+.container-entities {
+  margin: 1em;
+  .title {
+    font-size: 20px;
+  }
+  .btn-new-attribute {
+    margin-right: 5px;
+  }
+
+  .tb-options {
+    width: 9em;
+  }
+
+  .icon-edit {
+    background-color: transparent;
+    color: #007ad9;
+    border-color: transparent;
+  }
+
+  .icon-options {
+    background-color: transparent;
+    color: #ffba01;
+    border-color: transparent;
+  }
+
+  .icon-delete {
+    background-color: transparent;
+    color: #c01120;
+    border-color: transparent;
+  }
+
+  ::ng-deep .margin-element-right {
+    margin-right: 0.5em !important;
+  }
+
+  .margin-dataset {
+    margin: 0 0.5em;
+  }
+
+  .last-column-table-width {
+    width: 4em;
+  }
+
+  .height-list-box {
+    max-height: 300px;
+  }
+
+  .justify {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.ui-fileupload-buttonbar {
+  background: none;
+  border: 0;
+  padding: 0;
+}
