@@ -123,6 +123,13 @@ export class GetRolesByProjectIDQuery extends Query<Response> {
           description
           sessions_allowed
           see_all_users
+          projects
+          {
+            id
+            project {
+              id
+            }
+          }
           security_entities {
             id
             entity {
@@ -257,7 +264,7 @@ export class DeleteRoleProjectMutation extends Mutation {
 })
 export class GetRolesProjectByIDQuery extends Query<Response> {
   document = gql`
-    query getRolesProjectByID($id: String!) {
+    query getRolesProjectByID($id: ID!) {
       getRolesProjectByID(id: $id) {
         error
         data {

@@ -132,18 +132,10 @@ export class RolesListComponent implements OnInit, OnDestroy {
         if (res.error) {
           this._messageService.add({type: 'error', message: 'Error en la Eliminación', life: 5000});
         } else {
-          console.log(this.data);
-          this._roleService.getRolesProjectByID(this.data || '').subscribe((res: Response)=> {
+          const role: any = this.roles.find(role => role.id === this.data) || {};
+          this._roleService.deleteRoleProject(role.projects.first().id || '').subscribe((res: Response) => {
             if(res.error){
-              this._messageService.add({type: 'error', message: 'No se encontró la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
-            }else{
-              const roleProject: RolesProject = res.data;
-              console.log(roleProject);
-              this._roleService.deleteRoleProject(roleProject.id || '').subscribe((res: Response) => {
-                if(res.error){
-                  this._messageService.add({type: 'error', message: 'No se pudo eliminar la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
-                }
-              });
+              this._messageService.add({type: 'error', message: 'No se pudo eliminar la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
             }
           });
           this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
