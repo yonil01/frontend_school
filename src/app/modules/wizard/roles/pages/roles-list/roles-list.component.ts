@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs/internal/Subscription";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {ToastService} from "ecapture-ng-ui";
-import {Customer, Project, Response, Role} from "@app/core/models";
+import {Customer, Project, Response, Role, RolesProject} from "@app/core/models";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {Store} from "@ngrx/store";
@@ -132,6 +132,20 @@ export class RolesListComponent implements OnInit, OnDestroy {
         if (res.error) {
           this._messageService.add({type: 'error', message: 'Error en la Eliminación', life: 5000});
         } else {
+          console.log(this.data);
+          this._roleService.getRolesProjectByID(this.data || '').subscribe((res: Response)=> {
+            if(res.error){
+              this._messageService.add({type: 'error', message: 'No se encontró la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
+            }else{
+              const roleProject: RolesProject = res.data;
+              console.log(roleProject);
+              this._roleService.deleteRoleProject(roleProject.id || '').subscribe((res: Response) => {
+                if(res.error){
+                  this._messageService.add({type: 'error', message: 'No se pudo eliminar la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
+                }
+              });
+            }
+          });
           this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
           this._store.dispatch(deleteRole({ indexRole: this.indexRoleDelete }));
         }

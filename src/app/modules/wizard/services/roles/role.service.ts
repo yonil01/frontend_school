@@ -40,7 +40,7 @@ import {
   DeleteRolesAttributeMutation,
   GetEntitiesPruebaQuery,
   GetModulesQuery,
-  GetRolesByProjectIDQuery,
+  GetRolesByProjectIDQuery, DeleteRoleProjectMutation, GetRolesProjectByIDQuery,
 } from '../roles/role.queries.service';
 
 @Injectable({
@@ -53,6 +53,8 @@ export class RoleService {
     private getRolesByProjectIDQuery: GetRolesByProjectIDQuery,
     private createRoleQuery: CreateRoleMutation,
     private createRoleProjectQuery: CreateRoleProjectMutation,
+    private deleteRoleProjectQuery: DeleteRoleProjectMutation,
+    private getRolesProjectByIDQuery: GetRolesProjectByIDQuery,
     private updateRoleMutation: UpdateRoleMutation,
     private deleteRoleQuery: DeleteRoleMutation,
     private createRolesDoctypeMutation: CreateRolesDoctypeMutation,
@@ -87,17 +89,30 @@ export class RoleService {
     return this.getRolesByProjectIDQuery.watch({project_id}).valueChanges.pipe(map(({data}: any) => data.getRolesByProjectID));
   }
 
-  // CRUD Roles
-  createRole(roles: Role): Observable<Response> {
-    return this.createRoleQuery
+  // CRUD Role Project
+  createRoleProject(roles: NewRolesProject): Observable<Response> {
+    return this.createRoleProjectQuery
       .mutate({
         rq: {data: roles},
       })
-      .pipe(map(({data}: any) => data.createRole));
+      .pipe(map(({data}: any) => data.createRoleProject));
   }
 
-  createRoleProject(roles: NewRolesProject): Observable<Response> {
-    return this.createRoleProjectQuery
+  getRolesProjectByID(id: string): Observable<Response> {
+    return this.getRolesProjectByIDQuery.watch({id}).valueChanges.pipe(map(({data}: any) => data.getRolesProjectByID));
+  }
+
+  deleteRoleProject(id: string): Observable<Response> {
+    return this.deleteRoleProjectQuery
+      .mutate({
+        rq: {id: id},
+      })
+      .pipe(map(({data}: any) => data.deleteRoleProject));
+  }
+
+  // CRUD Roles
+  createRole(roles: Role): Observable<Response> {
+    return this.createRoleQuery
       .mutate({
         rq: {data: roles},
       })

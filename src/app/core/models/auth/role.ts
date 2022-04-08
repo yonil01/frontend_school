@@ -1,4 +1,6 @@
 import { Attribute, Entity } from "../config/entity";
+import {Time} from "@angular/common";
+import {Project} from "@app/core/models";
 
 export interface Role {
   id?: string;
@@ -18,6 +20,13 @@ export interface Role {
   // token?: string;
   // is_new?: boolean;
   // is_update?: boolean;
+}
+
+export interface RolesProject {
+  id: string,
+  project: Project,
+  created_at: Time,
+  updated_at: Time,
 }
 
 export interface NewRolesProject {

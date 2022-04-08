@@ -215,15 +215,14 @@ export class GetRolesByProjectIDQuery extends Query<Response> {
   `;
 }
 
-// CRUD ROL
-
+// CRUD ROL PROJECT
 @Injectable({
   providedIn: 'root',
 })
-export class CreateRoleMutation extends Mutation {
+export class CreateRoleProjectMutation extends Mutation {
   document = gql`
-    mutation createRole($rq: RequestNewRole!) {
-      createRole(input: $rq) {
+    mutation createRolesProject($rq: RequestNewRolesProject!) {
+      createRolesProject(input: $rq) {
         error
         data {
           id
@@ -235,14 +234,66 @@ export class CreateRoleMutation extends Mutation {
     }
   `;
 }
+@Injectable({
+  providedIn: 'root',
+})
+export class DeleteRoleProjectMutation extends Mutation {
+  document = gql`
+    mutation deleteRolesProject($rq: ID!) {
+      deleteRolesProject(input: $rq) {
+        error
+        data {
+          id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class GetRolesProjectByIDQuery extends Query<Response> {
+  document = gql`
+    query getRolesProjectByID($id: String!) {
+      getRolesProjectByID(id: $id) {
+        error
+        data {
+          id
+          project {
+            id
+            name
+            description
+            department
+            email
+            phone
+            product_owner
+            customers_id
+            created_at
+            updated_at
+          }
+          created_at
+          updated_at
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+// CRUD ROL
 
 @Injectable({
   providedIn: 'root',
 })
-export class CreateRoleProjectMutation extends Mutation {
+export class CreateRoleMutation extends Mutation {
   document = gql`
-    mutation createRolesProject($rq: RequestNewRolesProject!) {
-      createRolesProject(input: $rq) {
+    mutation createRole($rq: RequestNewRole!) {
+      createRole(input: $rq) {
         error
         data {
           id
