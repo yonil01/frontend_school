@@ -7,7 +7,7 @@ import {
   DateDisallowed,
   PasswordPolicy,
   Elements,
-  RolesDoctype,
+  RolesAllowUser,
   RoleAllowed,
 } from '@app/core/models';
 import {
@@ -400,7 +400,7 @@ function deleteSecurityEntities(roles: Role[], indexRole: number, indexSecurityE
 }
 
 // Agregar doctypes
-function addInDoctype(roles: Role[], indexRole: number, doctype: RolesDoctype[]) {
+function addInDoctype(roles: Role[], indexRole: number, doctype: RolesAllowUser[]) {
   const roleList: Role[] = JSON.parse(JSON.stringify(roles));
   roleList[indexRole].roles_doc_types = roleList[indexRole].roles_doc_types ? roleList[indexRole].roles_doc_types : [];
   roleList[indexRole].roles_doc_types = doctype;

@@ -44,7 +44,7 @@ export interface PasswordHistory {
   created_at?: Date;
 }
 
-export interface RolesAllow {
+export interface RolesAllowUser {
   id?: string;
   name?: string;
 }
@@ -52,7 +52,7 @@ export interface RolesAllow {
 export interface Roles {
   id?: string;
   name?: string;
-  role_allow: RolesAllow;
+  role_allow: RolesAllowUser;
 }
 
 export interface UserRole {

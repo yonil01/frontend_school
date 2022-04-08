@@ -4,18 +4,19 @@ import {map} from 'rxjs/operators';
 import {
   Response,
   Role,
-  RolesDoctype,
+  RolesAllowUser,
   PasswordPolicy,
   DateDisallowed,
   Elements,
   RoleAllowed,
   SecurityEntities,
-  Attributes,
+  Attributes, NewRolesProject,
 } from '@app/core/models';
 import {Observable} from 'rxjs';
 import {
   GetRolesQuery,
   CreateRoleMutation,
+  CreateRoleProjectMutation,
   UpdateRoleMutation,
   DeleteRoleMutation,
   CreateRolesDoctypeMutation,
@@ -39,7 +40,7 @@ import {
   DeleteRolesAttributeMutation,
   GetEntitiesPruebaQuery,
   GetModulesQuery,
-  GetRolesByProjectIDQuery,
+  GetRolesByProjectIDQuery, DeleteRoleProjectMutation, GetRolesProjectByIDQuery,
 } from '../roles/role.queries.service';
 
 @Injectable({
@@ -51,6 +52,9 @@ export class RoleService {
     private getRolesQuery: GetRolesQuery,
     private getRolesByProjectIDQuery: GetRolesByProjectIDQuery,
     private createRoleQuery: CreateRoleMutation,
+    private createRoleProjectQuery: CreateRoleProjectMutation,
+    private deleteRoleProjectQuery: DeleteRoleProjectMutation,
+    private getRolesProjectByIDQuery: GetRolesProjectByIDQuery,
     private updateRoleMutation: UpdateRoleMutation,
     private deleteRoleQuery: DeleteRoleMutation,
     private createRolesDoctypeMutation: CreateRolesDoctypeMutation,
@@ -85,6 +89,27 @@ export class RoleService {
     return this.getRolesByProjectIDQuery.watch({project_id}).valueChanges.pipe(map(({data}: any) => data.getRolesByProjectID));
   }
 
+  // CRUD Role Project
+  createRoleProject(roles: NewRolesProject): Observable<Response> {
+    return this.createRoleProjectQuery
+      .mutate({
+        rq: {data: roles},
+      })
+      .pipe(map(({data}: any) => data.createRoleProject));
+  }
+
+  getRolesProjectByID(id: string): Observable<Response> {
+    return this.getRolesProjectByIDQuery.watch({id}).valueChanges.pipe(map(({data}: any) => data.getRolesProjectByID));
+  }
+
+  deleteRoleProject(id: string): Observable<Response> {
+    return this.deleteRoleProjectQuery
+      .mutate({
+        rq: {id: id},
+      })
+      .pipe(map(({data}: any) => data.deleteRoleProject));
+  }
+
   // CRUD Roles
   createRole(roles: Role): Observable<Response> {
     return this.createRoleQuery
@@ -115,7 +140,7 @@ export class RoleService {
     return this.getRolesDoctypeQuery.watch().valueChanges.pipe(map(({data}: any) => data.getRolesDoctype));
   }
 
-  createRolesDoctype(roleDt: RolesDoctype[]): Observable<Response> {
+  createRolesDoctype(roleDt: RolesAllowUser[]): Observable<Response> {
     return this.createRolesDoctypeMutation
       .mutate({
         rq: {data: roleDt},

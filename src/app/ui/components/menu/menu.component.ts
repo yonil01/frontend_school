@@ -47,6 +47,8 @@ export class MenuComponent implements OnInit {
   public url_logo: string = '';
   public UserNames: string = '';
 
+  public ecatch_api = EnvServiceProvider.useFactory().ECATCH_API;
+
   constructor(
     private _menuService: MenuService,
     private _localStorageService: LocalStorageService,

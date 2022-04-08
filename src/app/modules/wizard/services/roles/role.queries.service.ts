@@ -123,6 +123,13 @@ export class GetRolesByProjectIDQuery extends Query<Response> {
           description
           sessions_allowed
           see_all_users
+          projects
+          {
+            id
+            project {
+              id
+            }
+          }
           security_entities {
             id
             entity {
@@ -206,6 +213,76 @@ export class GetRolesByProjectIDQuery extends Query<Response> {
               description
             }
           }
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+// CRUD ROL PROJECT
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateRoleProjectMutation extends Mutation {
+  document = gql`
+    mutation createRolesProject($rq: RequestNewRolesProject!) {
+      createRolesProject(input: $rq) {
+        error
+        data {
+          id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class DeleteRoleProjectMutation extends Mutation {
+  document = gql`
+    mutation deleteRolesProject($rq: ID!) {
+      deleteRolesProject(input: $rq) {
+        error
+        data {
+          id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class GetRolesProjectByIDQuery extends Query<Response> {
+  document = gql`
+    query getRolesProjectByID($id: ID!) {
+      getRolesProjectByID(id: $id) {
+        error
+        data {
+          id
+          project {
+            id
+            name
+            description
+            department
+            email
+            phone
+            product_owner
+            customers_id
+            created_at
+            updated_at
+          }
+          created_at
+          updated_at
         }
         code
         type

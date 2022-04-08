@@ -1,12 +1,16 @@
 <app-layout>
   <ng-container layoutBody>
     <div class="w-full bg-white pb-8">
-      <div style="background-image: url('assets/img/base-wizard_font.png');"
+      <div style="background-image: url('assets/img/banner-web-config.jpg'); background-position: top"
            class="banner bg-black h-48 bg-cover bg-center"></div>
-      <div class="p-6">
+      <div class="ec-container py-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-6 gap-x-2">
+          <span class="text-black t-h5 font-bold">Configurador</span>
           <div class="admi flex-1 space-y-2 lg:col-span-2">
-            <span class="text-mono-70 t-subtitle-1">Administración</span>
+            <div class="w-full flex flex-row items-center space-x-2">
+              <div class="w-2 h-6 rounded-sm bg-brand-2"></div>
+              <span class="text-mono-70 t-subtitle-1">Administración</span>
+            </div>
             <div class="item-group">
               <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
                 <div class="item flex-1">
@@ -58,10 +62,13 @@
               </div>
             </div>
           </div>
-          <div class="flex-1 lg:col-span-2">
+          <div class="wizard flex-1 lg:col-span-2">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-y-6 gap-x-4">
               <div class="doc flex-1 space-y-2">
-                <span class="t-subtitle-1 text-mono-70">Wizard</span>
+                <div class="w-full flex flex-row items-center space-x-2">
+                  <div class="w-2 h-6 rounded-sm bg-brand-2"></div>
+                  <span class="text-mono-70 t-subtitle-1">Wizard</span>
+                </div>
                 <div class="item-group">
                   <div class="grid grid-cols-2 lg:grid-cols-1 gap-2">
                     <div class="item flex-1 col-span-1">
@@ -86,7 +93,7 @@
                 <div class="flex flex-col lg:flex-row h-full">
                   <div class="line-separator"></div>
                   <div *ngIf="isGenerate">
-                    <span class="t-subtitle-1 text-mono-70">Acceso a</span>
+                    <span class="t-subtitle-1 text-mono-70">Accesos de {{clientName+' - '+projectName}}</span>
                     <div class="item-group">
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <div *ngFor="let conf of configList" class="item flex-1 col-span-1">
