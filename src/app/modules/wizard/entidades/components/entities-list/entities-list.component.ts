@@ -9,6 +9,7 @@ import {EntityService} from "@app/modules/wizard/entidades/services/entities.ser
 import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {addAttribute} from "@app/core/store/actions/entity.action";
+import {AutofillsService} from "@app/modules/wizard/entidades/services/autofills/autofills.service";
 
 @Component({
   selector: 'app-entities-list-atributes',
@@ -18,6 +19,8 @@ import {addAttribute} from "@app/core/store/actions/entity.action";
 export class EntitiesListComponent implements OnInit {
   public nameClient: string = '';
   public nameProject: string = '';
+  @Input()
+  public project: any;
   @Input()
   public selectedEntity!: Entity;
   @Output()
@@ -39,6 +42,7 @@ export class EntitiesListComponent implements OnInit {
               private messageService: ToastService,
               private entityService: EntityService,
               private store: Store<AppState>,
+              private autofillService: AutofillsService
   ) {
     this.nameClient = this._localStorage.getClient();
     this.nameProject = this._localStorage.getProject();
@@ -101,6 +105,17 @@ export class EntitiesListComponent implements OnInit {
         break;
       case 'createAtribute':
         this.onSelectCreateAtribute = false;
+        if ($event.value != null) {
+          this.attributes.push($event.value)
+        }
+        break;
+      case 'updateAtribute':
+        // @ts-ignore
+        delete this.selectedAttribute
+        this.onSelectCreateAtribute = false;
+        if ($event.value != null) {
+          this.attributes[this.attributes.findIndex(x => x.id === $event.value.id)].assign($event.value);
+        }
         break;
       case 'addDataset':
         this.showAddDataset = false;
@@ -155,6 +170,8 @@ export class EntitiesListComponent implements OnInit {
   }
 
   onCreateAtribute() {
+    // @ts-ignore
+    delete this.selectedAttribute
     this.onSelectCreateAtribute = true;
     this.showAtributtes = false;
   }
@@ -184,7 +201,6 @@ export class EntitiesListComponent implements OnInit {
   deleteAttribute() {
     if (this.selectedAttribute.id) {
       this.entityService.deleteAttribute(this.selectedAttribute.id.toLowerCase()).subscribe((res: Response) => {
-        debugger
         if (res.error) {
           this.messageService.add({
             message: res.msg,
