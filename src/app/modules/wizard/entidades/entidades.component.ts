@@ -152,7 +152,6 @@ export class EntidadesComponent implements OnInit {
   }
 
   deleteEntity() {
-    debugger
     if (this.selectedEntity.attributes && this.selectedEntity.attributes.length) {
       this.messageService.add({
           message: 'No se puede eliminar la entidad porque cotiene atributos',

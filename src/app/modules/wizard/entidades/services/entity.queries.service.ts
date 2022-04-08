@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import gql from 'graphql-tag';
-import { Mutation, Query } from 'apollo-angular';
-import { Response } from "@app/core/models";
+import {Mutation, Query} from 'apollo-angular';
+import {Response} from "@app/core/models";
 
 @Injectable({
   providedIn: 'root',
