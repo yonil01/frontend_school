@@ -118,7 +118,7 @@
           <span>{{'SELECTED' | translate}}</span>
         </div>
         <div class="t-body-1">
-          <span>{{selectionAttributesNow[0].name}}</span>
+          <span>{{selectionAttributesNow.length > 0 ? selectionAttributesNow[0].name: 'Ningun Atributo Seleccionado'}}</span>
         </div>
       </div>
       <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_ROL' | translate}}"

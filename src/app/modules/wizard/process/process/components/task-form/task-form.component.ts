@@ -30,6 +30,7 @@ import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.mode
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {FilterService} from "@app/ui/services/filter.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-task-form',
@@ -122,6 +123,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.store.select('bpm').subscribe((res: BpmState) => {
       this.bpm = res.bpm;
       this.parentQueue = JSON.parse(JSON.stringify(res.task));
+      console.log(this.parentQueue);
       this.element = res.element;
     });
   }
@@ -178,12 +180,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
             this.isBlockPage = false;
             this.updateQueueEvent.emit(res);
           },
-          error: (err: Error) => {
+          error: (err: HttpErrorResponse) => {
             this.isBlockPage = false;
-            console.error(err.message);
+            console.error(err.error);
             this._messageService.add({
               type: 'error',
-              message: 'Error al agregar el comentario!',
+              message: err.error.msg,
               life: 5000
             });
           }
@@ -352,7 +354,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         delete queuePersistense.queue_attributes;
         delete queuePersistense.queue_roles;
         delete queuePersistense.executions;
-        // this.updateName();
         this.isBlockPage = true;
         this._subscription.add(
           this.processService.updateQueue(queuePersistense).subscribe({
@@ -361,6 +362,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                 this._messageService.add({type: 'error', message: res.msg, life: 5000});
               } else {
                 this._messageService.add({type: 'success', message: 'Cola actualizada correctamente', life: 5000});
+                if (this.parentQueue.id) {
+                  this.preloadRoles();
+                  this.preloadAttributes();
+                }
                 this.positionStep++;
               }
               this.isBlockPage = false;
@@ -389,6 +394,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                 this._messageService.add({type: 'error', message: res.msg, life: 5000});
               } else {
                 this.parentQueue = queuePersistense;
+                debugger;
+                if (this.parentQueue.id) {
+                  this.preloadRoles();
+                  this.preloadAttributes();
+                }
                 this._messageService.add({type: 'success', message: 'Cola creada exitosamente', life: 5000});
                 this.positionStep++;
               }
@@ -532,7 +542,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   public isSelectedAttribute(attribute: Attribute): boolean {
-    return this.selectionAttributesNow[0].id === attribute.id;
+    return this.selectionAttributesNow.length > 0 && this.selectionAttributesNow[0].id === attribute.id;
   }
 
   public changeAttribute(event: boolean, attribute: Attribute): void {
