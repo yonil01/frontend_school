@@ -1,0 +1,165 @@
+<app-layout>
+  <ng-container layoutBody>
+    <div class="ec-container py-6 md:py-12 bg-white">
+      <div class="flex flex-col space-y-12 lg:items-center">
+        <div class="flex flex-col space-y-6 lg:w-2/3">
+          <span class="t-h5 text-black">Crear Usuario</span>
+          <div class="flex flex-row space-x-2 items-start">
+            <div class="relative">
+              <div class="absolute left-0 top-0">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="text-brand-2" d="M64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32ZM3.2 32C3.2 47.9058 16.0942 60.8 32 60.8C47.9058 60.8 60.8 47.9058 60.8 32C60.8 16.0942 47.9058 3.2 32 3.2C16.0942 3.2 3.2 16.0942 3.2 32Z"/>
+                </svg>
+              </div>
+              <div class="flex items-center justify-center" style="width: 64px; height: 64px;">
+                <span class="text-black t-button-1">3/3</span>
+              </div>
+            </div>
+            <div class="flex flex-1 flex-col">
+              <span class="text-black t-h5">Entidades de Seguridad</span>
+              <span class="text-mono-70 t-caption-1">Anterior: Roles</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-1 flex-col space-y-12 lg:w-2/3">
+          <form class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Tipo de Identificación</label>
+              <select class="ec-input">
+                <option [value]="0">Cédula de Ciudadanía</option>
+                <option [value]="1">Pasaporte</option>
+              </select>
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="t-caption-2 text-mono-70">Tipo de Identificación</label>
+              <select class="ec-input">
+                <option [value]="0">Cédula de Ciudadanía</option>
+                <option [value]="1">Pasaporte</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <button class="b-outline w-full lg:w-auto h-10">Agregar a la Lista</button>
+            </div>
+          </form>
+          <div class="data space-y-4">
+            <div class="table-v grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+                <span class="text-mono-70 t-caption-1">N° 1</span>
+                <div class="flex flex-col">
+                  <span class="text-mono-70 t-caption-2">Entidad</span>
+                  <span class="text-black t-body-1">Información Fideicomiso</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-mono-70 t-caption-2">Atributos</span>
+                  <div class="table-h hidden md:block w-full">
+                    <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
+                      <div class="p-2 w-12">N°</div>
+                      <div class="p-2 flex-1">Nombre</div>
+                      <div class="p-2 flex-1">Valor</div>
+                      <div class="p-2 w-14">Opciones</div>
+                    </div>
+                    <div class="table-body t-body-2 text-mono-70">
+                      <div class="item w-full flex flex-row">
+                        <div class="flex items-center p-2 w-12">1</div>
+                        <div class="flex items-center p-2 flex-1 break-all">RNC</div>
+                        <div class="flex items-center p-2 flex-1 break-all">123</div>
+                        <div class="flex items-center p-2 w-14">
+                          <div class="w-full flex flex-row">
+                            <button class="w-10 text-mono-70 px-2 h-10 hover:bg-mono-10">
+                              <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
+                              </svg></div>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
+                  <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+                    <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"/>
+                    </svg></div>
+                  </button>
+                </div>
+              </div>
+              <div class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+                <span class="text-mono-70 t-caption-1">N° 1</span>
+                <div class="flex flex-col">
+                  <span class="text-mono-70 t-caption-2">Entidad</span>
+                  <span class="text-black t-body-1">Información Fideicomiso</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-mono-70 t-caption-2">Atributos</span>
+                  <div class="table-h hidden md:block w-full">
+                    <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
+                      <div class="p-2 w-12">N°</div>
+                      <div class="p-2 flex-1">Nombre</div>
+                      <div class="p-2 flex-1">Valor</div>
+                      <div class="p-2 w-14">Opciones</div>
+                    </div>
+                    <div class="table-body t-body-2 text-mono-70">
+                      <div class="item w-full flex flex-row">
+                        <div class="flex items-center p-2 w-12">1</div>
+                        <div class="flex items-center p-2 flex-1 break-all">RNC</div>
+                        <div class="flex items-center p-2 flex-1 break-all">123</div>
+                        <div class="flex items-center p-2 w-14">
+                          <div class="w-full flex flex-row">
+                            <button class="w-10 text-mono-70 px-2 h-10 hover:bg-mono-10">
+                              <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
+                              </svg></div>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
+                  <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+                    <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"/>
+                    </svg></div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="pagination flex flex-row items-center justify-between">
+              <div class="left">
+                <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
+                  <option>10</option>
+                  <option>20</option>
+                  <option>30</option>
+                </select>
+              </div>
+              <div class="right flex items-center flex-row space-x-1">
+                <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
+                </svg>
+                </div></button>
+                <div class="flex items-center bg-mono-10 px-2 rounded h-8">
+                  <span class="t-body-2">1/2</span>
+                </div>
+                <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
+                </svg>
+                </div></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row-reverse space-y-4 md:space-y-0 lg:w-2/3">
+          <div><button class="w-full md:flex-none b-solid">Guardar</button></div>
+          <div class="md:w-4"></div>
+          <div class="flex flex-row space-x-4">
+            <button routerLink="/wizard/bpmn" class="flex-1 md:flex-none b-ghost">Cancelar</button>
+            <button class="flex-1 md:flex-none b-outline">Anterior</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </ng-container>
+</app-layout>

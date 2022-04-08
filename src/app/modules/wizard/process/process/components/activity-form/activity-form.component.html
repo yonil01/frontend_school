@@ -1,0 +1,51 @@
+<div class="container-activity-form">
+  <p-card header="{{'GENERAL_INFORMATION_OF_ACTIVITIES' | translate}}">
+    <form [formGroup]="form">
+      <div>
+        <span>{{'NAME' | translate}}</span>
+        <input #name id="process" class="ec-input w-full" formControlName="name" type="text" maxlength="50"
+               placeholder="{{'NAME' | translate}}"/>
+        <small *ngIf="getForm.get('name')?.touched && getForm.get('name')?.invalid" class="text-alert-error">
+          El campo es requerido
+        </small>
+      </div>
+      <div class="row-input">
+        <span>{{'STATUS' | translate}}</span>
+        <ec-dropdown formControlName="status" [dropStyle]="dropStyle" [data]="statusOptions" optionLabel="label"
+                     [filter]="true"
+                     optionValue="value" [showClear]="true" placeholder="{{'SELECT_STATUS' | translate}}"
+                     (onChangeValue)="buildParameters($event)"></ec-dropdown>
+        <small *ngIf="getForm.get('status')?.touched && getForm.get('status')?.invalid" class="ce-control-error">
+          Debe seleccionar una opción
+        </small>
+      </div>
+      <div class="row-input">
+        <span>{{'ACTIVITY' | translate}}</span>
+        <ec-dropdown formControlName="activity" [dropStyle]="dropStyle" [data]="activityOptions" optionLabel="label"
+                     [filter]="true"
+                     optionValue="value" [showClear]="true" placeholder="{{'SELECT_ACTIVITY' | translate}}"
+                     (onChangeValue)="buildParameters($event)"></ec-dropdown>
+        <small *ngIf="getForm.get('activity')?.touched && getForm.get('activity')?.invalid" class="text-alert-error">
+          Debe seleccionar una actividad
+        </small>
+      </div>
+      <div *ngIf="fields.length" class="flex flex-col gap-4 justify-center w-full">
+        <div *ngFor="let entity of fields; let position = index" class="flex flex-col gap-2 w-full">
+          <span class="text-black capitalize">{{entity.templateOptions.label | replace: '_': ' '}}</span>
+          <input *ngIf="entity.type === 'input'" class="ec-input w-full" type="text" [placeholder]="entity.templateOptions.placeholder" [formControlName]="entity.key">
+          <ec-dropdown *ngIf="entity.type === 'select'" class="mt-1" [formControlName]="entity.key"
+                       [dropStyle]="dropStyle" [filter]="true" optionLabel="label" [data]="entity.templateOptions.options"
+                       [placeholder]="entity.templateOptions.placeholder" [showClear]="true"></ec-dropdown>
+          <small *ngIf="getForm.get(entity.key)?.touched && getForm.get(entity.key)?.invalid"
+                 class="text-alert-error">
+            El campo es requerido
+          </small>
+        </div>
+      </div>
+      <!--<formly-form [form]="form" [fields]="fields" [model]="model" *ngIf="fields.length"></formly-form>-->
+      <div class="btn-submit">
+        <button type="button" (click)="save()" class="b-solid">{{'SAVE' | translate}}</button>
+      </div>
+    </form>
+  </p-card>
+</div>

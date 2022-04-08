@@ -1,0 +1,150 @@
+@import 'src/app/core/styles/variables';
+@import 'src/app/core/styles/global';
+
+.form-login {
+  @apply flex flex-col p-6 flex-none lg:flex-1 bg-white space-y-12
+}
+
+.footer-login {
+  @apply flex flex-row justify-between items-center px-6 w-full h-12 bg-white
+}
+
+/*
+:host {
+  height: 100%;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f5f5f5;
+
+  @media screen and (max-width: 992px) {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .mainContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0;
+    box-sizing: border-box;
+    box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+      0 6px 30px 5px rgba(0, 0, 0, 0.12);
+
+    @media screen and (max-width: 992px) {
+      flex-wrap: wrap-reverse;
+    }
+
+    .formContainer {
+      background-color: white;
+      padding: 1.5rem;
+      height: 100%;
+      width: 100%;
+
+      @media screen and (max-width: 992px) {
+        height: auto;
+        padding: 1rem 2rem;
+
+        form {
+          .title {
+            font-size: 1.7rem !important;
+          }
+        }
+      }
+
+      form {
+        width: 100%;
+        text-align: left;
+
+        .title {
+          width: 100%;
+          text-align: left;
+          margin: 0.5rem 0rem;
+          font-family: 'Roboto';
+          font-weight: 400;
+          font-size: 2rem;
+        }
+        .subtitle {
+          width: 100%;
+          text-align: left;
+          font-size: 1rem;
+          font-weight: 400;
+          margin: 0.5rem 0rem;
+          font-family: 'Roboto';
+        }
+
+        small {
+          margin: 0rem 0.5rem;
+          text-align: center;
+        }
+
+        .forgot {
+          text-align: left;
+        }
+
+        .submit-button {
+          width: 220px;
+          margin: 16px auto;
+          display: block;
+          min-height: 2.5rem;
+          background-color: $ecatch-blue;
+          border: 1px solid darken($ecatch-blue, 5%);
+          font-size: 16px;
+        }
+
+        .submit-button:enabled:focus {
+          box-shadow: 0.2em darken($ecatch-blue, 5%);
+        }
+      }
+      .loader {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+input {
+  font-family: 'Roboto';
+  font-size: 15px;
+}
+
+@keyframes ui-progress-spinner-color {
+  100%,
+  0% {
+    stroke: #039be5;
+  }
+  40% {
+    stroke: #353a48;
+  }
+  66% {
+    stroke: #039be5;
+  }
+  80%,
+  90% {
+    stroke: #353a48;
+  }
+}
+
+::ng-deep .loading .ui-progress-spinner {
+  width: 75px !important;
+}
+
+#reg {
+  cursor: pointer;
+}
+
+.text-autogestion {
+  margin: 0px 0 2px 0px;
+  text-align: center;
+  font-size: 12px;
+  padding: 0px;
+  width: 100%;
+}
+*/
