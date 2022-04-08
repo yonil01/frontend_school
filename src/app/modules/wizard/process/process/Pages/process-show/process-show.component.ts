@@ -531,6 +531,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   private async openMenu(event: any) {
     event.originalEvent.preventDefault();
     event.originalEvent.stopPropagation();
+    debugger;
     this.existQueue = false;
     const type = event.element.type;
     if (type.indexOf('Task') > -1 || type.indexOf('IntermediateCatchEvent') > -1 || type.indexOf('Gateway') > -1) {
