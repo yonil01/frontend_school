@@ -158,6 +158,25 @@ export class DeleteDoctypeEntitiesByDtIDMutation extends Mutation {
 @Injectable({
   providedIn: 'root',
 })
+export class DeleteDoctypeEntitiesById extends Mutation {
+  document = gql`
+    mutation deleteDoctypeEntities($id: String!) {
+      deleteDoctypeEntities(id: $id) {
+        error
+        data {
+          id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class GetEntitiesByIDQuery extends Query<Response> {
   document = gql`
     query getEntitiesByID($id: String!) {

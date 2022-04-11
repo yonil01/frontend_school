@@ -37,7 +37,9 @@ export class DocEntityComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
+    console.log(this.dataDoctype);
     this.getEntities(this.dataDoctype);
+    console.log(this.dataDoctype);
   }
 
   ngOnDestroy(): void {
@@ -74,8 +76,6 @@ export class DocEntityComponent implements OnInit, OnDestroy {
             })
           }
         }
-        console.log(this.sourceEntities);
-        console.log(this.targetEntities);
         this.isBlockPage = false;
       },
       error: (err: HttpErrorResponse) => {
@@ -109,9 +109,10 @@ export class DocEntityComponent implements OnInit, OnDestroy {
             for (const doc of doctypeEntidad) {
               const entity = this.sourceEntities.find(d => d.id === doc.entities_id);
               if (entity) {
+                Object.assign(doc, {entities: entity});
                 this.dataDoctype.doctypes_entities?.push(doc);
                 this.targetEntities.push(entity);
-                this.sourceEntities = this.sourceEntities.filter(d => d.id !== entity.id);
+                this.sourceNewEntities = this.sourceNewEntities.filter(d => d.id !== entity.id);
               }
             }
           }
@@ -128,31 +129,33 @@ export class DocEntityComponent implements OnInit, OnDestroy {
 
   public selectSourceEntity(items: string[]): void {
     for (const id of items) {
-      const doctypeEntityID = this.dataDoctype.doctypes_entities?.find(d => d.entities_id === id)?.id || '';
-      this.isBlockPage = true;
-      this._subscription.add(
-        this.doctypegroupService.deleteDoctypeEntities(doctypeEntityID).subscribe({
-          next: (res) => {
-            if (res.error) {
-              this.messageService.add({type: 'error', message: res.msg, life: 5000});
-            } else {
-              this.messageService.add({type: 'success', message: res.msg, life: 5000});
-              this.dataDoctype.doctypes_entities = this.dataDoctype.doctypes_entities?.filter(d => d.id !== doctypeEntityID);
-              this.targetEntities = this.targetEntities.filter((entityItem) => entityItem.id?.toLowerCase() !== id.toLowerCase());
-              const doc = this.sourceEntities.find((doc) => doc.id?.toLowerCase() === id.toLowerCase());
-              if (doc) {
-                this.sourceNewEntities.push(doc);
+      const doctypeEntityID = this.dataDoctype.doctypes_entities?.find(d => d.entities?.id === id)?.id;
+      if (doctypeEntityID) {
+        this.isBlockPage = true;
+        this._subscription.add(
+          this.doctypegroupService.deleteDoctypeEntitiesById(doctypeEntityID).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                this.messageService.add({type: 'success', message: res.msg, life: 5000});
+                this.dataDoctype.doctypes_entities = this.dataDoctype.doctypes_entities?.filter(d => d.id !== doctypeEntityID);
+                this.targetEntities = this.targetEntities.filter((entityItem) => entityItem.id?.toLowerCase() !== id.toLowerCase());
+                const doc = this.sourceEntities.find((doc) => doc.id?.toLowerCase() === id.toLowerCase());
+                if (doc) {
+                  this.sourceNewEntities.push(doc);
+                }
               }
+              this.isBlockPage = false;
+            },
+            error: (err: HttpErrorResponse) => {
+              console.error(err);
+              this.messageService.add({type: 'error', message: err.message, life: 5000});
+              this.isBlockPage = false;
             }
-            this.isBlockPage = false;
-          },
-          error: (err: HttpErrorResponse) => {
-            console.error(err);
-            this.messageService.add({type: 'error', message: err.message, life: 5000});
-            this.isBlockPage = false;
-          }
-        })
-      );
+          })
+        );
+      }
     }
   }
 

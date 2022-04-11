@@ -15,7 +15,7 @@ import {
   QueryGetMaxCodDoctype,
   GetEntitiesByIDQuery,
   CreateDoctypeEntitiesMutation,
-  DeleteDoctypeEntitiesByDtIDMutation
+  DeleteDoctypeEntitiesByDtIDMutation, DeleteDoctypeEntitiesById
 } from '../doctypegroup/doctypegroup.queries.service';
 
 @Injectable({
@@ -36,7 +36,8 @@ export class DoctypegroupService {
     private queryGetMaxCodDoctype: QueryGetMaxCodDoctype,
     private getEntitiesByIDQuery: GetEntitiesByIDQuery,
     private createDoctypeEntitiesMutation: CreateDoctypeEntitiesMutation,
-    private deleteDoctypeEntitiesByDtIDMutation: DeleteDoctypeEntitiesByDtIDMutation
+    private deleteDoctypeEntitiesByDtIDMutation: DeleteDoctypeEntitiesByDtIDMutation,
+    private deleteDoctypeEntitiesByIdMutation: DeleteDoctypeEntitiesById
   ) {
   }
 
@@ -68,12 +69,17 @@ export class DoctypegroupService {
     return this.createDoctypeEntitiesMutation.mutate({rq: {data: doctypeEntities}}).pipe(map(({data}: any) => data.createDoctypesEntities));
   }
 
-  public deleteDoctypeEntities(doctype_id: string): Observable<Response> {
+  public deleteDoctypeEntities(doctypeId: string, entityID: string): Observable<Response> {
     return this.deleteDoctypeEntitiesByDtIDMutation
       .mutate({
-        doctype_id: doctype_id,
+        doctype_id: doctypeId,
+        entity_id: entityID
       })
       .pipe(map(({data}: any) => data.deleteDoctypeEntitiesByDtID));
+  }
+
+  public deleteDoctypeEntitiesById(id: string): Observable<Response> {
+    return this.deleteDoctypeEntitiesByIdMutation.mutate({id}).pipe(map(({data}: any) => data.deleteDoctypeEntities));
   }
 
   public getMaxCodDoctype(): Observable<Response> {
