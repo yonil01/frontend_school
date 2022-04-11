@@ -394,7 +394,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                 this._messageService.add({type: 'error', message: res.msg, life: 5000});
               } else {
                 this.parentQueue = queuePersistense;
-                debugger;
                 if (this.parentQueue.id) {
                   this.preloadRoles();
                   this.preloadAttributes();

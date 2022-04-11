@@ -69,6 +69,6 @@ export interface CascadingDataset {
 export interface ReturnData {
   id: string,
   from: string,
-  value: boolean
+  value: any
 }
 

@@ -26,25 +26,18 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   public positionStep: number = 0;
 
   @Input('queue-selected') parentQueue!: Queue;
-  selectionTask!: Execution;
   public taskForm: FormGroup;
   public tasks: Execution[] = [];
   public tasksDisplay: Execution[] = [];
   public tasksPagination: Execution[] = [];
-  icons: any[] = [];
   public selectionRoles: Role[] = [];
-  selectedRolesForm = new FormControl([]);
-  selectedRolesBefore: Role[] = [];
   public roles: Role[] = [];
   public rolesDisplay: RolesDisplay[] = [];
   public rolesPagination: RolesDisplay[] = [];
-  typeTask: number = 0;
   public operation: string = 'add';
   public typesTasks: any[] = [];
-  task!: Execution;
-  indexTask: number = 0;
+  public task!: Execution;
   public rolesAvailable: RolesDisplay[];
-  rolesSelected: Role[];
   public timers: DataDrop[] = [
     {value: 1, label: 'Notificar solicitud recibida'},
     {value: 2, label: 'Crear template'},
@@ -74,7 +67,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       class: ['', Validators.required],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       type: ['', Validators.required],
-      timer: [''],
+      timer: [0],
       description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(8000)]],
     });
     // TODO cargar desde el api
@@ -83,7 +76,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       {value: 3, label: 'Usuario'},
       {value: 2, label: 'Timer'},
     ];
-    this.rolesSelected = [];
     this.rolesAvailable = [];
   }
 
@@ -95,6 +87,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
+    console.log(this.parentQueue);
     if (this.parentQueue) {
       this.getRoles();
       const taskFind = this.parentQueue.executions ? [...this.parentQueue.executions] : [];
@@ -127,70 +120,11 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     this.selectionRoles = this.parentQueue.queue_roles ? this.roles.filter((rl) => this.parentQueue.queue_roles?.find((rq) => rq?.role.id.toLowerCase() === rl.id?.toLowerCase())) : [];
   }
 
-  showTask(task: Execution, index: number): void {
-    this.loadProcessProcessRoles(task);
+  public backTasks(task: any): void {
     if (task) {
-      this.task = task;
-      this.indexTask = index;
-      this.operation = 'edit';
-      this.typeTask = task.type || 0;
-      const taskValue = JSON.parse(JSON.stringify(task));
-      delete taskValue.id;
-      delete taskValue.queue_id;
-      delete taskValue.rules;
-      delete taskValue.execution_roles;
-      this.taskForm.setValue(taskValue);
-      const typeTasc = this.typesTasks.find((tt) => tt.value === taskValue.type);
-      this.taskForm.get('type')?.setValue(typeTasc);
-      this.taskForm.get('type')?.disable();
-      //const selectRoles = task.execution_roles ? this.selectionRoles.filter((sr) => task.execution_roles?.find((er) => er.role?.id?.toLowerCase() === sr.id?.toLowerCase())) : [];
-      // this.selectedRolesForm.setValue(selectRoles);
-      // this.selectedRolesBefore = selectRoles;
-    } else {
-      this.operation = 'add';
-      this.taskForm.reset();
-      this.taskForm.get('type')?.enable();
-    }
-  }
-
-  selectTypeTask(value: any): void {
-    this.typeTask = value.id;
-  }
-
-  backTasks(task: any): void {
-    if (task) {
-      this.typeTask = 0;
       const indexTask = this.tasks.findIndex((t) => t.id?.toLowerCase() === this.task.id?.toLowerCase());
       this.tasks[indexTask] = JSON.parse(JSON.stringify(task));
       this.showView = 'list';
-    }
-  }
-
-  selectRoles(event: any): void {
-    if (this.operation === 'edit') {
-      if (event.value.length > this.selectedRolesBefore.length) {
-        const executionRolePersistense: ExecutionRole = {
-          id: uuidv4().toLowerCase(),
-          execution_id: this.task.id?.toLowerCase(),
-          role_id: event.itemValue.id.toLowerCase(),
-        };
-        this.processService.createExecutionRole(executionRolePersistense).subscribe((res) => {
-          if (!res.error) {
-            this.selectedRolesBefore = event.value;
-            executionRolePersistense.role = event.itemValue;
-            this.task.execution_roles = this.task.execution_roles ? this.task.execution_roles : [];
-            this.task.execution_roles.push(executionRolePersistense);
-          }
-        });
-      } else {
-        const executionRole = this.task.execution_roles?.find((er) => er?.role?.id?.toLowerCase() === event.itemValue.id.toLowerCase());
-        if (executionRole) {
-          this.processService.deleteExecutionRole(executionRole?.id?.toLowerCase() || '').subscribe((res) => {
-            if (!res.error) this.selectedRolesBefore = event.value;
-            this.task.execution_roles = this.task.execution_roles?.filter((er) => er?.role?.id?.toLowerCase() !== executionRole?.role?.id?.toLowerCase());
-          });
-        }
-      }
     }
   }
 
@@ -211,10 +145,13 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
               } else {
                 this.positionStep++;
                 execution.execution_roles = [];
-                this.task = execution;
+                // this.task = execution;
                 this.executionSelected = execution;
                 this.tasks.push(execution);
-                this.indexTask = this.tasks.length - 1;
+                if (execution.type === 3) {
+                  this.loadProcessProcessRoles(execution);
+                }
+                this.tasksDisplay = [...this.tasks];
                 this.messageService.add({type: 'success', message: 'Ejecuión creada correctamente!', life: 5000});
                 this.steps[this.positionStep].active = true;
               }
@@ -249,6 +186,9 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
                   this.tasks[indexExecution].description = execution.description;
                   this.tasks[indexExecution].timer = execution.timer;
                   this.executionSelected = execution;
+                  if (execution.type === 3) {
+                    this.loadProcessProcessRoles(execution);
+                  }
                 }
                 this.steps[this.positionStep].active = true;
               }
@@ -390,18 +330,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
         type: 0
       };
     }
-  }
-
-  confirmDeleteDataset(task: Execution, index: number) {
-    /*this.confirmationService.confirm({
-      message: `¿Está seguro de eliminar la tarea ${task.name}?`,
-      header: 'Confirmar Eliminación Tarea',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.deleteExecution(task, index);
-      },
-      reject: () => {},
-    });*/
   }
 
   public filterItemsTarget(event: any, dataToFilter: any): void {

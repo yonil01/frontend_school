@@ -20,7 +20,7 @@ import {
   UpdateCascadingDatasetsQuery,
   DeleteCascadingDatasetsQuery,
   GetCascadingDatasetsQuery,
-  GetAttributesQuery, GetEntitiesQueryE,
+  GetAttributesQuery, GetEntitiesQueryE
 } from "@app/modules/wizard/entidades/services/entity.queries.service";
 
 @Injectable({

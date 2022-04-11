@@ -100,7 +100,7 @@ export class EntitiesCreateAtributeComponent implements OnInit {
         this.onSubmit.emit({
           id: 'atribute',
           from: 'createAtribute',
-          value: true
+          value: null
         });
         break;
       case 'sure':
@@ -112,34 +112,73 @@ export class EntitiesCreateAtributeComponent implements OnInit {
   }
 
   createAttribute() {
-    const attribute: Attribute = {...this.createAttributeForm.value, id: uuidv4().toLowerCase()};
-    if (this.entity.id) {
-      attribute.entities_id = this.entity.id.toLowerCase();
-    }
-    const attributePersistense = JSON.parse(JSON.stringify(attribute));
-    delete attributePersistense.entities_attributes_dataset;
-    // @ts-ignore
-    this.entityService.createAttribute(attributePersistense).subscribe((res: Response) => {
-      if (res.error) {
-        this.message.emit({
-          type: 'error',
-          message: "Error en la creación: " + res.msg,
-          life: 5000,
-        });
-      } else {
-        this.message.emit({
-          type: 'success',
-          message: "Creación Exitosa ",
-          life: 5000,
-        });
-        this.store.dispatch(addAttribute({attribute: attribute}));
-        this.onSubmit.emit({
-          id: 'atribute',
-          from: 'createAtribute',
-          value: true
-        });
+    this.isBlock = true;
+    if(this.attribute){
+      this.createAttributeForm.enable()
+      const attribute: Attribute = {...this.createAttributeForm.value, id: this.attribute.id};
+      if (this.entity.id) {
+        attribute.entities_id = this.entity.id.toLowerCase();
       }
-    });
+      this.createAttributeForm.disable()
+      const attributePersistense = JSON.parse(JSON.stringify(attribute));
+      delete attributePersistense.entities_attributes_dataset;
+      // @ts-ignore
+      this.entityService.updateAttribute(attributePersistense).subscribe((res: Response) => {
+        if (res.error) {
+          this.message.emit({
+            type: 'error',
+            message: "Error en la creación: " + res.msg,
+            life: 5000,
+          });
+          this.isBlock = false;
+        } else {
+          this.message.emit({
+            type: 'success',
+            message: "Creación Exitosa ",
+            life: 5000,
+          });
+          this.isBlock = false;
+          this.store.dispatch(addAttribute({attribute: attribute}));
+          this.onSubmit.emit({
+            id: 'atribute',
+            from: 'updateAtributte',
+            value: attributePersistense
+          });
+        }
+      });
+    } else {
+      const attribute: Attribute = {...this.createAttributeForm.value, id: uuidv4().toLowerCase()};
+      if (this.entity.id) {
+        attribute.entities_id = this.entity.id.toLowerCase();
+      }
+      const attributePersistense = JSON.parse(JSON.stringify(attribute));
+      delete attributePersistense.entities_attributes_dataset;
+      // @ts-ignore
+      this.entityService.createAttribute(attributePersistense).subscribe((res: Response) => {
+        if (res.error) {
+          this.message.emit({
+            type: 'error',
+            message: "Error en la creación: " + res.msg,
+            life: 5000,
+          });
+          this.isBlock = false;
+        } else {
+          this.message.emit({
+            type: 'success',
+            message: "Creación Exitosa ",
+            life: 5000,
+          });
+          this.isBlock = false;
+          this.store.dispatch(addAttribute({attribute: attribute}));
+          this.onSubmit.emit({
+            id: 'atribute',
+            from: 'createAtribute',
+            value: attributePersistense
+          });
+        }
+      });
+    }
+
   }
 
   editAttribute() {

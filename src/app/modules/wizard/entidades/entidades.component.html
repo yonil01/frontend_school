@@ -155,7 +155,7 @@
 <!--CREATE ENTITY-->
 <app-entities-create-edit (message)="toastMessage($event)" (isReturn)="onShowHome($event)" *ngIf="showCreateEdit" [selectedEntity]="selectedEntity"></app-entities-create-edit>
 <!--ENTITIES LIST - Atributos -->
-<app-entities-list-atributes [selectedEntity]="selectedEntity" (isReturn)="onShowHome($event)" *ngIf="showEntitiesList"></app-entities-list-atributes>
+<app-entities-list-atributes [selectedEntity]="selectedEntity" (isReturn)="onShowHome($event)" *ngIf="showEntitiesList" [project]="project"></app-entities-list-atributes>
 
 <!--IS BLOCKED PAGE-->
 <div class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"
