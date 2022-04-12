@@ -1,6 +1,6 @@
 import { GridsterItem, GridsterConfig, Draggable, Resizable, PushDirections } from 'angular-gridster2';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import {Attribute, Entity} from "@app/core/models";
+import {FormlyFieldConfig} from "@ngx-formly/core";
 
 export interface Form {
   doctype?: string;

@@ -97,7 +97,7 @@
                     <div class="item-group">
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <div *ngFor="let conf of configList" class="item flex-1 col-span-1">
-                          <a class="card-config btn-item-home cursor-pointer" [routerLink]="conf.route">
+                          <a class="card-config btn-item-home cursor-pointer" [routerLink]="conf.route" (click)="selectItem(conf)">
                             <img [src]="conf.icon">
                             <div class="block pl-4">
                               <span class="card-config-title">{{conf.name}}</span>

@@ -12,7 +12,7 @@ import {DocumentService} from "@app/core/services/graphql/doc/document/document.
 
 @NgModule({
   declarations: [
-    WizardComponent
+    WizardComponent,
   ],
   imports: [
     CommonModule,

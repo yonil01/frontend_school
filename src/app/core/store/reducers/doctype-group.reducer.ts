@@ -1,4 +1,4 @@
-import {createReducer, on} from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import {
   controlEntities,
   controlDocuments,
@@ -13,7 +13,7 @@ import {
   deleteStepEntities,
   controlMobileQueue,
 } from '@app/core/store/actions/doctype-group.action';
-import {Document, Queue, Process, Token, EntityValue, Entity, DocTypes} from '@app/core/models';
+import { Document, Queue, Process, Token, EntityValue, Entity, DocTypes } from '@app/core/models';
 
 export interface DoctypeGroup {
   entities: Entity[];
@@ -49,26 +49,26 @@ export const DoctypeGroupInitialState: DoctypeGroup = {
 
 const doctypeGroupreducer = createReducer(
   DoctypeGroupInitialState,
-  on(controlEntities, (state, {entities}) => ({
+  on(controlEntities, (state, { entities }) => ({
     ...state,
     entities,
     // selectedDocuments: [],
     isChangedTokens: false,
     isChangedSelectedDocument: false,
   })),
-  on(controlDocuments, (state, {documents}) => ({
+  on(controlDocuments, (state, { documents }) => ({
     ...state,
     documents,
     isChangedTokens: false,
     isChangedSelectedDocument: false,
   })),
-  on(controlDocument, (state, {selectedDocuments}) => ({
+  on(controlDocument, (state, { selectedDocuments }) => ({
     ...state,
     selectedDocuments,
     isChangedTokens: false,
     isChangedSelectedDocument: true,
   })),
-  on(controlQueue, (state, {selectedQueue, documents}) => ({
+  on(controlQueue, (state, { selectedQueue, documents }) => ({
     ...state,
     selectedQueue,
     documents,
@@ -76,19 +76,19 @@ const doctypeGroupreducer = createReducer(
     isChangedTokens: false,
     isChangedSelectedDocument: false,
   })),
-  on(controlProcessAndTokens, (state, {selectedProcess, tokens}) => ({
+  on(controlProcessAndTokens, (state, { selectedProcess, tokens }) => ({
     ...state,
     selectedProcess,
     tokens,
     isChangedTokens: true,
     isChangedSelectedDocument: false,
   })),
-  on(controlBlockPage, (state, {isBlockPage}) => ({
+  on(controlBlockPage, (state, { isBlockPage }) => ({
     ...state,
     isBlockPage,
     isChangedSelectedDocument: false,
   })),
-  on(controlAnnexes, (state, {annexes}) => ({
+  on(controlAnnexes, (state, { annexes }) => ({
     ...state,
     annexes,
     isChangedTokens: false,
@@ -98,15 +98,15 @@ const doctypeGroupreducer = createReducer(
     ...state,
     ...DoctypeGroupInitialState,
   })),
-  on(controlDoctype, (state, {selectedDoctype}) => ({
+  on(controlDoctype, (state, { selectedDoctype }) => ({
     ...state,
     selectedDoctype,
   })),
-  on(controlStepEntities, (state, {stepEntities}) => ({
+  on(controlStepEntities, (state, { stepEntities }) => ({
     ...state,
     stepEntities,
   })),
-  on(controlMobileQueue, (state, {mobileQueue}) => ({
+  on(controlMobileQueue, (state, { mobileQueue }) => ({
     ...state,
     mobileQueue,
     isChangedTokens: true,

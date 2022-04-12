@@ -1,5 +1,5 @@
-import {DocTypeGroups, DocTypes, DoctypeEntities, Entity} from '@app/core/models';
-import {createReducer, on} from '@ngrx/store';
+import { DocTypeGroups, DocTypes, DoctypeEntities, Entity } from '@app/core/models';
+import { createReducer, on } from '@ngrx/store';
 import {
   showDoctypegroup,
   cancelAddDoctypegroup,
@@ -57,24 +57,24 @@ export const DoctypeInitialState: DoctypeState = {
   doctypeGroups: [],
   doctype: {},
   indexDocType: 0,
+  operation: '',
 
   docEntity: [],
   docEntities: {},
+
   autoName: [],
   auto_Name: {},
-
-  operation: '',
 };
 
 const doctypeReducer = createReducer(
   DoctypeInitialState,
-  on(controlDoctypegroups, (state, {doctypegroups}) => ({
+  on(controlDoctypegroups, (state, { doctypegroups }) => ({
     ...state,
     doctypeGroup: {},
     doctypeGroups: doctypegroups,
   })),
 
-  on(controlDoctypegroup, (state, {doctypegroup, index}) => ({
+  on(controlDoctypegroup, (state, { doctypegroup, index }) => ({
     ...state,
     isShowDoctypegroup: false,
     indexDoctypegroup: index,
@@ -82,27 +82,27 @@ const doctypeReducer = createReducer(
     operation: '',
   })),
 
-  on(controlAutoname, (state, {autoname}) => ({
+  on(controlAutoname, (state, { autoname }) => ({
     ...state,
     autoName: autoname,
   })),
 
-  on(controlEntity, (state, {docEntity}) => ({
+  on(controlEntity, (state, { docEntity }) => ({
     ...state,
     docEntity: docEntity,
   })),
 
-  on(controlDoctype, (state, {docType, indexDocType}) => ({
+  on(controlDoctype, (state, { docType, indexDocType }) => ({
     ...state,
     indexDocType: indexDocType,
-    doctype: docType ? {...docType} : {},
+    doctype: docType ? { ...docType } : {},
     operation: '',
   })),
 
-  on(addDoctypegroup, (state, {doctypegroup}) => ({
+  on(addDoctypegroup, (state, { doctypegroup }) => ({
     ...state,
     isShowDoctypegroup: false,
-    doctypeGroup: {...doctypegroup},
+    doctypeGroup: { ...doctypegroup },
     doctypeGroups: [...state.doctypeGroups, doctypegroup],
     operation: '',
     indexDoctypegroup: state.doctypeGroups.length,
@@ -114,14 +114,14 @@ const doctypeReducer = createReducer(
     doctypeGroup: {},
   })),
 
-  on(addAutoname, (state, {autoName}) => ({
+  on(addAutoname, (state, { autoName }) => ({
     ...state,
     // isShowAddAutoname: false,
     ...addInAutoName(state.doctypeGroups, state.indexDoctypegroup, state.indexDocType, autoName),
     operation: '',
   })),
 
-  on(addDoctype, (state, {doctype}) => ({
+  on(addDoctype, (state, { doctype }) => ({
     ...state,
     isShowAddDocType: false,
     doctype: {},
@@ -129,7 +129,7 @@ const doctypeReducer = createReducer(
     operation: '',
   })),
 
-  on(editDoctype, (state, {doctype}) => ({
+  on(editDoctype, (state, { doctype }) => ({
     ...state,
     isShowAddDocType: false,
     doctype: {},
@@ -137,7 +137,7 @@ const doctypeReducer = createReducer(
     operation: '',
   })),
 
-  on(showDoctypegroup, (state, {operation}) => ({
+  on(showDoctypegroup, (state, { operation }) => ({
     ...state,
     isShowDoctypegroup: true,
     operation,
@@ -148,7 +148,7 @@ const doctypeReducer = createReducer(
     isShowDoctypegroup: false,
   })),
 
-  on(showAddDocType, (state, {operation}) => ({
+  on(showAddDocType, (state, { operation }) => ({
     ...state,
     isShowAddDocType: true,
     operation,
@@ -159,13 +159,13 @@ const doctypeReducer = createReducer(
     isShowAddDocType: false,
   })),
 
-  on(deleteDocType, (state, {indexDocType}) => ({
+  on(deleteDocType, (state, { indexDocType }) => ({
     ...state,
     ...deleteInDocType(state.doctypeGroups, state.indexDoctypegroup, indexDocType),
     operation: '',
   })),
 
-  on(showAddAutoname, (state, {operation}) => ({
+  on(showAddAutoname, (state, { operation }) => ({
     ...state,
     isShowAddAutoname: true,
     operation,
@@ -176,7 +176,7 @@ const doctypeReducer = createReducer(
     isShowAddAutoname: false,
   })),
 
-  on(showEditEntity, (state, {operation}) => ({
+  on(showEditEntity, (state, { operation }) => ({
     ...state,
     isShowEditEntity: true,
     operation,
@@ -187,7 +187,7 @@ const doctypeReducer = createReducer(
     isShowEditEntity: false,
   })),
 
-  on(editEntity, (state, {docEntity}) => ({
+  on(editEntity, (state, { docEntity }) => ({
     ...state,
     isShowEditEntity: true,
     doctype: {},
@@ -196,19 +196,19 @@ const doctypeReducer = createReducer(
     operation: '',
   })),
 
-  on(editDoctypegroup, (state, {doctypegroup}) => ({
+  on(editDoctypegroup, (state, { doctypegroup }) => ({
     ...state,
     isShowDoctypegroup: false,
-    doctypeGroup: {...doctypegroup},
+    doctypeGroup: { ...doctypegroup },
     doctypeGroups: updateDoctypeGroup(state.doctypeGroups, state.indexDoctypegroup, doctypegroup),
     operation: '',
   })),
 
-  on(controlDoctypes, (state, {docType, indexDocType, operation}) => ({
+  on(controlDoctypes, (state, { docType, indexDocType, operation }) => ({
     ...state,
     isShowAddDocType: false,
     indexDoctype: indexDocType,
-    doctype: docType ? {...docType} : {},
+    doctype: docType ? { ...docType } : {},
     operation,
   })),
 );
@@ -224,12 +224,13 @@ function updateDoctypeGroup(doctypeGroups: DocTypeGroups[], indexDoctypegroup: n
 }
 
 function addInDocType(doctypeGroups: DocTypeGroups[], indexDoctypegroup: number, doctypes: DocTypes) {
-  const doctypegroupList: any[] = JSON.parse(JSON.stringify(doctypeGroups)); // DocTypeGroups[]
+  const doctypegroupList: DocTypeGroups[] = JSON.parse(JSON.stringify(doctypeGroups));
   doctypegroupList[indexDoctypegroup].doctypes = doctypegroupList[indexDoctypegroup].doctypes
     ? doctypegroupList[indexDoctypegroup].doctypes
     : [];
+  // @ts-ignore
   doctypegroupList[indexDoctypegroup].doctypes = [...doctypegroupList[indexDoctypegroup].doctypes, doctypes];
-  return {doctypeGroups: doctypegroupList, doctypeGroup: doctypegroupList[indexDoctypegroup]};
+  return { doctypeGroups: doctypegroupList, doctypeGroup: doctypegroupList[indexDoctypegroup] };
 }
 
 function updateInDoctype(
@@ -241,14 +242,15 @@ function updateInDoctype(
   const doctypeGrupList = JSON.parse(JSON.stringify(doctypeGroups));
   doctypeGrupList[indexDoctypegroup].doctypes[indexDoctype] = doctype;
   doctypeGrupList[indexDoctypegroup].is_update = !doctypeGrupList[indexDoctypegroup].is_new;
-  return {doctypeGroups: doctypeGrupList, doctypeGroup: doctypeGrupList[indexDoctypegroup]};
+  return { doctypeGroups: doctypeGrupList, doctypeGroup: doctypeGrupList[indexDoctypegroup] };
 }
 
 function deleteInDocType(doctypeGroups: DocTypeGroups[], indexDoctypegroup: number, indexDocType: number) {
-  const doctypegroupList: any[] = JSON.parse(JSON.stringify(doctypeGroups)); // DocTypeGroups[]
+  const doctypegroupList: DocTypeGroups[] = JSON.parse(JSON.stringify(doctypeGroups));
+  // @ts-ignore
   doctypegroupList[indexDoctypegroup].doctypes.splice(indexDocType, 1);
   // doctypegroupList[indexDoctypegroup].is_update = !doctypegroupList[indexDoctypegroup].is_new;
-  return {doctypeGroups: doctypegroupList, doctypeGroup: doctypegroupList[indexDoctypegroup]};
+  return { doctypeGroups: doctypegroupList, doctypeGroup: doctypegroupList[indexDoctypegroup] };
 }
 
 function addInAutoName(
@@ -260,7 +262,7 @@ function addInAutoName(
   const doctypeGrupList = JSON.parse(JSON.stringify(doctypeGroups));
   doctypeGrupList[indexDoctypegroup].doctypes[indexAutoName].autoname = autoName;
   doctypeGrupList[indexDoctypegroup].is_update = !doctypeGrupList[indexDoctypegroup].is_new;
-  return {doctypeGroups: doctypeGrupList, doctypeGroup: doctypeGrupList[indexDoctypegroup]};
+  return { doctypeGroups: doctypeGrupList, doctypeGroup: doctypeGrupList[indexDoctypegroup] };
 }
 
 function addInEditentity(
@@ -269,23 +271,26 @@ function addInEditentity(
   indexAutoName: number,
   docEntity: DoctypeEntities[],
 ) {
-  const doctypeGrupList: any[] = JSON.parse(JSON.stringify(doctypeGroups)); // DocTypeGroups[]
+  const doctypeGrupList: DocTypeGroups[] = JSON.parse(JSON.stringify(doctypeGroups));
+  // @ts-ignore
   doctypeGrupList[indexDoctypegroup].doctypes[indexAutoName].doctypes_entities = doctypeGrupList[indexDoctypegroup]
     .doctypes[indexAutoName].doctypes_entities
-    ? doctypeGrupList[indexDoctypegroup].doctypes[indexAutoName].doctypes_entities
+    ? doctypeGrupList[indexDoctypegroup].doctypes![indexAutoName].doctypes_entities
     : [];
-  doctypeGrupList[indexDoctypegroup].doctypes[indexAutoName].doctypes_entities = docEntity;
-  const dat = doctypeGrupList[indexDoctypegroup].doctypes[indexAutoName].doctypes_entities;
+  doctypeGrupList[indexDoctypegroup].doctypes![indexAutoName].doctypes_entities = docEntity;
+  const dat = doctypeGrupList[indexDoctypegroup].doctypes![indexAutoName].doctypes_entities;
+  // @ts-ignore
   if (dat.length === 0) {
+    // @ts-ignore
     doctypeGrupList[indexDoctypegroup].doctypes[indexAutoName].doctypes_entities = null;
   }
   // doctypeGrupList[indexDoctypegroup].is_update = !doctypeGrupList[indexDoctypegroup].is_new;
-  return {doctypeGroups: doctypeGrupList, doctypeGroup: doctypeGrupList[indexDoctypegroup]};
+  return { doctypeGroups: doctypeGrupList, doctypeGroup: doctypeGrupList[indexDoctypegroup] };
 }
 
 function saveDoctypegroup(doctypeGroups: DocTypeGroups[], indexDoctypegroup: number) {
   const doctypeGrupList = JSON.parse(JSON.stringify(doctypeGroups));
   doctypeGrupList[indexDoctypegroup].is_new = false;
   doctypeGrupList[indexDoctypegroup].is_update = false;
-  return {doctypeGroups: doctypeGrupList, doctypeGroup: doctypeGrupList[indexDoctypegroup]};
+  return { doctypeGroups: doctypeGrupList, doctypeGroup: doctypeGrupList[indexDoctypegroup] };
 }

@@ -63,7 +63,6 @@ export class CreateDocumentQuery extends Mutation {
   `;
 }
 
-
 @Injectable({
   providedIn: 'root',
 })
