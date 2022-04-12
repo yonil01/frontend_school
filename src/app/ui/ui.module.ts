@@ -21,6 +21,13 @@ import {TableStandarComponent} from "@app/ui/components/table/components/table-s
 import { PaginationComponent } from './components/table/components/pagination/pagination.component';
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {FormsModule} from "@angular/forms";
+import {PickTaskComponent} from './components/pick-task/pick-task.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {FilterService} from "@app/ui/services/filter.service";
+import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-dialog.component";
+import {SideTaskComponent} from './components/side-task/side-task.component';
+import {PaginatorComponent} from './components/paginator/paginator.component';
+import { EcTooltipDirective } from './directives/ec-tooltip.directive';
 
 
 @NgModule({
@@ -38,22 +45,40 @@ import {FormsModule} from "@angular/forms";
         TableStandarComponent,
         TableStandarComponent,
         PaginationComponent,
+        PickTaskComponent,
+    ConfirmDialogComponent,
+    SideTaskComponent,
+    PaginatorComponent,
+    EcTooltipDirective,
+    FooterComponent,
+    HeaderComponent,
+    LayoutComponent,
+    SidebarComponent,
+    BlockPageComponent,
+    MenuComponent,
     ],
-    exports: [
-        FooterComponent,
-        BlockPageComponent,
-        LayoutComponent,
-        TableComponent,
-        IconDirective,
-        ButtonComponent,
-        StepComponent,
-    ],
+  exports: [
+    FooterComponent,
+    BlockPageComponent,
+    LayoutComponent,
+    TableComponent,
+    IconDirective,
+    ButtonComponent,
+    StepComponent,
+    ConfirmDialogComponent,
+    PickTaskComponent,
+    PaginatorComponent,
+    PaginatorComponent,
+    SideTaskComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,
     TranslateModule,
     InputTextModule,
     DropdownModule,
+    DragDropModule,
+    FormsModule,
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,
@@ -63,10 +88,10 @@ import {FormsModule} from "@angular/forms";
       animationDuration: 300,
     }),
     Ng2SearchPipeModule,
-    FormsModule
+    FormsModule,
+    ],
 
-  ],
-  providers: [MenuService, LocalStorageService]
+  providers: [MenuService, LocalStorageService, FilterService]
 })
 export class UiModule {
 }

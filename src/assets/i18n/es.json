@@ -74,6 +74,10 @@
   "IDENTIFICATION_NUMBER": "Numero de Identificación",
   "USERNAME": "Nombre de Usuario",
   "SELECTED_OPTION": "Seleccione una Opción",
-  "IDENTIFICATION_TYPE": "Tipo de Identificación"
+  "IDENTIFICATION_TYPE": "Tipo de Identificación",
+  "GENERAL_INFORMATION_OF_ACTIVITIES": "Información general de actividades",
+  "STATUS": "Estado",
+  "ACTIVITY": "Actividad",
+  "NAME": "Nombre"
 }
 

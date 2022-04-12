@@ -15,11 +15,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let data of dataSource | filter: filterTerm; index as index" class="{{!showBorder?'border-none':'border-b'}} ">
+    <tr *ngFor="let data of dataSource | filter: filterTerm; index as index" class="{{!showBorder?'border-none':'border-b border-black'}} ">
       <ng-container *ngIf="index+1 >= rangeMin+1 && index+1 <= rangeMax">
         <td class="px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-400">{{ index + 1 }}</td>
         <ng-container *ngFor="let key of Object.values(data)">
-          <td *ngIf="Object(key) !== key" class="text-sm text-gray-400 font-light px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap">
+          <td *ngIf="Object(key) !== key" class="text-sm text-mono-70 font-normal font-light px-3 lg:px-6 py-2 lg:py-4">
             {{key}}
           </td>
         </ng-container>
@@ -50,7 +50,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let column of columns; index as i;">
-        <td *ngIf="(i + 1) !== columns.length" class="px-6 py-2 grid whitespace-nowrap text-sm block text-left text-gray-400">
+        <td *ngIf="(i + 1) !== columns.length" class="px-6 py-2 grid whitespace-nowrap text-sm block text-left text-mono-70">
           <span>{{column.label}}</span>
           <span>{{ Object.values(data)[i+1] }}</span>
         </td>

@@ -1,198 +1,163 @@
-<app-layout>
+<!--ENTITIES-->
+<app-layout *ngIf="showEntities">
   <ng-container layoutBody>
-    <div class="ec-container pb-12 bg-white" style="min-height: calc(100vh - 3rem)">
+    <div class="ec-container pb-12 space-y-6 bg-white" style="min-height: calc(100vh - 3rem)">
       <div class="migas-pan w-full text-brand-2 space-x-2 h-12 flex items-center">
         <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
              height="24" viewBox="0 0 24 24" fill="none">
           <path
-            d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"
-            fill="#6699FF"/>
+            d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"/>
         </svg>
         <div class="miga flex flex-row items-center space-x-2">
-          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-               fill="none">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
             <path
-              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
-              fill="#6699FF"/>
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/workflow/inbox" class="t-body-2 cursor-pointer">
-          CLIENTE
-          </span>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{nameClient}}</span>
         </div>
         <div class="miga flex flex-row items-center space-x-2">
           <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
                fill="none">
             <path
-              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
-              fill="#6699FF"/>
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/workflow/inbox" class="t-body-2 cursor-pointer">
-          Proyecto
-          </span>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{nameProject}}</span>
         </div>
         <div class="miga flex flex-row items-center space-x-2">
           <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
                fill="none">
             <path
-              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
-              fill="#6699FF"/>
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/workflow/inbox" class="t-body-2 cursor-pointer">
+          <span routerLink="/workflow" class="t-body-2 cursor-pointer">
           Entidades
           </span>
         </div>
       </div>
-
-      <div>
-        <div class="text-2xl text-black">Entidades</div>
-        <div class="py-4">
-          <ul class="t-body-1 pl-4">
-            <li class="list-disc text-mono-70">25 entidades registradas actualmente.</li>
-            <li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-    <!--<app-footer></app-footer>-->
-    <!--
-    <div>
-      <div class="mt-6 px-12">
-        <div class="t-h5 text-black">
-          <span>
-            Flujos de Proceso
-          </span>
-        </div>
-        <div class="text-black t-body-1">
-          <span>
-            Descripción flujo de proceso.
-          </span>
-        </div>
-        <div class="flex justify-between mt-4">
-          <div class="rounded border-2 border-solid border-brand-1 h-12 w-12">
-          </div>
-          <ec-button bgContainerColor="bg-brand-1 text-center" brColor="border-brand-1" txtColor="text-white" icon="person" class="w-1/2 ml-4"></ec-button>
-          <ec-button brColor="border-brand-1" txtColor="text-brand-1" icon="person" class="w-1/2 ml-4"></ec-button>
-        </div>
-        <div class="mt-12">
-          <ec-input-search [ecStyle]="ecStyle" (input)="findProcess($event)"></ec-input-search>
-          <div *ngIf="processes.length > 0" class="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-            <div *ngFor="let item of processes" class="rounded border-2 border-solid border-mono-10 p-4 mt-4 w-full">
-              <div class="flex justify-between">
-                <div class="text-brand-1 t-subtitle-1">
-                  <span>
-                    {{item.name}}
-                  </span>
-                </div>
-                <div class="cursor-pointer" (click)="selectedProcessItem(item)">
-                  <span appIcon iconName="chevron right" iconColor="border-mono-10"></span>
+      <div class="space-y-12">
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <div class="text-2xl text-black">Entidades</div>
+            <div>
+              <ul class="t-body-1 pl-4">
+                <li class="list-disc text-mono-70">{{entities.length}} entidades registradas actualmente.</li>
+                <li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>
+              </ul>
+            </div>
+            <div>
+              <div class="flex flex-row space-x-2">
+                <div class="bg-brand-2 rounded-sm w-2"></div>
+                <div class="w-full text-mono-70 py-1">
+                  <span>Acceda a la lista de registros de una entidad con el botón verde a la derecha.</span>
                 </div>
               </div>
-              <div class="mt-3.5 flex justify-center items-center">
-                <div>
-                  <svg width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M38.7498 0.300049H22.4998C22.2511 0.300049 22.0498 0.501299 22.0498 0.750049V10.75C22.0498 10.9988 22.2511 11.2 22.4998 11.2H38.7498C38.9986 11.2 39.1998 10.9988 39.1998 10.75V0.750049C39.1998 0.501299 38.9986 0.300049 38.7498 0.300049ZM38.2998 2.7463C37.5311 2.57255 36.9273 1.96755 36.7536 1.20005H38.2998V2.7463ZM35.8448 10.3H25.4048C25.2086 9.03505 24.2148 8.0413 22.9498 7.84505V3.6538C24.2148 3.45755 25.2086 2.4638 25.4048 1.1988H35.8448C36.0411 2.4638 37.0348 3.45755 38.2998 3.6538V7.84505C37.0348 8.0413 36.0411 9.0363 35.8448 10.3ZM24.4961 1.20005C24.3223 1.9688 23.7186 2.5738 22.9498 2.7463V1.20005H24.4961ZM22.9498 8.7538C23.7186 8.92755 24.3223 9.53255 24.4961 10.3H22.9498V8.7538ZM36.7536 10.3C36.9273 9.5313 37.5311 8.9263 38.2998 8.7538V10.3H36.7536ZM22.4998 12.8H38.7498V13.7H22.4998V12.8ZM22.4998 15.3H38.7498V16.2H22.4998V15.3ZM30.6211 2.80005C28.9936 2.80005 27.6711 4.1238 27.6711 5.75005C27.6711 7.3763 28.9948 8.70005 30.6211 8.70005C32.2473 8.70005 33.5711 7.3763 33.5711 5.75005C33.5711 4.1238 32.2486 2.80005 30.6211 2.80005ZM30.6211 7.80005C29.4911 7.80005 28.5711 6.88005 28.5711 5.75005C28.5711 4.62005 29.4898 3.70005 30.6211 3.70005C31.7523 3.70005 32.6711 4.62005 32.6711 5.75005C32.6711 6.88005 31.7511 7.80005 30.6211 7.80005ZM9.19981 18.25H8.2998V8.2613C8.2998 6.6288 9.62355 5.30005 11.2498 5.30005H17.6636L14.6823 2.31755L15.3186 1.6813L19.3861 5.75005L15.3261 9.82005L14.6886 9.1838L17.6648 6.20005H11.2498C10.1198 6.20005 9.19981 7.12505 9.19981 8.2613V18.25ZM30.7998 20.75H31.7011V25.75C31.7011 27.3776 30.3773 28.7001 28.7511 28.7001H19.8386L22.8198 31.6813L22.1823 32.3188L18.1136 28.25L22.1811 24.1813L22.8186 24.8188L19.8373 27.8H28.7498C29.8798 27.8 30.7998 26.8813 30.7998 25.75V20.75ZM16.6998 35.75H15.7998C15.7998 32.5763 13.6486 29.7826 10.5673 28.9563C10.3886 28.9088 10.2573 28.7575 10.2373 28.5725C10.2161 28.39 10.3086 28.2125 10.4723 28.125C11.6711 27.4813 12.4173 26.24 12.4173 24.8825C12.4173 22.8513 10.7686 21.2001 8.7423 21.2001C6.71605 21.2001 5.0673 22.8513 5.0673 24.8825C5.0673 26.24 5.8123 27.4825 7.01231 28.125C7.17481 28.2113 7.26855 28.39 7.2473 28.5725C7.22605 28.7563 7.0948 28.9088 6.9173 28.9563C3.8448 29.7801 1.6998 32.5725 1.6998 35.75H0.799805C0.799805 32.4813 2.81231 29.5725 5.79481 28.3813C4.77356 27.5213 4.16605 26.2488 4.16605 24.8825C4.16605 22.3563 6.21855 20.2988 8.74106 20.2988C11.2636 20.2988 13.3161 22.3563 13.3161 24.8825C13.3161 26.2488 12.7098 27.5213 11.6886 28.3813C14.6811 29.5738 16.6998 32.4838 16.6998 35.75Z" fill="#0055FF"/>
-                  </svg>
-                </div>
-                <div class="w-full ml-5">
-                  <div class="flex justify-between w-full border-b-2 border-solid border-mono-10 p-2">
-                    <div class="flex justify-between w-1/2 border-r-2 border-solid border-mono-10 pr-2">
-                      <div class="flex justify-center items-center">
-                        <div>
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM11.3584 5.64645C11.532 5.82001 11.5513 6.08944 11.4163 6.28431L11.3584 6.35355L7.35355 10.3584C7.17999 10.532 6.91056 10.5513 6.71569 10.4163L6.64645 10.3584L4.64645 8.35842C4.45118 8.16316 4.45118 7.84658 4.64645 7.65131C4.82001 7.47775 5.08944 7.45846 5.28431 7.59346L5.35355 7.65131L7 9.298L10.6513 5.64645C10.8466 5.45118 11.1632 5.45118 11.3584 5.64645Z" fill="#1C7D38"/>
-                          </svg>
-                        </div>
-                        <div class="ml-2">
-                          <span>
-                            Vigentes
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        <span>
-                          0
-                        </span>
-                      </div>
-                    </div>
-                    <div class="flex justify-between w-1/2 ml-3">
-                      <div class="flex justify-center items-center">
-                        <div>
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM7.5 3C7.74546 3 7.94961 3.17688 7.99194 3.41012L8 3.5V8H10.5C10.7761 8 11 8.22386 11 8.5C11 8.74546 10.8231 8.94961 10.5899 8.99194L10.5 9H7.5C7.25454 9 7.05039 8.82312 7.00806 8.58988L7 8.5V3.5C7 3.22386 7.22386 3 7.5 3Z" fill="#CC8700"/>
-                          </svg>
-                        </div>
-                        <div class="ml-2">
-                          <span>
-                            A vencer
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        <span>
-                          0
-                        </span>
-                      </div>
-                    </div>
+            </div>
+          </div>
+          <div>
+            <button
+              (click)="createEntity()"
+              class="w-full md:w-auto bg-brand-2 text-white t-button-2 h-10 rounded">Crear Entidad
+            </button>
+          </div>
+        </div>
+        <div class="data space-y-4">
+          <div><input class="w-full h-10 px-2 rounded t-body-2 bg-mono-10 text-black" type="text"
+                      placeholder="Buscar entidad"></div>
+          <div class="table-v md:hidden flex flex-col space-y-4">
+            <div class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+              <span class="text-mono-70 t-caption-1">N° 1</span>
+              <div class="flex flex-col">
+                <span class="text-mono-70 t-caption-2">Entidad</span>
+                <span class="text-black t-body-1">Información básica fiduciaria</span>
+              </div>
+              <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
+                <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"
+                        fill="#0150E5"/>
+                    </svg>
                   </div>
-                  <div class="flex justify-between w-full p-2">
-                    <div class="flex justify-between w-1/2 border-r-2 border-solid border-mono-10 pr-2">
-                      <div class="flex justify-center items-center">
-                        <div>
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM5.80943 5.11372L5.87868 5.17157L8 7.29289L10.1213 5.17157C10.2949 4.99801 10.5643 4.97872 10.7592 5.11372L10.8284 5.17157C11.002 5.34514 11.0213 5.61456 10.8863 5.80943L10.8284 5.87868L8.70711 8L10.8284 10.1213C11.002 10.2949 11.0213 10.5643 10.8863 10.7592L10.8284 10.8284C10.6549 11.002 10.3854 11.0213 10.1906 10.8863L10.1213 10.8284L8 8.70711L5.87868 10.8284C5.70511 11.002 5.43569 11.0213 5.24082 10.8863L5.17157 10.8284C4.99801 10.6549 4.97872 10.3854 5.11372 10.1906L5.17157 10.1213L7.29289 8L5.17157 5.87868C4.99801 5.70511 4.97872 5.43569 5.11372 5.24082L5.17157 5.17157C5.34514 4.99801 5.61456 4.97872 5.80943 5.11372Z" fill="#CA1C25"/>
-                          </svg>
-                        </div>
-                        <div class="ml-2">
-                          <span>
-                            Vencidos
-                          </span>
-                        </div>
-                      </div>
+                </button>
+                <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"
+                        fill="#CA1C25"/>
+                    </svg>
+                  </div>
+                </button>
+                <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M6.24788 16.0021C7.21437 16.0021 7.99788 16.7856 7.99788 17.7521V20.25C7.99788 21.2165 7.21437 22 6.24788 22H3.75C2.7835 22 2 21.2165 2 20.25V17.7521C2 16.7856 2.7835 16.0021 3.75 16.0021H6.24788ZM6.24788 17.5021H3.75C3.61193 17.5021 3.5 17.6141 3.5 17.7521V20.25C3.5 20.3881 3.61193 20.5 3.75 20.5H6.24788C6.38595 20.5 6.49788 20.3881 6.49788 20.25V17.7521C6.49788 17.6141 6.38595 17.5021 6.24788 17.5021ZM9.74809 18H21.2529C21.6671 18 22.0029 18.3358 22.0029 18.75C22.0029 19.1297 21.7207 19.4435 21.3547 19.4932L21.2529 19.5H9.74809C9.33388 19.5 8.99809 19.1642 8.99809 18.75C8.99809 18.3703 9.28025 18.0565 9.64632 18.0068L9.74809 18H21.2529H9.74809ZM6.24788 9.00106C7.21437 9.00106 7.99788 9.78456 7.99788 10.7511V13.2489C7.99788 14.2154 7.21437 14.9989 6.24788 14.9989H3.75C2.7835 14.9989 2 14.2154 2 13.2489V10.7511C2 9.78456 2.7835 9.00106 3.75 9.00106H6.24788ZM6.24788 10.5011H3.75C3.61193 10.5011 3.5 10.613 3.5 10.7511V13.2489C3.5 13.387 3.61193 13.4989 3.75 13.4989H6.24788C6.38595 13.4989 6.49788 13.387 6.49788 13.2489V10.7511C6.49788 10.613 6.38595 10.5011 6.24788 10.5011ZM9.74809 11H21.2529C21.6671 11 22.0029 11.3358 22.0029 11.75C22.0029 12.1297 21.7207 12.4435 21.3547 12.4932L21.2529 12.5H9.74809C9.33388 12.5 8.99809 12.1642 8.99809 11.75C8.99809 11.3703 9.28025 11.0565 9.64632 11.0068L9.74809 11H21.2529H9.74809ZM6.24788 2C7.21437 2 7.99788 2.7835 7.99788 3.75V6.24788C7.99788 7.21437 7.21437 7.99788 6.24788 7.99788H3.75C2.7835 7.99788 2 7.21437 2 6.24788V3.75C2 2.7835 2.7835 2 3.75 2H6.24788ZM6.24788 3.5H3.75C3.61193 3.5 3.5 3.61193 3.5 3.75V6.24788C3.5 6.38595 3.61193 6.49788 3.75 6.49788H6.24788C6.38595 6.49788 6.49788 6.38595 6.49788 6.24788V3.75C6.49788 3.61193 6.38595 3.5 6.24788 3.5ZM9.74809 4H21.2529C21.6671 4 22.0029 4.33579 22.0029 4.75C22.0029 5.1297 21.7207 5.44349 21.3547 5.49315L21.2529 5.5H9.74809C9.33388 5.5 8.99809 5.16421 8.99809 4.75C8.99809 4.3703 9.28025 4.05651 9.64632 4.00685L9.74809 4H21.2529H9.74809Z"
+                        fill="#1C7D38"/>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="table-h hidden md:block w-full">
+            <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
+              <div class="p-2 w-16">N°</div>
+              <div class="p-2 flex-1">Entidad</div>
+              <div class="p-2 w-32">Opciones</div>
+            </div>
+            <div class="table-body text-body-2 text-mono-70">
+              <div class="item w-full flex flex-row" *ngFor="let entitie of entities, let i = index">
+                <div class="flex items-center p-2 w-16">{{i + 1}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{entitie.name}}</div>
+                <div class="flex items-center p-2 w-32">
+                  <div class="w-full flex flex-row">
+                    <button *ngIf="false" (click)="onEditEntity(i)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                       <div>
-                      <span>
-                        0
-                      </span>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"
+                            fill="#0150E5"/>
+                        </svg>
                       </div>
-                    </div>
-                    <div class="flex justify-between w-1/2 ml-3">
-                      <div class="flex justify-center items-center">
-                        <div>
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.9746 6.23223V10.4749C10.9746 10.751 10.7508 10.9749 10.4746 10.9749H6.232C5.95586 10.9749 5.732 10.751 5.732 10.4749C5.732 10.1987 5.95586 9.97487 6.232 9.97487L9.26754 9.97487L5.17134 5.87868C4.97608 5.68342 4.97608 5.36683 5.17134 5.17157C5.3666 4.97631 5.68319 4.97631 5.87845 5.17157L9.97464 9.26777V6.23223C9.97464 5.95609 10.1985 5.73223 10.4746 5.73223C10.7508 5.73223 10.9746 5.95609 10.9746 6.23223ZM13.6566 13.6569C16.7808 10.5327 16.7808 5.46734 13.6566 2.34315C10.5324 -0.781048 5.46711 -0.781048 2.34291 2.34315C-0.78128 5.46734 -0.78128 10.5327 2.34291 13.6569C5.46711 16.781 10.5324 16.781 13.6566 13.6569ZM12.9495 3.05025C15.6832 5.78392 15.6832 10.2161 12.9495 12.9497C10.2158 15.6834 5.78369 15.6834 3.05002 12.9497C0.316351 10.2161 0.316351 5.78392 3.05002 3.05025C5.78369 0.316582 10.2158 0.316582 12.9495 3.05025Z" fill="#636363"/>
-                          </svg>
-                        </div>
-                        <div class="ml-2">
-                          <span>
-                            Total
-                          </span>
-                        </div>
-                      </div>
+                    </button>
+                    <button (click)="onDelete(i)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                       <div>
-                        <span>
-                          {{item.tokens?.length || 0}}
-                        </span>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"
+                            fill="#CA1C25"/>
+                        </svg>
                       </div>
-                    </div>
+                    </button>
+                    <button (click)="onShowEntitiesList(i)" class="w-10 text-alert-success px-2 h-10 hover:bg-mono-10">
+                      <div>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M6.24788 16.0021C7.21437 16.0021 7.99788 16.7856 7.99788 17.7521V20.25C7.99788 21.2165 7.21437 22 6.24788 22H3.75C2.7835 22 2 21.2165 2 20.25V17.7521C2 16.7856 2.7835 16.0021 3.75 16.0021H6.24788ZM6.24788 17.5021H3.75C3.61193 17.5021 3.5 17.6141 3.5 17.7521V20.25C3.5 20.3881 3.61193 20.5 3.75 20.5H6.24788C6.38595 20.5 6.49788 20.3881 6.49788 20.25V17.7521C6.49788 17.6141 6.38595 17.5021 6.24788 17.5021ZM9.74809 18H21.2529C21.6671 18 22.0029 18.3358 22.0029 18.75C22.0029 19.1297 21.7207 19.4435 21.3547 19.4932L21.2529 19.5H9.74809C9.33388 19.5 8.99809 19.1642 8.99809 18.75C8.99809 18.3703 9.28025 18.0565 9.64632 18.0068L9.74809 18H21.2529H9.74809ZM6.24788 9.00106C7.21437 9.00106 7.99788 9.78456 7.99788 10.7511V13.2489C7.99788 14.2154 7.21437 14.9989 6.24788 14.9989H3.75C2.7835 14.9989 2 14.2154 2 13.2489V10.7511C2 9.78456 2.7835 9.00106 3.75 9.00106H6.24788ZM6.24788 10.5011H3.75C3.61193 10.5011 3.5 10.613 3.5 10.7511V13.2489C3.5 13.387 3.61193 13.4989 3.75 13.4989H6.24788C6.38595 13.4989 6.49788 13.387 6.49788 13.2489V10.7511C6.49788 10.613 6.38595 10.5011 6.24788 10.5011ZM9.74809 11H21.2529C21.6671 11 22.0029 11.3358 22.0029 11.75C22.0029 12.1297 21.7207 12.4435 21.3547 12.4932L21.2529 12.5H9.74809C9.33388 12.5 8.99809 12.1642 8.99809 11.75C8.99809 11.3703 9.28025 11.0565 9.64632 11.0068L9.74809 11H21.2529H9.74809ZM6.24788 2C7.21437 2 7.99788 2.7835 7.99788 3.75V6.24788C7.99788 7.21437 7.21437 7.99788 6.24788 7.99788H3.75C2.7835 7.99788 2 7.21437 2 6.24788V3.75C2 2.7835 2.7835 2 3.75 2H6.24788ZM6.24788 3.5H3.75C3.61193 3.5 3.5 3.61193 3.5 3.75V6.24788C3.5 6.38595 3.61193 6.49788 3.75 6.49788H6.24788C6.38595 6.49788 6.49788 6.38595 6.49788 6.24788V3.75C6.49788 3.61193 6.38595 3.5 6.24788 3.5ZM9.74809 4H21.2529C21.6671 4 22.0029 4.33579 22.0029 4.75C22.0029 5.1297 21.7207 5.44349 21.3547 5.49315L21.2529 5.5H9.74809C9.33388 5.5 8.99809 5.16421 8.99809 4.75C8.99809 4.3703 9.28025 4.05651 9.64632 4.00685L9.74809 4H21.2529H9.74809Z"
+                            fill="#1C7D38"/>
+                        </svg>
+                      </div>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div *ngIf="processes.length === 0 && activeEmptyMsg" class="mt-4 w-full flex justify-center items-center" style="height: 50vh">
-            <div class="text-center text-black t-h5 w-full">
-              <span>
-                No tiene asigando flujos de procesos!
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
-    -->
+    <app-footer></app-footer>
   </ng-container>
 </app-layout>
 
+<!--CREATE ENTITY-->
+<app-entities-create-edit (message)="toastMessage($event)" (isReturn)="onShowHome($event)" *ngIf="showCreateEdit" [selectedEntity]="selectedEntity"></app-entities-create-edit>
+<!--ENTITIES LIST - Atributos -->
+<app-entities-list-atributes [selectedEntity]="selectedEntity" (isReturn)="onShowHome($event)" *ngIf="showEntitiesList"></app-entities-list-atributes>
+
+<!--IS BLOCKED PAGE-->
 <div class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"
      style="background: rgba(20,20,20,0.6)" *ngIf="isBlock">
   <div class="p-4 flex bg-white rounded border border-solid border-mono-30">
@@ -206,3 +171,47 @@
     </div>
   </div>
 </div>
+
+<!--MODAL DELETE-->
+<div *ngIf="isDelete"
+     class="fixed top-0 z-50 bg-black  w-screen h-screen flex items-center justify-center"
+     style="background: rgba(20,20,20,0.6)"
+     id="popup-modal">
+  <div class="relative px-4 w-full max-w-md h-full md:h-auto">
+    <!-- Modal content -->
+    <div class="bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div class="flex justify-end p-2">
+        <button type="button"
+                (click)="cancelDelete()"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                data-modal-toggle="popup-modal">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-6 pt-0 text-center">
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Está seguro de eliminar la entidad
+          <b>"{{selectedEntity.name}}"</b>?</h3>
+        <div class="flex justify-around">
+          <button (click)="deleteEntity()" data-modal-toggle="popup-modal" type="button"
+                  class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+            Si, estoy seguro.
+          </button>
+          <button (click)="cancelDelete()" data-modal-toggle="popup-modal" type="button"
+                  class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">
+            No, cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--MODAL DELETE-->
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+
+

@@ -4,16 +4,26 @@ import { CommonModule } from '@angular/common';
 import { RolesRoutingModule } from './roles-routing.module';
 import { RolesComponent } from './roles.component';
 import {UiModule} from "@app/ui/ui.module";
+import { RolesListComponent } from './pages/roles-list/roles-list.component';
+import { RolesCreateComponent } from './pages/roles-create/roles-create.component';
+import { RolesManagerComponent } from './pages/roles-manager/roles-manager.component';
+import {ToastModule} from "ecapture-ng-ui";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
   declarations: [
-    RolesComponent
+    RolesComponent,
+    RolesListComponent,
+    RolesCreateComponent,
+    RolesManagerComponent
   ],
     imports: [
         CommonModule,
         RolesRoutingModule,
-        UiModule
+        UiModule,
+        ToastModule,
+        ReactiveFormsModule
     ]
 })
 export class RolesModule { }

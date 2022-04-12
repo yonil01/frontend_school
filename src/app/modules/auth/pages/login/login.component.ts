@@ -77,34 +77,47 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public login() { //loginError
-    this.isErrorLogin = false;
-    this.isLoading = true;
-    this.subscription.add(
-      this._authenticationService.login(this.formLogin.value, this.secretKey).subscribe(
-        (resp: any) => {
-          if (resp.data) {
-            this._authenticationService.setTokenSessionStorage(resp.data);
-            this.store.dispatch(controlLogin({logged: true}));
-          } else {
-            this.isErrorLogin = true;
+    if(this.formLogin.valid) {
+      this.isErrorLogin = false;
+      this.isLoading = true;
+      this.subscription.add(
+        this._authenticationService.login(this.formLogin.value, this.secretKey).subscribe(
+          async (resp: any) => {
+            if (resp.error) {
+              this.isErrorLogin = true;
+              this._messageService.add({
+                type: 'error',
+                message: 'Usuario o contraseña incorrectos',
+                life: 5000,
+              });
+            } else {
+              if (resp.data) {
+                this._authenticationService.setTokenSessionStorage(resp.data);
+                this.store.dispatch(controlLogin({logged: true}));
+              } else {
+                this.isErrorLogin = true;
+              }
+              await this.isLogged();
+            }
+            this.isLoading = false;
+          },
+          (err) => {
             this._messageService.add({
               type: 'error',
-              message: resp.msg,
+              message: 'Inicio de sesión fallido',
               life: 5000,
             });
-          }
-          this.isLogged();
-          this.isLoading = false;
-        },
-        (err) => {
-          this._messageService.add({
-            type: 'error',
-            message: 'Inicio de sesión fallido',
-            life: 5000,
-          });
-          this.isLoading = false;
-        }),
-    );
+            this.isLoading = false;
+          }),
+      );
+    }else {
+      this._messageService.add({
+        type: 'warning',
+        message: 'Complete los campos correctamente',
+        life: 5000,
+      });
+      this.formLogin.markAllAsTouched();
+    }
   }
 
   private getKeysENV() {
@@ -123,9 +136,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       sessionStorage.setItem('Modules', JSON.stringify(modules));
       this.store.dispatch(controlModules({modules: modules}));
       if (modules.length > 0) {
-        const allComponents = modules.map((module: models.Module) => module.components);
+        const dataComponents = modules.map((module: models.Module) => module.components);
 
-        if (allComponents.some((com: any) => com[0].url_front === '/wizard')) {
+        if (dataComponents.some((component: any) => component[0].url_front === '/wizard')) {
           await this._route.navigateByUrl('wizard');
         } else {
           const {components: firstComponent} = modules[0];
@@ -144,7 +157,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  getModules(): Promise<any> {
+  public getModules(): Promise<any> {
     return new Promise((res, rej) => {
       this.subscription.add(
         this._modulesService

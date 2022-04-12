@@ -1,8 +1,9 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "~ecapture-ng-ui/assets/styles/_global.css";
 
 
 
@@ -17,16 +18,16 @@
     --c-mono-100: #313335;
     --c-black: #2B2B2B;
 
-    --c-brand-d-3: #002266;
-    --c-brand-d-2: #003399;
-    --c-brand-d-1: #0044CC;
+    --c-brand-d-3: #00131F;
+    --c-brand-d-2: #001929;
+    --c-brand-d-1: #001F33;
 
-    --c-brand-1: #0055FF;
-    --c-brand-2: #0055FF;
+    --c-brand-1: #00263E;
+    --c-brand-2: #004B7A;
 
-    --c-brand-l-1: #3377FF;
-    --c-brand-l-2: #6699FF;
-    --c-brand-l-3: #99BBFF;
+    --c-brand-l-1: #004B7A;
+    --c-brand-l-2: #005E99;
+    --c-brand-l-3: #0071B8;
 
     --c-alert-error-l: #FF666E;
     --c-alert-success-l: #2ABB54;
@@ -99,99 +100,100 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 .t-h1 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 300;
   font-size: 6rem;
   line-height: 8rem;
 }
 .t-h2 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 300;
   font-size: 4rem;
   line-height: 5rem;
 }
 .t-h3 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 300;
   font-size: 3rem;
   line-height: 4rem;
 }
 .t-h4 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 400;
   font-size: 2rem;
   line-height: 3rem;
 }
 .t-h5 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 400;
   font-size: 1.5rem;
   line-height: 2rem;
 }
 
 .t-subtitle-1 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.5rem;
 }
 .t-subtitle-2 {
-  font-family: "IBM Plex Sans Condensed";
+  font-family: "PT Sans";
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.5rem;
 }
 
 .t-body-1 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.5rem;
 }
 .t-body-2 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 400;
   font-size: 0.875rem;
   line-height: 1.5rem;
 }
 
 .t-button-1 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.5rem;
 }
 .t-button-2 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.5rem;
 }
 
 .t-caption-1 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 1rem;
 }
 .t-caption-2 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 400;
   font-size: 0.75rem;
   line-height: 1rem;
   /*flex-wrap: wrap;*/
 }
 .t-caption-3 {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 400;
   font-size: 10px;
   line-height: 8px;
 }
 
 .t-overline {
-  font-family: "IBM Plex Sans";
+  font-family: "PT Sans";
   font-weight: 400;
   text-transform: uppercase;
   font-size: 0.625rem;
@@ -225,6 +227,10 @@ label {
   @apply px-2 h-10 t-body-1 text-black bg-mono-10 rounded
 }
 
+.ec-input {
+  @apply h-10 px-2 text-black t-body-2 bg-mono-10 rounded
+}
+
 /* Buttons <a> link </a>*/
 
 /* Buttons */
@@ -249,10 +255,10 @@ button:disabled{
   @apply bg-brand-d-1
 }
 .b-outline:hover {
-  @apply bg-brand-d-1 text-white
+  @apply bg-brand-1 text-white
 }
 .b-ghost:hover {
-  @apply bg-brand-d-1 text-white
+  @apply bg-brand-1 text-white
 }
 
 .gutter {
@@ -313,11 +319,45 @@ button:disabled{
   @apply bg-mono-30
 }
 
-
 .toast-item-container {
   z-index: 1113 !important;
 }
 
 .toast-container {
   z-index: 1113 !important;
+}
+
+svg {
+  @apply fill-current
+}
+
+
+.tooltip-container {
+  text-align: center;
+  z-index: 100;
+  position: fixed;
+  padding: 6px 12px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  line-height: initial;
+  color: white;
+  width: auto;
+  background: #111111ee;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translate(-50%, -30%);
+  animation: tooltip-slide 0.18s ease-out 0.5s;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+
+@keyframes tooltip-slide {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }

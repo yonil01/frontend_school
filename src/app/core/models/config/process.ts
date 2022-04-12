@@ -31,37 +31,37 @@ export interface Process {
 }
 
 export interface Queue {
-  id?: string;
-  process_id?: string;
-  name?: string;
-  sequences?: number;
-  balance_type?: number;
-  type?: number;
-  class?: string;
-  ans?: number;
-  percent_alert?: number;
-  status?: number;
-  id_bpmn_element?: string;
-  roles?: string[];
-  entities?: string[];
+  id: string;
+  process_id: string;
+  name: string;
+  sequences: number;
+  balance_type: number;
+  type: number;
+  class: string;
+  ans: number;
+  percent_alert: number;
+  status: number;
+  id_bpmn_element: string;
+  roles: string[];
+  entities: string[];
   executions?: Execution[];
-  must_confirm_comment?: boolean;
+  must_confirm_comment: boolean;
   comments?: QueueComment[];
-  description?: string;
+  description: string;
   queue_attributes?: QueueAttribute[];
   queue_roles?: any[];
 }
 
-export class Execution {
-  id?: string;
-  queue_id?: string;
-  name?: string;
-  type?: number;
-  timer?: number | Timer;
-  class?: string;
-  description?: string;
-  execution_roles?: ExecutionRole[];
-  rules?: Rule[];
+export interface Execution {
+  id: string;
+  queue_id: string;
+  name: string;
+  type: number;
+  timer: number | Timer;
+  class: string;
+  description: string;
+  execution_roles: ExecutionRole[];
+  rules: Rule[];
 }
 
 export class Timer {
@@ -95,18 +95,18 @@ export class Timer {
 
 export interface Rule {
   id?: string;
-  code?: number;
-  name?: string;
-  status?: boolean;
-  first?: number;
-  child_true?: number;
-  child_false?: number;
-  action?: string;
-  itemtype_id?: number;
-  execution_id?: string;
-  description?: string;
-  params?: Param[];
-  rule_params?: any[];
+  code: number;
+  name: string;
+  status: boolean;
+  first: number;
+  child_true: number;
+  child_false: number;
+  action: string;
+  itemtype_id: number;
+  execution_id: string;
+  description: string;
+  params: Param[];
+  rule_params: any[];
 }
 
 export interface Param {
@@ -131,9 +131,9 @@ export interface ProcessDoctype {
 }
 
 export interface QueueComment {
-  id?: string;
-  queue_id?: string;
-  comment?: string;
+  id: string;
+  queue_id: string;
+  comment: string;
 }
 
 export interface QueueRole {
@@ -144,9 +144,9 @@ export interface QueueRole {
 }
 
 export interface QueueAttribute {
-  id?: string;
-  queue_id?: string;
-  attribute_id?: string;
+  id: string;
+  queue_id: string;
+  attribute_id: string;
   attribute?: Attribute;
 }
 
@@ -156,3 +156,15 @@ export interface ExecutionRole {
   role_id?: string;
   role?: Role;
 }
+
+export interface StepModel {
+  id: number;
+  name: string;
+  active: boolean;
+}
+
+export interface RolesDisplay {
+  role: Role;
+  active: boolean;
+}
+

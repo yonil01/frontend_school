@@ -17,6 +17,10 @@ import {RadioButtonModule} from "primeng/radiobutton";
 import {CheckboxModule as check} from "primeng/checkbox";
 import {StepsModule} from "primeng/steps";
 import {ReactiveFormsModule} from "@angular/forms";
+import { DynamicFormsListComponent } from './pages/dynamic-forms-list/dynamic-forms-list.component';
+import { DynamicFormsDetailComponent } from './pages/dynamic-forms-detail/dynamic-forms-detail.component';
+import { DynamicFormsContainerCreateComponent } from './pages/dynamic-forms-container-create/dynamic-forms-container-create.component';
+import { DynamicFormsContainerEditComponent } from './pages/dynamic-forms-container-edit/dynamic-forms-container-edit.component';
 
 
 @NgModule({
@@ -28,7 +32,11 @@ import {ReactiveFormsModule} from "@angular/forms";
     ConfigurationComponent,
     GridsterComponent,
     BlockOptionComponent,
-    ContainerCardComponent
+    ContainerCardComponent,
+    DynamicFormsListComponent,
+    DynamicFormsDetailComponent,
+    DynamicFormsContainerCreateComponent,
+    DynamicFormsContainerEditComponent
   ],
   imports: [
     CommonModule,

@@ -2,12 +2,12 @@
   <div class="flex {{StyleStep.style?.size}} justify-between">
     <div style="white-space: nowrap" class="w-full hidden lg:block" *ngFor="let data of StyleStep.dataSourceStep; index as i ">
         <div style="white-space: nowrap" *ngIf="data.focus" class="mb-2 flex space-x-4 p-2  hover:bg-mono-10 cursor-pointer " (click)="changeUbication(i)">
-          <div class="w-10 h-10 bg-blue-core-l2 rounded-full text-lg text-white flex items-center ">
+          <div class="w-10 h-10 bg-brand-1 rounded-full text-lg text-white flex items-center ">
             <span class="text-center font-bold text-mono-10 w-full">
               {{ i + 1 }}
             </span>
           </div>
-          <div class="flex align-center text-blue-core-l2 items-center  content-center" >
+          <div class="flex align-center text-brand-1 items-center  content-center" >
             <span>{{ data.title }}</span>
           </div>
         </div>
@@ -17,17 +17,17 @@
               {{ i + 1}}
             </span>
         </div>
-        <div class="flex align-center text-mono-30 items-center  content-center" >
+        <div class="flex align-center text-brand-1 items-center  content-center" >
           <span>{{ data.title }}</span>
         </div>
       </div>
       <div *ngIf="data.status === 'Completed' && !data.focus" class="mb-2 flex space-x-4 cursor-pointer hover:bg-mono-10 p-2" (click)="changeUbication(i)">
-        <div class="w-10 h-10 bg-transparent rounded-full text-lg text-white flex items-center border-2 border-blue-core-l2">
-            <span class="text-center font-bold text-blue-core-l2 w-full">
+        <div class="w-10 h-10 bg-transparent rounded-full text-lg text-white flex items-center border-2 border-brand-1">
+            <span class="text-center font-bold text-brand-1 w-full">
               {{ i + 1 }}
             </span>
         </div>
-        <div class="flex align-center text-blue-core-l2 items-center  content-center" >
+        <div class="flex align-center text-brand-1 items-center  content-center" >
           <span>{{ data.title }}</span>
         </div>
       </div>
@@ -39,7 +39,7 @@
           [radius]="30"
           [outerStrokeWidth]="6"
           [innerStrokeWidth]="5"
-          [outerStrokeColor]="'#6699FF'"
+          [outerStrokeColor]="'#00263E'"
           [innerStrokeColor]="'#595B5D'"
           [animation]="true"
           [animationDuration]="600"
@@ -49,7 +49,7 @@
           [showSubtitle]="false"
           [showUnits]="false"
           title="{{(i+1) + '/' + StyleStep.dataSourceStep.length}}"
-          [titleColor]="'#F4F5F6'"
+          [titleColor]="'##00263E'"
         ></circle-progress>
         <div class="w-full">
           <h1 style="white-space: nowrap" class="sm:text-lg text-clip overflow-hidden md:text-2xl text-indigo-50">{{data.title}}</h1>

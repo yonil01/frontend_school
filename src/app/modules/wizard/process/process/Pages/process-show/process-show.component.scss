@@ -1,0 +1,34 @@
+.diagram-container {
+  height: 80vh;
+  width: 100%;
+  background: #fefefe;
+}
+
+div[data-id='replace-with-collapsed-subprocess'] {
+  display: none;
+}
+
+div[data-id='replace-with-expanded-subprocess'] {
+  display: none;
+}
+
+div[data-id='replace-with-call-activity'] {
+  display: none;
+}
+
+.djs-popup-header{
+  display: none;
+}
+
+.bpmn-icon-task {
+  background-color: #C8E6C9;
+
+}
+
+.bpmn-icon-gateway-none {
+  background-color: #C8E6C9;
+}
+
+.bpmn-icon-intermediate-event-none {
+  background-color: #C8E6C9;
+}

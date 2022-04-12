@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {CustomerService} from "@app/core/services/graphql/wizard/customer/customer.service";
 import {Client, Project} from "@app/core/models/wizard/wizard";
 import {DropdownComponent} from "ecapture-ng-ui";
+import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
 
 @Component({
   selector: 'app-wizard',
@@ -61,7 +62,7 @@ export class WizardComponent implements OnInit {
         name: 'BPMN',
         icon: '../../../assets/img/bpmns-icon.svg',
         description: 'Presione aquí para configurar lo correspondiente a procesos.',
-        route: 'processes',
+        route: 'bpmn',
       },
       {
         name: 'Roles',
@@ -92,7 +93,7 @@ export class WizardComponent implements OnInit {
       this.projects = []
       dropdown.clearValue();
     }
-    sessionStorage.setItem('project', JSON.stringify(client));
+    sessionStorage.setItem('client', JSON.stringify(client));
 
   }
 

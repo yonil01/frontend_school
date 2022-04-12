@@ -74,5 +74,9 @@
   "IDENTIFICATION_NUMBER": "Identification Number",
   "USERNAME": "Username",
   "SELECTED_OPTION": "Selected Option",
-  "IDENTIFICATION_TYPE": "Identification Type"
+  "IDENTIFICATION_TYPE": "Identification Type",
+  "GENERAL_INFORMATION_OF_ACTIVITIES": "General information of activities",
+  "STATUS": "Status",
+  "ACTIVITY": "Activity",
+  "NAME": "Name"
 }

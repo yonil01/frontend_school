@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
-import { map } from 'rxjs/operators';
-import { Response, Document, EntityValue } from '@app/core/models';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Apollo} from 'apollo-angular';
+import {map} from 'rxjs/operators';
+import {Response, Document, EntityValue} from '@app/core/models';
+import {Observable} from 'rxjs';
 import {
   CreateDocumentQuery,
   GetFirstFileByDocumentIDQuery,
@@ -29,9 +28,10 @@ export class DocumentService {
     private newEntityToDocumentQuery: NewEntityToDocumentQuery,
     private getDocumentByIdQuery: GetDocumentByIDQuery,
     private deleteEntityToDocumentQuery: DeleteEntityToDocumentQuery,
-  ) {}
+  ) {
+  }
 
-  getDocumentByID(id: number): Observable<Response> {
+  getDocumentByID(id: string): Observable<Response> {
     return this.getFirstFileByDocumentIDQuery
       .watch({
         id: id,

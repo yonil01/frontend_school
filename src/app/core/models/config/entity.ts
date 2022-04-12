@@ -10,31 +10,31 @@ export interface Entity {
 }
 
 export interface Attribute {
-  id?: string;
-  name?: string;
-  description?: string;
-  tag_html?: string;
-  type?: string;
-  mask?: string;
-  autofill?: string[];
-  min_length?: number;
-  max_length?: number;
-  validation?: string;
-  field_types?: string;
-  sequence?: number;
-  regex?: string;
-  dataset?: boolean;
-  is_cipher?: boolean;
-  required?: boolean;
-  hidden?: boolean;
-  disabled?: boolean;
-  is_index?: boolean;
-  entities_id?: string;
+  id: string;
+  name: string;
+  description: string;
+  tag_html: string;
+  type: string;
+  mask: string;
+  autofill: string[];
+  min_length: number;
+  max_length: number;
+  validation: string;
+  field_types: string;
+  sequence: number;
+  regex: string;
+  dataset: boolean;
+  is_cipher: boolean;
+  required: boolean;
+  hidden: boolean;
+  disabled: boolean;
+  is_index: boolean;
+  entities_id: string;
   entities_attributes_dataset?: Dataset;
   entities_attributes_autofills?: AttributeAutofill;
   entities_attributes_cascading_dataset?: AttributeCascadingDataset;
-  cascading_datasets?: string[];
-  autofill_attributes?: number[];
+  cascading_datasets: string[];
+  autofill_attributes: number[];
 }
 
 export interface AttributeDataset {
@@ -56,6 +56,7 @@ export interface AttributeCascadingDataset {
 }
 
 export interface CascadingDataset {
+  showConfig?: boolean;
   id?: string;
   name?: string;
   description?: string;

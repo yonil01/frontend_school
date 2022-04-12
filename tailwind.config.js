@@ -1,6 +1,6 @@
 module.exports = {
   purge: ['./src/**/*.html', './src/**/*.ts'],
-  darkMode: 'media',
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -61,9 +61,10 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ['active','checked'],
-      borderWidth: ['hover','checked'],
-      borderColor: ['hover','checked'],
+      backgroundColor: ['active','checked','disabled','group-hover'],
+      borderWidth: ['hover','checked','disabled','active','group-hover'],
+      borderColor: ['hover','checked','disabled','active','group-hover'],
+      textColor: ['active', 'disabled', 'hover', 'checked'],
       display: ['group-hover']
     },
   },

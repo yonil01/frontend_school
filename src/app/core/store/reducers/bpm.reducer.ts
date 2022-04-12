@@ -4,7 +4,7 @@ import { Process, Queue } from '@app/core/models';
 
 export interface BpmState {
   bpm: Process;
-  task: Queue;
+  task: Queue | {};
   element: any;
   showSide: boolean;
   isChanged: boolean;

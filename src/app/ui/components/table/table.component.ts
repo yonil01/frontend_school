@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {TableModel} from "@app/ui/components/table/model/table.model";
 import {Router} from "@angular/router";
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-table',
@@ -17,6 +18,7 @@ export class TableComponent implements OnInit, OnChanges {
   public rangeMax: number;
   public items: any[];
   public filterTerm!: string;
+  fileName: string = 'SheetJS.xlsx';
 
   constructor(private route: Router) {
     this.tableStyle = {
@@ -68,5 +70,20 @@ export class TableComponent implements OnInit, OnChanges {
     this.dataReturnOne.emit(dataSend);
   }
 
+  export(): void {
+    const ArrayObject:any = [];
+    ArrayObject.push(['N° Identifiación', 'Apellidos Y nombres', 'Correo', 'Estado', 'Roles'])
+    this.tableStyle.dataSource?.filter((user: any) => {
+      const ArrayTem = Object.values(user)
+      ArrayTem.shift();
+      ArrayObject.push(ArrayTem);
+    })
+    // @ts-ignore
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(ArrayObject);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, this.fileName);
+  }
 
 }

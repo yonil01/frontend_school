@@ -9,14 +9,14 @@ export interface Customer {
 }
 
 export interface Project {
-  id?: string;
-  name?: string;
-  description?: String;
-  department?: String;
-  email?: String;
-  phone?: String;
-  product_owner?: String;
-  customers_id?: string;
+  id: string;
+  name: string;
+  description: string;
+  department: string;
+  email: string;
+  phone: string;
+  product_owner: string;
+  customers_id: string;
 }
 
 export interface Storage {

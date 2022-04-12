@@ -62,17 +62,6 @@ export class CreateDocumentQuery extends Mutation {
     }
   `;
 }
-// mutation createDocument($newDocument: NewDocument!) {
-//   createDocument(input: { data: $newDocument }) {
-//     error
-//     data {
-//       id
-//     }
-//     code
-//     type
-//     msg
-//   }
-// }
 
 @Injectable({
   providedIn: 'root',

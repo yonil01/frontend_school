@@ -1,0 +1,151 @@
+<app-layout>
+  <ng-container layoutBody>
+    <div class="ec-container py-6 md:py-12 bg-white space-y-12">
+      <div class="title flex flex-col">
+        <span class="text-mono-70 t-body-1">Nombre del Rol</span>
+        <div class="flex flex-row items-center space-x-1">
+          <div>
+            <svg class="text-brand-2" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M17.75 3C19.5449 3 21 4.45507 21 6.25V17.75C21 19.5449 19.5449 21 17.75 21H6.25C4.45507 21 3 19.5449 3 17.75V6.25C3 4.45507 4.45507 3 6.25 3H17.75ZM19.5 8.5H4.5V17.75C4.5 18.7165 5.2835 19.5 6.25 19.5H17.75C18.7165 19.5 19.5 18.7165 19.5 17.75V8.5ZM7.75 14.5C8.44036 14.5 9 15.0596 9 15.75C9 16.4404 8.44036 17 7.75 17C7.05964 17 6.5 16.4404 6.5 15.75C6.5 15.0596 7.05964 14.5 7.75 14.5ZM12 14.5C12.6904 14.5 13.25 15.0596 13.25 15.75C13.25 16.4404 12.6904 17 12 17C11.3096 17 10.75 16.4404 10.75 15.75C10.75 15.0596 11.3096 14.5 12 14.5ZM7.75 10.5C8.44036 10.5 9 11.0596 9 11.75C9 12.4404 8.44036 13 7.75 13C7.05964 13 6.5 12.4404 6.5 11.75C6.5 11.0596 7.05964 10.5 7.75 10.5ZM12 10.5C12.6904 10.5 13.25 11.0596 13.25 11.75C13.25 12.4404 12.6904 13 12 13C11.3096 13 10.75 12.4404 10.75 11.75C10.75 11.0596 11.3096 10.5 12 10.5ZM16.25 10.5C16.9404 10.5 17.5 11.0596 17.5 11.75C17.5 12.4404 16.9404 13 16.25 13C15.5596 13 15 12.4404 15 11.75C15 11.0596 15.5596 10.5 16.25 10.5ZM17.75 4.5H6.25C5.2835 4.5 4.5 5.2835 4.5 6.25V7H19.5V6.25C19.5 5.2835 18.7165 4.5 17.75 4.5Z"/>
+            </svg>
+          </div>
+          <span class="text-black t-h5">Fechas Deshabilitadas</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="section space-y-4">
+          <div class="title pb-2 text-brand-2 flex items-center justify-between border-b border-brand-2">
+            <span class="t-subtitle-1">Datos Básicos</span>
+          </div>
+          <form id="formFechas" [formGroup]="DocumentsFechasForm" (ngSubmit)="!isEdit ? saveFechasDeshabilitada($event) : updateDateDisallowed($event)" class="permissions grid grid-cols-2 gap-4">
+            <div class="flex flex-col space-y-1">
+              <label for="begins_at" class="t-caption-2 text-mono-70">Fecha Inicial</label>
+              <input yearRange="2000:2030" dateFormat="dd/mm/yy" id="begins_at" type="date" class="ec-input" formControlName="begins_at">
+              <span *ngIf="DocumentsFechasForm.get('begins_at')?.invalid && DocumentsFechasForm.get('begins_at')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
+            </div>
+            <div class="flex flex-col space-y-1 lg:col-start-1">
+              <label for="ends_at" class="t-caption-2 text-mono-70">Fecha Final</label>
+              <input yearRange="2000:2030" dateFormat="dd/mm/yy" id="ends_at" type="date" class="ec-input" formControlName="ends_at">
+              <span *ngIf="DocumentsFechasForm.get('ends_at')?.invalid && DocumentsFechasForm.get('ends_at')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
+            </div>
+            <div class="flex flex-col col-span-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:row-span-2 space-y-1">
+              <div class="text-mono-70 flex flex-row items-center justify-between">
+                <label for="description" class="t-caption-2">Observación</label>
+                <span class="t-overline">OPCIONAL</span>
+              </div>
+              <textarea formControlName="description" id="description" type="number" class="p-2 text-black t-body-2 bg-mono-10 rounded h-full"></textarea>
+              <span class="text-alert-info t-caption-2">0/???</span>
+            </div>
+          </form>
+        </div>
+        <div class="action flex flex-row space-x-2 md:justify-end my-12">
+          <button *ngIf="isEdit" (click)="isEdit = false; DocumentsFechasForm.reset()" class="flex-1 md:flex-none b-outline">Cancelar</button>
+          <button form="formFechas" [disabled]="DocumentsFechasForm.invalid" type="submit" class="flex-1 md:flex-none b-solid">{{!isEdit ? 'Agregar' : 'Actualizar'}}</button>
+        </div>
+        <div *ngIf="fechas.length < 1" class="notify flex items-center justify-center py-6 space-y-2 flex-col">
+          <div><svg class="text-brand-2" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M39.54 62.72C29.406 62.72 24.722 58.284 18.732 51.516C17.044 49.61 11.862 43.996 11.862 43.996L10.86 42.888C8.42603 40.21 7.28003 38.852 7.28003 37.97C7.28003 36.888 8.02803 35.926 9.38403 35.256C11.76 34.084 15.642 33.964 18.022 35.794C19.812 37.17 23.376 41.016 25.28 43.12V14C25.28 11.224 27.216 9.28601 29.988 9.28001C29.988 9.28001 29.988 9.28001 29.99 9.28001C29.99 9.28001 29.992 9.28001 29.996 9.28001C29.998 9.28001 30 9.28001 30.002 9.28001C32.782 9.28601 34.72 11.224 34.72 14V29.28H47.824C52.896 29.28 56.72 32.836 56.72 37.552V45.572C56.72 54.478 54.638 62.72 39.54 62.72ZM12.93 43.032C12.934 43.036 18.12 48.654 19.81 50.566C25.54 57.038 30.008 61.28 39.54 61.28C52.604 61.28 55.28 55 55.28 45.572V37.552C55.28 33.656 52.074 30.718 47.824 30.718H34C33.602 30.718 33.28 30.396 33.28 29.998V14C33.28 12.04 31.96 10.722 29.996 10.72C28.038 10.722 26.72 12.04 26.72 14V45C26.72 45.298 26.536 45.566 26.256 45.674C25.978 45.782 25.66 45.704 25.462 45.476C25.402 45.41 19.496 38.74 17.146 36.934C15.296 35.516 11.968 35.588 10.022 36.55C9.19603 36.956 8.72203 37.476 8.72203 37.972C8.83603 38.52 10.848 40.732 11.928 41.922L12.93 43.032ZM21.51 23.458C18.814 21.07 17.268 17.622 17.268 14C17.268 6.98601 22.974 1.28001 29.988 1.28001C37.002 1.28001 42.708 6.98601 42.708 14C42.708 17.622 41.162 21.068 38.466 23.458L37.508 22.38C39.896 20.264 41.266 17.21 41.266 14C41.266 7.78001 36.208 2.72001 29.986 2.72001C23.766 2.72001 18.706 7.78001 18.706 14C18.706 17.21 20.076 20.266 22.464 22.38L21.51 23.458Z" fill="#595B5D"/>
+          </svg>
+          </div>
+          <span class="text-mono-70 t-body-2">No hay fechas registradas, agregue una con el formulario de arriba.</span>
+        </div>
+        <div *ngIf="fechas.length > 0" class="data w-full space-y-4">
+          <div class="table-v md:hidden flex flex-col space-y-4">
+            <div *ngFor="let fecha of fechas; index as i" class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+              <span class="text-mono-70 t-caption-1">N° {{i+1}}</span>
+              <div class="flex flex-col">
+                <span class="text-mono-70 t-caption-2">Fecha Inicial</span>
+                <span class="text-black t-body-1">{{fecha.begins_at|date:'medium':'UTC'}}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-mono-70 t-caption-2">Fecha Final</span>
+                <span class="text-black t-body-1">{{fecha.ends_at|date:'medium':'UTC'}}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-mono-70 t-caption-2">Observación</span>
+                <span class="text-black t-body-1">{{fecha.description}}</span>
+              </div>
+              <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
+                <button (click)="OptionTableSet($event, fecha, i)" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
+                  <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
+                  </svg>
+                  </div>
+                </button>
+                <button [disabled]="isEdit"  class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+                  <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
+                  </svg></div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="table-h hidden md:block w-full">
+            <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
+              <div class="p-2 w-16">N°</div>
+              <div class="p-2 flex-1">Fecha Inicial</div>
+              <div class="p-2 flex-1">Fecha Final</div>
+              <div class="p-2 flex-1">Observación</div>
+              <div class="p-2 w-24">Opciones</div>
+            </div>
+            <div class="table-body t-body-2 text-mono-70">
+              <div *ngFor="let fecha of fechas; index as i" class="item w-full flex flex-row">
+                <div class="flex items-center p-2 w-16">{{i+1}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{fecha.begins_at|date:'medium':'UTC'}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{fecha.ends_at|date:'medium':'UTC'}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{fecha.description}}</div>
+                <div class="flex items-center p-2 w-24">
+                  <div class="w-full flex flex-row">
+                    <button (click)="OptionTableSet($event, fecha, i)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                      <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
+                      </svg>
+                      </div>
+                    </button>
+                    <button [disabled]="isEdit"  class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                      <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
+                      </svg></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pagination flex flex-row items-center justify-between">
+            <div class="left">
+              <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
+                <option>10</option>
+                <option>20</option>
+                <option>30</option>
+              </select>
+            </div>
+            <div class="right flex items-center flex-row space-x-1">
+              <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
+              </svg>
+              </div></button>
+              <div class="flex items-center bg-mono-10 px-2 rounded h-8">
+                <span class="t-body-2">1/2</span>
+              </div>
+              <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
+              </svg>
+              </div></button>
+            </div>
+          </div>
+        </div>
+        <div class="action flex flex-row space-x-2 md:justify-end mt-12">
+          <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cerrar</button>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </ng-container>
+</app-layout>
+
+<app-block-page [show]="isBlockPage"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-confirm-dialog [show]="showConfirmDelete" type="warning" title="Confimar Eliminación" body="¿Desea Eliminar el registro?" (onEvent)="confirmDialogDelete($event)"></app-confirm-dialog>

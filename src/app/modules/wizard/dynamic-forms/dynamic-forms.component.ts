@@ -28,7 +28,16 @@ export class DynamicFormsComponent implements OnInit {
               private store: Store<AppState>,
               private documentService: DocumentService,
               ) {
-    this.project = {};
+    this.project = {
+      id: '',
+      customers_id: '',
+      department: '',
+      name: '',
+      description: '',
+      email: '',
+      phone: '',
+      product_owner: ''
+    };
     this.formDoctype = {};
     this.doctypeId = '';
   }
@@ -87,7 +96,7 @@ export class DynamicFormsComponent implements OnInit {
 
   private getDocument(idDocument: string): Promise<any> {
     return new Promise((resolv, rej) => {
-      this.documentService.getDocumentByID(parseInt(idDocument, 10)).subscribe((res: any) => {
+      this.documentService.getDocumentByID(idDocument).subscribe((res: any) => {
         if (res.error) rej(true);
         resolv(res.data.file_encode);
       });
