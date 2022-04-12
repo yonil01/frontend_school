@@ -2,7 +2,7 @@
   window.__env = window.__env || {};
 
   // API url Graphql
-  window.__env.GRAPHQL_API = 'http://127.0.0.1:50030';
+  window.__env.GRAPHQL_API = 'http://35.165.142.130:6060';
   // window.__env.REST_API = 'http://127.0.0.1:50040';
   window.__env.ECATCH_API = 'http://35.165.142.130';
   //window.__env.GRAPHQL_API = 'http://35.165.142.130:6060';

@@ -14,6 +14,19 @@ import {Subscription} from "rxjs/internal/Subscription";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Elemento, ModulesPrivileges, Modulo, Privileges, ReduxElement} from "@app/modules/wizard/roles/models/models";
 
+interface ComponentTemp {
+  id: string,
+  name: string,
+  elements: ElementTemp[]
+}
+
+interface ElementTemp {
+  element_id: string,
+  name: string,
+  active: boolean,
+}
+
+
 @Component({
   selector: 'app-roles-privilege',
   templateUrl: './roles-privilege.component.html',
@@ -42,6 +55,9 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
   private dataRolesElement: Elemento = {checked: 0, component_id: "", description: "", id: "", name: "", url_back: ""};
 
   public moduloSelected: ModulesPrivileges = {id: "", name: "", privileges: []};
+  public moduleNameSelect: string = 'Configuracion';
+  public moduleIdSelect: string = '';
+  public moduleSelectedTemp: ComponentTemp[] = [];
 
   constructor(
     private _roleService: RoleService,
@@ -64,7 +80,10 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
     this._subscription.unsubscribe();
   }
 
-  private initRoles(): void {
+  private initRoles(moduleInit: string = 'Configuracion'): void {
+    this.moduloElement = [];
+    this.modulesPrivileges = [];
+
     if (this.role !== null) {
       this.isBlockPage = true;
       this._subscription.add(
@@ -93,8 +112,38 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
                 }
               }
 
-              this.moduloElement = res.data;
-              this.moduloSelected = this.modulesPrivileges[0];
+              const moduleData: Modulo[] = res.data;
+              for(let item of moduleData){
+                if(item.components?.length > 0){
+                  this.moduloElement.push(item);
+                }
+              }
+              console.log(this.role);
+              console.log(this.moduloElement);
+              console.log(this.modulesPrivileges);
+              //this.moduloSelected = this.modulesPrivileges[0];
+
+              this.moduleSelectedTemp = [];
+              const modulePrivilege = this.modulesPrivileges.find(p => p.id === this.moduleIdSelect)
+              console.log('Desde aquí');
+              console.log(modulePrivilege);
+
+              const module = this.moduloElement.find(m => m.name === moduleInit) || this.moduloElement[0];
+              for(let component of module.components) {
+                const elements: ElementTemp[] = [];
+                for (let element of component.elements){
+                  elements.push({
+                    element_id: element.id,
+                    name: element.name,
+                    active: modulePrivilege?.privileges.find(p => p.element.id === element.id)?.active || false,
+                  });
+                }
+                this.moduleSelectedTemp.push({
+                  id: component.id,
+                  name: component.name,
+                  elements: elements
+                });
+              }
             }
             this.isBlockPage = false;
           },
@@ -109,21 +158,45 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
   }
 
   public showPrivileges(modulo: Modulo): void {
+    this.moduleNameSelect = modulo.name;
+    this.moduleIdSelect = modulo.id;
+    this.moduleSelectedTemp = [];
     const moduleFind = this.modulesPrivileges.find(m => m.id === modulo.id);
-    if (moduleFind) {
+    /*if (moduleFind) {
       this.moduloSelected = moduleFind;
+      console.log(this.moduloSelected);
+    }*/
+
+    if(moduleFind){
+      for(let component of modulo.components) {
+        const elements: ElementTemp[] = [];
+        for (let element of component.elements){
+          elements.push({
+            element_id: element.id,
+            name: element.name,
+            // @ts-ignore
+            active: moduleFind.privileges.find(p => p.element.id === element.id).active || false,
+          });
+        }
+        this.moduleSelectedTemp.push({
+          id: component.id,
+          name: component.name,
+          elements: elements
+        });
+      }
     }
   }
 
-  public changeCheck(event: any, data: Elemento): void {
+  public changeCheck(event: any, elementSelected: ElementTemp): void {
+    console.log(elementSelected);
     if (event) {
       const dataElemento: Elements = {
         id: uuidv4().toLowerCase(),
-        element_id: data.id.toLocaleLowerCase(),
+        element_id: elementSelected.element_id.toLocaleLowerCase(),
         role_id: this.role.id?.toLocaleLowerCase(),
       };
       const dataE = JSON.parse(JSON.stringify(dataElemento));
-      this.dataElemenRedux = {id: dataE.id, element: {...data}};
+      //this.dataElemenRedux = {id: dataE.id, element: {...data}};
       this.isBlockPage = true;
       this._subscription.add(
         this._roleService.createRolesElement(dataE).subscribe({
@@ -132,8 +205,9 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
               this._messageService.add({type: 'error', message: 'Error en la Asignación' + res.msg, life: 5000});
             } else {
               this._messageService.add({type: 'success', message: 'Asignación Exitosa' + res.msg, life: 5000});
-              this.reloadRolElement();
-              this.store.dispatch(addElement({element: this.dataElemenRedux}));
+              this.initRoles(this.moduleNameSelect);
+              //this.reloadRolElement();
+              //this.store.dispatch(addElement({element: this.dataElemenRedux}));
             }
             this.isBlockPage = false;
           },
@@ -145,10 +219,10 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
         })
       );
     } else {
-      const id = data.id;
-      const element = Object(this.role.role_elements).find((el: { element: { id: string; }; }) => el.element?.id === id);
+      const id = elementSelected.element_id;
+      const element = this.role.role_elements?.find((el: { element: { id: string; }; }) => el.element?.id === id);
       const idElement = element.id.toLocaleLowerCase();
-      const indexElement = this.role.role_elements?.findIndex((el) => el.id === element.id);
+      //const indexElement = this.role.role_elements?.findIndex((el) => el.id === element.id);
       this.isBlockPage = true;
       this._subscription.add(
         this._roleService.deleteRolesElement(idElement).subscribe({
@@ -162,7 +236,8 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
                 life: 5000
               });
               // @ts-ignore
-              this.store.dispatch(deleteRoleElement({indexRoleElement: indexElement}));
+              //this.store.dispatch(deleteRoleElement({indexRoleElement: indexElement}));
+              this.initRoles(this.moduleNameSelect);
             }
             this.isBlockPage = false;
           },
