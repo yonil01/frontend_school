@@ -40,7 +40,7 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
   ) {
     this.roleForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(60)]],
+      name: ['', []],
       description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(60)]],
       sessions_allowed: ['', [Validators.required, Validators.min(1), Validators.max(10000)]],
       see_all_users: [false]
@@ -85,6 +85,15 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   }
 
   saveRole() {
+    const description: string = this.roleForm.get('description')?.value+"";
+    const re = / /gi;
+    const descriptionRefactor: string = description.replace(re,'_')+"";
+    const name: string = descriptionRefactor.toLowerCase();
+    console.log(description);
+    console.log(descriptionRefactor);
+    console.log(name);
+    this.roleForm.get('name')?.setValue(name);
+
     if (!this.roleForm.invalid) {
       if (!this.isEdit) {
         this.role = {
