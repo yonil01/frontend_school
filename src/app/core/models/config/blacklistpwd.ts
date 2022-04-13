@@ -3,7 +3,5 @@ export interface BlackListPwd {
   password?: string;
 }
 
-export interface UpdateBlackListPwd {
-  id?: string;
-  password?: string;
-}
+
+

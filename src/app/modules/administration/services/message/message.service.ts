@@ -28,7 +28,7 @@ export class MessageServices {
     return this.createMsgQuery.mutate({req: { data: list }}).pipe(map(({ data }: any) => data.createMessage));
   }
 
-  public deleateMsgService(indice: string): Observable<Response> {
+  public deleateMsgService(indice: number): Observable<Response> {
     return this.deleteMsgQuery.mutate({id: indice}).pipe(map(({ data }: any) => data.deleteMessage));
   }
 
