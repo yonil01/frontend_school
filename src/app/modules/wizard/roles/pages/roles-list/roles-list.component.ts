@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs/internal/Subscription";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {ToastService} from "ecapture-ng-ui";
-import {Customer, Project, Response, Role, RolesProject} from "@app/core/models";
+import {Customer, Project, Response, Role, RoleAllowed, RolesProject} from "@app/core/models";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {Store} from "@ngrx/store";
@@ -52,7 +52,6 @@ export class RolesListComponent implements OnInit, OnDestroy {
             if (res.data) {
               this.roles = res.data;
               console.log(this.roles);
-              console.log(res.data);
             } else {
               this._messageService.add({type: 'error', message: 'No roles found', life: 5000});
             }
@@ -80,6 +79,7 @@ export class RolesListComponent implements OnInit, OnDestroy {
   public showRole(role: Role): void {
     this._store.dispatch(controlRole({ role: role, index: 0 }));
     this._router.navigateByUrl('wizard/roles/manager');
+    console.log(role);
   }
 
   public createRole(): void {
@@ -127,24 +127,28 @@ export class RolesListComponent implements OnInit, OnDestroy {
   }
 
   confirmDialogDelete(event: boolean) {
+    this.showConfirmDelete = false;
+    this.isBlockPage = true;
     if (event) {
-      this._roleService.deleteRole(this.data || '').subscribe((res: Response) => {
-        if (res.error) {
-          this._messageService.add({type: 'error', message: 'Error en la Eliminación', life: 5000});
-        } else {
-          const role: any = this.roles.find(role => role.id === this.data) || {};
-          this._roleService.deleteRoleProject(role.projects.first().id || '').subscribe((res: Response) => {
-            if(res.error){
-              this._messageService.add({type: 'error', message: 'No se pudo eliminar la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
+      const role: Role = this.roles[this.indexRoleDelete];
+      const roleProject = role.projects?.find(project => project.project.id?.toLocaleLowerCase() === this.project.id.toLocaleLowerCase())?.id || '';
+      this._roleService.deleteRoleProject(roleProject || '').subscribe((res: Response) => {
+        if(res.error){
+          this._messageService.add({type: 'error', message: 'No se pudo eliminar la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
+        }else{
+          this._roleService.deleteRole(this.data || '').subscribe((res: Response) => {
+            if (res.error) {
+              this._messageService.add({type: 'error', message: 'Error en la Eliminación', life: 5000});
+            }else{
+              this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
+              this._store.dispatch(deleteRole({ indexRole: this.indexRoleDelete }));
+              this.isBlockPage = false;
             }
           });
-          this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
-          this._store.dispatch(deleteRole({ indexRole: this.indexRoleDelete }));
         }
-        this.showConfirmDelete = false;
       });
     } else {
-      this.showConfirmDelete = false;
+      this.isBlockPage = false;
     }
   }
 

@@ -83,7 +83,6 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
   }
 
   private initRoles(moduleInit: string = 'Configuracion'): void {
-
     this.isBlockPage = true;
     this._subscription.add(
       this._roleService.getModules().subscribe({
@@ -138,6 +137,9 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
                 name: component.name,
                 elements: elements
               });
+            }
+            if(moduleInit === 'Configuracion'){
+              this.showPrivileges(this.moduloElement[0]);
             }
           }
           this.isBlockPage = false;
