@@ -27,7 +27,7 @@ export class EntityCreateValueComponent implements OnInit {
 
   ngOnInit(): void {
     this.isBlock = true;
-
+    this.AttributesOfAutofills.sort((a: any, b: any) => Number(a.sequence) - Number(b.sequence));
     console.log(this.AttributesOfAutofills)
     debugger
     this.generateForm(this.AttributesOfAutofills);
