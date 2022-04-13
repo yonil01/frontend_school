@@ -63,11 +63,11 @@
         <app-user-crud (showToast)="showToast($event)" [isEdit]="showEdit" [user]="user"></app-user-crud>
       </div>
       <div *ngIf="showPassword">
-        <app-change-password></app-change-password>
+        <app-change-password  [user]="user" (showToast)="showToast($event)" ></app-change-password>
       </div>
 
     </div>
-    <!--<app-footer></app-footer>-->
+    <app-footer></app-footer>
   </ng-container>
 </app-layout>
 

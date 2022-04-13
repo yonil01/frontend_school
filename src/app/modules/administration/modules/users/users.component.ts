@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 import {UsersService} from "@app/modules/administration/modules/users/service/user/users.service";
 import {DataContentUser} from "@app/modules/administration/modules/users/models/model-user/model-user";
 import {ToastService} from "ecapture-ng-ui";
-import {ConfirmationService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import * as XLSX from 'xlsx';
@@ -25,7 +25,8 @@ import {AppState} from "@app/core/store/app.reducers";
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
+  providers: [ConfirmationService, MessageService],
 })
 export class UsersComponent implements OnInit {
   public showPassword: boolean = false;
@@ -47,8 +48,7 @@ export class UsersComponent implements OnInit {
               private userService: UsersService,
               private _messageService: ToastService,
               private store: Store<AppState>,
-
-              //private confirmationService: ConfirmationService,
+              private confirmationService: ConfirmationService,
   )
   {
     this.showEdit = false;
@@ -100,6 +100,7 @@ export class UsersComponent implements OnInit {
   }
 
   public eventTableOption(resp:any): void {
+    debugger
     if (resp.type === 'edit') {
       this.showEdit = true;
       this.user = resp.value;
@@ -113,6 +114,7 @@ export class UsersComponent implements OnInit {
     }
     if (resp.type === 'update-password') {
       this.showPassword = true;
+      this.user = resp.value;
     }
   }
 
@@ -148,12 +150,7 @@ export class UsersComponent implements OnInit {
   }
 
   public confirmLockUnlock(user: User) {
-    this._messageService.add({
-      type: 'error',
-      message: 'Hello',
-      life: 5000,
-    });
-    /*if (user.status === 16) {
+    if (user.status === 16) {
       this.confirmationService.confirm({
         message: '¿Desea desbloquear el usuario?',
         header: 'Confirmación de desbloqueo',
@@ -179,10 +176,10 @@ export class UsersComponent implements OnInit {
         //  this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
         },
       });
-    }*/
+    }
   }
 
-  /*public lockUnlock(user: User) {
+  public lockUnlock(user: User) {
     if (user.status !== 16) {
       this.userService.blockUser(user.id!).subscribe((res: Response) => {
         if (res.error) {
@@ -208,7 +205,7 @@ export class UsersComponent implements OnInit {
         }
       });
     }
-  }*/
+  }
 
   public onFileExcel(event: any): void {
     debugger

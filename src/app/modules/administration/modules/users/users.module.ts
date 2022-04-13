@@ -9,6 +9,8 @@ import { BasicInformationComponent } from './pages/user-crud/components/basic-in
 import { RoleComponent } from './pages/user-crud/components/role/role.component';
 import { SecurityEntitiesComponent } from './pages/user-crud/components/security-entities/security-entities.component';
 import {UiModule} from "@app/ui/ui.module";
+
+
 import {
   DropdownModule, IconsModule,
   InputPasswordModule,
@@ -88,7 +90,8 @@ import {
     PickListModule,
     InputPasswordModule,
     IconsModule,
-    TranslateModule
+    TranslateModule,
+
   ],
   providers: [ToastService]
 })
