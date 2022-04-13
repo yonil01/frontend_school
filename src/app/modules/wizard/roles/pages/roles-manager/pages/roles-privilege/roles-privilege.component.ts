@@ -9,7 +9,7 @@ import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.mode
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {ToastService} from "ecapture-ng-ui";
 import {v4 as uuidv4} from 'uuid';
-import {addElement, deleteRoleElement} from "@app/core/store/actions/roles.action";
+import {addElement, controlRole, deleteRoleElement} from "@app/core/store/actions/roles.action";
 import {Subscription} from "rxjs/internal/Subscription";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Elemento, ModulesPrivileges, Modulo, Privileges, ReduxElement} from "@app/modules/wizard/roles/models/models";
@@ -67,7 +67,9 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
     private _messageService: ToastService,
   ) {
     this.store.select('role').subscribe((res) => {
-      this.role = res.role;
+      const data = res.role;
+      this.role = JSON.parse(JSON.stringify(data));
+      console.log(this.role);
       if (!this.role || Object.keys(this.role).length === 0) this.router.navigateByUrl('wizard/roles');
     });
   }
@@ -81,80 +83,72 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
   }
 
   private initRoles(moduleInit: string = 'Configuracion'): void {
-    this.moduloElement = [];
-    this.modulesPrivileges = [];
 
-    if (this.role !== null) {
-      this.isBlockPage = true;
-      this._subscription.add(
-        this._roleService.getModules().subscribe({
-          next: (res) => {
-            if (res.error) {
-              this._messageService.add({type: 'error', message: res.msg, life: 5000});
-            } else {
-              for (const item of res.data) {
-                const privileges: Privileges[] = [];
-                if (item.components) {
-                  item.components.map((component: any) => component.elements.map((element: any) => {
-                    const findElement = this.role.role_elements?.find(r => r.element.name === element.name);
-                    if (findElement) {
-                      privileges.push({element: element, active: true});
-                    } else {
-                      privileges.push({element: element, active: false});
-                    }
-                  }));
+    this.isBlockPage = true;
+    this._subscription.add(
+      this._roleService.getModules().subscribe({
+        next: (res) => {
+          if (res.error) {
+            this._messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            this.modulesPrivileges = [];
+            for (const item of res.data) {
+              const privileges: Privileges[] = [];
+              if (item.components) {
+                item.components.map((component: any) => component.elements.map((element: any) => {
+                  const findElement = this.role.role_elements?.find(r => r.element.id === element.id);
+                  if (findElement) {
+                    privileges.push({element: element, active: true});
+                  } else {
+                    privileges.push({element: element, active: false});
+                  }
+                }));
 
-                  this.modulesPrivileges.push({
-                    name: item.name,
-                    id: item.id,
-                    privileges: privileges
-                  });
-                }
-              }
-
-              const moduleData: Modulo[] = res.data;
-              for(let item of moduleData){
-                if(item.components?.length > 0){
-                  this.moduloElement.push(item);
-                }
-              }
-              console.log(this.role);
-              console.log(this.moduloElement);
-              console.log(this.modulesPrivileges);
-              //this.moduloSelected = this.modulesPrivileges[0];
-
-              this.moduleSelectedTemp = [];
-              const modulePrivilege = this.modulesPrivileges.find(p => p.id === this.moduleIdSelect)
-              console.log('Desde aquí');
-              console.log(modulePrivilege);
-
-              const module = this.moduloElement.find(m => m.name === moduleInit) || this.moduloElement[0];
-              for(let component of module.components) {
-                const elements: ElementTemp[] = [];
-                for (let element of component.elements){
-                  elements.push({
-                    element_id: element.id,
-                    name: element.name,
-                    active: modulePrivilege?.privileges.find(p => p.element.id === element.id)?.active || false,
-                  });
-                }
-                this.moduleSelectedTemp.push({
-                  id: component.id,
-                  name: component.name,
-                  elements: elements
+                this.modulesPrivileges.push({
+                  name: item.name,
+                  id: item.id,
+                  privileges: privileges
                 });
               }
             }
-            this.isBlockPage = false;
-          },
-          error: (err: HttpErrorResponse) => {
-            console.error(err);
-            this.isBlockPage = false;
-            this._messageService.add({type: 'error', message: err.error.msg, life: 5000});
+
+            this.moduloElement = [];
+            const moduleData: Modulo[] = res.data;
+            for(let item of moduleData){
+              if(item.components?.length > 0){
+                this.moduloElement.push(item);
+              }
+            }
+
+            this.moduleSelectedTemp = [];
+            const modulePrivilege = this.modulesPrivileges.find(p => p.id === this.moduleIdSelect)
+
+            const module = this.moduloElement.find(m => m.name === moduleInit) || this.moduloElement[0];
+            for(let component of module.components) {
+              const elements: ElementTemp[] = [];
+              for (let element of component.elements){
+                elements.push({
+                  element_id: element.id,
+                  name: element.name,
+                  active: modulePrivilege?.privileges.find(p => p.element.id === element.id)?.active || false,
+                });
+              }
+              this.moduleSelectedTemp.push({
+                id: component.id,
+                name: component.name,
+                elements: elements
+              });
+            }
           }
-        })
-      );
-    }
+          this.isBlockPage = false;
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error(err);
+          this.isBlockPage = false;
+          this._messageService.add({type: 'error', message: err.error.msg, life: 5000});
+        }
+      })
+    );
   }
 
   public showPrivileges(modulo: Modulo): void {
@@ -174,8 +168,7 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
           elements.push({
             element_id: element.id,
             name: element.name,
-            // @ts-ignore
-            active: moduleFind.privileges.find(p => p.element.id === element.id).active || false,
+            active: moduleFind.privileges.find(p => p.element.id === element.id)?.active || false,
           });
         }
         this.moduleSelectedTemp.push({
@@ -188,7 +181,6 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
   }
 
   public changeCheck(event: any, elementSelected: ElementTemp): void {
-    console.log(elementSelected);
     if (event) {
       const dataElemento: Elements = {
         id: uuidv4().toLowerCase(),
@@ -203,13 +195,22 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
           next: (res) => {
             if (res.error) {
               this._messageService.add({type: 'error', message: 'Error en la Asignación' + res.msg, life: 5000});
+              this.isBlockPage = false;
             } else {
+              const elemnt: any = {
+                id: elementSelected.element_id,
+                name: elementSelected.name,
+              };
+              this.role.role_elements?.push({
+                id: dataElemento.id,
+                element: elemnt
+              });
+              this.store.dispatch(controlRole({ role: this.role, index: 0 }));
               this._messageService.add({type: 'success', message: 'Asignación Exitosa' + res.msg, life: 5000});
               this.initRoles(this.moduleNameSelect);
               //this.reloadRolElement();
               //this.store.dispatch(addElement({element: this.dataElemenRedux}));
             }
-            this.isBlockPage = false;
           },
           error: (err: HttpErrorResponse) => {
             console.error(err);
@@ -228,6 +229,7 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
         this._roleService.deleteRolesElement(idElement).subscribe({
           next: (res: Response) => {
             if (res.error) {
+              this.isBlockPage = false;
               this._messageService.add({type: 'error', message: 'Error al Deshacer Asignación' + res.msg, life: 5000});
             } else {
               this._messageService.add({
@@ -235,11 +237,14 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
                 message: 'Deshacer Asignación, Exitosa' + res.msg,
                 life: 5000
               });
-              // @ts-ignore
-              //this.store.dispatch(deleteRoleElement({indexRoleElement: indexElement}));
+              console.log(elementSelected);
+              //const indexRoleElement: number = this.role.role_elements?.indexOf(this.role.role_elements?.find(role => role.element.id === id)) || -1;
+              const indexRoleElement: number = this.role.role_elements?.findIndex(role => role.element.id === id) || -1;
+              console.log(indexRoleElement);
+              this.role.role_elements?.splice(indexRoleElement, 1);
+              this.store.dispatch(controlRole({ role: this.role, index: 0 }));
               this.initRoles(this.moduleNameSelect);
             }
-            this.isBlockPage = false;
           },
           error: (err: HttpErrorResponse) => {
             console.error(err);
@@ -250,7 +255,7 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
       );
     }
   }
-
+/*
   private reloadRolElement(): void {
     this.isBlockPage = true;
     this._subscription.add(
@@ -271,5 +276,5 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
       })
     );
   }
-
+*/
 }
