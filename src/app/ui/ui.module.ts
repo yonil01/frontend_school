@@ -77,7 +77,15 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
     DragDropModule,
     FormsModule,
     NgCircleProgressModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
   ],
   providers: [MenuService, LocalStorageService, FilterService]
 })
