@@ -611,11 +611,10 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  private editRule(rule: Rule, isSaveParams: boolean): void {
-    const activity = JSON.parse(JSON.stringify(rule));
-    // @ts-ignore
+  private editRule(ruleParam: Rule, isSaveParams: boolean): void {
+    const activity = JSON.parse(JSON.stringify(ruleParam));
+    const rule = JSON.parse(JSON.stringify(ruleParam));
     delete rule.params;
-    // @ts-ignore
     delete rule.rule_params;
     rule.id = rule.id?.toLowerCase();
     rule.execution_id = this.execution.id.toLowerCase();
@@ -671,7 +670,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
                 }
               },
               error: (err: HttpErrorResponse) => {
-                console.error(err)
+                console.error(err);
+                this.messageService.add({type: 'error', message: err.message, life: 5000});
               },
             })
           );
@@ -679,22 +679,25 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         param.id = uuidv4().toLowerCase();
         param.rule_id = activity.id?.toLowerCase();
-        this.processService.createRuleParams(param).subscribe({
-          next: (res) => {
-            if (res.error) {
-              this.messageService.add({type: 'error', message: res.msg, life: 5000});
-            } else {
-              if (!this.execution.rules[this.execution.rules.length - 1].rule_params) {
-                this.execution.rules[this.execution.rules.length - 1].rule_params = [];
+        this._subscription.add(
+          this.processService.createRuleParams(param).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                if (!this.execution.rules[this.execution.rules.length - 1].rule_params) {
+                  this.execution.rules[this.execution.rules.length - 1].rule_params = [];
+                }
+                this.execution.rules[this.execution.rules.length - 1]?.rule_params?.push(param);
+                this.messageService.add({type: 'success', message: res.msg, life: 5000});
               }
-              this.execution.rules[this.execution.rules.length - 1]?.rule_params?.push(param);
-              this.messageService.add({type: 'success', message: res.msg, life: 5000});
-            }
-          },
-          error: (err: HttpErrorResponse) => {
-            console.error(err)
-          },
-        });
+            },
+            error: (err: HttpErrorResponse) => {
+              console.error(err);
+              this.messageService.add({type: 'error', message: err.message, life: 5000});
+            },
+          })
+        );
       }
     }
   }
