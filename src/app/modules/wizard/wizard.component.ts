@@ -1,11 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DataDrop, DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {CustomerService} from "@app/core/services/graphql/wizard/customer/customer.service";
 import {Client, Project} from "@app/core/models/wizard/wizard";
-import {DropdownComponent} from "ecapture-ng-ui";
+import {DropdownComponent, ToastService} from "ecapture-ng-ui";
 import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
+import {Subscription} from "rxjs/internal/Subscription";
+import {ConfigElement} from "@app/core/utils/constants/constant";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-wizard',
@@ -13,80 +16,59 @@ import {LocalStorageService} from "@app/core/services/local-storage/local-storag
   styleUrls: ['./wizard.component.scss'],
   providers: [CustomerService]
 })
-export class WizardComponent implements OnInit {
-  public dropStyle: DropdownModel = dropStyle;
+export class WizardComponent implements OnInit, OnDestroy {
+  public readonly dropStyle: DropdownModel = dropStyle;
+  private _subscription: Subscription = new Subscription();
+  public clients: DataDrop[] = [];
+  public projects: DataDrop[] = [];
+  public projectName: string = '';
+  public clientName: string = '';
+  public configList: any[] = [];
+  public isDisableGenerated: boolean = true;
+  public isGenerate: boolean = false;
+  public clientID: string = '';
+  public projectID: string = '';
 
-  clients!: DataDrop[];
-  projects!: DataDrop[];
-
-  projectName: string = '';
-  clientName: string = '';
-
-  items = [];
-  configList: any = [];
-  display = false;
-
-  isDisableGenerated = true;
-  isGenerate = false;
-
-  isOpenModalExport = false;
-  isOpenModalImport = false;
-
-  constructor(private _fb: FormBuilder, private customerService: CustomerService) {
-
-    this.customerService.getCustomers().subscribe((res) => {
-      const data = res.data.filter((c: Client) => c.projects?.length);
-      if (data) this.clients = data.map((client: Client) => ({
-        label: client.name,
-        value: client
-      }))
-    });
-
-    this.configList = [
-      {
-        name: 'Entidades',
-        icon: '../../../assets/img/entities-icon.svg',
-        description: 'Presione aquí para configurar lo correspondiente a entidades.',
-        route: 'entities',
-      },
-      {
-        name: 'Documentos',
-        icon: '../../../assets/img/documents-icon.svg',
-        description: 'Presione aquí para configurar lo correspondiente a documentos.',
-        route: 'documents',
-      },
-      {
-        name: 'Formularios',
-        icon: '../../../assets/img/forms-icon.svg',
-        description: 'Presione aquí para configurar lo correspondiente a formularios.',
-        route: 'dymanic-forms',
-      },
-      {
-        name: 'BPMN',
-        icon: '../../../assets/img/bpmns-icon.svg',
-        description: 'Presione aquí para configurar lo correspondiente a procesos.',
-        route: 'bpmn',
-      },
-      {
-        name: 'Roles',
-        icon: '../../../assets/img/roles-icon.svg',
-        description: 'Presione aquí para configurar lo correspondiente a roles.',
-        route: 'roles',
-      },
-      {
-        name: 'Almacenamiento físico',
-        icon: '../../../assets/img/storages-icon.svg',
-        description: 'Presione aquí para configurar lo correspondiente a almacenamiento físico.',
-        route: 'roles',
-      }
-    ];
-
+  constructor(
+    private _fb: FormBuilder,
+    private customerService: CustomerService,
+    private _messageService: ToastService
+  ) {
+    this._subscription.add(
+      this.customerService.getCustomers().subscribe({
+        next: (res) => {
+          if (res.error) {
+            this._messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            if (res.data) {
+              const data = res.data.filter((c: Client) => c.projects?.length);
+              if (data) this.clients = data.map((client: Client) => ({
+                label: client.name,
+                value: client
+              }));
+            } else {
+              this._messageService.add({type: 'info', message: 'No hay clientes configurados!', life: 5000});
+            }
+            console.log(this.clients);
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error(err);
+          this._messageService.add({type: 'error', message: err.message, life: 5000});
+        }
+      })
+    );
+    this.configList = ConfigElement;
   }
 
   ngOnInit(): void {
   }
 
-  selectClient(client: any, dropdown: DropdownComponent) {
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
+  }
+
+  public selectClient(client: any): void {
     if (client) {
       this.clientName = client.name;
       const projects = client.projects;
@@ -94,14 +76,14 @@ export class WizardComponent implements OnInit {
     } else {
       this.isDisableGenerated = true;
       this.isGenerate = false;
-      this.projects = []
-      dropdown.clearValue();
+      this.projects = [];
+      this.projectID = '';
+      this.clientID = '';
     }
     sessionStorage.setItem('client', JSON.stringify(client));
-
   }
 
-  selectProject(project: any) {
+  public selectProject(project: any) {
     if (project) {
       this.projectName = project.name;
       this.isDisableGenerated = false;
@@ -110,10 +92,6 @@ export class WizardComponent implements OnInit {
       this.isGenerate = false;
     }
     sessionStorage.setItem('project', JSON.stringify(project));
-  }
-
-  routeComponent(route: string): void {
-    // this.router.navigate([route], {relativeTo: this.route}).then((_) => {});
   }
 
 }
