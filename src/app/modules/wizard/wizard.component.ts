@@ -49,7 +49,6 @@ export class WizardComponent implements OnInit, OnDestroy {
             } else {
               this._messageService.add({type: 'info', message: 'No hay clientes configurados!', life: 5000});
             }
-            console.log(this.clients);
           }
         },
         error: (err: HttpErrorResponse) => {
