@@ -78,15 +78,19 @@ export class EntityCreateValueComponent implements OnInit {
         autofill_values_1: this.newValuesForm.value
       }
     }
-    this.autofillService.createAutofillValue(query).subscribe(
-      (response) => {
-        console.log(response);
-        this.onReturn();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if(this.newValuesForm.valid){
+      this.autofillService.createAutofillValue(query).subscribe(
+        (response) => {
+          console.log(response);
+          this.onReturn();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } else {
+      this.newValuesForm.markAllAsTouched();
+    }
   }
 
   onReturn() {
