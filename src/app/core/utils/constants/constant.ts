@@ -54,3 +54,31 @@ export const ConfigElement = [
     route: 'roles',
   }
 ]
+
+export const formatsDocs = [
+  {label: 'dcs', value: 'dcs'},
+  {label: 'frm', value: 'frm'},
+  {label: 'wkf', value: 'wkf'},
+  {label: 'tif', value: 'tif'},
+  {label: 'jpg', value: 'jpg'},
+  {label: 'png', value: 'png'},
+  {label: 'pdf', value: 'pdf'},
+  {label: 'doc', value: 'doc'},
+  {label: 'sys', value: 'sys'},
+  {label: 'dsb', value: 'dsb'},
+  {label: 'vsr', value: 'vsr'},
+  {label: 'tpl', value: 'tpl'},
+  {label: 'rpt', value: 'rpt'},
+];
+
+export const typeSupport = [
+  {label: 'Electrónico', value: 'E'},
+  {label: 'Físico', value: 'F'},
+];
+
+export const dispositionFinal = [
+  {label: 'Conservación Total', value: 'CT'},
+  {label: 'Microfilmación', value: 'M'},
+  {label: 'Digitalización', value: 'D'},
+  {label: 'Eliminar', value: 'E'},
+];

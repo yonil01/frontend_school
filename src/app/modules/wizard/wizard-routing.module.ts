@@ -23,10 +23,10 @@ const routes: Routes = [
     path: 'bpmn',
     loadChildren: () => import('./process/process.module').then(m => m.ProcessModule)
   },
-  /*{
+  {
     path: 'roles',
     loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)
-  },*/
+  },
 ];
 
 @NgModule({
