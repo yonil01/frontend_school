@@ -392,7 +392,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   public editExecution(execution: Execution): void {
     this.loadProcessProcessRoles(execution);
     this.executionSelected = execution;
-    this.showView = 'editOrCreate';
+    this.showView = 'createOrUpdate';
     this.operation = 'edit';
     this.taskForm.patchValue({
       class: execution.class,

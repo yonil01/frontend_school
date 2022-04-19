@@ -249,11 +249,13 @@ export class ActivityFormComponent implements OnInit {
 
   public save(): void {
     if (this.form.valid) {
-      const paramsList = Object.entries(this.form.value).filter(([key, value]) => key !== 'activity' && key !== 'name' && key !== 'status').map(([key, value]) => ({
-        name: key,
-        value: value || ''
-      }));
-      // const paramsList = Object.entries(this.form.value).map(([k, v]: any) => ({name: k, value: v.toString()}));
+      const valuesForm = this.form.controls;
+      const paramsList: {name: string, value: string}[] = [];
+      for (const valuesFormKey in valuesForm) {
+        if (valuesFormKey !== 'activity' && valuesFormKey !== 'name' && valuesFormKey !== 'status') {
+          paramsList.push({name: valuesFormKey, value: valuesForm[valuesFormKey].value});
+        }
+      }
       if (this.isCreate) {
         const rule: Rule = {
           code: 0, description: "", execution_id: "", rule_params: [],
@@ -262,19 +264,21 @@ export class ActivityFormComponent implements OnInit {
           child_true: 0,
           child_false: 0,
           itemtype_id: 0,
-          params: paramsList as Param[],
+          params: paramsList,
           action: this.form.value.activity,
           status: this.form.value.status
         };
+        console.log(rule);
         this.ruleSaved.emit(rule);
       } else {
         const rule: Rule = {
           ...this.rule,
           name: this.form.value.name,
-          params: paramsList as Param[],
+          params: paramsList,
           action: this.form.value.activity,
           status: this.form.value.status,
         };
+        console.log(rule);
         this.ruleSaved.emit(rule);
       }
     } else {

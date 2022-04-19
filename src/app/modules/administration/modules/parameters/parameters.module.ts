@@ -10,20 +10,21 @@ import {ParametersRoutingModule} from "@app/modules/administration/modules/param
 import {HttpClientModule} from "@angular/common/http";
 import {UiModule} from "@app/ui/ui.module";
 import {ToastModule} from "ecapture-ng-ui";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 
 @NgModule({
   declarations: [ParametersComponent, ParameterListComponent, ParameterCrudComponent],
-  imports: [
-    CommonModule,
-    ParametersRoutingModule,
-    HttpClientModule,
-    UiModule,
-    ToastModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        CommonModule,
+        ParametersRoutingModule,
+        HttpClientModule,
+        UiModule,
+        ToastModule,
+        ReactiveFormsModule,
+        FormsModule
+    ],
   providers:[
     ParametersService
   ]
