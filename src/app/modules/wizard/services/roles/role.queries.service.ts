@@ -247,7 +247,7 @@ export class CreateRoleProjectMutation extends Mutation {
 export class DeleteRoleProjectMutation extends Mutation {
   document = gql`
     mutation deleteRolesProject($rq: ID!) {
-      deleteRolesProject(input: $rq) {
+      deleteRolesProject(id: $rq) {
         error
         data {
           id

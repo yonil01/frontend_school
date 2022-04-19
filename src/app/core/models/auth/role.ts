@@ -12,7 +12,7 @@ export interface Role {
   password_policy?: PasswordPolicy;
   roles_doc_types?: RolesAllow[]; // Validar para Borrar
   role_elements?: any[];
-  projects?: string[];
+  projects?: RolesProject[];
   process?: string[];
   security_entities?: SecurityEntity[];
   role_allow?: RoleAllowed[];
