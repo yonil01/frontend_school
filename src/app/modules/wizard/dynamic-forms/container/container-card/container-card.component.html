@@ -1,0 +1,105 @@
+<div class="w-full flex justify-center items-center px-12 py-8 bg-gray-700 shadow-lg rounded-lg border border-mono-70 ">
+  <form [formGroup]="formDinamic" class="w-full h-full">
+    <div class="w-full rounded-lg ">
+      <!-- Show Card in white -->
+      <div *ngIf="!showNotContainer()" class="space-y-2 my-16">
+
+        <div class="flex justify-center">
+          <span appIcon iconColor="text-blue-600" iconName="empty-folder big"></span>
+        </div>
+        <div class="flex justify-center">
+          <span class="text-2xl text-blue-600">Formulario Vacio</span>
+        </div>
+        <div class="flex justify-center">
+          <span class="text-mono-70">Inicie el modelado de su formulario con los elementos del panel izquierdo.</span>s
+        </div>
+      </div>
+
+      <!-- Show Card in white -->
+      <div *ngIf="showContainer(0, 0) && !showGridsterV">
+        <div class="border rounded-b-md border-mono-70 bg-white">
+          <div class="w-1/2 ">
+            <div *ngIf="statusButton.buttonsArray[0].status" class="p-4 space-y-4">
+              <ec-input-text label="Nombre"
+                             txtColor="text-mono-70" bgContainerColor="bg-gray-700"
+                             brContainerColor="border-outline-gray-50"
+                             formControlName="value1"
+              ></ec-input-text>
+            </div>
+            <div *ngIf="statusButton.buttonsArray[1].status" class="p-4 space-y-4">
+              <div>
+                <span class="text-mono-70">Entidad</span>
+                <ec-dropdown
+                  [dropStyle]="typeIdentificationStyle" [icon]="true"
+                  placeholder="Seleccion un contenedor"
+                ></ec-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full flex justify-end">
+          <div class="flex space-x-4 w-1/4 p-2">
+            <app-button routerLink="/wizard/dymanic-forms/forms" type="button" label="Cancelar"
+                        brColor="border-blue-600"
+                        bgColor="bg-transparent"
+                        txtColor="text-blue-600" class="h-12 w-full"></app-button>
+            <app-button  type="button" label="Guardar"
+                         brColor="border-blue-600"
+                         bgColor="bg-blue-600"
+                         txtColor="text-gray-900" class="h-12 w-full" (click)="saveForm('NEWCONTAINER')"></app-button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="showContainer(0, 1) && !showGridsterV">
+        <div class="flex w-1/3 space-x-4 p-2 bg-white rounded-t-md border border-mono-70 ">
+          <app-button *ngFor="let dataButton of statusButton.buttonsArray; index as i" type="button" label="{{dataButton.name}}"
+                      brColor="{{ dataButton.status ? 'border-blue-600' : 'border-mono-70' }}"
+                      bgColor="{{ dataButton.status ? 'bg-blue-600' : 'border-blue-600' }}"
+                      txtColor="{{ dataButton.status ? 'text-gray-900' : 'text-blue-600'}}" class="h-12 w-full" (click)="activeButton(i)"></app-button>
+        </div>
+
+        <div class="border rounded-b-md border-mono-70 bg-white">
+          <div class="w-1/2 ">
+            <div *ngIf="statusButton.buttonsArray[0].status" class="p-4 space-y-4">
+              <ec-input-text label="Label Step"
+                             txtColor="text-mono-70" bgContainerColor="bg-gray-700"
+                             brContainerColor="border-outline-gray-50"
+              ></ec-input-text>
+              <div>
+                <span class="text-mono-70">Contenedor</span>
+                <ec-dropdown
+                  [dropStyle]="typeIdentificationStyle" [icon]="true"
+                  placeholder="Seleccion un contenedor"
+                ></ec-dropdown>
+              </div>
+            </div>
+            <div *ngIf="statusButton.buttonsArray[1].status" class="p-4 space-y-4">
+              <div>
+                <span class="text-mono-70">Entidad</span>
+                <ec-dropdown
+                  [dropStyle]="typeIdentificationStyle" [icon]="true"
+                  placeholder="Seleccion un contenedor"
+                ></ec-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full flex justify-end">
+          <div class="flex space-x-4 w-1/4 p-2">
+            <app-button routerLink="/wizard/dymanic-forms/forms" type="button" label="Cancelar"
+                        brColor="border-blue-600"
+                        bgColor="bg-transparent"
+                        txtColor="text-blue-600" class="h-12 w-full"></app-button>
+            <app-button  type="button" label="Guardar"
+                         brColor="border-blue-600"
+                         bgColor="bg-blue-600"
+                         txtColor="text-gray-900" class="h-12 w-full" (click)="showGridster()"></app-button>
+          </div>
+        </div>
+      </div>
+      <div  *ngIf="showGridsterV">
+        <app-gridster></app-gridster>
+      </div>
+    </div>
+  </form>
+</div>

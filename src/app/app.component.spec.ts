@@ -22,7 +22,7 @@ describe('AppComponent', () => {
 
   it(`should have as title 'ecatch-web-config'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    const app =  fixture.debugElement.componentInstance;
     expect(app.title).toEqual('ecatch-web-config');
   });
 

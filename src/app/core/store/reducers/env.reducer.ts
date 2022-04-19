@@ -1,5 +1,5 @@
-import {createReducer, on} from '@ngrx/store';
-import {setEnv} from '../actions/env.actions';
+import { createReducer, on } from '@ngrx/store';
+import { setEnv } from '../actions/env.actions';
 
 export interface EnvState {
   env: string;
@@ -11,7 +11,7 @@ export const EnvInitialState: EnvState = {
 
 const envReducer = createReducer(
   EnvInitialState,
-  on(setEnv, (state, {env}) => ({
+  on(setEnv, (state, { env }) => ({
     env: env
   })),
 );

@@ -1,6 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {controlLogin, controlTimeout} from "@app/core/store/actions/token.action";
-// import { controlTimeout, controlLogin } from 'core/store/actions/token.action';
+import { controlTimeout, controlLogin } from '@app/core/store/actions/token.action';
 
 export interface TokenState {
   timeout: number;
@@ -24,6 +23,6 @@ const tokenReducer = createReducer(
   })),
 );
 
-export function TokenReducer(state: any, action:any) {
+export function TokenReducer(state: any, action: any) {
   return tokenReducer(state, action);
 }

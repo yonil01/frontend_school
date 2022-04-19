@@ -1,0 +1,28 @@
+<div *ngIf="sizeElement !== 0" class="mt-4  flex sm:px-6 lg:px-8">
+  <div class="flex-1 ">
+    <select class="outline-none py-2 px-4 bg-transparent border-2 text-mono-70 border-mono-70 rounded-md text-sm" #t (change)="showChangeTable(t.value)">
+      <option class="bg-transparent border-2 text-mono-70 border-mono-70" value="5">05</option>
+      <option class="bg-transparent border-2 text-mono-70 border-mono-70" value="10">10</option>
+    </select>
+  </div>
+  <div class="flex space-x-2">
+    <div>
+      <app-button [disabled]="rangeMin == 0 " [style]="'justify-content: center;'" type="button" label=""
+                  brColor="border-mono-70" icon="chevron left"
+                  bgColor="bg-outline-gray-50"
+                  txtColor="text-mono-70" class="w-full h-9" (click)="showBackTable()"></app-button>
+    </div>
+    <div>
+      <app-button [style]="'justify-content: center;'" type="button" label="{{ rangeMax/valueSelect }}/{{ showSectionNumber() }}"
+                  brColor="border-mono-70"
+                  bgColor="bg-outline-gray-50"
+                  txtColor="text-mono-70" class="w-full h-9" ></app-button>
+    </div>
+    <div>
+      <app-button [disabled]="sizeElement! - 1 < rangeMax" [style]="'justify-content: center;'" type="button" label=""
+                  brColor="border-mono-70" icon="chevron right"
+                  bgColor="bg-outline-gray-50"
+                  txtColor="text-mono-70" class="w-full h-9" (click)="showNextTable()"></app-button>
+    </div>
+  </div>
+</div>

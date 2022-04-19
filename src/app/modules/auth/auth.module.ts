@@ -15,7 +15,7 @@ import {UiModule} from "@app/ui/ui.module";
   declarations: [
     AuthComponent,
     LoginComponent,
-    RecoveryComponent
+    RecoveryComponent,
   ],
   imports: [
     CommonModule,
@@ -25,7 +25,7 @@ import {UiModule} from "@app/ui/ui.module";
     TranslateModule,
     ReactiveFormsModule,
     UiModule,
-    IconsModule
+    IconsModule,
   ]
 })
 export class AuthModule {

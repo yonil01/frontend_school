@@ -1,6 +1,6 @@
-import {createReducer, on} from '@ngrx/store';
-import {controlSource, resetStoreDocumentFile} from '@app/core/store/actions/document-source.action';
-import {controlSourceBpmn} from '../actions/document-source.action';
+import { createReducer, on } from '@ngrx/store';
+import { controlSource, resetStoreDocumentFile } from '@app/core/store/actions/document-source.action';
+import { controlSourceBpmn } from '../actions/document-source.action';
 
 export interface DocumentSourceState {
   base64: string;
@@ -16,13 +16,13 @@ export const DocumentSourceInitialState: DocumentSourceState = {
 
 const documentSourceReducer = createReducer(
   DocumentSourceInitialState,
-  on(controlSource, (state, {base64, typeFile}) => ({
+  on(controlSource, (state, { base64, typeFile }) => ({
     ...state,
     base64,
     typeFile,
   })),
 
-  on(controlSourceBpmn, (state, {base64}) => ({
+  on(controlSourceBpmn, (state, { base64 }) => ({
     ...state,
     bpmnBase64: base64,
   })),

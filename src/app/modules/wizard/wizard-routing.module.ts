@@ -7,10 +7,10 @@ const routes: Routes = [
     path: '',
     component: WizardComponent
   },
-  /*{
+  {
     path: 'entities',
     loadChildren: () => import('./entidades/entidades.module').then(m => m.EntidadesModule)
-  },*/
+  },
   {
     path: 'documents',
     loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule)

@@ -1,5 +1,5 @@
-/*import {createReducer, on} from '@ngrx/store';
-import {GridsterItem} from 'angular-gridster2';
+import { createReducer, on } from '@ngrx/store';
+import { GridsterItem } from 'angular-gridster2';
 import {
   controlDashboard,
   addGridsterItem,
@@ -9,9 +9,9 @@ import {
   addDashboard,
   controlEForm,
 } from '@app/core/store/actions/dynamic-forms.actions';
-import {DoctypeEntities, DocTypes, Entity} from '@app/core/models';
-import {controlFormDoctype} from '@app/core/store/actions/dynamic-forms.actions';
-import {Form, Container} from '@app/core/models/config/form';
+import { DoctypeEntities, DocTypes, Entity } from '@app/core/models';
+import { controlFormDoctype } from '@app/core/store/actions/dynamic-forms.actions';
+import { Form, Container } from '@app/core/models/config/form';
 import {
   addContainer,
   deleteContainer,
@@ -22,8 +22,7 @@ import {
   editIndexDashboard,
   editIndexGridsterItem,
 } from '../actions/dynamic-forms.actions';
-import {FormlyFieldConfig} from '@ngx-formly/core';
-import {StepType} from '@app/core/models/config/form';
+import { StepType } from '@app/core/models/config/form';
 import {
   editDashboard,
   controlDocumentId,
@@ -42,7 +41,7 @@ export interface DynamicFormsState {
   entitiesSimples: Entity[];
   entitiesMultiples: Entity[];
   eform: Form;
-  jsonForm: FormlyFieldConfig[];
+  jsonForm: any[];
   jsonStepForm: StepType[];
   typeElementConfig: string;
   models: {};
@@ -52,7 +51,12 @@ export interface DynamicFormsState {
 export const DynamicFormsInitialState: DynamicFormsState = {
   dashboards: [],
   dashboard: [],
-  gridsterItem: {} as GridsterItem,
+  gridsterItem: {
+    cols:0,
+    x: 0,
+    y: 0,
+    rows: 0
+  },
   indexGridsterItem: 0,
   indexContainer: 0,
   indexDashboard: 0,
@@ -70,84 +74,84 @@ export const DynamicFormsInitialState: DynamicFormsState = {
 const dynamicFormsReducer = createReducer(
   DynamicFormsInitialState,
 
-  on(controlDashboard, (state, {dashboard}) => ({
+  on(controlDashboard, (state, { dashboard }) => ({
     ...state,
     dashboard,
   })),
-  on(addGridsterItem, (state, {gridsterItem, indexContainer, indexDashboard}) => ({
+  on(addGridsterItem, (state, { gridsterItem, indexContainer, indexDashboard }) => ({
     ...state,
     ...addInGridsterItem(state, gridsterItem, indexContainer, indexDashboard),
   })),
-  on(deleteGridsterItem, (state, {indexItem}) => ({
+  on(deleteGridsterItem, (state, { indexItem }) => ({
     ...state,
     ...deleteInGridsterItem(state, indexItem),
   })),
-  on(editGridsterItem, (state, {gridsterItem}) => ({
+  on(editGridsterItem, (state, { gridsterItem }) => ({
     ...state,
     ...editGridsterItemDashboard(state, gridsterItem),
   })),
-  on(controlGridsterItem, (state, {index, gridsterItem}) => ({
+  on(controlGridsterItem, (state, { index, gridsterItem }) => ({
     ...state,
     gridsterItem: gridsterItem,
     index: index,
   })),
-  on(controlFormDoctype, (state, {formDoctype}) => ({
+  on(controlFormDoctype, (state, { formDoctype }) => ({
     ...state,
     formDoctype,
     ...sortOutEntities(formDoctype),
   })),
-  on(controlEForm, (state, {eform}) => ({
+  on(controlEForm, (state, { eform }) => ({
     ...state,
     eform,
   })),
-  on(addContainer, (state, {container}) => ({
+  on(addContainer, (state, { container }) => ({
     ...state,
     ...addInContainer(state, container),
   })),
-  on(deleteContainer, (state, {indexContainer}) => ({
+  on(deleteContainer, (state, { indexContainer }) => ({
     ...state,
     ...deleteInContainer(state, indexContainer),
   })),
-  on(editContainer, (state, {container, indexContainer}) => ({
+  on(editContainer, (state, { container, indexContainer }) => ({
     ...state,
     ...editInContainer(state, container, indexContainer),
   })),
-  on(addDashboard, (state, {dashboard, indexContainer}) => ({
+  on(addDashboard, (state, { dashboard, indexContainer }) => ({
     ...state,
     ...addInDashboard(state, dashboard, indexContainer),
   })),
-  on(editDashboard, (state, {dashboard}) => ({
+  on(editDashboard, (state, { dashboard }) => ({
     ...state,
     ...editInDashboard(state, dashboard),
   })),
-  on(deleteDashboard, (state, {indexDashboard}) => ({
+  on(deleteDashboard, (state, { indexDashboard }) => ({
     ...state,
     ...deleteInDashboard(state, indexDashboard),
   })),
-  on(controlJsonForm, (state, {jsonForm, models}) => ({
+  on(controlJsonForm, (state, { jsonForm, models }) => ({
     ...state,
     jsonForm,
     models,
   })),
-  on(controlJsonStepForm, (state, {jsonStepForm}) => ({
+  on(controlJsonStepForm, (state, { jsonStepForm }) => ({
     ...state,
     jsonStepForm,
   })),
-  on(editIndexContainer, (state, {indexContainer}) => ({
+  on(editIndexContainer, (state, { indexContainer }) => ({
     ...state,
     indexContainer,
   })),
-  on(editIndexDashboard, (state, {indexDashboard}) => ({
+  on(editIndexDashboard, (state, { indexDashboard }) => ({
     ...state,
     indexDashboard,
     typeElementConfig: 'dashboard',
   })),
-  on(editIndexGridsterItem, (state, {indexGridsterItem}) => ({
+  on(editIndexGridsterItem, (state, { indexGridsterItem }) => ({
     ...state,
     indexGridsterItem,
     typeElementConfig: 'item',
   })),
-  on(controlDocumentId, (state, {documentId}) => ({
+  on(controlDocumentId, (state, { documentId }) => ({
     ...state,
     documentId,
   })),
@@ -158,23 +162,25 @@ const dynamicFormsReducer = createReducer(
 );
 
 function deleteInGridsterItem(state: any, indexItem: any) {
-  const eform: any = JSON.parse(JSON.stringify(state.eform)); // Form
-  eform.containers[state.indexContainer].dashboards[state.indexDashboard].gridsterItems?.splice(indexItem, 1);
-  return {eform: eform};
+  const eform: Form = JSON.parse(JSON.stringify(state.eform));
+  // @ts-ignore
+  eform.containers[state.indexContainer].dashboards[state.indexDashboard].gridsterItems.splice(indexItem, 1);
+  return { eform: eform };
 }
 
 function editGridsterItemDashboard(state: DynamicFormsState, gridsterItem: any) {
-  const eform: any = JSON.parse(JSON.stringify(state.eform)); // Form
+  const eform: Form = JSON.parse(JSON.stringify(state.eform));
+  // @ts-ignore
   eform.containers[state.indexContainer].dashboards[state.indexDashboard].gridsterItems[
     state.indexGridsterItem
-    ] = gridsterItem;
-  return {eform: eform};
+  ] = gridsterItem;
+  return { eform: eform };
 }
 
 function sortOutEntities(formDoctype: any) {
   const doctype: DocTypes = JSON.parse(JSON.stringify(formDoctype));
-  const entitiesSimples: any[] = [];
-  const entitiesMultiples: any[] = [];
+  const entitiesSimples: DoctypeEntities[] = [];
+  const entitiesMultiples: DoctypeEntities[] = [];
   doctype.doctypes_entities?.map((e: DoctypeEntities) => {
     if (e.entities?.is_unique) {
       entitiesSimples.push(e);
@@ -182,52 +188,58 @@ function sortOutEntities(formDoctype: any) {
       entitiesMultiples.push(e);
     }
   });
-  return {entitiesSimples: entitiesSimples, entitiesMultiples: entitiesMultiples};
+  return { entitiesSimples: entitiesSimples, entitiesMultiples: entitiesMultiples };
 }
 
 function addInContainer(state: any, container: Container) {
   const eform: Form = JSON.parse(JSON.stringify(state.eform));
-  eform.containers?.push(container);
-  return {eform: eform};
+  // @ts-ignore
+  eform.containers.push(container);
+  return { eform: eform };
 }
 
 function deleteInContainer(state: any, indexContainer: any) {
   const eform: Form = JSON.parse(JSON.stringify(state.eform));
-  eform.containers?.splice(indexContainer, 1);
-  return {eform: eform};
+  // @ts-ignore
+  eform.containers.splice(indexContainer, 1);
+  return { eform: eform };
 }
 
 function editInContainer(state: any, container: any, indexContainer: any) {
-  const eform: any = JSON.parse(JSON.stringify(state.eform)); // Form
+  const eform: Form = JSON.parse(JSON.stringify(state.eform));
+  // @ts-ignore
   eform.containers[indexContainer] = JSON.parse(JSON.stringify(container));
-  return {eform: eform};
+  return { eform: eform };
 }
 
 function addInDashboard(state: any, dashboard: any, indexContainer: any) {
-  const eform: any = JSON.parse(JSON.stringify(state.eform)); // Form
+  const eform: Form = JSON.parse(JSON.stringify(state.eform));
+  // @ts-ignore
   eform.containers[indexContainer].dashboards.push(JSON.parse(JSON.stringify(dashboard)));
-  return {eform: eform};
+  return { eform: eform };
 }
 
 function editInDashboard(state: any, dashboard: any) {
-  const eform: any = JSON.parse(JSON.stringify(state.eform)); // Form
+  const eform: Form = JSON.parse(JSON.stringify(state.eform));
+  // @ts-ignore
   eform.containers[state.indexContainer].dashboards[state.indexDashboard] = dashboard;
-  return {eform: eform};
+  return { eform: eform };
 }
 
-function deleteInDashboard(state: any, indexDashboard: any) {
-  const eform: any = JSON.parse(JSON.stringify(state.eform)); // Form
-  eform.containers[state.indexContainer].dashboards?.splice(indexDashboard, 1);
-  return {eform: eform};
+function deleteInDashboard(state:any, indexDashboard:any) {
+  const eform: Form = JSON.parse(JSON.stringify(state.eform));
+  // @ts-ignore
+  eform.containers[state.indexContainer].dashboards.splice(indexDashboard, 1);
+  return { eform: eform };
 }
 
 function addInGridsterItem(state: any, gridsterItem: any, indexContainer: any, indexDashboard: any) {
-  const eform: any = JSON.parse(JSON.stringify(state.eform)); // Form
+  const eform: Form = JSON.parse(JSON.stringify(state.eform));
+  // @ts-ignore
   eform.containers[indexContainer].dashboards[indexDashboard].gridsterItems.push(gridsterItem);
-  return {eform: eform};
+  return { eform: eform };
 }
 
 export function DynamicFormsReducer(state: any, action: any) {
   return dynamicFormsReducer(state, action);
 }
- */
