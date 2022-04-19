@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs/internal/Subscription";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
-import {Customer, Project, Role, Response} from "@app/core/models";
+import {Customer, Project, Role, NewRolesProject, Response} from "@app/core/models";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {ToastService} from "ecapture-ng-ui";
 import {Store} from "@ngrx/store";
@@ -27,6 +27,7 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   public showConfirm: boolean = false;
 
   public role: Role = {};
+  public roleProject: NewRolesProject = {id: "", project: "", role_id: ""};
 
   private client: Customer;
   private project: Project;
@@ -47,6 +48,8 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
 
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.client = JSON.parse(sessionStorage.getItem('client') || '');
+
+    console.log(this.project);
   }
 
   ngOnInit(): void {
@@ -82,20 +85,20 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   }
 
   saveRole() {
-    if(!this.roleForm.invalid){
-      if(!this.isEdit){
+    if (!this.roleForm.invalid) {
+      if (!this.isEdit) {
         this.role = {
           id: uuidv4().toLowerCase(),
           ...this.roleForm.value,
         };
-      }else{
+      } else {
         this.role = {
           id: this.role.id,
           ...this.roleForm.value,
         };
       }
       this.showConfirm = true;
-    }else{
+    } else {
       this._messageService.add({type: 'error', message: 'Complete los campos correctamente.', life: 5000});
     }
   }
@@ -107,8 +110,23 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
           if (res.error) {
             this._messageService.add({type: 'error', message: 'Error en la creación ' + res.msg, life: 5000});
           } else {
-            this._messageService.add({type: 'success', message: 'Rol Creado Correctamente', life: 5000});
-            this._router.navigateByUrl('wizard/roles');
+            const roleProject: NewRolesProject = {
+              id: uuidv4().toLowerCase(),
+              project: this.project.id,
+              role_id: res.data.id
+            };
+            this._roleService.createRoleProject(roleProject).subscribe((res2: Response) => {
+              if (res2.error) {
+                this._messageService.add({
+                  type: 'error',
+                  message: 'No se pudo asignar el rol al proyecto - ' + res2.msg,
+                  life: 5000
+                });
+              } else {
+                this._messageService.add({type: 'success', message: 'Rol Creado Correctamente', life: 5000});
+                this._router.navigateByUrl('wizard/roles');
+              }
+            });
           }
           this.showConfirm = false;
         });
@@ -126,10 +144,10 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
       }
     } else {
       this.showConfirm = false;
-      if(!this.isEdit){
+      if (!this.isEdit) {
         this.roleForm.reset();
         this._messageService.add({type: 'info', message: 'Registro Cancelado', life: 5000});
-      }else{
+      } else {
         this._messageService.add({type: 'info', message: 'Edición Cancelada', life: 5000});
       }
     }

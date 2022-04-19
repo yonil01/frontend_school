@@ -20,7 +20,7 @@ export interface DoctypeGroup {
   stepEntities: EntityValue[];
   documents: Document[];
   selectedDocuments: Document[];
-  selectedQueue: Queue;
+  selectedQueue: Queue | {};
   selectedProcess: Process;
   tokens: Token[];
   isChangedTokens: boolean;

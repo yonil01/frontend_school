@@ -12,7 +12,10 @@ import {PickTaskComponent} from './components/pick-task/pick-task.component';
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {FilterService} from "@app/ui/services/filter.service";
 import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-dialog.component";
-import { SideTaskComponent } from './components/side-task/side-task.component';
+import {SideTaskComponent} from './components/side-task/side-task.component';
+import {PaginatorComponent} from './components/paginator/paginator.component';
+import {FormsModule} from "@angular/forms";
+import {EcTooltipDirective} from './directives/ec-tooltip.directive';
 
 @NgModule({
   declarations: [
@@ -24,19 +27,24 @@ import { SideTaskComponent } from './components/side-task/side-task.component';
     MenuComponent,
     PickTaskComponent,
     ConfirmDialogComponent,
-    SideTaskComponent
+    SideTaskComponent,
+    PaginatorComponent,
+    EcTooltipDirective
   ],
-    exports: [
-        FooterComponent,
-        BlockPageComponent,
-        LayoutComponent,
-        PickTaskComponent,
-        ConfirmDialogComponent,
-        SideTaskComponent
-    ],
+  exports: [
+    FooterComponent,
+    BlockPageComponent,
+    LayoutComponent,
+    PickTaskComponent,
+    ConfirmDialogComponent,
+    SideTaskComponent,
+    PaginatorComponent,
+    EcTooltipDirective
+  ],
   imports: [
     CommonModule,
-    DragDropModule
+    DragDropModule,
+    FormsModule
   ],
   providers: [MenuService, LocalStorageService, FilterService]
 })

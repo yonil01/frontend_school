@@ -5,7 +5,7 @@ import {
   DateDisallowed,
   PasswordPolicy,
   Attributes,
-  RolesDoctype,
+  RolesAllowUser,
   Elements,
   RoleAllowed,
   SecurityEntity,
@@ -83,7 +83,7 @@ export const editSecurity = createAction('[SecurityEntities] edit security', pro
 export const deleteSecurity = createAction('[SecurityEntities] delete security', props<{ index: number }>());
 
 // Doctype
-export const addDoctype = createAction('[role] add project', props<{ doctype: RolesDoctype []}>());
+export const addDoctype = createAction('[role] add project', props<{ doctype: RolesAllowUser []}>());
 
 export const deleteRoleDocType = createAction('[role] delete roledoctype', props<{ indexRoleDocType: number }>());
 

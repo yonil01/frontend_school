@@ -1,4 +1,4 @@
-import {Component, OnInit, HostBinding, Input, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, HostBinding, Input, Output, EventEmitter} from '@angular/core';
 // import { MenuService } from '@app/core/ui/services/menu.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Router} from '@angular/router';
@@ -46,6 +46,8 @@ export class MenuComponent implements OnInit {
   public transitionOptions: string = '0.2s cubic-bezier(0, 0, 0.2, 1)';
   public url_logo: string = '';
   public UserNames: string = '';
+
+  public ecatch_api = EnvServiceProvider.useFactory().ECATCH_API;
 
   constructor(
     private _menuService: MenuService,

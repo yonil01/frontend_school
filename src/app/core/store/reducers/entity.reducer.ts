@@ -26,7 +26,7 @@ export interface EntityState {
 
   operation: string;
 
-  attribute: Attribute;
+  attribute: Attribute | {};
   isShowAttribute: boolean;
   indexAttribute: number;
   datasets: Dataset[];

@@ -5,7 +5,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@layer base {
+@layer utilities {
   :root {
     --c-white: #F4F5F6;
     --c-mono-10: #E3E4E7;
@@ -62,39 +62,31 @@
 }
 
 @layer utilities {
+  .theme-dark {
+    --c-fl-white: var(--c-black);
+    --c-fl-mono-10: var(--c-mono-100);
+    --c-fl-mono-30: var(--c-mono-70);
+    --c-fl-mono-70: var(--c-mono-30);
+    --c-fl-mono-100: var(--c-mono-10);
+    --c-fl-black: var(--c-white);
 
-  @variants dark {
-    .theme-dark {
-      --c-fl-white: var(--c-black);
-      --c-fl-mono-10: var(--c-mono-100);
-      --c-fl-mono-30: var(--c-mono-70);
-      --c-fl-mono-70: var(--c-mono-30);
-      --c-fl-mono-100: var(--c-mono-10);
-      --c-fl-black: var(--c-white);
+    --c-fl-brand-d-3: var(--c-brand-l-3);
+    --c-fl-brand-d-2: var(--c-brand-l-2);
+    --c-fl-brand-d-1: var(--c-brand-l-1);
 
-      --c-fl-brand-d-3: var(--c-brand-l-3);
-      --c-fl-brand-d-2: var(--c-brand-l-2);
-      --c-fl-brand-d-1: var(--c-brand-l-1);
+    --c-fl-brand-1: var(--c-brand-l-1);
+    --c-fl-brand-2: var(--c-brand-l-2);
 
-      --c-fl-brand-1: var(--c-brand-l-1);
-      --c-fl-brand-2: var(--c-brand-l-2);
+    --c-fl-brand-l-1: var(--c-brand-d-1);
+    --c-fl-brand-l-2: var(--c-brand-d-2);
+    --c-fl-brand-l-3: var(--c-brand-d-3);
 
-      --c-fl-brand-l-1: var(--c-brand-d-1);
-      --c-fl-brand-l-2: var(--c-brand-d-2);
-      --c-fl-brand-l-3: var(--c-brand-d-3);
-
-      --c-fl-alert-error: var(--c-alert-error-l);
-      --c-fl-alert-success: var(--c-alert-success-l);
-      --c-fl-alert-info: var(--c-alert-info-l);
-      --c-fl-alert-warning: var(--c-alert-warning-l);
-    }
+    --c-fl-alert-error: var(--c-alert-error-l);
+    --c-fl-alert-success: var(--c-alert-success-l);
+    --c-fl-alert-info: var(--c-alert-info-l);
+    --c-fl-alert-warning: var(--c-alert-warning-l);
   }
 }
-
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 .t-h1 {
   font-family: "PT Sans";
@@ -323,4 +315,35 @@ button:disabled{
 
 svg {
   @apply fill-current
+}
+
+
+.tooltip-container {
+  text-align: center;
+  z-index: 100;
+  position: fixed;
+  padding: 6px 12px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  line-height: initial;
+  color: white;
+  width: auto;
+  background: #111111ee;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translate(-50%, -30%);
+  animation: tooltip-slide 0.18s ease-out 0.5s;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+
+@keyframes tooltip-slide {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }

@@ -111,4 +111,8 @@ export class DatasetListComponent implements OnInit {
   }
 
 
+  showHome($event: any) {
+    this.showDatasets = true;
+    this.showConfig = false
+  }
 }

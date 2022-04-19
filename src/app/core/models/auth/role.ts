@@ -1,4 +1,6 @@
 import { Attribute, Entity } from "../config/entity";
+import {Time} from "@angular/common";
+import {Project} from "@app/core/models";
 
 export interface Role {
   id?: string;
@@ -8,9 +10,9 @@ export interface Role {
   sessions_allowed?: number;
   date_disallowed?: DateDisallowed[];
   password_policy?: PasswordPolicy;
-  roles_doc_types?: RolesDoctype[]; // Validar para Borrar
-  role_elements?: Elements[];
-  projects?: string[];
+  roles_doc_types?: RolesAllow[]; // Validar para Borrar
+  role_elements?: any[];
+  projects?: RolesProject[];
   process?: string[];
   security_entities?: SecurityEntity[];
   role_allow?: RoleAllowed[];
@@ -20,7 +22,20 @@ export interface Role {
   // is_update?: boolean;
 }
 
-export interface RolesDoctype {
+export interface RolesProject {
+  id: string,
+  project: Project,
+  created_at: Time,
+  updated_at: Time,
+}
+
+export interface NewRolesProject {
+  id: string,
+  project: string,
+  role_id: string
+}
+
+export interface RolesAllow {
   id?: string;
   doctype_id?: string;
   role_id?: string;
@@ -28,10 +43,10 @@ export interface RolesDoctype {
 
 export interface DateDisallowed {
   id?: string;
-  description?: string;
-  begins_at?: Date;
-  ends_at?: Date;
-  role_id?: string;
+  description: string;
+  begins_at: Date;
+  ends_at: Date;
+  role_id: string;
 }
 
 export interface PasswordPolicy {
@@ -74,6 +89,7 @@ export interface Elements {
   id?: string;
   role_id?: string;
   element_id?: string;
+  name?: string;
 }
 
 export interface RoleAllowed {

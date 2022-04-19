@@ -1,8 +1,8 @@
 <app-layout>
   <ng-container layoutBody>
-    <div *ngIf="false" class="ec-container py-6 md:py-12 bg-white space-y-12">
+    <div *ngIf="!isAttribute" class="ec-container py-6 md:py-12 bg-white space-y-12">
       <div class="title flex flex-col">
-        <span class="text-mono-70 t-body-1">Nombre del Rol</span>
+        <span class="text-mono-70 t-body-1">{{role.description}}</span>
         <div class="flex flex-row items-center space-x-1">
           <div>
             <svg class="text-brand-2" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,24 +21,25 @@
             <div class="entities md:flex-1 flex flex-col space-y-4 md:space-y-0 md:space-x-4 md:flex-row md:items-end">
               <div class="flex flex-col space-y-1 md:w-1/2 lg:w-1/3">
                 <label class="t-caption-2 text-mono-70">Entidad</label>
-                <select class="ec-input"></select>
+                <ec-dropdown [dropStyle]="dropStyle" [data]="entitiesGlobalDrop"
+                             (onChangeValue)="selectEntity($event)" placeholder="Seleccione una Entidad" optionLabel="label"></ec-dropdown>
               </div>
               <div>
-                <button routerLink="/wizard/roles/manager" class="w-full md:w-auto b-outline">Agregar Entidad</button>
+                <button (click)="createEntity()" class="w-full md:w-auto b-outline">Agregar Entidad</button>
               </div>
             </div>
             <div class="border-t border-mono-30 pt-6 md:w-40 md:pt-0 md:border-none">
-              <input type="text" placeholder="Buscar" class="ec-input w-full md:w-40">
+              <input type="text" disabled="true" placeholder="Buscar" class="ec-input w-full md:w-40">
             </div>
           </div>
-          <div *ngIf="false" class="notify flex items-center justify-center py-6 space-y-2 flex-col">
+          <div *ngIf="entitiesRole.length < 1" class="notify flex items-center justify-center py-6 space-y-2 flex-col">
             <div><svg class="text-brand-2" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M39.54 62.72C29.406 62.72 24.722 58.284 18.732 51.516C17.044 49.61 11.862 43.996 11.862 43.996L10.86 42.888C8.42603 40.21 7.28003 38.852 7.28003 37.97C7.28003 36.888 8.02803 35.926 9.38403 35.256C11.76 34.084 15.642 33.964 18.022 35.794C19.812 37.17 23.376 41.016 25.28 43.12V14C25.28 11.224 27.216 9.28601 29.988 9.28001C29.988 9.28001 29.988 9.28001 29.99 9.28001C29.99 9.28001 29.992 9.28001 29.996 9.28001C29.998 9.28001 30 9.28001 30.002 9.28001C32.782 9.28601 34.72 11.224 34.72 14V29.28H47.824C52.896 29.28 56.72 32.836 56.72 37.552V45.572C56.72 54.478 54.638 62.72 39.54 62.72ZM12.93 43.032C12.934 43.036 18.12 48.654 19.81 50.566C25.54 57.038 30.008 61.28 39.54 61.28C52.604 61.28 55.28 55 55.28 45.572V37.552C55.28 33.656 52.074 30.718 47.824 30.718H34C33.602 30.718 33.28 30.396 33.28 29.998V14C33.28 12.04 31.96 10.722 29.996 10.72C28.038 10.722 26.72 12.04 26.72 14V45C26.72 45.298 26.536 45.566 26.256 45.674C25.978 45.782 25.66 45.704 25.462 45.476C25.402 45.41 19.496 38.74 17.146 36.934C15.296 35.516 11.968 35.588 10.022 36.55C9.19603 36.956 8.72203 37.476 8.72203 37.972C8.83603 38.52 10.848 40.732 11.928 41.922L12.93 43.032ZM21.51 23.458C18.814 21.07 17.268 17.622 17.268 14C17.268 6.98601 22.974 1.28001 29.988 1.28001C37.002 1.28001 42.708 6.98601 42.708 14C42.708 17.622 41.162 21.068 38.466 23.458L37.508 22.38C39.896 20.264 41.266 17.21 41.266 14C41.266 7.78001 36.208 2.72001 29.986 2.72001C23.766 2.72001 18.706 7.78001 18.706 14C18.706 17.21 20.076 20.266 22.464 22.38L21.51 23.458Z" fill="#595B5D"/>
             </svg>
             </div>
             <span class="text-mono-70 t-body-2">Agrega una Entidad para seleccionar sus atributos</span>
           </div>
-          <div class="data space-y-4">
+          <div *ngIf="entitiesRole.length > 0" class="data space-y-4">
             <div class="table-h w-full">
               <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
                 <div class="p-2 w-16">N°</div>
@@ -46,23 +47,17 @@
                 <div class="p-2 w-32">Opciones</div>
               </div>
               <div class="table-body t-body-2 text-mono-70">
-                <div class="item w-full flex flex-row">
-                  <div class="flex items-center p-2 w-16">1</div>
-                  <div class="flex items-center p-2 flex-1 break-all">Información Fiduciaria</div>
+                <div *ngFor="let entity of entitiesRole; index as i" class="item w-full flex flex-row">
+                  <div class="flex items-center p-2 w-16">{{i+1}}</div>
+                  <div class="flex items-center p-2 flex-1 break-all">{{entity.entity?.name}}</div>
                   <div class="flex items-center p-2 w-32">
                     <div class="w-full flex flex-row">
-                      <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
-                        <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
-                        </svg>
-                        </div>
-                      </button>
-                      <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                      <button (click)="deleteEntity(entity)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                         <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
                         </svg></div>
                       </button>
-                      <button class="w-10 text-alert-success px-2 h-10 hover:bg-mono-10">
+                      <button (click)="showEntity(entity)" class="w-10 text-alert-success px-2 h-10 hover:bg-mono-10">
                         <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M6.24788 16.0021C7.21437 16.0021 7.99788 16.7856 7.99788 17.7521V20.25C7.99788 21.2165 7.21437 22 6.24788 22H3.75C2.7835 22 2 21.2165 2 20.25V17.7521C2 16.7856 2.7835 16.0021 3.75 16.0021H6.24788ZM6.24788 17.5021H3.75C3.61193 17.5021 3.5 17.6141 3.5 17.7521V20.25C3.5 20.3881 3.61193 20.5 3.75 20.5H6.24788C6.38595 20.5 6.49788 20.3881 6.49788 20.25V17.7521C6.49788 17.6141 6.38595 17.5021 6.24788 17.5021ZM9.74809 18H21.2529C21.6671 18 22.0029 18.3358 22.0029 18.75C22.0029 19.1297 21.7207 19.4435 21.3547 19.4932L21.2529 19.5H9.74809C9.33388 19.5 8.99809 19.1642 8.99809 18.75C8.99809 18.3703 9.28025 18.0565 9.64632 18.0068L9.74809 18H21.2529H9.74809ZM6.24788 9.00106C7.21437 9.00106 7.99788 9.78456 7.99788 10.7511V13.2489C7.99788 14.2154 7.21437 14.9989 6.24788 14.9989H3.75C2.7835 14.9989 2 14.2154 2 13.2489V10.7511C2 9.78456 2.7835 9.00106 3.75 9.00106H6.24788ZM6.24788 10.5011H3.75C3.61193 10.5011 3.5 10.613 3.5 10.7511V13.2489C3.5 13.387 3.61193 13.4989 3.75 13.4989H6.24788C6.38595 13.4989 6.49788 13.387 6.49788 13.2489V10.7511C6.49788 10.613 6.38595 10.5011 6.24788 10.5011ZM9.74809 11H21.2529C21.6671 11 22.0029 11.3358 22.0029 11.75C22.0029 12.1297 21.7207 12.4435 21.3547 12.4932L21.2529 12.5H9.74809C9.33388 12.5 8.99809 12.1642 8.99809 11.75C8.99809 11.3703 9.28025 11.0565 9.64632 11.0068L9.74809 11H21.2529H9.74809ZM6.24788 2C7.21437 2 7.99788 2.7835 7.99788 3.75V6.24788C7.99788 7.21437 7.21437 7.99788 6.24788 7.99788H3.75C2.7835 7.99788 2 7.21437 2 6.24788V3.75C2 2.7835 2.7835 2 3.75 2H6.24788ZM6.24788 3.5H3.75C3.61193 3.5 3.5 3.61193 3.5 3.75V6.24788C3.5 6.38595 3.61193 6.49788 3.75 6.49788H6.24788C6.38595 6.49788 6.49788 6.38595 6.49788 6.24788V3.75C6.49788 3.61193 6.38595 3.5 6.24788 3.5ZM9.74809 4H21.2529C21.6671 4 22.0029 4.33579 22.0029 4.75C22.0029 5.1297 21.7207 5.44349 21.3547 5.49315L21.2529 5.5H9.74809C9.33388 5.5 8.99809 5.16421 8.99809 4.75C8.99809 4.3703 9.28025 4.05651 9.64632 4.00685L9.74809 4H21.2529H9.74809Z" fill="#1C7D38"/>
                         </svg>
@@ -98,15 +93,14 @@
           </div>
         </div>
         <div class="action flex flex-row space-x-2 md:justify-end mt-12">
-          <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cancelar</button>
-          <button class="flex-1 md:flex-none b-solid">Guardar</button>
+          <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cerrar</button>
         </div>
       </div>
     </div>
-    <div class="ec-container py-6 md:py-12 bg-white space-y-12">
+    <div *ngIf="isAttribute" class="ec-container py-6 md:py-12 bg-white space-y-12">
       <div class="title flex flex-col">
         <div class="flex flex-row items-center space-x-1">
-          <span class="text-mono-70 t-body-1">Nombre del Rol / Seguridad de Atributos</span>
+          <span class="text-mono-70 t-body-1">{{role.description}} / Seguridad de Atributos</span>
           <div>
             <svg class="text-mono-70" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C14.2091 2 16 3.79086 16 6V8H17.75C18.9926 8 20 9.00736 20 10.25V19.75C20 20.9926 18.9926 22 17.75 22H6.25C5.00736 22 4 20.9926 4 19.75V10.25C4 9.00736 5.00736 8 6.25 8H8V6C8 3.79086 9.79086 2 12 2ZM17.75 9.5H6.25C5.83579 9.5 5.5 9.83579 5.5 10.25V19.75C5.5 20.1642 5.83579 20.5 6.25 20.5H17.75C18.1642 20.5 18.5 20.1642 18.5 19.75V10.25C18.5 9.83579 18.1642 9.5 17.75 9.5ZM12.0001 13.5C12.8286 13.5 13.5001 14.1716 13.5001 15C13.5001 15.8284 12.8286 16.5 12.0001 16.5C11.1717 16.5 10.5001 15.8284 10.5001 15C10.5001 14.1716 11.1717 13.5 12.0001 13.5ZM12 3.5C10.6193 3.5 9.5 4.61929 9.5 6V8H14.5V6C14.5 4.61929 13.3807 3.5 12 3.5Z"/>
@@ -114,90 +108,69 @@
           </div>
         </div>
         <div class="flex flex-row items-center space-x-1">
-          <span class="text-black t-h5">Nombre de la Entidad</span>
+          <span class="text-black t-h5">{{entitySelected.entity?.name}}</span>
         </div>
       </div>
       <div class="body">
         <div class="section space-y-6 flex flex-col items-center">
-          <div *ngIf="!isEdit" class="register w-full space-y-6">
+          <div class="register w-full space-y-6">
             <div class="title pb-2 text-brand-2 flex items-center justify-between border-b border-brand-2">
               <span class="t-subtitle-1">Atributos</span>
             </div>
             <div class="flex w-full flex-col space-y-6 md:flex-row md:space-y-0 md:justify-between md:items-end">
-              <div class="entities flex flex-col space-y-4 md:space-y-0 md:space-x-4 md:flex-row md:items-end md:w-2/3 lg:w-1/2">
+              <form [formGroup]="attributeForm" (ngSubmit)="!isEditAttribute ? createAttribute():updateAttribute()" class="entities flex flex-col space-y-4 md:space-y-0 md:space-x-4 md:flex-row md:items-end md:w-2/3 lg:w-1/2">
                 <div class="flex flex-1 flex-row space-x-2">
                   <div class="flex flex-col space-y-1 flex-1">
                     <label class="t-caption-2 text-mono-70">Atributo</label>
-                    <select class="ec-input w-full"></select>
+                    <ec-dropdown formControlName="attribute_id" [dropStyle]="dropStyle" [data]="entityAttributesGlobalDrop"
+                                 placeholder="Seleccione un Atributo" optionLabel="label"></ec-dropdown>
                   </div>
                   <div class="flex flex-col space-y-1 flex-1">
                     <label class="t-caption-2 text-mono-70">Valor</label>
-                    <input type="text" class="ec-input w-full">
+                    <input formControlName="value" type="text" class="ec-input w-full">
                   </div>
                 </div>
-                <div>
-                  <button routerLink="/wizard/roles/manager" class="w-full md:w-auto b-outline">Agregar Atributo</button>
-                </div>
-              </div>
-              <div class="border-t border-mono-30 pt-6 md:pt-0 md:border-none">
-                <input type="text" placeholder="Buscar" class="ec-input w-full md:w-36 lg:w-40">
-              </div>
-            </div>
-          </div>
-          <div *ngIf="isEdit" class="edit space-y-6 lg:w-1/2">
-            <div class="title pb-2 text-brand-2 flex items-center justify-between border-b border-brand-2">
-              <span class="t-subtitle-1">Editar Atributo</span>
-            </div>
-            <div class="flex w-full flex-col space-y-6 md:flex-row md:space-y-0 md:justify-between md:items-end">
-              <div class="entities flex flex-col space-y-12 flex-1">
-                <div class="flex flex-1 flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-                  <div class="flex flex-col space-y-1 flex-1">
-                    <label class="t-caption-2 text-mono-70">Atributo</label>
-                    <select class="ec-input w-full"></select>
-                  </div>
-                  <div class="flex flex-col space-y-1 flex-1">
-                    <label class="t-caption-2 text-mono-70">Valor</label>
-                    <input type="text" class="ec-input w-full">
-                  </div>
-                </div>
-                <div class="flex flex-1 justify-end flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-                  <div><button class="w-full md:w-auto b-ghost">Reestablecer Valores</button></div>
+                <div class="flex flex-1 {{!isEditAttribute ? 'justify-start' : 'justify-end'}} flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                  <!--<div *ngIf="isEditAttribute"><button type="reset" class="w-full md:w-auto b-ghost">Reestablecer Valores</button></div>-->
                   <div class="flex flex-row space-x-4">
-                    <button (click)="isEdit = false" class="flex-1 md:flex-none b-outline">Cancelar</button>
-                    <button class="flex-1 md:flex-none b-solid">Guardar</button>
+                    <button *ngIf="isEditAttribute" (click)="isEditAttribute = false; attributeForm.reset(); this.attributeSelected = {};" class="flex-1 md:flex-none b-outline">Cancelar</button>
+                    <button [disabled]="attributeForm.invalid" type="submit" class="flex-1 md:flex-none b-solid">{{!isEditAttribute ? 'Agregar' : 'Actualizar'}}</button>
                   </div>
                 </div>
+              </form>
+              <div class="border-t border-mono-30 pt-6 md:pt-0 md:border-none">
+                <input disabled="true" type="text" placeholder="Buscar" class="ec-input w-full md:w-36 lg:w-40">
               </div>
             </div>
           </div>
 
-          <div *ngIf="false" class="notify w-full flex items-center justify-center py-6 space-y-2 flex-col">
+          <div *ngIf="!isExistAttributes" class="notify w-full flex items-center justify-center py-6 space-y-2 flex-col">
             <div><svg class="text-brand-2" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M39.54 62.72C29.406 62.72 24.722 58.284 18.732 51.516C17.044 49.61 11.862 43.996 11.862 43.996L10.86 42.888C8.42603 40.21 7.28003 38.852 7.28003 37.97C7.28003 36.888 8.02803 35.926 9.38403 35.256C11.76 34.084 15.642 33.964 18.022 35.794C19.812 37.17 23.376 41.016 25.28 43.12V14C25.28 11.224 27.216 9.28601 29.988 9.28001C29.988 9.28001 29.988 9.28001 29.99 9.28001C29.99 9.28001 29.992 9.28001 29.996 9.28001C29.998 9.28001 30 9.28001 30.002 9.28001C32.782 9.28601 34.72 11.224 34.72 14V29.28H47.824C52.896 29.28 56.72 32.836 56.72 37.552V45.572C56.72 54.478 54.638 62.72 39.54 62.72ZM12.93 43.032C12.934 43.036 18.12 48.654 19.81 50.566C25.54 57.038 30.008 61.28 39.54 61.28C52.604 61.28 55.28 55 55.28 45.572V37.552C55.28 33.656 52.074 30.718 47.824 30.718H34C33.602 30.718 33.28 30.396 33.28 29.998V14C33.28 12.04 31.96 10.722 29.996 10.72C28.038 10.722 26.72 12.04 26.72 14V45C26.72 45.298 26.536 45.566 26.256 45.674C25.978 45.782 25.66 45.704 25.462 45.476C25.402 45.41 19.496 38.74 17.146 36.934C15.296 35.516 11.968 35.588 10.022 36.55C9.19603 36.956 8.72203 37.476 8.72203 37.972C8.83603 38.52 10.848 40.732 11.928 41.922L12.93 43.032ZM21.51 23.458C18.814 21.07 17.268 17.622 17.268 14C17.268 6.98601 22.974 1.28001 29.988 1.28001C37.002 1.28001 42.708 6.98601 42.708 14C42.708 17.622 41.162 21.068 38.466 23.458L37.508 22.38C39.896 20.264 41.266 17.21 41.266 14C41.266 7.78001 36.208 2.72001 29.986 2.72001C23.766 2.72001 18.706 7.78001 18.706 14C18.706 17.21 20.076 20.266 22.464 22.38L21.51 23.458Z" fill="#595B5D"/>
             </svg>
             </div>
             <span class="text-mono-70 t-body-2">Agrega una Entidad para seleccionar sus atributos</span>
-          </div> <!--Activar cuando no hay ningún registro-->
-          <div *ngIf="!isEdit" class="data w-full space-y-4 mt-4">
+          </div> <!--Activar cuando no hay ningún atributo registrado-->
+          <div *ngIf="isExistAttributes" class="data w-full space-y-4 mt-4">
             <div class="table-v md:hidden flex flex-col space-y-4">
-              <div class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-                <span class="text-mono-70 t-caption-1">N° 1</span>
+              <div *ngFor="let attribute of attributesRole; index as i" class="item shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+                <span class="text-mono-70 t-caption-1">N° {{i+1}}</span>
                 <div class="flex flex-col">
                   <span class="text-mono-70 t-caption-2">Atributo</span>
-                  <span class="text-black t-body-1">Información básica fiduciaria</span>
+                  <span class="text-black t-body-1">{{attribute.attribute?.description}}</span>
                 </div>
                 <div class="flex flex-col">
                   <span class="text-mono-70 t-caption-2">Valor</span>
-                  <span class="text-black t-body-1">123456</span>
+                  <span class="text-black t-body-1">{{attribute?.value}}</span>
                 </div>
                 <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-                  <button (click)="isEdit = true" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
+                  <button (click)="editAttribute(i,attribute)" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
                     <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
                     </svg>
                     </div>
                   </button>
-                  <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+                  <button (click)="deleteAttribute(attribute)" [disabled]="isEditAttribute" class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
                     <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
                     </svg></div>
@@ -213,19 +186,19 @@
                 <div class="p-2 w-24">Opciones</div>
               </div>
               <div class="table-body t-body-2 text-mono-70">
-                <div class="item w-full flex flex-row">
-                  <div class="flex items-center p-2 w-16">1</div>
-                  <div class="flex items-center p-2 flex-1 break-all">Información Fiduciaria</div>
-                  <div class="flex items-center p-2 flex-1 break-all">123456</div>
+                <div *ngFor="let attribute of attributesRole; index as i" class="item w-full flex flex-row">
+                  <div class="flex items-center p-2 w-16">{{i+1}}</div>
+                  <div class="flex items-center p-2 flex-1 break-all">{{attribute.attribute?.description}}</div>
+                  <div class="flex items-center p-2 flex-1 break-all">{{attribute?.value}}</div>
                   <div class="flex items-center p-2 w-24">
                     <div class="w-full flex flex-row">
-                      <button (click)="isEdit = true" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                      <button (click)="editAttribute(i,attribute)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                         <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z" fill="#0150E5"/>
                         </svg>
                         </div>
                       </button>
-                      <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                      <button (click)="deleteAttribute(attribute)" [disabled]="isEditAttribute" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                         <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z" fill="#CA1C25"/>
                         </svg></div>
@@ -259,12 +232,17 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!isEdit" class="action w-full flex flex-row space-x-2 md:justify-end mt-12">
-          <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cancelar</button>
-          <button class="flex-1 md:flex-none b-solid">Guardar</button>
+        <div *ngIf="!isEditAttribute" class="action w-full flex flex-row space-x-2 md:justify-end mt-12">
+          <button *ngIf="!isAttribute" routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cancelar</button>
+          <button *ngIf="isAttribute" (click)="isAttribute = false; isExistAttributes = false; attributeForm.reset();" class="flex-1 md:flex-none b-outline">Volver a Entidades</button>
         </div>
       </div>
     </div>
     <app-footer></app-footer>
   </ng-container>
 </app-layout>
+
+<app-block-page [show]="isBlockPage"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-confirm-dialog [show]="showConfirmDeleteEntity" type="warning" title="Confimar Eliminación" body="¿Desea Eliminar la Entidad?" (onEvent)="confirmDialogDeleteEntity($event)"></app-confirm-dialog>
+<app-confirm-dialog [show]="showConfirmDeleteAttribute" type="warning" title="Confimar Eliminación" body="¿Desea Eliminar la Atributo?" (onEvent)="confirmDialogDeleteAttribute($event)"></app-confirm-dialog>

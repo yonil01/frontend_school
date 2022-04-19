@@ -1,12 +1,16 @@
 <app-layout>
   <ng-container layoutBody>
     <div class="w-full bg-white pb-8">
-      <div style="background-image: url('assets/img/base-wizard_font.png');"
+      <div style="background-image: url('assets/img/banner-web-config.jpg'); background-position: top"
            class="banner bg-black h-48 bg-cover bg-center"></div>
-      <div class="p-6">
+      <div class="ec-container py-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-6 gap-x-2">
+          <span class="text-black t-h5 font-bold">Configurador</span>
           <div class="admi flex-1 space-y-2 lg:col-span-2">
-            <span class="text-mono-70 t-subtitle-1">Administración</span>
+            <div class="w-full flex flex-row items-center space-x-2">
+              <div class="w-2 h-6 rounded-sm bg-brand-2"></div>
+              <span class="text-mono-70 t-subtitle-1">Administración</span>
+            </div>
             <div class="item-group">
               <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
                 <div class="item flex-1">
@@ -23,14 +27,14 @@
                   </button>
                 </div>
                 <div class="item flex-1">
-                  <button class="w-full btn-item-home" routerLink="/form">
+                  <button class="w-full btn-item-home" routerLink="/admin/password-not-allowed">
                     <div>
                       <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           d="M20 4C23.3137 4 26 6.68629 26 10V12H28C30.2091 12 32 13.7909 32 16V30C32 32.2091 30.2091 34 28 34H12C9.79086 34 8 32.2091 8 30V16C8 13.7909 9.79086 12 12 12H14V10C14 6.68629 16.6863 4 20 4ZM28 14H12C10.8954 14 10 14.8954 10 16V30C10 31.1046 10.8954 32 12 32H28C29.1046 32 30 31.1046 30 30V16C30 14.8954 29.1046 14 28 14ZM20 21C21.1046 21 22 21.8954 22 23C22 24.1046 21.1046 25 20 25C18.8954 25 18 24.1046 18 23C18 21.8954 18.8954 21 20 21ZM20 6C17.7909 6 16 7.79086 16 10V12H24V10C24 7.79086 22.2091 6 20 6Z"/>
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">Contraseñas</span>
+                    <span class="t-body-2 flex-1 text-left">Contraseñas no permitidas</span>
                   </button>
                 </div>
                 <div class="item flex-1">
@@ -58,21 +62,24 @@
               </div>
             </div>
           </div>
-          <div class="flex-1 lg:col-span-2">
+          <div class="wizard flex-1 lg:col-span-2">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-y-6 gap-x-4">
               <div class="doc flex-1 space-y-2">
-                <span class="t-subtitle-1 text-mono-70">Wizard</span>
+                <div class="w-full flex flex-row items-center space-x-2">
+                  <div class="w-2 h-6 rounded-sm bg-brand-2"></div>
+                  <span class="text-mono-70 t-subtitle-1">Wizard</span>
+                </div>
                 <div class="item-group">
                   <div class="grid grid-cols-2 lg:grid-cols-1 gap-2">
                     <div class="item flex-1 col-span-1">
                       <div class="label-dropdown">Cliente</div>
-                      <ec-dropdown [dropStyle]="dropStyle" [data]="clients"
-                                   (onChangeValue)="selectClient($event, dropdown2)" placeholder="Seleccione un Cliente" optionLabel="label"></ec-dropdown>
+                      <ec-dropdown [(ngModel)]="clientID" [dropStyle]="dropStyle" [data]="clients"
+                                   (onChangeValue)="selectClient($event)" placeholder="Seleccione un Cliente" optionLabel="label" [showClear]="true"></ec-dropdown>
                     </div>
                     <div class="item flex-1 col-span-1">
                       <div class="label-dropdown">Proyecto</div>
-                      <ec-dropdown #dropdown2 [dropStyle]="dropStyle" [icon]="true" [data]="projects"
-                                   (onChangeValue)="selectProject($event)" placeholder="Seleccione un Proyecto" optionLabel="label"></ec-dropdown>
+                      <ec-dropdown [(ngModel)]="projectID" [dropStyle]="dropStyle" [icon]="true" [data]="projects"
+                                   (onChangeValue)="selectProject($event)" placeholder="Seleccione un Proyecto" optionLabel="label" [showClear]="true"></ec-dropdown>
                     </div>
                     <div class="col-span-2 md:col-span-1">
                       <button class="bg-brand-1 t-button-2 text-white w-full md:w-auto mt-2"
@@ -86,12 +93,12 @@
                 <div class="flex flex-col lg:flex-row h-full">
                   <div class="line-separator"></div>
                   <div *ngIf="isGenerate">
-                    <span class="t-subtitle-1 text-mono-70">Acceso a</span>
+                    <span class="t-subtitle-1 text-mono-70">Accesos de {{clientName+' - '+projectName}}</span>
                     <div class="item-group">
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <div *ngFor="let conf of configList" class="item flex-1 col-span-1">
                           <a class="card-config btn-item-home cursor-pointer" [routerLink]="conf.route">
-                            <img [src]="conf.icon">
+                            <img [src]="conf.icon" alt="icon">
                             <div class="block pl-4">
                               <span class="card-config-title">{{conf.name}}</span>
                               <div class="card-config-body">{{conf.description}}</div>
@@ -103,7 +110,7 @@
                   </div>
                   <div *ngIf="!isGenerate" class="flex justify-center items-center w-full">
                     <div class="flex flex-col items-center space-y-4">
-                      <img src="assets/img/touch-icon.svg" class="text-mono-70">
+                      <img src="assets/img/touch-icon.svg" class="text-mono-70" alt="img access">
                       <span class="text-mono-70">Seleccione "Generar Accesos"</span>
                     </div>
                   </div>

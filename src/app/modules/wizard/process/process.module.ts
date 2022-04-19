@@ -8,10 +8,29 @@ import {UiModule} from "@app/ui/ui.module";
 import {ProcessCreateComponent} from './process/Pages/process-create/process-create.component';
 import {ProcessShowComponent} from './process/Pages/process-show/process-show.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CheckboxModule, DropdownModule, IconsModule, ToastModule} from "ecapture-ng-ui";
+import {
+  CheckboxModule,
+  DropdownModule,
+  IconsModule,
+  InputDateModule,
+  InputTextModule,
+  ToastModule
+} from "ecapture-ng-ui";
 import {MatMenuModule} from "@angular/material/menu";
 import {ConfigComponent} from "@app/modules/wizard/process/process/components/config/config.component";
 import {TranslateModule} from "@ngx-translate/core";
+import {TaskFormComponent} from "@app/modules/wizard/process/process/components/task-form/task-form.component";
+import {ActivitiesComponent} from "@app/modules/wizard/process/process/components/activities/activities.component";
+import {ButtonModule} from "primeng/button";
+import {TreeSelectModule} from "primeng/treeselect";
+import {ContextMenuModule} from "primeng/contextmenu";
+import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {
+  ActivityFormComponent
+} from "@app/modules/wizard/process/process/components/activity-form/activity-form.component";
+import {CardModule} from "primeng/card";
+import {PipesModule} from "@app/core/pipes/pipes.module";
 
 
 @NgModule({
@@ -20,7 +39,10 @@ import {TranslateModule} from "@ngx-translate/core";
     ProcessListComponent,
     ProcessCreateComponent,
     ProcessShowComponent,
-    ConfigComponent
+    ConfigComponent,
+    TaskFormComponent,
+    ActivitiesComponent,
+    ActivityFormComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +55,18 @@ import {TranslateModule} from "@ngx-translate/core";
     MatMenuModule,
     TranslateModule,
     DropdownModule,
-    CheckboxModule
+    CheckboxModule,
+    ButtonModule,
+    TreeSelectModule,
+    ContextMenuModule,
+    ToastModule,
+    PerfectScrollbarModule,
+    ToastModule,
+    ConfirmDialogModule,
+    CardModule,
+    InputTextModule,
+    InputDateModule,
+    PipesModule
   ]
 })
 export class ProcessModule {
