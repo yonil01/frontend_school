@@ -1,100 +1,170 @@
-<app-layout>
-  <ng-container layoutBody>
-    <!--Step 1-->
-    <div class="ec-container py-6 md:py-12 bg-white">
-      <div class="flex flex-col space-y-12 lg:items-center">
-        <div class="flex flex-col space-y-6 lg:w-2/3">
-          <span class="t-h5 text-black">Crear Usuario</span>
-          <div class="flex flex-row space-x-2 items-start">
-            <div class="relative">
-              <div class="absolute left-0 top-0"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="text-mono-30" d="M64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32ZM3.2 32C3.2 47.9058 16.0942 60.8 32 60.8C47.9058 60.8 60.8 47.9058 60.8 32C60.8 16.0942 47.9058 3.2 32 3.2C16.0942 3.2 3.2 16.0942 3.2 32Z"/>
-                <path class="text-brand-2" d="M32 0C26.3828 -6.69841e-08 20.8646 1.4786 16 4.28719C11.1354 7.09577 7.09577 11.1354 4.28719 16C1.4786 20.8646 -1.7855e-07 26.3828 0 32C1.7855e-07 37.6172 1.4786 43.1354 4.28719 48L7.05847 46.4C4.53074 42.0218 3.2 37.0555 3.2 32C3.2 26.9445 4.53074 21.9782 7.05847 17.6C9.5862 13.2218 13.2218 9.5862 17.6 7.05847C21.9782 4.53074 26.9445 3.2 32 3.2L32 0Z"/>
-              </svg>
-              </div>
-              <div class="flex items-center justify-center" style="width: 64px; height: 64px;">
-                <span class="text-black t-button-1">1/3</span>
-              </div>
-            </div>
-            <div class="flex flex-1 flex-col">
-              <span class="text-black t-h5">Información Básica</span>
-              <span class="text-mono-70 t-caption-1">Roles</span>
-            </div>
+<div class="w-full grid space-y-8 lg:space-x-4 lg:flex lg:space-y-0">
+  <form [formGroup]="formBasicInfo" class="w-full space-y-10" novalidate>
+    <div class="w-full space-y-4">
+      <div class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full">
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Nombre de Usuario</span>
+            <input formControlName="username"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-mono-10 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('username')?.dirty && (formBasicInfo.get('username')?.errors || formBasicInfo.get('username')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('username')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('required')">El descripción es requerido</span>
           </div>
         </div>
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Correo Electronico</span>
+            <input formControlName="email_notifications" type="email_notifications" id="email_notifications"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('email_notifications')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('email_notifications')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span
+              *ngIf="formBasicInfo.get('email_notifications')?.hasError('required')">El descripción es requerido</span>
+            <span
+              *ngIf="formBasicInfo.get('email_notifications')?.hasError('pattern')">El campo debe tener @</span>
 
-        <form class="flex flex-col gap-4 grid grid-cols-2 lg:w-2/3">
-          <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70 ">Nombre de Usuario</label>
-            <input type="text" class="ec-input">
-            <span class="t-caption-2 text-alert-error">El nombre de usuario ya existe</span>
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Correo Electrónico</label>
-            <input type="email" class="ec-input">
-            <span class="t-caption-2 text-alert-error">Ya existe un usuario con ese correo</span>
-          </div>
-          <div class="flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Tipo de Identificación</label>
-            <select class="ec-input">
-              <option [value]="0">Cédula de Ciudadanía</option>
-              <option [value]="1">Pasaporte</option>
-            </select>
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Número de Identificación</label>
-            <input type="text" class="ec-input">
-            <span class="t-caption-2 text-alert-error">Campo Requerido</span>
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Nombres</label>
-            <input type="text" class="ec-input">
-            <span class="t-caption-2 text-alert-error">Campo Requerido</span>
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Apellidos</label>
-            <input type="text" class="ec-input">
-            <span class="t-caption-2 text-alert-error">Campo Requerido</span>
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Contraseña</label>
-            <input type="password" class="ec-input">
-            <span class="t-caption-2 text-alert-error">Campo Requerido</span>
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Confirmar Contraseña</label>
-            <input type="password" class="ec-input">
-            <span class="t-caption-2 text-alert-error">No coincide</span>
-          </div>
-        </form>
-        <div class="flex flex-col md:flex-row-reverse space-y-4 md:space-y-0 lg:w-2/3">
-          <div><button class="w-full md:flex-none b-solid">Siguiente</button></div>
-          <div class="md:w-4"></div>
-          <div class="flex flex-row space-x-4">
-            <button routerLink="/wizard/bpmn" class="flex-1 md:flex-none b-ghost">Cancelar</button>
-            <button class="flex-1 md:flex-none b-outline">Guardar</button>
-          </div>
-        </div>
-        <div class="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 lg:w-2/3">
-          <div class="flex flex-row space-x-2">
-            <div>
-              <svg class="text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 1.99622C16.0499 1.99622 19.3567 5.19097 19.4958 9.24528L19.5 9.49622V13.5932L20.88 16.7492C20.9491 16.9071 20.9847 17.0776 20.9847 17.25C20.9847 17.9404 20.4251 18.5 19.7347 18.5L15 18.5015C15 20.1583 13.6569 21.5015 12 21.5015C10.4023 21.5015 9.09634 20.2526 9.00509 18.6778L8.99955 18.4992L4.27486 18.5C4.10353 18.5 3.93402 18.4648 3.77686 18.3965C3.14366 18.1215 2.85331 17.3852 3.12835 16.752L4.5 13.5941V9.49612C4.5006 5.34132 7.85209 1.99622 12 1.99622ZM13.4995 18.4992L10.5 18.5015C10.5 19.3299 11.1716 20.0015 12 20.0015C12.7797 20.0015 13.4204 19.4066 13.4931 18.646L13.4995 18.4992ZM12 3.49622C8.67984 3.49622 6.00048 6.17048 6 9.49622V13.9059L4.65602 17H19.3525L18 13.9068L18.0001 9.50908L17.9964 9.28388C17.8853 6.0504 15.2416 3.49622 12 3.49622ZM21 8.25H23C23.4142 8.25 23.75 8.58579 23.75 9C23.75 9.3797 23.4678 9.69349 23.1018 9.74315L23 9.75H21C20.5858 9.75 20.25 9.41421 20.25 9C20.25 8.6203 20.5322 8.30651 20.8982 8.25685L21 8.25ZM1 8.25H3C3.41421 8.25 3.75 8.58579 3.75 9C3.75 9.3797 3.46785 9.69349 3.10177 9.74315L3 9.75H1C0.585786 9.75 0.25 9.41421 0.25 9C0.25 8.6203 0.532154 8.30651 0.898229 8.25685L1 8.25ZM22.6 2.55C22.8259 2.85125 22.791 3.26715 22.5338 3.527L22.45 3.6L20.45 5.1C20.1186 5.34853 19.6485 5.28137 19.4 4.95C19.1741 4.64875 19.209 4.23285 19.4662 3.973L19.55 3.9L21.55 2.4C21.8814 2.15147 22.3515 2.21863 22.6 2.55ZM2.45 2.4L4.45 3.9C4.78137 4.14853 4.84853 4.61863 4.6 4.95C4.35147 5.28137 3.88137 5.34853 3.55 5.1L1.55 3.6C1.21863 3.35147 1.15147 2.88137 1.4 2.55C1.64853 2.21863 2.11863 2.15147 2.45 2.4Z"/>
-              </svg>
-            </div>
-            <span class="text-mono-70 t-body-2">El botón ‘Guardar’ realiza el registro hasta este punto y te dirige a la pantalla anterior.</span>
-          </div>
-          <div class="flex flex-row space-x-2">
-            <div>
-              <svg class="text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 1.99622C16.0499 1.99622 19.3567 5.19097 19.4958 9.24528L19.5 9.49622V13.5932L20.88 16.7492C20.9491 16.9071 20.9847 17.0776 20.9847 17.25C20.9847 17.9404 20.4251 18.5 19.7347 18.5L15 18.5015C15 20.1583 13.6569 21.5015 12 21.5015C10.4023 21.5015 9.09634 20.2526 9.00509 18.6778L8.99955 18.4992L4.27486 18.5C4.10353 18.5 3.93402 18.4648 3.77686 18.3965C3.14366 18.1215 2.85331 17.3852 3.12835 16.752L4.5 13.5941V9.49612C4.5006 5.34132 7.85209 1.99622 12 1.99622ZM13.4995 18.4992L10.5 18.5015C10.5 19.3299 11.1716 20.0015 12 20.0015C12.7797 20.0015 13.4204 19.4066 13.4931 18.646L13.4995 18.4992ZM12 3.49622C8.67984 3.49622 6.00048 6.17048 6 9.49622V13.9059L4.65602 17H19.3525L18 13.9068L18.0001 9.50908L17.9964 9.28388C17.8853 6.0504 15.2416 3.49622 12 3.49622ZM21 8.25H23C23.4142 8.25 23.75 8.58579 23.75 9C23.75 9.3797 23.4678 9.69349 23.1018 9.74315L23 9.75H21C20.5858 9.75 20.25 9.41421 20.25 9C20.25 8.6203 20.5322 8.30651 20.8982 8.25685L21 8.25ZM1 8.25H3C3.41421 8.25 3.75 8.58579 3.75 9C3.75 9.3797 3.46785 9.69349 3.10177 9.74315L3 9.75H1C0.585786 9.75 0.25 9.41421 0.25 9C0.25 8.6203 0.532154 8.30651 0.898229 8.25685L1 8.25ZM22.6 2.55C22.8259 2.85125 22.791 3.26715 22.5338 3.527L22.45 3.6L20.45 5.1C20.1186 5.34853 19.6485 5.28137 19.4 4.95C19.1741 4.64875 19.209 4.23285 19.4662 3.973L19.55 3.9L21.55 2.4C21.8814 2.15147 22.3515 2.21863 22.6 2.55ZM2.45 2.4L4.45 3.9C4.78137 4.14853 4.84853 4.61863 4.6 4.95C4.35147 5.28137 3.88137 5.34853 3.55 5.1L1.55 3.6C1.21863 3.35147 1.15147 2.88137 1.4 2.55C1.64853 2.21863 2.11863 2.15147 2.45 2.4Z"/>
-              </svg>
-            </div>
-            <span class="text-mono-70 t-body-2">El botón ‘Siguiente’ también realiza el registro, pero te dirige a la asignación de roles y entidades de seguridad, esos pasos son opcionales.</span>
           </div>
         </div>
       </div>
+      <div class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full">
+        <div class="w-full grid space-y-2">
+          <span class="text-mono-70">Tipo de Identificación</span>
+          <ec-dropdown
+            [data]="dataDropIdentification"
+            [dropStyle]="styleDropdown" [icon]="true"
+            [filter]="true"
+            placeholder="Seleccione"
+            formControlName="identification_type"
+          ></ec-dropdown>
+        </div>
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Numero de Identificación</span>
+            <input formControlName="identification_number" type="number" id="identification_number"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('identification_number')?.dirty && (formBasicInfo.get('identification_number')?.errors || formBasicInfo.get('identification_number')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span
+              *ngIf="formBasicInfo.get('identification_number')?.hasError('required')">El descripción es requerido</span>
+          </div>
+        </div>
+      </div>
+      <div class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full">
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Nombre</span>
+            <input formControlName="name" type="name" id="name"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('name')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('name')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('required')">El descripción es requerido</span>
+          </div>
+        </div>
+        <div class="w-full">
+          <div class="space-y-2">
+            <span class="text-mono-70">Apellido</span>
+            <input formControlName="last_name" type="last_name" id="last_name"
+                   class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
+                   required>
+          </div>
+          <div
+            *ngIf="formBasicInfo.get('last_name')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
+            class="text-xs text-alert-error">
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('required')">El descripción es requerido</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!returnExistUser()" class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full ">
+        <ec-input-password label="password"
+                           bgContainerColor="bg-mono-10"
+                           brContainerColor="border-outline-gray-50"
+                           txtColor="text-mono-70"
+                           formControlName="password"
+                           class="w-full"
+        ></ec-input-password>
+        <ec-input-password label="Confirmar Contraseña"
+                           bgContainerColor="bg-mono-10"
+                           brContainerColor="border-outline-gray-50"
+                           txtColor="text-mono-70"
+                           formControlName="password_comfirm"
+                           class="w-full"
+        ></ec-input-password>
+      </div>
     </div>
-    <app-footer></app-footer>
-  </ng-container>
-</app-layout>
+    <div class="flex w-full space-x-4 md:w-1/2">
+      <app-button type="button" label="Guardar"
+                  brColor="border-brand-1"
+                  bgColor="bg-transparent"
+                  txtColor="text-brand-1" class="h-12 w-full" (click)="saveForm();typeExecution=0"></app-button>
+      <app-button [disabled]="formBasicInfo.invalid"
+                  type="button" label="Siguiente"
+                  brColor="border-brand-1"
+                  bgColor="bg-brand-1"
+                  txtColor="text-white" class="h-12 w-full" (click)="nextStep();typeExecution=1"></app-button>
+    </div>
+  </form>
+
+  <div class="w-full  lg:p-4 content-center h-100 ">
+    <span appIcon iconName="alert-on 32" iconColor="text-mono-70"></span>
+
+    <div class=" space-y-4">
+      <div class="flex space-x-2">
+        <span><svg class="fill-current text-brand-1"  width="24" height="21" viewBox="0 0 24 21"  xmlns="http://www.w3.org/2000/svg">
+<path
+  d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"
+/>
+</svg>
+</span>
+        <span class="text-mono-70">
+                  Si quieres cancelar presiona la ‘X’ de la parte superior izquierda.
+                </span>
+      </div>
+      <div class="flex space-x-2">
+        <span><svg class="fill-current text-brand-1" width="24" height="21" viewBox="0 0 24 21"  xmlns="http://www.w3.org/2000/svg">
+<path
+  d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"/>
+</svg>
+</span>
+        <span class="text-mono-70">
+                  El botón ‘Guardar’ realiza el registro hasta este punto y te dirige a la pantalla anterior.
+                </span>
+      </div>
+      <div class="flex space-x-2">
+        <span>
+          <svg class="fill-current text-brand-1" width="24" height="21" viewBox="0 0 24 21"  xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"
+            />
+          </svg>
+      </span>
+        <span class="text-mono-70">
+                  El botón ‘Siguiente’ también realiza el registro, pero te dirige a la asignación de roles y entidades de seguridad, esos pasos son opcionales.
+                </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+

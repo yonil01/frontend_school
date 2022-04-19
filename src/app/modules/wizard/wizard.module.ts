@@ -13,7 +13,7 @@ import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
-    WizardComponent
+    WizardComponent,
   ],
   imports: [
     CommonModule,

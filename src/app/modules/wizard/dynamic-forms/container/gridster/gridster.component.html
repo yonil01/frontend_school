@@ -1,0 +1,106 @@
+<div style="background-color: #f4f4f4; height: 60em; margin-bottom: 1em;">
+  <gridster [options]="options" *ngIf="selectContainer">
+    <gridster-item
+      *ngFor="let dashboard of selectContainer.dashboards; let indexDashboard = index"
+      [item]="dashboard?.gridster!"
+      [ngClass]="indexSelectedDashboard === indexDashboard ? 'gridster-item-selected' : ''"
+      (click)="selectedDashboard(dashboard, indexDashboard)"
+    >
+      <div style="display: flex; justify-content: space-between;">
+        <label *ngIf="dashboard?.entity?.name!">{{ dashboard.entity?.name! }}</label>
+        <label *ngIf="dashboard?.entity?.name!">{{ dashboard.entity?.name! }}</label>
+        <label *ngIf="!dashboard?.entity?.name">{{ dashboard.gridster?.type! }}</label>
+        <div class="btn-opts">
+          <i class="pi pi-cog" (click)="configComponentDashboard(dashboard, indexDashboard)"></i>
+          <i class="pi pi-times" style="color: red;" (click)="removeDashboard($event, indexDashboard)"></i>
+        </div>
+      </div>
+      <gridster
+        [options]="optionsList[indexDashboard]"
+        *ngIf="selectContainer"
+        [ngClass]="{ disableDiv: indexSelectedDashboard !== indexDashboard }"
+      >
+        <gridster-item
+          [item]="item"
+          *ngFor="let item of dashboard?.gridsterItems; let indexItem = index"
+          (click)="selectedItem(item, indexItem)"
+        >
+          <div class="button-holder">
+            <div class="gridster-item-content" *ngIf="item.hasContent"></div>
+            <div [ngSwitch]="item.type">
+              <div class="btn-opts">
+                <i class="pi pi-cog" (click)="configComponent(item, indexItem)"></i>
+                <i class="pi pi-times" style="color: red;" (click)="removeItem($event, indexItem)"></i>
+              </div>
+              <div class="box-element" *ngSwitchCase="'heading2'">
+                <h2>{{ item.text }}</h2>
+              </div>
+              <div class="box-element" *ngSwitchCase="'heading3'">
+                <h3>Título 3</h3>
+              </div>
+              <div class="box-element" *ngSwitchCase="'heading4'">
+                <h4>Título 4</h4>
+              </div>
+              <div class="box-element" *ngSwitchCase="'Input'">
+                <label>{{ item.attribute.name }}</label>
+                <input type="text" pInputText placeholder="Input Text" />
+              </div>
+              <div class="box-element" *ngSwitchCase="'Textarea'">
+                <label>{{ item.attribute.name }}</label>
+                <textarea rows="3" pInputTextarea autoResize="autoResize" placeholder="Input Area"></textarea>
+              </div>
+              <div class="box-element" *ngSwitchCase="'Select'">
+                <label>{{ item.attribute.name }}</label>
+              </div>
+              <div class="box-element" *ngSwitchCase="'Option'">
+                <label>{{ item.attribute.name }}</label>
+              </div>
+              <div class="box-element" *ngSwitchCase="'Text'">
+                <label>{{ item.attribute.name }}</label>}}
+              </div>
+              <div class="box-element" *ngSwitchCase="'Number'">
+                <label>{{ item.attribute.name }}</label>
+              </div>
+              <div class="box-element" *ngSwitchCase="'Date'">
+                <label>{{ item.attribute.name }}</label>
+              </div>
+              <div class="box-element" *ngSwitchCase="'Email'">
+                <label>{{ item.attribute.name }}</label>
+              </div>
+              <div class="box-element-two" *ngSwitchCase="'Radio'">
+                <p-radioButton value="Radio Button" [label]="item.attribute?.name!" [disabled]="true"></p-radioButton>
+              </div>
+              <div class="box-element-two" *ngSwitchCase="'Checkbox'">
+                <p-checkbox value="checkbox" [label]="item.attribute.name" [disabled]="true"></p-checkbox>
+              </div>
+              <div class="box-element-two" *ngSwitchCase="'step'">
+                <p-steps [model]="[{ label: item.label }]" value="step" disabled="true"></p-steps>
+              </div>
+              <div class="box-element" *ngSwitchCase="'image'">
+              </div>
+              <div class="box-element" *ngSwitchCase="'text'">
+                <div>
+                  <p>{{ item.text }}</p>
+                </div>
+              </div>
+              <div class="box-element" *ngSwitchCase="'line'">
+              </div>
+              <div class="box-element" *ngSwitchCase="'text-field'">
+                <label>{{ item.label }}</label>
+                <input pInputText type="text" />
+              </div>
+              <div class="box-element" *ngSwitchCase="'documentId'">
+                <label>{{ item.type }}</label>
+                <div><b>Document id</b></div>
+              </div>
+              <div class="box-element" *ngSwitchDefault>
+                <label>Defauld</label>
+                <input pInputText type="text" />
+              </div>
+            </div>
+          </div>
+        </gridster-item>
+      </gridster>
+    </gridster-item>
+  </gridster>
+</div>

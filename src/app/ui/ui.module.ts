@@ -16,9 +16,35 @@ import {SideTaskComponent} from './components/side-task/side-task.component';
 import {PaginatorComponent} from './components/paginator/paginator.component';
 import {FormsModule} from "@angular/forms";
 import {EcTooltipDirective} from './directives/ec-tooltip.directive';
+import {TableComponent} from "@app/ui/components/table/table.component";
+import {IconDirective} from "@app/ui/directivas/icon.directive";
+import {ButtonComponent} from "@app/ui/components/button/button.component";
+import {TableStandarComponent} from "@app/ui/components/table/components/table-standar/table-standar.component";
+import {StepComponent} from "@app/ui/components/step/step.component";
+import {PaginationComponent} from "@app/ui/components/table/components/pagination/pagination.component";
+import {NgCircleProgressModule} from "ng-circle-progress";
+import {Ng2SearchPipeModule} from "ng2-search-filter";
 
 @NgModule({
   declarations: [
+    FooterComponent,
+    HeaderComponent,
+    LayoutComponent,
+    SidebarComponent,
+    BlockPageComponent,
+    MenuComponent,
+    TableComponent,
+    IconDirective,
+    ButtonComponent,
+    StepComponent,
+    TableStandarComponent,
+    TableStandarComponent,
+    PaginationComponent,
+    PickTaskComponent,
+    ConfirmDialogComponent,
+    SideTaskComponent,
+    PaginatorComponent,
+    EcTooltipDirective,
     FooterComponent,
     HeaderComponent,
     LayoutComponent,
@@ -39,12 +65,27 @@ import {EcTooltipDirective} from './directives/ec-tooltip.directive';
     ConfirmDialogComponent,
     SideTaskComponent,
     PaginatorComponent,
-    EcTooltipDirective
+    EcTooltipDirective,
+    TableComponent,
+    ButtonComponent,
+    ButtonComponent,
+    IconDirective,
+    StepComponent
   ],
   imports: [
     CommonModule,
     DragDropModule,
-    FormsModule
+    FormsModule,
+    NgCircleProgressModule,
+    Ng2SearchPipeModule,
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
   ],
   providers: [MenuService, LocalStorageService, FilterService]
 })

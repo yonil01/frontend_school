@@ -9,6 +9,7 @@ import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {Router} from "@angular/router";
 import {controlRole, deleteDatedisallowed, deleteRole} from "@app/core/store/actions/roles.action";
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-roles-list',
@@ -21,6 +22,7 @@ export class RolesListComponent implements OnInit, OnDestroy {
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
   public isBlockPage: boolean = false;
   public roles: Role[] = [];
+  public rolesForPagination: Role[] = [];
   private client: Customer;
   private project: Project;
   public nameClient: string = '';
@@ -51,7 +53,6 @@ export class RolesListComponent implements OnInit, OnDestroy {
           } else {
             if (res.data) {
               this.roles = res.data;
-              console.log(this.roles);
             } else {
               this._messageService.add({type: 'error', message: 'No roles found', life: 5000});
             }
@@ -151,5 +152,20 @@ export class RolesListComponent implements OnInit, OnDestroy {
       this.isBlockPage = false;
     }
   }
+
+  exportRoles(): void {
+    const ArrayObject:any = [];
+    ArrayObject.push(['Nombre','Descripción','Sesiones','Ver todos los usuarios'])
+    for(let role of this.roles){
+      ArrayObject.push([role.name,role.description,role.sessions_allowed,role.see_all_users ? 'Sí':'No'])
+    }
+    // @ts-ignore
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(ArrayObject);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Roles');
+
+    XLSX.writeFile(wb, 'Roles '+this.client.name+' '+this.project.name+'.xlsx');
+  }
+
 
 }

@@ -69,8 +69,11 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
     this.store.select('role').subscribe((res) => {
       const data = res.role;
       this.role = JSON.parse(JSON.stringify(data));
-      console.log(this.role);
-      if (!this.role || Object.keys(this.role).length === 0) this.router.navigateByUrl('wizard/roles');
+      if (!this.role || Object.keys(this.role).length === 0) {
+        this.router.navigateByUrl('wizard/roles')
+      }else{
+        if(this.role.role_elements === null) this.role.role_elements = [];
+      }
     });
   }
 
@@ -158,10 +161,6 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
     this.moduleIdSelect = modulo.id;
     this.moduleSelectedTemp = [];
     const moduleFind = this.modulesPrivileges.find(m => m.id === modulo.id);
-    /*if (moduleFind) {
-      this.moduloSelected = moduleFind;
-      console.log(this.moduloSelected);
-    }*/
 
     if(moduleFind){
       for(let component of modulo.components) {
@@ -239,10 +238,7 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
                 message: 'Deshacer Asignación, Exitosa' + res.msg,
                 life: 5000
               });
-              console.log(elementSelected);
-              //const indexRoleElement: number = this.role.role_elements?.indexOf(this.role.role_elements?.find(role => role.element.id === id)) || -1;
               const indexRoleElement: number = this.role.role_elements?.findIndex(role => role.element.id === id) || -1;
-              console.log(indexRoleElement);
               this.role.role_elements?.splice(indexRoleElement, 1);
               this.store.dispatch(controlRole({ role: this.role, index: 0 }));
               this.initRoles(this.moduleNameSelect);
@@ -257,26 +253,26 @@ export class RolesPrivilegeComponent implements OnInit, OnDestroy {
       );
     }
   }
-/*
-  private reloadRolElement(): void {
-    this.isBlockPage = true;
-    this._subscription.add(
-      this._roleService.getRolesElement().subscribe({
-        next: (res) => {
-          if (res.error) {
-            this._messageService.add({type: 'error', message: res.msg, life: 5000});
-          } else {
-            this.dataRolesElement = res.data;
+  /*
+    private reloadRolElement(): void {
+      this.isBlockPage = true;
+      this._subscription.add(
+        this._roleService.getRolesElement().subscribe({
+          next: (res) => {
+            if (res.error) {
+              this._messageService.add({type: 'error', message: res.msg, life: 5000});
+            } else {
+              this.dataRolesElement = res.data;
+            }
+            this.isBlockPage = false;
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error(err);
+            this.isBlockPage = false;
+            this._messageService.add({type: 'error', message: err.message, life: 5000});
           }
-          this.isBlockPage = false;
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error(err);
-          this.isBlockPage = false;
-          this._messageService.add({type: 'error', message: err.message, life: 5000});
-        }
-      })
-    );
-  }
-*/
+        })
+      );
+    }
+  */
 }

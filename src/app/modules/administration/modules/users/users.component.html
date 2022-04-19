@@ -1,1 +1,85 @@
-<p>users works!</p>
+<app-layout [typeButton]="contentModel[1].status ? 2 : 1">
+  <ng-container layoutBody>
+    <div class="ec-container pb-12 bg-white" style="min-height: calc(100vh - 3rem)">
+      <div *ngIf="contentModel[0].status && !showPassword">
+        <div class="migas-pan w-full text-brand-2 space-x-2 h-12 flex items-center">
+          <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
+               height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"
+              fill="#6699FF"/>
+          </svg>
+          <div class="miga flex flex-row items-center space-x-2">
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                 fill="none">
+              <path
+                d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
+                fill="#6699FF"/>
+            </svg>
+            <span routerLink="" class="t-body-2 cursor-pointer">
+          CLIENTE
+          </span>
+          </div>
+          <div class="miga flex flex-row items-center space-x-2">
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                 fill="none">
+              <path
+                d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
+                fill="#6699FF"/>
+            </svg>
+            <span routerLink="/workflow/inbox" class="t-body-2 cursor-pointer">
+          Usuarios
+          </span>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-2xl text-black">Usuarios</div>
+          <div class="py-4 text-mono-70">
+            {{styleTable.dataSource?.length}} usuarios registrados actualmente.
+            <br>
+            Último registro el {{dateMax | date :'short'}}
+          </div>
+        </div>
+        <div class="w-full lg:flex justify-between">
+          <div class="w-full md:w-1/4 lg:w-1/6 pb-2">
+            <label
+              class="flex px-2 justify-between content-center items-center  bg-white rounded-md shadow-lg  border-2 border-mono-70 cursor-pointer cursor-pointer">
+              <span class="font-bold">Subir Datos</span>
+              <svg class="w-8 h-8 opacity-80" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="48px" height="48px"><path   fill="#4CAF50" d="M41,10H25v28h16c0.553,0,1-0.447,1-1V11C42,10.447,41.553,10,41,10z"/><path fill="#FFF" d="M32 15H39V18H32zM32 25H39V28H32zM32 30H39V33H32zM32 20H39V23H32zM25 15H30V18H25zM25 25H30V28H25zM25 30H30V33H25zM25 20H30V23H25z"/><path fill="#2E7D32" d="M27 42L6 38 6 10 27 6z"/><path fill="#FFF" d="M19.129,31l-2.411-4.561c-0.092-0.171-0.186-0.483-0.284-0.938h-0.037c-0.046,0.215-0.154,0.541-0.324,0.979L13.652,31H9.895l4.462-7.001L10.274,17h3.837l2.001,4.196c0.156,0.331,0.296,0.725,0.42,1.179h0.04c0.078-0.271,0.224-0.68,0.439-1.22L19.237,17h3.515l-4.199,6.939l4.316,7.059h-3.74V31z"/></svg>
+              <input  type='file' class="hidden" (change)="onFileExcel($event)"/>
+            </label>
+          </div>
+          <div class="w-full mb-2 lg:mb-0 lg:w-1/3">
+            <span *ngIf="dataExport.length" class="cursor-pointer text-xs border-b hover:border-alert-error text-alert-error" (click)="export()">Exportar usuarios no creados</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <app-table [tableStyle]="styleTable"
+                       (dataReturn)="eventTableOption($event)"
+                       (eventButton)="showEventButtonTable($event)"
+            ></app-table>
+          </div>
+
+        </div>
+      </div>
+      <div *ngIf="contentModel[1].status && !showPassword">
+        <app-user-crud (showToast)="showToast($event)" [isEdit]="showEdit" [user]="user"></app-user-crud>
+      </div>
+      <div *ngIf="showPassword">
+        <app-change-password  [user]="user" (showToast)="showToast($event)" ></app-change-password>
+      </div>
+
+    </div>
+    <app-footer></app-footer>
+  </ng-container>
+</app-layout>
+
+<p-confirmDialog styleClass="ce-dialog-width" [baseZIndex]="10000"></p-confirmDialog>
+<app-block-page [show]="showLoader[0].value"></app-block-page>
+
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+
+
+

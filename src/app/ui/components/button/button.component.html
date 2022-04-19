@@ -1,0 +1,11 @@
+<button [disabled]="disabled"
+        class="button-base {{btnStyle}} {{bgColor}} {{txtColor}} {{brColor}} focus:ring-neutral_gray-30 space-x-2 dark:focus:ring-neutral_gray-70"
+        [type]="type" [ngClass]="disabled ? 'bg-transparent border-transparent' : '' ">
+  <span *ngIf="icon !== '' && iconLeft" appIcon [iconName]="icon" [iconColor]="disabled === true ? 'text-outline-gray-400' : txtColor" class="self-center"></span>
+
+  <p *ngIf="label !== ''" class="self-center {{styleLabel}} ">{{ label }}</p>
+
+  <span *ngIf="icon !== '' && !iconLeft" appIcon [iconName]="icon" [iconColor]="disabled === true ? 'text-outline-gray-400' : txtColor" class="self-center "></span>
+
+</button>
+

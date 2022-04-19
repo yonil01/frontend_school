@@ -292,6 +292,7 @@ export class GetRolesProjectByIDQuery extends Query<Response> {
   `;
 }
 
+
 // CRUD ROL
 
 @Injectable({
