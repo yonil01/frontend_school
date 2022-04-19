@@ -9,13 +9,16 @@ import { BasicInformationComponent } from './pages/user-crud/components/basic-in
 import { RoleComponent } from './pages/user-crud/components/role/role.component';
 import { SecurityEntitiesComponent } from './pages/user-crud/components/security-entities/security-entities.component';
 import {UiModule} from "@app/ui/ui.module";
+
+
 import {
   DropdownModule, IconsModule,
   InputPasswordModule,
   InputTextModule,
   StepModule,
   ToastModule,
-  ToastService
+  ToastService,
+
 } from "ecapture-ng-ui";
 import {ReactiveFormsModule} from "@angular/forms";
 
@@ -88,7 +91,8 @@ import {
     PickListModule,
     InputPasswordModule,
     IconsModule,
-    TranslateModule
+    TranslateModule,
+
   ],
   providers: [ToastService]
 })

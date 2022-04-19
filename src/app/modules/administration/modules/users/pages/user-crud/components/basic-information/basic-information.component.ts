@@ -41,7 +41,7 @@ export class BasicInformationComponent implements OnInit {
   constructor( private _formBuilder: FormBuilder,
                private store: Store<AppState>,
                private userService: UsersService,
-               ) {
+  ) {
     this.user = {
       id: '',
       username: '',
@@ -98,7 +98,7 @@ export class BasicInformationComponent implements OnInit {
 
   public nextStep() {
     if (this.formBasicInfo.valid) {
-    this.saveForm();
+      this.saveForm();
     }
   }
 
@@ -184,10 +184,10 @@ export class BasicInformationComponent implements OnInit {
   }
 
   public returnError(nameControl: string) {
-      if ((!this.formBasicInfo.get(nameControl)?.hasError('required')|| this.formBasicInfo.get(nameControl)?.touched) && (this.formBasicInfo.get(nameControl)?.value == '')) {
-        return true;
+    if ((!this.formBasicInfo.get(nameControl)?.hasError('required')|| this.formBasicInfo.get(nameControl)?.touched) && (this.formBasicInfo.get(nameControl)?.value == '')) {
+      return true;
     }
-      return false;
+    return false;
   }
 
   private updateUser(): void {

@@ -77,7 +77,7 @@ export class SecurityEntitiesComponent implements OnInit {
 
   public eventTableOption(data:any): void {
     if (data.type === 'Delete') {
-        this.deleteSecurityEntityAttribute(data.value);
+      this.deleteSecurityEntityAttribute(data.value);
     }
     if (data.type === 'Delete Max') {
       this.deleteSecurityEntity(data.value);

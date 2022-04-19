@@ -78,6 +78,7 @@ export class EntityAddAttributeComponent implements OnInit {
         }
         this.isBlock = false;
       }
+      debugger
     }, (err) => {
       this.isBlock = false;
       this.message.emit({
@@ -282,6 +283,9 @@ export class EntityAddAttributeComponent implements OnInit {
             this.attributesAvailable.push(at);
           }
         }
+        this.attributesSelected.sort((a: any, b: any) => Number(a.sequence) - Number(b.sequence));
+        console.log(this.attributesSelected)
+        debugger
         this.isBlock = false;
       });
     }

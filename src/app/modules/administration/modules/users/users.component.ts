@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 import {UsersService} from "@app/modules/administration/modules/users/service/user/users.service";
 import {DataContentUser} from "@app/modules/administration/modules/users/models/model-user/model-user";
 import {ToastService} from "ecapture-ng-ui";
-import {ConfirmationService} from "primeng/api";
+import {ConfirmationService, Message, MessageService} from "primeng/api";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import * as XLSX from 'xlsx';
@@ -25,7 +25,8 @@ import {AppState} from "@app/core/store/app.reducers";
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
+  providers: [ConfirmationService, MessageService],
 })
 export class UsersComponent implements OnInit {
   public showPassword: boolean = false;
@@ -38,17 +39,18 @@ export class UsersComponent implements OnInit {
   public toastStyle: ToastStyleModel = toastDataStyle;
   public dateMax = new Date();
   public secretKey: string;
-
+  public dataExport:any =[];
+  msgs: Message[] = []
   data: AOA = [[1, 2], [3, 4]];
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
-  fileName: string = 'SheetJS.xlsx';
+  fileName: string = 'Usuarios No creado.xlsx';
 
   constructor(private router: Router,
               private userService: UsersService,
               private _messageService: ToastService,
               private store: Store<AppState>,
-
-              //private confirmationService: ConfirmationService,
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService,
   )
   {
     this.showEdit = false;
@@ -84,7 +86,6 @@ export class UsersComponent implements OnInit {
             value5: user.roles ? user.roles[0].name : '',
           }
           this.styleTable.dataSource?.push(newUser);
-
         })
         this.getCreateAtMax();
         this.showLoader[0].value = false;
@@ -100,6 +101,7 @@ export class UsersComponent implements OnInit {
   }
 
   public eventTableOption(resp:any): void {
+    debugger
     if (resp.type === 'edit') {
       this.showEdit = true;
       this.user = resp.value;
@@ -113,6 +115,7 @@ export class UsersComponent implements OnInit {
     }
     if (resp.type === 'update-password') {
       this.showPassword = true;
+      this.user = resp.value;
     }
   }
 
@@ -148,12 +151,7 @@ export class UsersComponent implements OnInit {
   }
 
   public confirmLockUnlock(user: User) {
-    this._messageService.add({
-      type: 'error',
-      message: 'Hello',
-      life: 5000,
-    });
-    /*if (user.status === 16) {
+    if (user.status === 16) {
       this.confirmationService.confirm({
         message: '¿Desea desbloquear el usuario?',
         header: 'Confirmación de desbloqueo',
@@ -163,7 +161,7 @@ export class UsersComponent implements OnInit {
         },
         reject: () => {
           alert('Info')
-         // this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
+         this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
         },
       });
     } else if (user.status !== 16) {
@@ -175,22 +173,29 @@ export class UsersComponent implements OnInit {
           this.lockUnlock(user);
         },
         reject: () => {
-          alert('Info')
-        //  this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
+         this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
         },
       });
-    }*/
+    }
   }
 
-  /*public lockUnlock(user: User) {
+  public lockUnlock(user: User) {
     if (user.status !== 16) {
       this.userService.blockUser(user.id!).subscribe((res: Response) => {
         if (res.error) {
-          alert(res.msg);
-         // this.notifyUser('error', '', res.msg, 5000);
+          this._messageService.add( {
+              type: 'error',
+              message: res.msg,
+              life: 5000,
+            }
+          );
         } else {
-          alert(res.msg);
-         // this.notifyUser('success', '', res.msg, 5000);
+          this._messageService.add( {
+              type: 'success',
+              message: res.msg,
+              life: 5000,
+            }
+          );
           user.status = 16;
           this.getUsers();
         }
@@ -198,20 +203,27 @@ export class UsersComponent implements OnInit {
     } else {
       this.userService.unblockUser(user.id!).subscribe((res: Response) => {
         if (res.error) {
-          alert(res.msg);
-          // this.notifyUser('error', '', res.msg, 5000);
+          this._messageService.add( {
+              type: 'error',
+              message: res.msg,
+              life: 5000,
+            }
+          );
         } else {
-          alert(res.msg);
-         // this.notifyUser('success', '', res.msg, 5000);
+          this._messageService.add( {
+              type: 'success',
+              message: res.msg,
+              life: 5000,
+            }
+          );
           user.status = 1;
           this.getUsers();
         }
       });
     }
-  }*/
+  }
 
   public onFileExcel(event: any): void {
-    debugger
     const target: DataTransfer = <DataTransfer>(event.target);
     if (target.files.length !== 1) throw new Error('Cannot use multiple files');
     const reader: FileReader = new FileReader();
@@ -226,7 +238,7 @@ export class UsersComponent implements OnInit {
     reader.readAsBinaryString(target.files[0]);
   }
 
-  public createUserOfFile(data: any[]):void {
+  public async createUserOfFile(data: any[]) {
     this.showLoader[0].value = true;
     const ArrayUser: User[] = []
     if (data.length) {
@@ -246,10 +258,9 @@ export class UsersComponent implements OnInit {
           ArrayUser.push(newUser);
         }
       })
-      Promise.all(ArrayUser).then((users: User[]) => {
+      await Promise.all(ArrayUser).then((users: User[]) => {
         users.forEach((user: User) => {
           this.userService.createUser(user).subscribe((resp: Response) => {
-            debugger
             if (resp.error) {
               this.showLoader[0].value = false;
               this._messageService.add({
@@ -257,6 +268,7 @@ export class UsersComponent implements OnInit {
                 message: resp.msg,
                 life: 5000,
               });
+              this.dataExport.push(user)
             } else {
               this.showLoader[0].value = false;
               this._messageService.add({
@@ -269,7 +281,6 @@ export class UsersComponent implements OnInit {
         })
         this.getUsers();
       })
-
     }
   }
 
@@ -280,5 +291,22 @@ export class UsersComponent implements OnInit {
   public getCreateAtMax() {
     // @ts-ignore
     this.dateMax = new Date(Math.max(...this.users.map((user: User) => new Date(user.created_at))));
+  }
+
+  export(): void {
+    const ArrayObject:any = [];
+    ArrayObject.push(['N° Identifiación', 'Apellidos Y nombres', 'Correo', 'Estado', 'Roles'])
+    this.dataExport.filter((user: any) => {
+      const ArrayTem = Object.values(user)
+      ArrayTem.shift();
+      ArrayObject.push(ArrayTem);
+    })
+    // @ts-ignore
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(ArrayObject);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, this.fileName);
+    this.dataExport = [];
   }
 }
