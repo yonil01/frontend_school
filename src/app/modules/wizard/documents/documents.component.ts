@@ -24,6 +24,12 @@ import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.mode
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
+import { IconsMaterial } from '@app/core/constants/icons/material-icons';
+
+interface OptionsDropdown {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-documents',
@@ -86,6 +92,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public showAlertDeleteDtg: boolean = false;
   public showAlertDeleteTg: boolean = false;
   public doctypeForm: FormGroup;
+
+  //Icon System
+  icons: OptionsDropdown[] = [];
+  iconClass: string = '';
 
   constructor(
     private doctypegroupService: DoctypegroupService,
@@ -168,6 +178,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       {field: 'format', header: 'Formato'},
     ];
 
+    // ICON SYSTEM
+    this.icons = IconsMaterial;
+
     this.getStorage();
   }
 
@@ -214,7 +227,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   public editDocTypeGroups(docTypeGroup: DocTypeGroups): void {
     this.isShowDoctypegroup = true;
-    this.docTypeGroupForm.get('docTypeGroup')?.setValue(docTypeGroup.name);
+    //this.docTypeGroupForm.get('docTypeGroup')?.setValue(docTypeGroup.name);
+    this.docTypeGroupForm.patchValue({
+      name: docTypeGroup.name
+    });
     this.view = 'docTypesGroupEdit';
     // this.store.dispatch(showDoctypegroup({operation: 'edit'}));
     /*this.cancelAutoname();
