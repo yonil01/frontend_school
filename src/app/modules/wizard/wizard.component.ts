@@ -24,7 +24,7 @@ export class WizardComponent implements OnInit, OnDestroy {
   public projectName: string = '';
   public clientName: string = '';
   public configList: any[] = [];
-  public isDisableGenerated: boolean = true;
+  //public isDisableGenerated: boolean = true;
   public isGenerate: boolean = false;
   public clientID: string = '';
   public projectID: string = '';
@@ -41,6 +41,7 @@ export class WizardComponent implements OnInit, OnDestroy {
             this._messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
             if (res.data) {
+              console.log(res.data);
               const data = res.data.filter((c: Client) => c.projects?.length);
               if (data) this.clients = data.map((client: Client) => ({
                 label: client.name,
@@ -69,11 +70,15 @@ export class WizardComponent implements OnInit, OnDestroy {
 
   public selectClient(client: any): void {
     if (client) {
+      if(client.name !== this.clientName){
+        this.projectID = '';
+      }
       this.clientName = client.name;
       const projects = client.projects;
-      this.projects = projects.map((project: Project) => ({label: project.name, value: project}))
+      this.projects = projects.map((project: Project) => ({label: project.name, value: project}));
+
     } else {
-      this.isDisableGenerated = true;
+      //this.isDisableGenerated = true;
       this.isGenerate = false;
       this.projects = [];
       this.projectID = '';
@@ -85,9 +90,9 @@ export class WizardComponent implements OnInit, OnDestroy {
   public selectProject(project: any) {
     if (project) {
       this.projectName = project.name;
-      this.isDisableGenerated = false;
+      //this.isDisableGenerated = false;
     } else {
-      this.isDisableGenerated = true;
+      //this.isDisableGenerated = true;
       this.isGenerate = false;
     }
     sessionStorage.setItem('project', JSON.stringify(project));

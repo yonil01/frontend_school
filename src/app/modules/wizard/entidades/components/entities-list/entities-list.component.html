@@ -93,15 +93,15 @@
               <div class="p-2 w-32">Opciones</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
-              <div *ngFor="let atribute of attributes, let i = index" class="item w-full flex flex-row">
-                <div class="flex items-center p-2 w-16">{{i + 1}}</div>
+              <div *ngFor="let atribute of attributesTable, let i = index" class="item w-full flex flex-row">
+                <div class="flex items-center p-2 w-16">{{attributes.indexOf(atribute) + 1}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.name}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.description}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.type}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.is_cipher}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
-                    <button (click)="onEditAttribute(i)"
+                    <button (click)="onEditAttribute(atribute)"
                             class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -112,7 +112,7 @@
                       </div>
                     </button>
                     <div class="relative w-10 h-10">
-                      <button (click)="sureDelete(i)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                      <button (click)="sureDelete(atribute)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                         <div>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +124,7 @@
                       </button>
                     </div>
                     <div class="relative w-10 h-10">
-                      <button (click)="onSelectDataset(i)" class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
+                      <button (click)="onSelectDataset(atribute)" class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10">
                         <div>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                xmlns="http://www.w3.org/2000/svg">
@@ -137,45 +137,23 @@
                       </button>
                       <div *ngIf="atribute.showConfig"
                            class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
-                        <button (click)="onAddDatasets(i)" class="b-ghost">Datasets</button>
+                        <button (click)="onAddDatasets(atribute)" class="b-ghost">Datasets</button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="pagination flex flex-row items-center justify-between">
-              <div class="left">
-                <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
-                  <option>10</option>
-                  <option>20</option>
-                  <option>30</option>
-                </select>
-              </div>
-              <div class="right flex items-center flex-row space-x-1">
-                <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
-                  <div>
-                    <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
-                    </svg>
-                  </div>
-                </button>
-                <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-                  <span class="t-body-2">1/2</span>
-                </div>
-                <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
-                  <div>
-                    <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
-                    </svg>
-                  </div>
-                </button>
-              </div>
-            </div>
+            <!--PAGINATOR-->
+            <app-paginator *ngIf="attributes.length > 0"
+                           [data]="attributes"
+                           [rows-per-page]="[5,10,15,20]"
+                           [initial-row]="5"
+                           (current-data-page)="getData($event)"
+                           (current-row-page)="getCurrentRowPage($event)"
+                           (current-page)="getCurrentPage($event)"
+            ></app-paginator>
+            <!--PAGINATOR-->
           </div>
         </div>
       </div>

@@ -114,15 +114,15 @@
               <div class="p-2 w-24">Opciones</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
-              <div class="item w-full flex flex-row" *ngFor="let values of datasetsValues, let i = index">
-                <div class="flex items-center p-2 w-16">{{i + 1}}</div>
+              <div class="item w-full flex flex-row" *ngFor="let values of datasetsValuesTable, let i = index">
+                <div class="flex items-center p-2 w-16">{{datasetsValues.indexOf(values) + 1}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{values.value}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{values.description}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{values.code}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{values.sequence}}</div>
                 <div class="flex items-center p-2 w-24">
                   <div class="w-full flex flex-row">
-                    <button (click)="onEditValue(i)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                    <button (click)="onEditValue(values)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -131,7 +131,7 @@
                         </svg>
                       </div>
                     </button>
-                    <button (click)="onDeleteValue(i)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                    <button (click)="onDeleteValue(values)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -145,6 +145,16 @@
               </div>
             </div>
           </div>
+          <!--PAGINATOR-->
+          <app-paginator *ngIf="datasetsValues.length > 0"
+                         [data]="datasetsValues"
+                         [rows-per-page]="[5,10,15,20]"
+                         [initial-row]="5"
+                         (current-data-page)="getData($event)"
+                         (current-row-page)="getCurrentRowPage($event)"
+                         (current-page)="getCurrentPage($event)"
+          ></app-paginator>
+          <!--PAGINATOR-->
         </div>
       </div>
     </div>
