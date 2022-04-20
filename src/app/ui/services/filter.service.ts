@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ObjectUtils } from '../utils/objects/objects';
+import { ObjectUtils } from '../../core/utils/objects/objects';
 
 @Injectable({providedIn: 'root'})
 export class FilterService {

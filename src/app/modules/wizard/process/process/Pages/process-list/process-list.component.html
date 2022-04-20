@@ -240,18 +240,18 @@
               </div>
               <div class="flex flex-col space-y-1 col-span-2">
                 <label class="t-caption-2 text-mono-70 dark:text-mono-30">Descripción</label>
-                <textarea class="ec-input h-20" formControlName="description"></textarea>
+                <textarea class="ec-input" style="height: 5rem!important;" formControlName="description"></textarea>
                 <div class="text-alert-error"
                      *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('required')">
                   <span>El % de alerta del proceso es requerido</span>
                 </div>
                 <div class="text-alert-error"
-                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('min')">
+                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('minlength')">
                   <span>El % de alerta no puede ser menor a 0</span>
                 </div>
                 <div class="text-alert-error"
-                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('max')">
-                  <span>El % de alerta no puede ser mayor a 100</span>
+                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('maxlength')">
+                  <span>El % de alerta no puede ser mayor a 8000</span>
                 </div>
               </div>
             </form>

@@ -31,6 +31,7 @@ import {toastDataStyle} from "@app/core/models/toast/toast";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {FilterService} from "@app/ui/services/filter.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {typesQueues} from "@app/core/utils/constants/constant";
 
 @Component({
   selector: 'app-task-form',
@@ -54,6 +55,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public roles: Role[] = [];
   public attributes: Attribute[] = [];
   public attributesDisplay: Attribute[] = [];
+  public attributesPagination: Attribute[] = [];
   private selectionRoles: RolesDisplay[] = [];
   public rolesDisplay: RolesDisplay[] = [];
   public rolesPagination: RolesDisplay[] = [];
@@ -66,7 +68,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public commentsPaginator: QueueComment[] = [];
   public commentSelected: QueueComment = {id: '', comment: '', queue_id: ''};
   public commentForm: FormControl;
-  private readonly typeQueue: any;
+  private readonly typeQueue: any = typesQueues;
   private element: any;
   private parentQueue!: Queue;
   private bpm!: Process;
@@ -87,21 +89,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       {value: 1, label: 'Inactivo'},
     ];
     this.attributes = [];
-    this.typeQueue = {
-      'bpmn:SendTask': 1,
-      'bpmn:ReceiveTask': 2,
-      'bpmn:UserTask': 3,
-      'bpmn:ManualTask': 4,
-      'bpmn:BusinessRuleTask': 5,
-      'bpmn:ServiceTask': 6,
-      'bpmn:ScriptTask': 7,
-      'bpmn:IntermediateCatchEvent': 8,
-      'bpmn:ExclusiveGateway': 9,
-      'bpmn:ParallelGateway': 10,
-      'bpmn:InclusiveGateway': 11,
-      'bpmn:ComplexGateway': 12,
-      'bpmn:EventBasedGateway': 13,
-    };
     this.getBpmState();
     this.commentForm = new FormControl(null);
   }
@@ -238,15 +225,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeComment(event: any): void {
-    this.commentSelected = event.value;
-    if (event.value) {
-      this.commentForm.setValue(this.commentSelected.comment);
-    } else {
-      this.commentForm.reset();
-    }
-  }
-
   public confirmDeleteComment(event: boolean): void {
     if (event) {
       this.deleteComment();
@@ -367,11 +345,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                   this.preloadAttributes();
                 }
                 this.positionStep++;
+                this.steps[this.positionStep].active = true;
               }
               this.isBlockPage = false;
               this.updateQueueEvent.emit(res);
             },
-            error: (err: Error) => {
+            error: (err: HttpErrorResponse) => {
               this.isBlockPage = false;
               console.error(err.message);
               this._messageService.add({type: 'error', message: 'Error al actualizar la cola', life: 5000});
@@ -400,11 +379,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                 }
                 this._messageService.add({type: 'success', message: 'Cola creada exitosamente', life: 5000});
                 this.positionStep++;
+                this.steps[this.positionStep].active = true;
               }
               this.isBlockPage = false;
               this.createQueueEvent.emit(res);
             },
-            error: (err: Error) => {
+            error: (err: HttpErrorResponse) => {
               this.isBlockPage = false;
               console.error(err.message);
               this._messageService.add({type: 'error', message: 'Error al crear la cola', life: 5000});
@@ -414,7 +394,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       }
     } else {
       this.queueForm.markAllAsTouched();
-      this._messageService.add({type: 'error', message: 'Complete todos los campos', life: 5000});
+      this._messageService.add({type: 'warning', message: 'Complete todos los campos del formulario correctamente', life: 5000});
     }
   }
 
@@ -452,10 +432,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public filterAttributes(event: any): void {
     const filterValue = event.target.value;
     if (filterValue && filterValue.length) {
-      const searchFields: string[] = ('name' || 'description' || 'label').split(',');
+      const searchFields: string[] = ('name,description,label').split(',');
       this.attributesDisplay = this._filterService.filter(this.attributes, searchFields, filterValue, 'contains');
     } else {
-      this.attributesDisplay = this.attributes;
+      this.attributesDisplay = [...this.attributes];
     }
   }
 
