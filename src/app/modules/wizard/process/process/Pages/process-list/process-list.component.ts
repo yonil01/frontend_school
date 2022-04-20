@@ -18,6 +18,7 @@ import {Router} from "@angular/router";
 import {controlBpm} from "@app/core/store/actions/bpm.action";
 import {AppState} from "@app/core/store/app.reducers";
 import {Store} from "@ngrx/store";
+import {HttpErrorResponse} from "@angular/common/http";
 
 interface ProcessCard {
   process: Process;
@@ -110,7 +111,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
               }
             }
           },
-          error: (err) => {
+          error: (err: HttpErrorResponse) => {
             this._messageService.add({
               message: 'Error Cuando se trato de traer los grupos documentales',
               type: 'error',
