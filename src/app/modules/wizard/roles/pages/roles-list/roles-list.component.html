@@ -75,7 +75,7 @@
         <div class="table-v grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div *ngFor="let role of rolesForPagination; index as i"
                class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">Rol N° {{i + 1}}</span>
+            <span class="text-mono-70 t-caption-1">Rol N° {{roles.indexOf(role) + 1}}</span>
             <span class="text-black t-body-1">{{role.description}}</span>
             <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
               <button (click)="editRole(role)" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">

@@ -25,6 +25,12 @@ import {toastDataStyle} from "@app/core/models/toast/toast";
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {dispositionFinal, formatsDocs, typeSupport} from "@app/core/utils/constants/constant";
+import { IconsMaterial } from '@app/core/constants/icons/material-icons';
+
+interface OptionsDropdown {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-documents',
@@ -87,6 +93,12 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public showAlertDeleteTg: boolean = false;
   public doctypeForm: FormGroup;
 
+  //Icon System
+  public icons: OptionsDropdown[] = [];
+  public iconClass: string = '';
+
+  public columnsDocTypes: any[] = [];
+
   constructor(
     private doctypegroupService: DoctypegroupService,
     private fb: FormBuilder,
@@ -132,7 +144,15 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       this.doctypeGruop = doctypeGroup;
       this.valueCode();
     });
+    this.columnsDocTypes = [
+      {field: 'code', header: 'Código'},
+      {field: 'name', header: 'Nombre'},
+      {field: 'url_path', header: 'URL'},
+      {field: 'format', header: 'Formato'},
+    ];
 
+    // ICON SYSTEM
+    this.icons = IconsMaterial;
     this.getStorage();
   }
 
@@ -179,7 +199,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   public editDocTypeGroups(docTypeGroup: DocTypeGroups): void {
     this.isShowDoctypegroup = true;
-    this.docTypeGroupForm.get('docTypeGroup')?.setValue(docTypeGroup.name);
+    //this.docTypeGroupForm.get('docTypeGroup')?.setValue(docTypeGroup.name);
+    this.docTypeGroupForm.patchValue({
+      name: docTypeGroup.name
+    });
     this.view = 'docTypesGroupEdit';
     // this.store.dispatch(showDoctypegroup({operation: 'edit'}));
     /*this.cancelAutoname();
