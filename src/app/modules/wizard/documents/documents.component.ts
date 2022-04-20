@@ -25,7 +25,7 @@ import {toastDataStyle} from "@app/core/models/toast/toast";
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {dispositionFinal, formatsDocs, typeSupport} from "@app/core/utils/constants/constant";
-import { IconsMaterial } from '@app/core/constants/icons/material-icons';
+import {IconsMaterial} from '@app/core/constants/icons/material-icons';
 
 interface OptionsDropdown {
   label: string;
@@ -51,9 +51,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public docTypesDisplayPagination: DocTypesDisplay[] = [];
   public docTypeSelected!: DocTypes;
   public storages: any[] = [];
-  public typeSupport: {label: string, value: string}[] = typeSupport;
-  public format: {label: string, value: string}[] = formatsDocs;
-  public disposition_final: {label: string, value: string}[] = dispositionFinal;
+  public typeSupport: { label: string, value: string }[] = typeSupport;
+  public format: { label: string, value: string }[] = formatsDocs;
+  public disposition_final: { label: string, value: string }[] = dispositionFinal;
   docTypes: DocTypes[] = [];
   docTypeGroupForm: FormGroup;
   doctypeGruop!: DocTypeGroups;
@@ -72,32 +72,21 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   };
   client: Customer = {};
   valorCode: string = '';
-  selectedAttribute!: Attribute;
-  indexAttribute: number = 0;
-  validateAutoname: string[] = [];
-  validateEntity: string[] = [];
   entity: Entity = {};
   entidades: string[] = [];
 
   // Listar Entidades
   selectedOptions: any[] = [];
-  selectedEntities: any[] = [];
 
   isShowDoctypegroup = false;
-  isShowAddDocType = false;
   isShowAddAutoname = false;
-  isShowEditEntity = false;
 
   public view: string = 'docTypesGroup';
   public showAlertDeleteDtg: boolean = false;
   public showAlertDeleteTg: boolean = false;
   public doctypeForm: FormGroup;
 
-  //Icon System
   public icons: OptionsDropdown[] = [];
-  public iconClass: string = '';
-
-  public columnsDocTypes: any[] = [];
 
   constructor(
     private doctypegroupService: DoctypegroupService,
@@ -144,12 +133,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       this.doctypeGruop = doctypeGroup;
       this.valueCode();
     });
-    this.columnsDocTypes = [
-      {field: 'code', header: 'Código'},
-      {field: 'name', header: 'Nombre'},
-      {field: 'url_path', header: 'URL'},
-      {field: 'format', header: 'Formato'},
-    ];
 
     // ICON SYSTEM
     this.icons = IconsMaterial;
