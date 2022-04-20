@@ -17,6 +17,8 @@ import {AuthenticationGuard} from "@app/core/services/guards/authentication.guar
 import {ComponentGuard} from "@app/core/services/guards/component.guard";
 import {DatePipe} from "@angular/common";
 
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -41,6 +43,7 @@ export function createTranslateLoader(http: HttpClient): any {
       }
     }),
     ReactiveFormsModule,
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [AuthenticationGuard, ComponentGuard, DatePipe],
   bootstrap: [AppComponent]

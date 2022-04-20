@@ -136,6 +136,7 @@ export class BasicInformationComponent implements OnInit {
       this.user = userPersistence;
       this.returnUser.emit(this.user)
       this.userService.createUser(userPersistence).subscribe((resp: Response) => {
+        debugger
         if (resp.error) {
           this.showLoading(false);
           this.addToast({

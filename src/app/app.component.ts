@@ -10,6 +10,9 @@ import {controlLogin, controlTimeout} from "@app/core/store/actions/token.action
 import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
 import {LookAndFeelService} from "@app/core/services/look-and-feel/look-and-feel.service";
 import {AuthenticationGuard} from "@app/core/services/guards/authentication.guard";
+import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
+import {EnvServiceProvider} from "@app/core/services/env/env.service.provider";
+import {decryptText} from "@app/core/utils/crypto/cypher";
 
 @Component({
   selector: 'app-root',
@@ -19,6 +22,13 @@ import {AuthenticationGuard} from "@app/core/services/guards/authentication.guar
 export class AppComponent implements OnDestroy {
   private _subscription = new Subscription();
 
+  //  Logout
+  timed :boolean = false;
+  idleState = 'Not started.';
+  timedOut = false;
+  lastPing?: Date = new Date();
+  countdown:any;
+
   constructor(
     private router: Router,
     private _authenticationGuard: AuthenticationGuard,
@@ -27,6 +37,9 @@ export class AppComponent implements OnDestroy {
     localStorageService: LocalStorageService,
     lookAndFeelService: LookAndFeelService,
     private _cryptoService: CryptoService,
+    private idle: Idle,
+    private _localStorageService: LocalStorageService,
+    private route: Router,
   ) {
     this.setTheme();
     this.getAppId();
@@ -70,6 +83,33 @@ export class AppComponent implements OnDestroy {
         }
       }
     });
+
+
+    // sets an idle timeout of 5 seconds, for testing purposes.
+    idle.setIdle(5);
+    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
+    idle.setTimeout(1200);
+    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
+    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+
+    idle.onIdleEnd.subscribe(() => this.idleState = 'No longer idle.');
+    idle.onTimeout.subscribe(() => {
+      this.idleState = 'Timed out!';
+      this.timedOut = true;
+    });
+
+    idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!');
+    idle.onTimeoutWarning.subscribe((countdown: any) => {
+
+      this.idleState = 'Tiempo en desuso de app ' + countdown + ' segundos!';
+      console.log(countdown)
+      if(countdown == 1){
+        this.logout();
+        this.timed = true;
+        console.log("Ya se cerró session");
+      }
+    });
+    this.reset();
   }
 
   ngOnDestroy(): void {
@@ -93,6 +133,21 @@ export class AppComponent implements OnDestroy {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       const body = document.querySelector('#body')
       if (body) body.classList.add('dark:theme-dark')
+    }
+  }
+
+  public reset() {
+    this.idle.watch();
+    this.idleState = 'Login in uso.';
+    this.timedOut = false;
+  }
+
+  public async logout() {
+    this._localStorageService.removeSession();
+    this.store.dispatch(controlLogin({logged: false}));
+    await this.route.navigateByUrl('');
+    if (EnvServiceProvider.useFactory().REDIRECT_TO) {
+      window.location.href = decryptText(EnvServiceProvider.useFactory().REDIRECT_URL, '');
     }
   }
 }

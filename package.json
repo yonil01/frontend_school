@@ -51,7 +51,9 @@
     "zone.js": "~0.11.4",
     "ng-circle-progress": "^1.6.0",
     "ng2-search-filter": "^0.5.1",
-    "xlsx": "*"
+    "xlsx": "*",
+    "@ng-idle/core": "^11.1.0",
+    "@ng-idle/keepalive": "^11.0.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.0.3",
