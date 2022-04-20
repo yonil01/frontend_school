@@ -61,23 +61,21 @@ export class ObjectUtils {
     if (data && field) {
       if (this.isFunction(field)) {
         return field(data);
-      }
-      else if (field.indexOf('.') == -1) {
+      } else if (field.indexOf('.') == -1) {
         if (data[field]) {
           return data[field];
         }
         const keys = Object.keys(data);
         for (const key of keys) {
-          if (data[key][field]) {
-            return data[key][field];
+          if (data[key] && typeof data[key] === 'object' && Object.keys(data[key]).length > 0) {
+            if (data[key].hasOwnProperty(field)) return data[key][field];
           }
         }
         return data[field];
-      }
-      else {
+      } else {
         let fields: string[] = field.split('.');
         let value = data;
-        for(let i = 0, len = fields.length; i < len; ++i) {
+        for (let i = 0, len = fields.length; i < len; ++i) {
           if (value == null) {
             return null;
           }
@@ -85,8 +83,7 @@ export class ObjectUtils {
         }
         return value;
       }
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -108,7 +105,7 @@ export class ObjectUtils {
   public static insertIntoOrderedArray(item: any, index: number, arr: any[], sourceArr: any[]): void {
     if (arr.length > 0) {
       let injected = false;
-      for(let i = 0; i < arr.length; i++) {
+      for (let i = 0; i < arr.length; i++) {
         let currentItemIndex = this.findIndexInList(arr[i], sourceArr);
         if (currentItemIndex > index) {
           arr.splice(i, 0, item);
@@ -120,8 +117,7 @@ export class ObjectUtils {
       if (!injected) {
         arr.push(item);
       }
-    }
-    else {
+    } else {
       arr.push(item);
     }
   }
@@ -130,7 +126,7 @@ export class ObjectUtils {
     let index: number = -1;
 
     if (list) {
-      for(let i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
         if (list[i] == item) {
           index = i;
           break;
@@ -152,7 +148,7 @@ export class ObjectUtils {
     return false;
   }
 
-  public static removeAccents(str: string): string{
+  public static removeAccents(str: string): string {
     if (str && str.search(/[\xC0-\xFF]/g) > -1) {
       str = str
         .replace(/[\xC0-\xC5]/g, "A")

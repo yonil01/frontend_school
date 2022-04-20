@@ -24,6 +24,7 @@ import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.mode
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
+import {dispositionFinal, formatsDocs, typeSupport} from "@app/core/utils/constants/constant";
 import { IconsMaterial } from '@app/core/constants/icons/material-icons';
 
 interface OptionsDropdown {
@@ -50,9 +51,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public docTypesDisplayPagination: DocTypesDisplay[] = [];
   public docTypeSelected!: DocTypes;
   public storages: any[] = [];
-  public typeSupport: any[] = [];
-  public format: any[] = [];
-  public disposition_final: any[] = [];
+  public typeSupport: {label: string, value: string}[] = typeSupport;
+  public format: {label: string, value: string}[] = formatsDocs;
+  public disposition_final: {label: string, value: string}[] = dispositionFinal;
   docTypes: DocTypes[] = [];
   docTypeGroupForm: FormGroup;
   doctypeGruop!: DocTypeGroups;
@@ -87,15 +88,16 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   isShowAddAutoname = false;
   isShowEditEntity = false;
 
-  columnsDocTypes: any[] = [];
   public view: string = 'docTypesGroup';
   public showAlertDeleteDtg: boolean = false;
   public showAlertDeleteTg: boolean = false;
   public doctypeForm: FormGroup;
 
   //Icon System
-  icons: OptionsDropdown[] = [];
-  iconClass: string = '';
+  public icons: OptionsDropdown[] = [];
+  public iconClass: string = '';
+
+  public columnsDocTypes: any[] = [];
 
   constructor(
     private doctypegroupService: DoctypegroupService,
@@ -104,37 +106,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     private messageService: ToastService,
   ) {
 
-    this.disposition_final = [
-      {label: 'Conservación Total', value: 'CT'},
-      {label: 'Microfilmación', value: 'M'},
-      {label: 'Digitalización', value: 'D'},
-      {label: 'Eliminar', value: 'E'},
-    ];
-
-    this.typeSupport = [
-      {label: 'Electrónico', value: 'E'},
-      {label: 'Físico', value: 'F'},
-    ];
-
     this.docTypeGroupForm = this.fb.group({
       name: ['', Validators.required],
     });
-
-    this.format = [
-      {label: 'dcs', value: 'dcs'},
-      {label: 'frm', value: 'frm'},
-      {label: 'wkf', value: 'wkf'},
-      {label: 'tif', value: 'tif'},
-      {label: 'jpg', value: 'jpg'},
-      {label: 'png', value: 'png'},
-      {label: 'pdf', value: 'pdf'},
-      {label: 'doc', value: 'doc'},
-      {label: 'sys', value: 'sys'},
-      {label: 'dsb', value: 'dsb'},
-      {label: 'vsr', value: 'vsr'},
-      {label: 'tpl', value: 'tpl'},
-      {label: 'rpt', value: 'rpt'},
-    ];
 
     this.doctypeForm = this.fb.group(
       {
@@ -170,7 +144,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       this.doctypeGruop = doctypeGroup;
       this.valueCode();
     });
-
     this.columnsDocTypes = [
       {field: 'code', header: 'Código'},
       {field: 'name', header: 'Nombre'},
@@ -180,7 +153,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
     // ICON SYSTEM
     this.icons = IconsMaterial;
-
     this.getStorage();
   }
 

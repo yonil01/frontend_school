@@ -42,6 +42,9 @@ export class EntidadesComponent implements OnInit {
   public showEditEntity: boolean = false;
   public isDelete: boolean = false;
   private isShowForm: boolean = true;
+  public tableIndex: number = 0;
+  public currentRowPage: number = 0;
+  public entitiesTable: Entity[] = [];
 
   constructor(private _localStorage: LocalStorageService,
               private store: Store<AppState>,
@@ -101,8 +104,8 @@ export class EntidadesComponent implements OnInit {
     this.showEntities = true;
   }
 
-  onShowEntitiesList(i: number) {
-    this.selectedEntity = this.entities[i];
+  onShowEntitiesList(entitie: any) {
+    this.selectedEntity = this.entities[this.entities.indexOf(entitie)];
     this.showEntities = false;
     this.showEntitiesList = true;
   }
@@ -123,14 +126,14 @@ export class EntidadesComponent implements OnInit {
     }
   }
 
-  onEditEntity(i: number) {
-    this.selectedEntity = this.entities[i];
+  onEditEntity(entitie: any) {
+    this.selectedEntity = this.entities[this.entities.indexOf(entitie)];
     this.showEntities = false;
     this.showCreateEdit = true;
   }
 
-  onDelete(i: number) {
-    this.selectedEntity = this.entities[i];
+  onDelete(entitie: any) {
+    this.selectedEntity = this.entities[this.entities.indexOf(entitie)];
     this.confirmDeleteEntity();
   }
 
@@ -185,5 +188,21 @@ export class EntidadesComponent implements OnInit {
 
   toastMessage($event: ToastModel) {
     this.messageService.add($event);
+  }
+
+  getData($event: any) {
+    this.entitiesTable = $event;
+  }
+
+  getCurrentRowPage($event: number) {
+    if (this.tableIndex == 1) {
+      this.currentRowPage = 0;
+    } else {
+      this.currentRowPage = $event;
+    }
+  }
+
+  getCurrentPage($event: number) {
+    this.tableIndex = $event;
   }
 }

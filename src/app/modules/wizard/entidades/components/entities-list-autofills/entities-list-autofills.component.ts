@@ -28,6 +28,10 @@ export class EntitiesListAutofillsComponent implements OnInit {
   public isDelete: boolean = false;
   public showAddAttribute: boolean = false;
   public showAddValues: boolean = false;
+  public tableIndex: number = 0;
+  public currentRowPage: number = 0;
+  public autofillsTable: any;
+
 
   constructor(private _localStorage: LocalStorageService,
               private autofillsService: AutofillsService,
@@ -59,9 +63,9 @@ export class EntitiesListAutofillsComponent implements OnInit {
   }
 
 
-  onCreateEditAutofill(index?: number) {
-    if (index != undefined) {
-      this.selectedAutofill = this.autofills[index];
+  onCreateEditAutofill(autofill?: any) {
+    if (autofill != undefined) {
+      this.selectedAutofill = this.autofills[this.autofills.indexOf(autofill)];
     }
     this.showCreateEditAutofill = true;
     this.showAutofillsList = false;
@@ -125,28 +129,43 @@ export class EntitiesListAutofillsComponent implements OnInit {
     });
   }
 
-  sureDelete(i: number) {
+  sureDelete(autofill: any) {
     if (this.selectedAutofill) { // @ts-ignore
       delete this.selectedAutofill;
     }
-    this.selectedAutofill = this.autofills[i];
+    this.selectedAutofill = this.autofills[this.autofills.indexOf(autofill)];
     this.isDelete = true;
   }
 
-  onShowConfig(i: number) {
-    this.selectedAutofill = this.autofills[i];
-    this.autofills[i].showConfig = !this.autofills[i].showConfig
+  onShowConfig(autofill: any) {
+    this.selectedAutofill = this.autofills[this.autofills.indexOf(autofill)];
+    this.selectedAutofill.showConfig = !this.selectedAutofill.showConfig
   }
 
-  onAddAttributes(i: number) {
+  onAddAttributes(autofill: any) {
     this.showAutofillsList = false;
     this.showAddAttribute = true;
-    this.selectedAutofill = this.autofills[i];
+    this.selectedAutofill = this.autofills[this.autofills.indexOf(autofill)];
   }
 
-  onAddValues(i: number) {
-    this.selectedAutofill = this.autofills[i];
+  onAddValues(autofill: any) {
+    this.selectedAutofill = this.autofills[this.autofills.indexOf(autofill)];
     this.showAutofillsList = false;
     this.showAddValues = true;
+  }
+  getData($event: any) {
+    this.autofillsTable = $event;
+  }
+
+  getCurrentRowPage($event: number) {
+    if (this.tableIndex == 1) {
+      this.currentRowPage = 0;
+    } else {
+      this.currentRowPage = $event;
+    }
+  }
+
+  getCurrentPage($event: number) {
+    this.tableIndex = $event;
   }
 }

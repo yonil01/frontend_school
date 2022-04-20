@@ -70,8 +70,6 @@ class Node {
   label: string;
   data: Data;
   expanded: boolean = false;
-  expandedIcon: string = '';
-  collapsedIcon: string = '';
   parent!: Node;
   children: Node[];
   icon?: string;
@@ -80,10 +78,6 @@ class Node {
     this.label = label;
     this.data = data;
     this.children = children;
-  }
-
-  setLabel(label: string): void {
-    this.label = label;
   }
 }
 
@@ -513,10 +507,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
         this.createActivityInRuleNode(rule);
         break;
       default:
-        const sibling = this.node.children.find((n) => !n.data.child_true && !n.data.child_false);
-        if (sibling) {
-          this.createActivityInExecutionNode(rule, sibling, 'child_true');
-        }
+        const sibling = this.node.children.find((n) => n.data.child_true === 0 && n.data.child_false === 0);
+        this.createActivityInExecutionNode(rule, sibling as Node, 'child_true');
         break;
     }
   }
@@ -546,6 +538,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       this.execution.rules = [];
       executionActivity.code = 1;
       executionActivity.id = uuidv4().toLowerCase();
+      // @ts-ignore
+      delete executionActivity.rule_params;
     } else {
       const maxActivityID = Math.max.apply(Math, this.execution.rules.map((a) => a.code));
       executionActivity.id = uuidv4().toLowerCase();
@@ -571,7 +565,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
           } else {
             this.execution.rules.push(JSON.parse(JSON.stringify(activity)));
             this.saveParams(activity);
-            if (ruleUpdateChild) this.editRule(ruleUpdateChild as Rule, false);
+            if (Object.keys(ruleUpdateChild).length > 0) this.editRule(ruleUpdateChild as Rule, false);
             // Tree Data Update
             this.newRule.id = executionActivity.id || '';
             this.newRule.code = executionActivity.code || 0;
@@ -679,6 +673,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         param.id = uuidv4().toLowerCase();
         param.rule_id = activity.id?.toLowerCase();
+        param.value = param.value?.toString();
         this._subscription.add(
           this.processService.createRuleParams(param).subscribe({
             next: (res) => {

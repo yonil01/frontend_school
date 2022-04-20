@@ -68,7 +68,7 @@ export class ActivityFormComponent implements OnInit {
         activity.parameters?.forEach((p: ParamActivity) => {
           const parameter = this.rule.rule_params?.find((param) => param.name === p.name);
           const field = this.buildFormLyObject(p, parameter?.value);
-          Object.assign(this.form.controls, {[field.key]: new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field))});
+          this.form.addControl(field.key, new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field)));
           this.fields.push(field);
         });
       }
@@ -83,11 +83,13 @@ export class ActivityFormComponent implements OnInit {
     this.fields = [];
     this.model = {};
     const activity = this.activities.find((act) => act.name === event);
-    activity?.parameters?.forEach((p: ParamActivity) => {
-      const field = this.buildFormLyObject(p);
-      Object.assign(this.form.controls, {[field.key]: new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field))});
-      this.fields.push(field);
-    });
+    if (activity) {
+      activity?.parameters?.forEach((p: ParamActivity) => {
+        const field = this.buildFormLyObject(p);
+        this.form.addControl(field.key, new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field)));
+        this.fields.push(field);
+      });
+    }
   }
 
   private buildFormLyObject(obj: ParamActivity, value?: string): any {
@@ -278,7 +280,6 @@ export class ActivityFormComponent implements OnInit {
           action: this.form.value.activity,
           status: this.form.value.status,
         };
-        console.log(rule);
         this.ruleSaved.emit(rule);
       }
     } else {
