@@ -74,7 +74,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
       icon: ['', Validators.required],
       ans: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
       alert: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
-      description: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
+      description: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8000)]]
     });
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.defaultSVG = this._sanitizer.bypassSecurityTrustResourceUrl(DEFAULT_BPMN_BASE64);

@@ -82,3 +82,33 @@ export const dispositionFinal = [
   {label: 'Digitalización', value: 'D'},
   {label: 'Eliminar', value: 'E'},
 ];
+
+export const typesQueues = {
+  'bpmn:SendTask': 1,
+  'bpmn:ReceiveTask': 2,
+  'bpmn:UserTask': 3,
+  'bpmn:ManualTask': 4,
+  'bpmn:BusinessRuleTask': 5,
+  'bpmn:ServiceTask': 6,
+  'bpmn:ScriptTask': 7,
+  'bpmn:IntermediateCatchEvent': 8,
+  'bpmn:ExclusiveGateway': 9,
+  'bpmn:ParallelGateway': 10,
+  'bpmn:InclusiveGateway': 11,
+  'bpmn:ComplexGateway': 12,
+  'bpmn:EventBasedGateway': 13,
+};
+
+export const typeTimes = [
+  {value: 1, label: 'Notificar solicitud recibida'},
+  {value: 2, label: 'Crear template'},
+  {value: 3, label: 'Completitud documental'},
+  {value: 5, label: 'Timer Execution'},
+  {value: 35, label: 'Timer Execution daily'}
+];
+
+export const typeTasks = [
+  {value: 1, label: 'Sistema'},
+  {value: 2, label: 'Timer'},
+  {value: 3, label: 'Usuario'}
+];
