@@ -97,7 +97,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
     );
 
     this._subscription.add(
-      this._doctypeGroupService.getDoctypeGroupsProject().subscribe(
+      this._doctypeGroupService.getDoctypeGroupsByProjectID(this.project.id).subscribe(
         {
           next: (res) => {
             if (res.error) {
