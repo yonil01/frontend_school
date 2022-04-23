@@ -160,6 +160,19 @@
   "ADD": "Add",
   "SELECT AN ATRIBUTE": "Select an atribute",
   "UPLOAD DATA": "Upload data",
+  "WHITE LIST": "White list",
+  "CURRENT REGISTERED": "Currently registered",
+  "CREATE WHITE LIST": "Create white list",
+  "IP ADDRESS": "IP address",
+  "CONFIGURATION": "Configuration",
+  "ADMINISTRATION": "Administration",
+  "WIZARD": "Wizard",
+  "PROYECT": "Proyect",
+  "GENERATE ACCESSES": "Generate accesses",
+  "ACCESS": "Access",
+  "Select \"Generate access\".": "Select \"Generate access\".",
+  "SELECT A CLIENT": "Select a client",
+  "SELECT A PROJECT": "Select a project"
 
 
 

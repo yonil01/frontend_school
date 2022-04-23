@@ -153,6 +153,7 @@
   "ENTITY": "Entidad",
   "ATRIBUTES": "Atributos",
   "USERS": "Usuarios",
+
   "LAST RECORD": "Último registro",
   "LAST NAME": "Apellido",
   "NEXT": "Siguiente",
@@ -160,6 +161,19 @@
   "ADD": "Añadir",
   "SELECT AN ATRIBUTE": "Seleccionar un atributo",
   "UPLOAD DATA": "Subir datos",
+  "WHITE LIST": "Lista blanca",
+  "CURRENT REGISTERED": "Registrados actualmente",
+  "CREATE WHITE LIST": "Crear lista blanca",
+  "IP ADDRESS": "Dirección IP",
+  "CONFIGURATION": "Configuración",
+  "ADMINISTRATION": "Administración",
+  "WIZARD": "Asistente",
+  "PROYECT": "Proyecto",
+  "GENERATE ACCESSES": "Generar accesos",
+  "ACCESS": "Acceso",
+  "Select \"Generate access\".": "Seleccione \"Generar acceso\".",
+  "SELECT A CLIENT": "Seleccionar un cliente",
+  "SELECT A PROJECT": "Seleccionar un proyecto"
 
 
 

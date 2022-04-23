@@ -5,6 +5,7 @@ import { WhiteListPageComponent } from './pages/white-list-page/white-list-page.
 import {UiModule} from "@app/ui/ui.module";
 import {ToastModule} from "ecapture-ng-ui";
 import {ReactiveFormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 
@@ -17,7 +18,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     CommonModule,
     UiModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ]
 })
 export class WhiteListModule { }

@@ -9,20 +9,22 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {RoleService} from "@app/core/services/graphql/auth/role/role.service";
 import {DocumentService} from "@app/core/services/graphql/doc/document/document.service";
 import {FormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
   declarations: [
     WizardComponent,
   ],
-  imports: [
-    CommonModule,
-    WizardRoutingModule,
-    UiModule,
-    DropdownModule,
-    DragDropModule,
-    FormsModule
-  ], providers: [RoleService, DocumentService, ToastService]
+    imports: [
+        CommonModule,
+        WizardRoutingModule,
+        UiModule,
+        DropdownModule,
+        DragDropModule,
+        FormsModule,
+        TranslateModule
+    ], providers: [RoleService, DocumentService, ToastService]
 })
 export class WizardModule {
 }
