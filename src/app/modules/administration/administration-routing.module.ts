@@ -7,6 +7,8 @@ const routes: Routes = [
   {path: 'message',loadChildren: () => import('@app/modules/administration/modules/messages/messages.module').then(m => m.MessagesModule )},
   {path: 'password-not-allowed',loadChildren: () => import('@app/modules/administration/modules/passwords-not-allowed/passwords-not-allowed.module').then(m => m.PasswordsNotAllowedModule )},
   {path: 'datasets',loadChildren: () => import('@app/modules/administration/modules/datasets/datasets.module').then(m => m.DatasetsModule )},
+  {path: 'whiteList', loadChildren: () => import('@app/modules/administration/modules/white-list/white-list.module').then(m => m.WhiteListModule)},
+  {path: 'parameters', loadChildren: () => import('@app/modules/administration/modules/parameters/parameters.module').then(m => m.ParametersModule)},
 ];
 
 @NgModule({

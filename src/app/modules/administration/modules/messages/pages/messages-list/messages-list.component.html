@@ -23,20 +23,20 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/wizard" class="t-body-2 cursor-pointer">Mensajes</span>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{'MESSAGES'|translate}}</span>
         </div>
       </div>
       <div *ngIf="!createOrEdit" class="description mb-6 flex flex-col space-y-2">
-        <span class="t-h5 text-black dark:text-white">Mensajes</span>
+        <span class="t-h5 text-black dark:text-white">{{'MESSAGES'|translate}}</span>
         <div>
           <ul class="t-body-1 pl-4">
-            <li class="list-disc text-mono-70">{{messages.length}} mensajes registradas actualmente.</li>
+            <li class="list-disc text-mono-70">{{messages.length}} {{'MESSAGES REGISTERED CURRENTLY'|translate}}.</li>
           </ul>
         </div>
       </div>
       <div *ngIf="!createOrEdit" class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
         <div>
-          <button (click)="createOrEdit = true" class="b-solid w-full md:w-auto">Crear Mensaje</button>
+          <button (click)="createOrEdit = true" class="b-solid w-full md:w-auto">{{'CREATE MESSAGE'|translate}}</button>
         </div>
         <button class="rounded px-4 bg-alert-info h-10 text-black" (click)="exportCSV()" [disabled]="messages.length <= 0">
           <div>
@@ -79,30 +79,31 @@
           </div>
           <span>PDF</span>
         </button>
-        <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar" (input)="filterMessages($event)"></div>
+        <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'SEARCH'|translate}}"(input)="filterMessages($event)"></div>
       </div>
       <div *ngIf="!createOrEdit" class="data space-y-4 mt-4">
-        <div class="table-v md:hidden flex flex-col space-y-4">
-          <div   class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">N° 1</span>
+        <div *ngFor="let messages of messagesPagination; let position = index" class="table-v md:hidden flex flex-col space-y-4">
+          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+            <span class="text-mono-70 t-caption-1">N° {{position+1}}</span>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">ID</span>
-              <span class="text-black t-body-1">100</span>
+              <span class="text-mono-70 t-caption-2">{{'IDENTIFICATION'|translate}}</span>
+              <span class="text-black t-body-1">{{messages.id}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">En español</span>
-              <span class="text-black t-body-1">La estructura no es válida</span>
+              <span class="text-mono-70 t-caption-2">{{'MESSAGE IN SPANISH'|translate}}</span>
+              <span class="text-black t-body-1">{{messages.spa}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">En inglés</span>
-              <span class="text-black t-body-1">The structure is not valid</span>
+              <span class="text-mono-70 t-caption-2">{{'MESSAGE IN ENGLISH'|translate}}</span>
+              <span class="text-black t-body-1">{{messages.eng}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Tipo de mensaje</span>
-              <span class="text-black t-body-1">Error</span>
+              <span class="text-mono-70 t-caption-2">{{'TYPE OF MESSAGE'|translate}}</span>
+              <span class="text-black t-body-1">{{messages.type_message}}</span>
             </div>
+
             <div class="actions border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
+              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10" (click)="editMsj(messages.id || 0)">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -111,7 +112,7 @@
                   </svg>
                 </div>
               </button>
-              <button  class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10 "(click)="showDelete(messages.id || 0)">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -126,11 +127,11 @@
         <div class="table-h hidden md:block w-full">
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
-            <div class="p-2 flex-1">ID</div>
-            <div class="p-2 flex-1">En Español</div>
-            <div class="p-2 flex-1">En Inglés</div>
-            <div class="p-2 flex-1">Tipo de Mensaje</div>
-            <div class="p-2 w-24">Opciones</div>
+            <div class="p-2 flex-1">{{'IDENTIFICATION'|translate}}</div>
+            <div class="p-2 flex-1">{{'IN SPANISH'|translate}}</div>
+            <div class="p-2 flex-1">{{'IN ENGLISH'|translate}}</div>
+            <div class="p-2 flex-1">{{'TYPE OF MESSAGE'|translate}}</div>
+            <div class="p-2 w-24">{{'OPTIONS'|translate}}</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
             <div *ngFor="let message of messagesPagination, let i = index" class="register-table w-full flex flex-row">
@@ -200,39 +201,39 @@
         </div>
       </div>
       <div *ngIf="createOrEdit" class="flex flex-col lg:items-center space-y-12">
-        <span class="t-h5 text-black dark:text-white">{{idMessages === 0 ? 'Crear' : 'Editar'}} Mensaje</span>
+        <span class="t-h5 text-black dark:text-white">{{idMessages === 0 ? 'Crear' : 'Editar'}} {{'MESSAGE'|translate}}</span>
         <form [formGroup]="messageForm" class="space-y-4 grid grid-cols-2 gap-4 lg:w-2/3">
 
           <div class="input flex flex-col space-y-1 col-span-2">
-            <label class="t-caption-2 text-mono-70">Mensaje en Español</label>
+            <label class="t-caption-2 text-mono-70">{{'MESSAGE IN SPANISH'|translate}}</label>
             <input class="ec-input" type="text" formControlName="spa">
           </div>
           <div class="input flex flex-col col-span-2 space-y-1">
-            <label class="t-caption-2 text-mono-70">Mensaje en Inglés</label>
+            <label class="t-caption-2 text-mono-70">{{'MESSAGE IN ENGLISH'|translate}}</label>
             <input class="ec-input" type="text" formControlName="eng">
           </div>
           <div class="input flex flex-col space-y-1 col-span-2">
-            <label class="t-caption-2 text-mono-70">Tipo de Mensaje</label>
+            <label class="t-caption-2 text-mono-70">{{'TYPE OF MESSAGE'|translate}}</label>
             <div class="grid grid-cols-1 gap-4 col-span-2 md:grid-cols-3">
               <div class="flex flex-row space-x-2 items-center">
                 <input class="w-4 h-4"type="radio" formControlName="type_message" name="type_message" value="1">
-                <label class="t-body-2 text-black">Error</label>
+                <label class="t-body-2 text-black">{{'ERROR'|translate}}</label>
               </div>
               <div class="flex flex-row space-x-2 items-center">
                 <input class="w-4 h-4"type="radio" formControlName="type_message" name="type_message" value="2">
-                <label class="t-body-2 text-black">Advertencia</label>
+                <label class="t-body-2 text-black">{{'WARNING'|translate}}</label>
               </div>
               <div class="flex flex-row space-x-2 items-center">
                 <input class="w-4 h-4"type="radio" formControlName="type_message" name="type_message" value="3">
-                <label class="t-body-2 text-black">Éxito</label>
+                <label class="t-body-2 text-black">{{'SUCCESS'|translate}}</label>
               </div>
             </div>
           </div>
 
         </form>
         <div class="flex flex-row space-x-4 lg:w-2/3">
-          <button  class="flex-1 md:flex-none b-outline" (click)="createOrEdit = false; idMessages=0">Cancelar</button>
-          <button class="flex-1 md:flex-none b-solid" (click)="sendForm()">Guardar</button>
+          <button  class="flex-1 md:flex-none b-outline" (click)="createOrEdit = false; idMessages=0">{{'CANCEL'|translate}}</button>
+          <button class="flex-1 md:flex-none b-solid" (click)="sendForm()">{{'SAVE'|translate}}</button>
         </div>
       </div>
     </div>

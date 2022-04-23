@@ -14,6 +14,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {
   ConfirmationModalComponent
 } from "@app/modules/administration/modules/datasets/components/confirmation-modal/confirmation-modal.component";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -26,12 +27,13 @@ import {
     DatasetConfigCreateEditComponent,
     ConfirmationModalComponent
   ],
-  imports: [
-    CommonModule,
-    DatasetsRoutingModule,
-    UiModule,
-    ToastModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        DatasetsRoutingModule,
+        UiModule,
+        ToastModule,
+        ReactiveFormsModule,
+        TranslateModule
+    ]
 })
 export class DatasetsModule { }

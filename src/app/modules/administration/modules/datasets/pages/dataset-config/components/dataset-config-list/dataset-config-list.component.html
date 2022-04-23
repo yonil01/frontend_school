@@ -18,7 +18,7 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/wizard" class="t-body-2 cursor-pointer">Nombre Cliente</span>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{'NAME CLIENT'|translate}}</span>
         </div>
         <div class="miga flex flex-row items-center space-x-2">
           <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
@@ -26,7 +26,7 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/wizard" class="t-body-2 cursor-pointer">Nombre Proyecto</span>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{'NAME PROJECT'|translate}}</span>
         </div>
         <div class="miga flex flex-row items-center space-x-2">
           <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
@@ -34,7 +34,7 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/admin/datasets" class="t-body-2 cursor-pointer">Dataset's</span>
+          <span routerLink="/admin/datasets" class="t-body-2 cursor-pointer">{{'DATA SET'|translate}}</span>
         </div>
       </div>
 
@@ -44,19 +44,19 @@
             <div class="text-2xl text-black">{{dataset?.name}}</div>
             <div>
               <ul class="t-body-1 pl-4">
-                <li class="list-disc text-mono-70">{{datasetsValues.length}} registrados actualmente.</li>
+                <li class="list-disc text-mono-70">{{datasetsValues.length}} {{'CURRENTLY REGISTERED'|translate}}.</li>
                 <!--<li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>-->
               </ul>
             </div>
           </div>
           <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
             <div>
-              <button (click)="createValue()" class="w-full md:w-auto b-solid">Crear Registro</button>
+              <button (click)="createValue()" class="w-full md:w-auto b-solid">{{'CREATE A REGISTER'|translate}}</button>
             </div>
             <div class="flex flex-row md:flex-row-reverse">
-              <button (click)="sureDeleteAll()" class="flex-1 md:flex-none b-ghost">Eliminar Todo</button>
+              <button (click)="sureDeleteAll()" class="flex-1 md:flex-none b-ghost">{{'DELETE ALL'|translate}}</button>
               <div class="w-4"></div>
-              <button type="file" (click)="file.click()" class="flex-1 md:flex-none b-outline">Cargar desde Archivo</button>
+              <button type="file" (click)="file.click()" class="flex-1 md:flex-none b-outline">{{'UPLOAD FROM FILE'|translate}}</button>
               <input type="file" style="display: none;" (change)="selectListener($event.target)" #file/>
             </div>
           </div>
@@ -64,24 +64,24 @@
         <div class="data space-y-4">
           <div class="lg:flex lg:justify-end">
             <input class="w-full md:w-1/2 lg:w-1/3 h-10 px-2 rounded t-body-2 bg-mono-10 text-black" type="text"
-                   placeholder="Buscar"></div>
+                   placeholder="{{'SEARCH'|translate}}"></div>
           <div class="table-v md:hidden flex flex-col space-y-4">
             <div class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
               <span class="text-mono-70 t-caption-1">N° 1</span>
               <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">Valor</span>
-                <span class="text-black t-body-1">nombre_prueba</span>
+                <span class="text-mono-70 t-caption-2">{{'VALUE'|translate}}</span>
+                <span class="text-black t-body-1">{{'TEST NAME'|translate}}</span>
               </div>
               <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">Descripción</span>
-                <span class="text-black t-body-1">Nombre de Prueba</span>
+                <span class="text-mono-70 t-caption-2">{{'DESCRIPTION'|translate}}</span>
+                <span class="text-black t-body-1">{{'TEST NAME'|translate}}</span>
               </div>
               <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">Código</span>
+                <span class="text-mono-70 t-caption-2">{{'CODE'|translate}}</span>
                 <span class="text-black t-body-1">4</span>
               </div>
               <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">Secuencia</span>
+                <span class="text-mono-70 t-caption-2">{{'SEQUENCE'|translate}}</span>
                 <span class="text-black t-body-1">10</span>
               </div>
               <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
@@ -107,11 +107,11 @@
           <div class="table-h hidden md:block w-full">
             <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
               <div class="p-2 w-16">N°</div>
-              <div class="p-2 flex-1">Valor</div>
-              <div class="p-2 flex-1">Descripción</div>
-              <div class="p-2 flex-1">Código</div>
-              <div class="p-2 flex-1">Secuencia</div>
-              <div class="p-2 w-24">Opciones</div>
+              <div class="p-2 flex-1">{{'VALUE'|translate}}</div>
+              <div class="p-2 flex-1">{{'DESCRIPTION'|translate}}</div>
+              <div class="p-2 flex-1">{{'CODE'|translate}}</div>
+              <div class="p-2 flex-1">{{'SEQUENCE'|translate}}</div>
+              <div class="p-2 w-24">{{'OPTIONS'|translate}}</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
               <div class="item w-full flex flex-row" *ngFor="let values of datasetsValuesTable, let i = index">
