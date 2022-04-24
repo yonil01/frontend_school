@@ -2,20 +2,20 @@
   <ng-container layoutBody>
     <div class="ec-container py-6 md:py-12 bg-white space-y-6">
       <div class="flex flex-col space-y-2 w-full">
-        <span class="t-h5 text-black">Autoname a Tipo Documental</span>
+        <span class="t-h5 text-black">{{'AUTONAME A DOCUMENTARY TYPE'|translate}}</span>
         <div>
           <div class="flex flex-row space-x-2">
             <div class="bg-brand-2 rounded-sm w-2"></div>
             <div class="w-full text-mono-70 py-1">
-              <span>Puedes agregar autonames a la lista mediante el tipo documental, texto y atributos.</span>
+              <span>{{'YOU CAN ADD AUTONAMES TO THE LIST USING THE DOCUMENT TYPE, TEXT AND ATTRIBUTES.'|translate}}</span>
             </div>
           </div>
         </div>
       </div>
       <div class="list flex flex-col space-y-2">
-        <span class="t-caption-2 text-mono-70">Lista de Autoname's</span>
+        <span class="t-caption-2 text-mono-70">{{'LIST OF AUTONAMES'|translate}}</span>
         <div class="w-full flex flex-row flex-wrap pt-4 pl-4 rounded bg-mono-10">
-          <span *ngIf="autonames.length <= 0" class="t-body-1 mb-4 mr-4 text-mono-70">Lista vacía</span>
+          <span *ngIf="autonames.length <= 0" class="t-body-1 mb-4 mr-4 text-mono-70">{{'EMPTY LIST'|translate}}</span>
           <div *ngFor="let autoname of autonames; let position = index"
                class="b-solid mb-4 mr-4 px-2 h-8 flex flex-row space-x-2 items-center select-none">
             <span>{{autoname}}</span>
@@ -30,45 +30,45 @@
         </div>
         <div class="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:justify-between">
           <div class="flex flex-col pt-2">
-            <span class="t-caption-2 text-mono-70">Vista previa del autoname</span>
+            <span class="t-caption-2 text-mono-70">{{'AUTONAME PREVIEW'|translate}}</span>
             <span class="t-body-1 text-black">{{viewAutoname}}</span>
           </div>
           <div class="flex flex-col space-y-2 md:pt-2 md:flex-row md:space-y-0 lg:space-x-2 md:justify-between">
             <div>
               <button (click)="showConfirmDelete = true"
                       class="w-full md:w-auto h-10 hover:bg-alert-error hover:text-white px-4 rounded disabled:text-mono-30 text-alert-error">
-                Borrar toda la lista
+                {{'DELETE THE ENTIRE LIST'|translate}}
               </button>
             </div>
             <div class="pt-2 md:p-0">
-              <button class="b-outline w-full md:w-auto" (click)="addDocType()">Agregar Tipo Documental</button>
+              <button class="b-outline w-full md:w-auto" (click)="addDocType()">{{'ADD DOCUMENTARY TYPE'|translate}}</button>
             </div>
           </div>
         </div>
       </div>
       <div class="flex flex-col space-y-6 md:flex-row md:space-y-0 md:border-t md:border-mono-30">
         <div class="pt-6 md:pr-4 flex-1 border-t md:border-t-0 md:border-r border-mono-30 space-y-4">
-          <span class="t-body-1 text-black">Agregar Texto Fijo</span>
+          <span class="t-body-1 text-black">{{'ADD FIXED TEXT'|translate}}</span>
           <div class="flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Autoname</label>
+            <label class="t-caption-2 text-mono-70">{{'AUTONAME'|translate}}</label>
             <input #box type="text" class="ec-input" ecTooltip
-                   tooltip="Ingrese texto para agregar al autoname">
+                   tooltip="{{'ENTER TEXT TO BE ADDED TO THE AUTONAME'|translate}}">
           </div>
-          <button class="b-outline w-full md:auto" (click)="onEnter(box.value); box.value = ''">Agregar a la lista
+          <button class="b-outline w-full md:auto" (click)="onEnter(box.value); box.value = ''">{{'ADD TO LIST'|translate}}
           </button>
         </div>
         <div class="pt-6 md:pl-4 flex-1 border-t md:border-t-0 border-mono-30 space-y-4">
-          <span class="t-body-1 text-black">Agregar Atributo</span>
+          <span class="t-body-1 text-black">{{'ADD ATRIBUTE'|translate}}</span>
           <div class="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
             <div class="flex lg:flex-1 flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70">Entidad</label>
+              <label class="t-caption-2 text-mono-70">{{'ENTITY'|translate}}</label>
               <ec-dropdown [filter]="true" placeholder="{{'SELECT_ENTITY' | translate}}" [showClear]="true"
                            optionLabel="name" optionValue="id"
                            [data]="entitiesList" [dropStyle]="dropStyle"
                            (onChangeValue)="selectedEntity($event)"></ec-dropdown>
             </div>
             <div class="flex lg:flex-1 flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70">Atributo</label>
+              <label class="t-caption-2 text-mono-70">{{'ATTRIBUTE'|translate}}</label>
               <ec-dropdown [filter]="true" placeholder="{{'SELECT_ATTRIBUTE' | translate}}" [showClear]="true"
                            optionLabel="name"
                            optionValue="id" [data]="attributesSelected" [dropStyle]="dropStyle"
@@ -89,7 +89,7 @@
                 <span class="t-caption-2 text-mono-70">{{'VALUE' | translate}}</span>
               </div>
             </div>
-            <button class="b-outline w-full" (click)="dataAttribute()">Agregar a la lista</button>
+            <button class="b-outline w-full" (click)="dataAttribute()">{{'ADD TO LIST'|translate}}</button>
           </div>
 
         </div>
@@ -105,8 +105,8 @@
 
 <app-block-page [show]="isBlockPage"></app-block-page>
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
-<app-confirm-dialog [show]="showConfirmDelete" type="warning" title="¿Esta seguro de querrer borrar todo el autoname?"
-                    body="Si realiza esta acción se borrara permanentemente el autoname de este tipo documental!"
+<app-confirm-dialog [show]="showConfirmDelete" type="warning" title="{{'ARE YOU SURE YOU WANT TO DELETE THE ENTIRE AUTONAME?'|translate}}"
+                    body="{{'IF YOU PERFORM THIS ACTION, THE AUTONAME OF THIS DOCUMENT TYPE WILL BE PERMANENTLY DELETE.'|translate}}"
                     (onEvent)="confirmDeleteAutoname($event)"></app-confirm-dialog>
 
 

@@ -62,8 +62,8 @@
       </div>
       <div class="form-login">
         <div class="w-full flex flex-col items-center">
-          <span class="t-h5 text-brand-2 text-center">Inicio de Sesión</span>
-          <span class="t-subtitle-1 text-black text-center">Configurador</span>
+          <span class="t-h5 text-brand-2 text-center">{{'LOGIN'|translate}}</span>
+          <span class="t-subtitle-1 text-black text-center">{{'CONFIGURATOR'|translate}}</span>
         </div>
 
         <form [formGroup]="formLogin" id="form-login" class="space-y-4">
@@ -77,7 +77,7 @@
           </div>
         </form>
         <div class="flex flex-col space-y-4">
-          <button (click)="login()" form="form-login" class="b-solid">Ingresar</button>
+          <button (click)="login()" form="form-login" class="b-solid">{{'ENTER'|translate}}</button>
           <div class="flex flex-row justify-between">
             <!--<button routerLink="recovery" class="b-ghost">{{ 'RECOVERY' | translate}}</button>-->
             <button class="b-ghost" (click)="recovery()">{{ 'RECOVERY' | translate}}</button>

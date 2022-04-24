@@ -3,25 +3,25 @@
   <ng-container layoutBody>
     <div class="ec-container pb-12 bg-white" style="min-height: calc(100vh - 3rem)">
       <div class="pt-8 w-1/2">
-        <div class="text-2xl text-black">Editar Contenedor</div>
+        <div class="text-2xl text-black">{{'EDIT CONTAINER'|translate}}</div>
         <div class="py-4 text-mono-70">
-          <ec-input-text label="Nombre"
+          <ec-input-text label="{{'NAME'|translate}}"
                          txtColor="text-mono-70" bgContainerColor="bg-outline-gray-50"
                          brContainerColor="border-outline-gray-50"
                          ></ec-input-text>
         </div>
         <div>
-          <ec-checkbox txtColor="text-mono-70" Label="Main Container"></ec-checkbox>
+          <ec-checkbox txtColor="text-mono-70" Label="{{'MAIN CONTAINER'|translate}}"></ec-checkbox>
         </div>
         <div class="flex mt-10 justify-end text-blue-600 cursor-pointer">
-          Reestablecer Valor
+          {{'RESET VALUES'|translate}}
         </div>
         <div class="flex space-x-4 w-1/4 mt-10">
-          <app-button routerLink="/wizard/dymanic-forms/forms" type="button" label="Cancelar"
+          <app-button routerLink="/wizard/dymanic-forms/forms" type="button" label="{{'CANCEL'|translate}}"
                       brColor="border-blue-600"
                       bgColor="bg-transparent"
                       txtColor="text-blue-600" class="h-12 w-full"></app-button>
-          <app-button  type="button" label="Guardar"
+          <app-button  type="button" label="{{'SAVE'|translate}}"
                        brColor="border-blue-600"
                        bgColor="bg-blue-600"
                        txtColor="text-gray-900" class="h-12 w-full"></app-button>
@@ -43,7 +43,7 @@
     </div>
     <div class="t-h5 ml-4 text-black">
       <span>
-        Cargando...
+        {{'LOADING'|translate}}...
       </span>
     </div>
   </div>
