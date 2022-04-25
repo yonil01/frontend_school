@@ -252,6 +252,22 @@
   "FORMS MODELER": "Modelador de formularios",
   "CREATE NEW FORM": "Crear nuevo formulario",
   "FORM": "Formulario",
+  "CURRENTLY REGISTERED ENTITIES.": "Entidades registradas actualmente.",
+  "ACCESS THE LIST OF RECORDS FOR AN ENTITY WITH THE GREEN BUTTON ON THE RIGHT.": "Acceda a la lista de registros de una entidad con el botón verde en la parte derecha.",
+  "CREATE ENTITY": "Crear entidad",
+  "SEARCH ENTITY": "Buscar entidad",
+  "BASIC FIDUCIARY INFORMATION": "Información básica de fiduciario",
+  "INSURANCE THAT ELIMINATES THE ENTITY": "Seguro que elimina la entidad",
+  "YES, I AM SURE.": "Sí, estoy seguro.",
+  "NO, CANCEL": "No, cancelar",
+  "SYSTEM MESSAGE": "Mensaje del sistema",
+  "ARE YOU SURE ABOUT THIS ACTION?": "¿Está seguro de que desea realizar esta acción?",
+  "THIS ACTION MAY AFFECT THE DATA MODEL.": "Esta acción puede afectar el modelo de datos.",
+  "DELETE": "Eliminar",
+  "CREATE ATTRIBUTE": "Crear atributo",
+  "EDIT ATTRIBUTE": "Editar atributo",
+  "THE\"NAME\" AND \"VALUE TO STORE\" ARE NOT EDITABLE AFTER CREATING THE ATTRIBUTE.": "El \"nombre\" y \"valor para almacenar\" no se pueden editar después de crear el atributo.",
+
 
 }
 
