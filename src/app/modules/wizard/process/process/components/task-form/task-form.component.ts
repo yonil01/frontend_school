@@ -74,6 +74,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   private bpm!: Process;
   public isBlockPage: boolean = false;
   public showConfirm: boolean = false;
+  public isNextStep: boolean = false;
 
   constructor(
     private roleService: RoleService,
@@ -319,7 +320,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.attributesDisplay = [...this.attributes];
   }
 
-  public saveQueue(): void {
+  public saveQueue(isNextStep: boolean): void {
     if (this.queueForm.valid) {
       if (this.parentQueue.id) {
         const queuePersistense = {...this.parentQueue, ...this.queueForm.value};
@@ -344,9 +345,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                   this.preloadRoles();
                   this.preloadAttributes();
                 }
-                this.positionStep++;
-                this.steps[this.positionStep].active = true;
+                if (isNextStep) {
+                  this.positionStep++;
+                  this.steps[this.positionStep].active = true;
+                }
               }
+
               this.isBlockPage = false;
               this.updateQueueEvent.emit(res);
             },
@@ -378,8 +382,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                   this.preloadAttributes();
                 }
                 this._messageService.add({type: 'success', message: 'Cola creada exitosamente', life: 5000});
-                this.positionStep++;
-                this.steps[this.positionStep].active = true;
+                if (isNextStep) {
+                  this.positionStep++;
+                  this.steps[this.positionStep].active = true;
+                }
               }
               this.isBlockPage = false;
               this.createQueueEvent.emit(res);

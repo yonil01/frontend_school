@@ -169,8 +169,10 @@ export class ActivityFormComponent implements OnInit {
               const att: any[] = this.attributes.map((a) => ({value: a.id.toLowerCase(), label: a.name}));
 
               const indexItem = this.fields.findIndex((f) => f.rules.hasOwnProperty('getValueChangeByIDItem') && f.rules.getValueChangeByIDItem.key === field.key);
-              this.fields[indexItem].templateOptions.options = att;
-              console.log(this.fields[indexItem]);
+              if (indexItem !== -1) {
+                this.fields[indexItem].templateOptions.options = att;
+                this.form.get(this.fields[indexItem].key)?.setValue('');
+              }
             },
           }
         };

@@ -94,7 +94,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   private bpm!: Process;
   private execution!: Execution;
-  private execsOpts: any[] = [];
   public treeData: any[] = [];
   public node!: Node;
   public menuItems: any[] = [];
@@ -137,7 +136,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     private entityService: EntityService,
   ) {
     this.executions = [];
-    this.execsOpts = [];
     this.indexExecution = 0;
   }
 
@@ -196,22 +194,29 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   private getDataActivityForm(): void {
     this.docTypes = [];
-    this._subscription.add(
-      this.doctypegroupService.getDoctypeGroupsProject().subscribe({
-        next: (res) => {
-          if (res.error) {
-            this.messageService.add({type: 'error', message: res.msg, life: 5000});
-          } else {
-            res.data.forEach((tg: any) => {
-              if (tg.doctypes) this.docTypes = this.docTypes.concat(tg.doctypes);
-            });
-          }
-        },
-        error: (err: HttpErrorResponse) => {
-          console.log(err);
-        },
-      })
-    );
+    this.isBlockPage = true;
+    Promise.all([this.getDoctypeGroupsProjectId(), this.getEntitiesByProjectId(this.project.id.toLowerCase())]).then((res) => {
+      const docTypeGroups = res[0];
+      const entitiesProject = res[1];
+      if (docTypeGroups.error) {
+        this.messageService.add({type: 'error', message: docTypeGroups.msg, life: 5000});
+      } else if (docTypeGroups.data) {
+        docTypeGroups.data.forEach((tg: any) => {
+          if (tg.doctypes) this.docTypes = this.docTypes.concat(tg.doctypes);
+        });
+      } else {
+        this.messageService.add({type: 'info', message: 'No se encontraron tipos de documentos', life: 5000});
+      }
+
+      if (entitiesProject.error) {
+        this.messageService.add({type: 'error', message: entitiesProject.msg, life: 5000});
+      } else if (entitiesProject.data) {
+        this.entities = entitiesProject.data;
+      } else {
+        this.messageService.add({type: 'info', message: 'No se encontraron entidades', life: 5000});
+      }
+      this.isBlockPage = false;
+    })
     this._subscription.add(
       this.roleService.getRoles().subscribe({
           next: (res) => {
@@ -227,20 +232,52 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
         }
       )
     );
-    this._subscription.add(
-      this.entityService.getEntitiesByProject(this.project.id.toLowerCase()).subscribe({
-        next: (res) => {
-          if (res.error) {
-            this.messageService.add({type: 'error', message: res.msg, life: 5000});
-          } else {
-            this.entities = res.data;
-          }
-        },
-        error: (err: HttpErrorResponse) => {
-          console.log(err);
-        },
-      })
-    );
+  }
+
+  private getEntitiesByProjectId(id: string): Promise<Response> {
+    return new Promise<Response>((resolve, rej) => {
+      this._subscription.add(
+        this.entityService.getEntitiesByProject(id).subscribe({
+          next: (res) => {
+            resolve(res);
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error(err);
+            const error: Response = {
+              error: true,
+              msg: 'Error al obtener las entidades',
+              data: null,
+              code: 70,
+              type: 'error'
+            }
+            resolve(error);
+          },
+        })
+      );
+    })
+  }
+
+  private getDoctypeGroupsProjectId(): Promise<Response> {
+    return new Promise<Response>((resolve, rej) => {
+      this._subscription.add(
+        this.doctypegroupService.getDoctypeGroupsProject().subscribe({
+          next: (res) => {
+            resolve(res);
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error(err);
+            const error: Response = {
+              error: true,
+              msg: 'Error al obtener las entidades',
+              data: null,
+              code: 70,
+              type: 'error'
+            }
+            resolve(error);
+          },
+        })
+      );
+    })
   }
 
   private getFirstNode(rules: Rule[], execution: Node): void {
@@ -407,7 +444,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     this.activities = this.allActivities.filter((a: Activity) => a.itemtype_id === itemType);
     this.isCreate = false;
     setTimeout(() => (this.showForm = true), 200);
-    // this.showForm = true;
   }
 
   private deleteActivity(): void {
