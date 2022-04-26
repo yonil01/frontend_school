@@ -1,7 +1,7 @@
 <app-layout>
   <ng-container layoutBody>
     <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
-      <div *ngIf="!createOrUpdate">
+      <div *ngIf="view === 'listProcess'">
         <div class="migas mb-4 text-brand-2 flex flex-row space-x-2 items-center flex-wrap">
           <div class="home">
             <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -140,12 +140,12 @@
           </div>
         </div>
       </div>
-      <div *ngIf="createOrUpdate">
+      <div *ngIf="view === 'createProcess' || view === 'editProcess'">
         <!--Step 1-->
         <div class="ec-container py-6 md:py-12 bg-white dark:bg-black" *ngIf="positionStep === 1">
           <div class="flex flex-col space-y-12 lg:items-center">
             <div class="flex flex-col space-y-6 lg:w-2/3">
-              <span class="t-h5 text-black dark:text-white">Crear Proceso</span>
+              <span class="t-h5 text-black dark:text-white">{{view === 'createProcess'? 'CREATE' : 'UPDATE' | translate}} Proceso</span>
               <div class="flex flex-row space-x-2 items-start">
                 <div class="relative">
                   <div class="absolute left-0 top-0">
@@ -240,18 +240,18 @@
               </div>
               <div class="flex flex-col space-y-1 col-span-2">
                 <label class="t-caption-2 text-mono-70 dark:text-mono-30">Descripción</label>
-                <textarea class="ec-input" formControlName="description"></textarea>
+                <textarea class="ec-input" style="height: 5rem!important;" formControlName="description"></textarea>
                 <div class="text-alert-error"
                      *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('required')">
                   <span>El % de alerta del proceso es requerido</span>
                 </div>
                 <div class="text-alert-error"
-                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('min')">
+                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('minlength')">
                   <span>El % de alerta no puede ser menor a 0</span>
                 </div>
                 <div class="text-alert-error"
-                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('max')">
-                  <span>El % de alerta no puede ser mayor a 100</span>
+                     *ngIf="processForm.get('description')?.invalid && processForm.get('description')?.touched && processForm.get('description')?.hasError('maxlength')">
+                  <span>El % de alerta no puede ser mayor a 8000</span>
                 </div>
               </div>
             </form>

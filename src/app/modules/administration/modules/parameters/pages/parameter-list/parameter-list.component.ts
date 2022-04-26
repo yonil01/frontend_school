@@ -7,6 +7,9 @@ import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.mode
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import {FilterService} from "@app/ui/services/filter.service";
+import {ExcelType} from "@app/ui/utils/constants/constants";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: 'app-parameter-list',
@@ -28,7 +31,7 @@ export class ParameterListComponent implements OnInit, OnDestroy {
   public rightLimit: number = 5;
   public currentPg: number = 1;
   public formParameter: FormGroup;
-
+  public exportColumns: any[] = [];
   public isEditOrCreate: boolean = false;
   public idParameter: number = 0;
 
@@ -36,6 +39,7 @@ export class ParameterListComponent implements OnInit, OnDestroy {
     private parametersService: ParametersService,
     private _messageService: ToastService,
     private _fb: FormBuilder,
+    private filterService: FilterService
   ) {
     this.formParameter = _fb.group({
       name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
@@ -232,7 +236,7 @@ export class ParameterListComponent implements OnInit, OnDestroy {
   }
 
   public resetPagination(event: any): void {
-    this.paginationValue = parseInt(event.target.value, 10);
+    this.paginationValue = event.target.value;
     this.leftLimit = 0;
     this.rightLimit = this.paginationValue;
     this.currentPg = 1;
@@ -254,5 +258,61 @@ export class ParameterListComponent implements OnInit, OnDestroy {
     this.idParameter = event;
     this.showAlert = true;
 
+  }
+
+  filterMessages(event: any) {
+    const value = event.target.value;
+    if (value && value.length ){
+      const searchFields = ('name' || 'value' || 'type' || 'description' || 'client_id' || 'id').split(',');
+      this.parametersPagination = this.filterService.filter(this.parameters,searchFields,value,"contains" )
+    }
+    else {
+      this.initPagination();
+    }
+  }
+
+  public exportPdf(): void {
+    import("jspdf").then(jsPDF => {
+      import("jspdf-autotable").then(x => {
+        const doc = new jsPDF.default('landscape', 'mm', 'a4');
+        this.exportColumns = ['name', 'value', 'type', 'description', 'client_id'];
+        const parametersOrder = this.parameters.map( (document: any) => {
+          return Object.keys(document).map( (key: string) => document[key]);
+        });
+        // @ts-ignore
+        doc.autoTable({
+          head: [this.exportColumns],
+          body: parametersOrder,
+          theme: 'grid',
+        })
+        doc.save('messages.pdf');
+      })
+    })
+  }
+
+  public exportExcel(): void {
+    // @ts-ignore
+    import('xlsx').then((xlsx) => {
+      const worksheet = xlsx.utils.json_to_sheet([...this.parameters]);
+      const workbook = {Sheets: {data: worksheet}, SheetNames: ['data']};
+      const excelBuffer: any = xlsx.write(workbook, {bookType: 'xlsx', type: 'array'});
+      this.saveAsExcelFile(excelBuffer, 'parameters' || '');
+    });
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {type: ExcelType});
+    saveAs(data, fileName + '_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  public exportCSV(): void {
+    const replacer = (key: any, value: any) => (value === null ? '' : value);
+    const header = ['name', 'value', 'type', 'description', 'client_id'];
+    const csv = this.parameters.map((row: any) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','));
+    csv.unshift(header.join(','));
+    const csvArray = csv.join('\r\n');
+    const blob = new Blob([csvArray], {type: 'text/csv'});
+    saveAs(blob, 'parameters' + '.csv');
   }
 }

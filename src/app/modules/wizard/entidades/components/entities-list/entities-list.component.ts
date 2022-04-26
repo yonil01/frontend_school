@@ -29,7 +29,7 @@ export class EntitiesListComponent implements OnInit {
   public attributes: any[] = [];
   public showAtributtes: boolean = true;
   public onSelectCreateAtribute: boolean = false;
-  public selectedAttribute!: Attribute;
+  public selectedAttribute!: any;
   public onShowEditAttribute: boolean = false;
   public toastStyle: ToastStyleModel = toastDataStyle;
   public nAttributes: number = 0;
@@ -37,6 +37,9 @@ export class EntitiesListComponent implements OnInit {
   public onConfigDatasets: boolean = false;
   public isDelete: boolean = false;
   public showAddDataset: boolean = false;
+  public tableIndex: number  = 0;
+  public currentRowPage: number = 0;
+  public attributesTable: any[] = [];
 
   constructor(private _localStorage: LocalStorageService,
               private messageService: ToastService,
@@ -176,12 +179,12 @@ export class EntitiesListComponent implements OnInit {
     this.showAtributtes = false;
   }
 
-  onEditAttribute(i: number) {
+  onEditAttribute(atribute: any) {
     if (this.attributes) {
       this.onSelectCreateAtribute = true;
       this.showAtributtes = false;
-      if (this.attributes[i]) {
-        this.selectedAttribute = this.attributes[i];
+      if (this.attributes[this.attributes.indexOf(atribute)]) {
+        this.selectedAttribute = this.attributes[this.attributes.indexOf(atribute)];
       }
     } else {
       console.log("No hay atributos");
@@ -193,9 +196,9 @@ export class EntitiesListComponent implements OnInit {
     this.messageService.add($event);
   }
 
-  onSelectDataset(i: number) {
-    this.selectedAttribute = this.attributes[i];
-    this.attributes[i].showConfig = !this.attributes[i].showConfig;
+  onSelectDataset(atribute: any) {
+    this.selectedAttribute = this.attributes[this.attributes.indexOf(atribute)];
+    this.selectedAttribute.showConfig = !this.selectedAttribute.showConfig;
   }
 
   deleteAttribute() {
@@ -225,16 +228,31 @@ export class EntitiesListComponent implements OnInit {
     delete this.selectedAttribute;
   }
 
-  sureDelete(i: number) {
+  sureDelete(atribute: any) {
     if (this.attributes) {
-      this.selectedAttribute = this.attributes[i];
+      this.selectedAttribute = this.attributes[this.attributes.indexOf(atribute)];
       this.isDelete = true;
     }
   }
 
-  onAddDatasets(i: number) {
-    this.selectedAttribute = this.attributes[i];
+  onAddDatasets(atribute: any) {
+    this.selectedAttribute = this.attributes[this.attributes.indexOf(atribute)];
     this.showAtributtes = false;
     this.showAddDataset = true;
+  }
+  getData($event: any) {
+    this.attributesTable = $event;
+  }
+
+  getCurrentRowPage($event: number) {
+    if (this.tableIndex == 1) {
+      this.currentRowPage = 0;
+    } else {
+      this.currentRowPage = $event;
+    }
+  }
+
+  getCurrentPage($event: number) {
+    this.tableIndex = $event;
   }
 }

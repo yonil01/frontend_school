@@ -28,6 +28,9 @@ export class EntityListCascadeComponent implements OnInit {
   public isDelete: boolean = false;
   public addAtribute: boolean = false;
   public showAddAttribute: boolean = false;
+  public tableIndex: number = 0;
+  public currentRowPage: number = 0;
+  public cascadingDatasetsTable: any;
 
   constructor(private _localStorage: LocalStorageService,
               private entityService: EntityService,
@@ -58,12 +61,12 @@ export class EntityListCascadeComponent implements OnInit {
   onChangeOption(where: string) {
     this.onReturnList.emit({
       id: where,
-      from: 'cascade',
+      from: 'cascadings',
       value: true,
     });
   }
 
-  onCreateEditCascade(index?: number) {
+  onCreateEditCascade(cascade?: any) {
     this.showCreateEditCascading = true;
     this.showCascadingList = false;
   }
@@ -129,22 +132,37 @@ export class EntityListCascadeComponent implements OnInit {
     });
   }
 
-  sureDelete(i: number) {
+  sureDelete(cascade: any) {
     if (this.selectedCascading) { // @ts-ignore
       delete this.selectedCascading;
     }
-    this.selectedCascading = this.cascadingDatasets[i];
+    this.selectedCascading = this.cascadingDatasets[this.cascadingDatasets.indexOf(cascade)];
     this.isDelete = true;
   }
 
-  showConfig(i: number) {
-    this.selectedCascading = this.cascadingDatasets[i];
-    this.cascadingDatasets[i].showConfig = !this.cascadingDatasets[i].showConfig;
+  showConfig(cascade: any) {
+    this.selectedCascading = this.cascadingDatasets[this.cascadingDatasets.indexOf(cascade)];
+    this.selectedCascading.showConfig = !this.selectedCascading.showConfig;
   }
 
-  onAddAtributes(i: number) {
-    this.selectedCascading = this.cascadingDatasets[i];
+  onAddAtributes(cascade: any) {
+    this.selectedCascading = this.cascadingDatasets[this.cascadingDatasets.indexOf(cascade)];
     this.addAtribute = true;
     this.showCascadingList = false;
+  }
+  getData($event: any) {
+    this.cascadingDatasetsTable = $event;
+  }
+
+  getCurrentRowPage($event: number) {
+    if (this.tableIndex == 1) {
+      this.currentRowPage = 0;
+    } else {
+      this.currentRowPage = $event;
+    }
+  }
+
+  getCurrentPage($event: number) {
+    this.tableIndex = $event;
   }
 }

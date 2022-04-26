@@ -33,6 +33,12 @@ export class CreateMsg extends Mutation<Response> {
     createMessage(input: $req) {
       error
       code
+      data {
+        id
+        spa
+        eng
+        type_message
+      }
       type
       msg
     }

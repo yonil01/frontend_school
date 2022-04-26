@@ -78,6 +78,8 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
           value: doc.id || ''
         });
       }
+      console.log(this.role.doctypes);
+      console.log(this.sourceDoctypeDrop);
     });
   }
 
@@ -86,6 +88,7 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
   }
 
   getRolesDoctypes(){
+    this.isBlockPage = true;
     this._roleService.getRoles().subscribe((res: Response) => {
       if(!res.error){
         const data = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
@@ -135,8 +138,6 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
           }
           //Actualizar las listas
           this.getRolesDoctypes();
-
-          this.isBlockPage = false;
         },
         error: (err: Error) => {
           this.isBlockPage = false;
@@ -184,7 +185,6 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
             }
             //Actualizar las listas
             this.getRolesDoctypes();
-            this.isBlockPage = false;
           },
           error: (err: Error) => {
             this.isBlockPage = false;
@@ -209,8 +209,7 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
     const groupDoc = this.sourceDoctype.find((el) => el.id === this.groupDocIdSelected);
     if(groupDoc?.doctypes){
       for(let doctype of groupDoc.doctypes){
-        const doctypeExist = this.role.roles_doc_types.find((el:any) => el.doctype.id?.toLowerCase() === doctype.id?.toLowerCase());
-        if(doctypeExist){
+        if(this.role.roles_doc_types?.find((el:any) => el.doctype.id?.toLowerCase() === doctype.id?.toLowerCase())){
           this.doctypesOfGroupSelected.push(doctype);
         }else{
           this.doctypesAvailable.push(doctype);

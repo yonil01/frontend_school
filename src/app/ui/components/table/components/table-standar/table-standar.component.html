@@ -1,13 +1,13 @@
 <div class="min-w-full inline-block" [ngClass]="showResponsive ?'hidden lg:block':''">
   <table class="min-w-full  bg-transparent w-full border-collapse">
     <thead >
-    <tr class="border-b border-black" >
-      <th scope="col" class="text-xs lg:text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-left text-brand-2 w-1">
+    <tr class="border-b border-mono-30" >
+      <th scope="col" class="text-brand-2 t-caption-1 px-3 lg:px-6 py-2 lg:py-4 text-left w-2">
         N°
       </th>
       <ng-container *ngFor="let column of columns; index as i">
-        <th scope="col" class="text-xs lg:text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-left text-brand-2 "
-            [ngClass]="(i+1) === columns.length ? 'text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-center text-brand-2 w-4' : ''">
+        <th scope="col" class="text-brand-2 t-caption-1 px-3 lg:px-6 py-2 lg:py-4 text-left "
+            [ngClass]="(i+1) === columns.length ? 'text-sm font-medium text-brand-2 px-3 lg:px-6 py-2 lg:py-4 text-center text-brand-2 w-4' : ''">
           {{ column.label }}
         </th>
       </ng-container>
@@ -15,15 +15,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let data of dataSource | filter: filterTerm; index as index" class="{{!showBorder?'border-none':'border-b border-black'}} ">
+    <tr *ngFor="let data of dataSource | filter: filterTerm; index as index">
       <ng-container *ngIf="index+1 >= rangeMin+1 && index+1 <= rangeMax">
-        <td class="px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-400">{{ index + 1 }}</td>
+        <td class="px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap t-body-2 text-mono-70">{{ index + 1 }}</td>
         <ng-container *ngFor="let key of Object.values(data)">
           <td *ngIf="Object(key) !== key" class="text-sm text-mono-70 font-normal font-light px-3 lg:px-6 py-2 lg:py-4">
             {{key}}
           </td>
         </ng-container>
-        <td class="text-sm text-center text-gray-400 font-light px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap flex content-center">
+        <td class="text-center text-mono-70 t-body-2 px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap flex content-center">
           <span *ngFor="let option of options;" class="cursor-pointer px-2" appIcon [iconName]="option.icon + ' table'"
                 [iconColor]="option.color" (click)="eventRunOption({value: data.value, type: option.type})"></span>
         </td>
@@ -43,21 +43,21 @@
       <thead>
       <tr>
         <th scope="col"
-            class="text-sm font-medium text-gray-900 px-6 py-4 text-left text-brand-2 border-b border-mono-70">
+            class="t-caption-1 px-6 py-4 text-left text-brand-2 border-b border-mono-30">
           N° {{ index + 1}}
         </th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let column of columns; index as i;">
-        <td *ngIf="(i + 1) !== columns.length" class="px-6 py-2 grid whitespace-nowrap text-sm block text-left text-mono-70">
+        <td *ngIf="(i + 1) !== columns.length" class="px-6 py-2 grid whitespace-nowrap text-sm block text-left t-body-2 text-mono-70">
           <span>{{column.label}}</span>
           <span>{{ Object.values(data)[i+1] }}</span>
         </td>
       </tr>
       <tr>
         <td
-          class="text-sm text-center text-gray-400 font-light sm:px-2 md:px-12 py-4 whitespace-nowrap flex  justify-between border">
+          class="text-center text-mono-70 t-body-2 sm:px-2 md:px-12 py-4 whitespace-nowrap flex  justify-between border">
           <span *ngFor="let option of options;" class="cursor-pointer" appIcon [iconName]="option.icon + ' table'"
                 [iconColor]="option.color" (click)="eventRunOption({value: data.value, type: option.type})"></span>
         </td>

@@ -5,7 +5,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@layer base {
+@layer utilities {
   :root {
     --c-white: #F4F5F6;
     --c-mono-10: #E3E4E7;
@@ -25,15 +25,15 @@
     --c-brand-l-2: #005E99;
     --c-brand-l-3: #0071B8;
 
-    --c-alert-error-l: #FF666E;
+    --c-alert-error-l: #df6534;
     --c-alert-success-l: #2ABB54;
-    --c-alert-info-l: #4C8AFF;
-    --c-alert-warning-l: #FFB119;
+    --c-alert-info-l: #0075BC;
+    --c-alert-warning-l: #F0B323;
 
-    --c-alert-error-d: #DA1E28;
+    --c-alert-error-d: #df6534;
     --c-alert-success-d: #1C7D38;
-    --c-alert-info-d: #0150E4;
-    --c-alert-warning-d: #CC8700;
+    --c-alert-info-d: #0075BC;
+    --c-alert-warning-d: #F0B323;
   }
   .theme-light {
     --c-fl-white: var(--c-white);
@@ -64,39 +64,31 @@
 }
 
 @layer utilities {
+  .theme-dark {
+    --c-fl-white: var(--c-black);
+    --c-fl-mono-10: var(--c-mono-100);
+    --c-fl-mono-30: var(--c-mono-70);
+    --c-fl-mono-70: var(--c-mono-30);
+    --c-fl-mono-100: var(--c-mono-10);
+    --c-fl-black: var(--c-white);
 
-  @variants dark {
-    .theme-dark {
-      --c-fl-white: var(--c-black);
-      --c-fl-mono-10: var(--c-mono-100);
-      --c-fl-mono-30: var(--c-mono-70);
-      --c-fl-mono-70: var(--c-mono-30);
-      --c-fl-mono-100: var(--c-mono-10);
-      --c-fl-black: var(--c-white);
+    --c-fl-brand-d-3: var(--c-brand-l-3);
+    --c-fl-brand-d-2: var(--c-brand-l-2);
+    --c-fl-brand-d-1: var(--c-brand-l-1);
 
-      --c-fl-brand-d-3: var(--c-brand-l-3);
-      --c-fl-brand-d-2: var(--c-brand-l-2);
-      --c-fl-brand-d-1: var(--c-brand-l-1);
+    --c-fl-brand-1: var(--c-brand-l-1);
+    --c-fl-brand-2: var(--c-brand-l-2);
 
-      --c-fl-brand-1: var(--c-brand-l-1);
-      --c-fl-brand-2: var(--c-brand-l-2);
+    --c-fl-brand-l-1: var(--c-brand-d-1);
+    --c-fl-brand-l-2: var(--c-brand-d-2);
+    --c-fl-brand-l-3: var(--c-brand-d-3);
 
-      --c-fl-brand-l-1: var(--c-brand-d-1);
-      --c-fl-brand-l-2: var(--c-brand-d-2);
-      --c-fl-brand-l-3: var(--c-brand-d-3);
-
-      --c-fl-alert-error: var(--c-alert-error-l);
-      --c-fl-alert-success: var(--c-alert-success-l);
-      --c-fl-alert-info: var(--c-alert-info-l);
-      --c-fl-alert-warning: var(--c-alert-warning-l);
-    }
+    --c-fl-alert-error: var(--c-alert-error-l);
+    --c-fl-alert-success: var(--c-alert-success-l);
+    --c-fl-alert-info: var(--c-alert-info-l);
+    --c-fl-alert-warning: var(--c-alert-warning-l);
   }
 }
-
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 .t-h1 {
   font-family: "PT Sans";
@@ -356,4 +348,20 @@ svg {
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/MaterialIcons-Regular.ttf') format('truetype')
+}
+
+.font-icon-material {
+  font-family: 'Material Icons', sans-serif;
+}
+
+.bjs-powered-by {
+  left: 15px!important;
+  right: 0;
 }

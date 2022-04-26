@@ -21,6 +21,9 @@ export class DatasetListComponent implements OnInit {
   public showDelete: boolean = false;
   public showConfig: boolean = false;
   public isBlockPage: boolean = false;
+  public datasetsTable: any;
+  public tableIndex: number = 0;
+  public currentRowPage: number = 0;
 
   constructor(private datasetsService: DatasetsService,
               private messageService: ToastService
@@ -68,19 +71,19 @@ export class DatasetListComponent implements OnInit {
     this.showCreateDataset = true;
   }
 
-  onEditDataset(i: number) {
-    this.selectedDataset = this.datasets[i];
+  onEditDataset(dataset: any) {
+    this.selectedDataset = this.datasets[this.datasets.indexOf(dataset)];
     this.showDatasets = false;
     this.showCreateDataset = true;
   }
 
-  onDeleteDataset(i: number) {
-    this.selectedDataset = this.datasets[i];
+  onDeleteDataset(dataset: any) {
+    this.selectedDataset = this.datasets[this.datasets.indexOf(dataset)];
     this.showDelete = true;
   }
 
-  onConfigDataset(i: number) {
-    this.selectedDataset = this.datasets[i];
+  onConfigDataset(dataset: any) {
+    this.selectedDataset = this.datasets[this.datasets.indexOf(dataset)]
     this.showDatasets = false;
     this.showConfig = true;
   }
@@ -114,5 +117,21 @@ export class DatasetListComponent implements OnInit {
   showHome($event: any) {
     this.showDatasets = true;
     this.showConfig = false
+  }
+
+  getData($event: any) {
+    this.datasetsTable = $event;
+  }
+
+  getCurrentRowPage($event: number) {
+    if (this.tableIndex == 1) {
+      this.currentRowPage = 0;
+    } else {
+      this.currentRowPage = $event;
+    }
+  }
+
+  getCurrentPage($event: number) {
+    this.tableIndex = $event;
   }
 }

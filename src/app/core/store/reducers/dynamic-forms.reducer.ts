@@ -22,7 +22,6 @@ import {
   editIndexDashboard,
   editIndexGridsterItem,
 } from '../actions/dynamic-forms.actions';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { StepType } from '@app/core/models/config/form';
 import {
   editDashboard,
@@ -42,7 +41,7 @@ export interface DynamicFormsState {
   entitiesSimples: Entity[];
   entitiesMultiples: Entity[];
   eform: Form;
-  jsonForm: FormlyFieldConfig[];
+  jsonForm: any[];
   jsonStepForm: StepType[];
   typeElementConfig: string;
   models: {};

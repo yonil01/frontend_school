@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 // models
-import {Activity, Attribute, DocTypes, Entity, Param, ParamActivity, Process, Role, Rule} from '@app/core/models';
+import {Activity, Attribute, DocTypes, Entity, ParamActivity, Process, Role, Rule} from '@app/core/models';
 // Store
 import {Store} from '@ngrx/store';
 import {AppState} from '@app/core/store/app.reducers';
@@ -13,7 +13,6 @@ import {dropStyle} from "@app/core/models/dropdown/dropdown";
   selector: 'app-activity-form',
   templateUrl: './activity-form.component.html',
   styleUrls: ['./activity-form.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ActivityFormComponent implements OnInit {
   @Input() roles: Role[] = [];
@@ -27,7 +26,6 @@ export class ActivityFormComponent implements OnInit {
   public readonly dropStyle: DropdownModel = dropStyle;
 
   public form!: FormGroup;
-  model = {};
   public fields: any[] = [];
   public statusOptions: any[] = [];
   public activityOptions: any[] = [];
@@ -64,11 +62,10 @@ export class ActivityFormComponent implements OnInit {
       });
       if (activity) {
         this.fields = [];
-        this.model = {};
         activity.parameters?.forEach((p: ParamActivity) => {
           const parameter = this.rule.rule_params?.find((param) => param.name === p.name);
           const field = this.buildFormLyObject(p, parameter?.value);
-          Object.assign(this.form.controls, {[field.key]: new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field))});
+          this.form.addControl(field.key, new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field)));
           this.fields.push(field);
         });
       }
@@ -81,13 +78,16 @@ export class ActivityFormComponent implements OnInit {
 
   public buildParameters(event: any): void {
     this.fields = [];
-    this.model = {};
     const activity = this.activities.find((act) => act.name === event);
-    activity?.parameters?.forEach((p: ParamActivity) => {
-      const field = this.buildFormLyObject(p);
-      Object.assign(this.form.controls, {[field.key]: new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field))});
-      this.fields.push(field);
-    });
+    if (activity) {
+      activity?.parameters?.forEach((p: ParamActivity) => {
+        const field = this.buildFormLyObject(p);
+        this.form.addControl(field.key, new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field)));
+        this.fields.push(field);
+      });
+    }
+    console.log(this.fields);
+    console.log(activity);
   }
 
   private buildFormLyObject(obj: ParamActivity, value?: string): any {
@@ -107,6 +107,9 @@ export class ActivityFormComponent implements OnInit {
             required: true,
             options: obj.type === 'select' ? list : null,
           },
+          rules: {
+          },
+          hooks:{}
         };
         break;
       case 'roles':
@@ -122,6 +125,9 @@ export class ActivityFormComponent implements OnInit {
             required: true,
             options: obj.type === 'select' ? list : null,
           },
+          rules: {
+          },
+          hooks:{}
         };
         break;
       case 'doctypes':
@@ -137,6 +143,9 @@ export class ActivityFormComponent implements OnInit {
             required: true,
             options: obj.type === 'select' ? list : null,
           },
+          rules: {
+          },
+          hooks:{}
         };
         break;
       case 'entities':
@@ -152,6 +161,18 @@ export class ActivityFormComponent implements OnInit {
             required: true,
             options: obj.type === 'select' ? list : null,
           },
+          rules: {
+          },
+          hooks:{
+            getValueChangeByIDItem: (field: any, id: string) => {
+              this.attributes = this.entities.find((e) => e.id?.toLowerCase() === id.toLowerCase())?.attributes || [];
+              const att: any[] = this.attributes.map((a) => ({value: a.id.toLowerCase(), label: a.name}));
+
+              const indexItem = this.fields.findIndex((f) => f.rules.hasOwnProperty('getValueChangeByIDItem') && f.rules.getValueChangeByIDItem.key === field.key);
+              this.fields[indexItem].templateOptions.options = att;
+              console.log(this.fields[indexItem]);
+            },
+          }
         };
         this.entity = value || '';
         break;
@@ -168,22 +189,12 @@ export class ActivityFormComponent implements OnInit {
             required: true,
             options: [],
           },
+          rules: {
+            getValueChangeByIDItem: {
+              key: 'entity',
+            }
+          },
           hooks: {
-            onInit: (field: any) => {
-              field.templateOptions.options = field.form.get('entity').valueChanges.pipe(
-                startWith(this.entity),
-                map((entityId: any) => {
-                  if (entityId) {
-                    this.attributes = this.entities.find((e) => e.id?.toLowerCase() === entityId.toLowerCase())?.attributes || [];
-                    const att: any[] = this.attributes.map((a) => ({value: a.id.toLowerCase(), label: a.name}));
-                    return att;
-                  } else {
-                    return [];
-                  }
-                }),
-              );
-              field.templateOptions.options.subscribe();
-            },
           },
         };
         break;
@@ -201,6 +212,8 @@ export class ActivityFormComponent implements OnInit {
               placeholder: obj.label,
               required: true,
               // options: obj.type === 'select' ? list : null,
+            },
+            rules: {
             },
             hooks: {
               onInit: (field: any) => {
@@ -232,6 +245,9 @@ export class ActivityFormComponent implements OnInit {
               required: true,
               options: obj.type === 'select' ? list : null,
             },
+            rules: {
+            },
+            hooks:{}
           };
         }
     }
@@ -249,11 +265,13 @@ export class ActivityFormComponent implements OnInit {
 
   public save(): void {
     if (this.form.valid) {
-      const paramsList = Object.entries(this.form.value).filter(([key, value]) => key !== 'activity' && key !== 'name' && key !== 'status').map(([key, value]) => ({
-        name: key,
-        value: value || ''
-      }));
-      // const paramsList = Object.entries(this.form.value).map(([k, v]: any) => ({name: k, value: v.toString()}));
+      const valuesForm = this.form.controls;
+      const paramsList: {name: string, value: string}[] = [];
+      for (const valuesFormKey in valuesForm) {
+        if (valuesFormKey !== 'activity' && valuesFormKey !== 'name' && valuesFormKey !== 'status') {
+          paramsList.push({name: valuesFormKey, value: valuesForm[valuesFormKey].value});
+        }
+      }
       if (this.isCreate) {
         const rule: Rule = {
           code: 0, description: "", execution_id: "", rule_params: [],
@@ -262,16 +280,17 @@ export class ActivityFormComponent implements OnInit {
           child_true: 0,
           child_false: 0,
           itemtype_id: 0,
-          params: paramsList as Param[],
+          params: paramsList,
           action: this.form.value.activity,
           status: this.form.value.status
         };
+        console.log(rule);
         this.ruleSaved.emit(rule);
       } else {
         const rule: Rule = {
           ...this.rule,
           name: this.form.value.name,
-          params: paramsList as Param[],
+          params: paramsList,
           action: this.form.value.activity,
           status: this.form.value.status,
         };
@@ -288,5 +307,11 @@ export class ActivityFormComponent implements OnInit {
       validators.push(Validators.required);
     }
     return validators;
+  }
+
+  public executeHook(field: any, value: any): void {
+    if (field.hasOwnProperty('hooks') && field.hooks.hasOwnProperty('getValueChangeByIDItem')) {
+      field.hooks.getValueChangeByIDItem(field, value);
+    }
   }
 }
