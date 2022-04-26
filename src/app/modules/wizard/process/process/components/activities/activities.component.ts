@@ -186,7 +186,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
           }
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err);
+          console.error(err);
         },
       })
     );
@@ -227,7 +227,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
             }
           },
           error: (err: HttpErrorResponse) => {
-            console.log(err);
+            console.error(err);
           },
         }
       )

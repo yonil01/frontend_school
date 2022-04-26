@@ -60,7 +60,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public rolesDisplay: RolesDisplay[] = [];
   public rolesPagination: RolesDisplay[] = [];
   public selectionAttributesNow: Attribute[] = [];
-  private selectionAttributesBefore: Attribute[] = [];
+  public selectionAttributesNowId: string = '';
+  private selectionAttributesBeforeID: string = '';
   public balanceType: any[] = [];
   private client: string = '';
   private project!: Project;
@@ -74,7 +75,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   private bpm!: Process;
   public isBlockPage: boolean = false;
   public showConfirm: boolean = false;
-  public isNextStep: boolean = false;
 
   constructor(
     private roleService: RoleService,
@@ -111,14 +111,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.store.select('bpm').subscribe((res: BpmState) => {
       this.bpm = res.bpm;
       this.parentQueue = JSON.parse(JSON.stringify(res.task));
-      console.log(this.parentQueue);
       this.element = res.element;
     });
   }
 
   private initForm(): void {
     this.selectionAttributesNow = [];
-    this.selectionAttributesBefore = [];
     this.selectionRoles = [];
     const info = this.parentQueue.name ? this.parentQueue : null;
     this.commentsOptions = this.parentQueue.comments ? JSON.parse(JSON.stringify(this.parentQueue.comments)) : [];
@@ -314,9 +312,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   private preloadAttributes(): void {
-    // @ts-ignore
-    this.selectionAttributesNow = this.parentQueue.queue_attributes?.length ? this.attributes.filter((a) => this.parentQueue.queue_attributes[0].attribute.id.toLowerCase() === a.id?.toLowerCase()) : [];
-    this.selectionAttributesBefore = this.selectionAttributesNow ? this.selectionAttributesNow : [];
+    if (this.parentQueue.queue_attributes) {
+      const queueAttributeID = this.parentQueue.queue_attributes[0].attribute?.id || '';
+      this.selectionAttributesNow = this.attributes.filter((a) => queueAttributeID.toLowerCase() === a.id?.toLowerCase());
+      this.selectionAttributesNowId = this.parentQueue.queue_attributes[0].id;
+      this.selectionAttributesBeforeID = this.parentQueue.queue_attributes[0].id;
+    }
     this.attributesDisplay = [...this.attributes];
   }
 
@@ -404,15 +405,15 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public unselectedAttribute(attribute: Attribute): void {
+  public unselectedAttribute(id: string): void {
     if (this.parentQueue.queue_attributes?.length) {
       this._subscription.add(
-        this.processService.deleteQueueAttribute(attribute.id.toLowerCase()).subscribe({
+        this.processService.deleteQueueAttribute(id.toLowerCase()).subscribe({
           next: (res) => {
             if (res.error) {
               this._messageService.add({type: 'error', message: res.msg, life: 5000});
             } else {
-              this.parentQueue.queue_attributes?.splice(0, 1);
+              this.parentQueue.queue_attributes = this.parentQueue.queue_attributes?.filter(queueAttribute => queueAttribute.id !== id);
               this.updateQueueEvent.emit(res);
             }
           },
@@ -545,15 +546,16 @@ export class TaskFormComponent implements OnInit, OnDestroy {
               if (res.error) {
                 this._messageService.add({type: 'error', message: res.msg, life: 5000});
               } else {
-                if (this.selectionAttributesBefore) {
-                  this.unselectedAttribute(this.selectionAttributesBefore[0]);
+                if (this.selectionAttributesBeforeID) {
+                  this.unselectedAttribute(this.selectionAttributesBeforeID);
                 }
                 queueAttributePersistense.attribute = attribute;
                 this.parentQueue.queue_attributes = this.parentQueue.queue_attributes ? this.parentQueue.queue_attributes : [];
                 this.parentQueue.queue_attributes.push(queueAttributePersistense);
                 this.updateQueueEvent.emit(res);
-                this.selectionAttributesBefore = this.selectionAttributesNow;
+                this.selectionAttributesBeforeID = this.selectionAttributesNowId;
                 this.selectionAttributesNow = [attribute];
+                this.selectionAttributesNowId = res.data.id;
                 this._messageService.add({type: 'success', message: 'Atributo asignado correctamente', life: 5000});
               }
               this.isBlockPage = false;

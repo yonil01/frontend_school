@@ -74,7 +74,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    console.log(this.parentQueue);
     if (this.parentQueue) {
       this.getRoles();
       const taskFind = this.parentQueue.executions ? [...this.parentQueue.executions] : [];
