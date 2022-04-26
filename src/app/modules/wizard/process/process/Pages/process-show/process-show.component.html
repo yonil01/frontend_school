@@ -1,62 +1,3 @@
-<!--<div class="lg:hidden">
-  <app-layout>
-    <ng-container layoutBody>
-      <div class="ec-container py-6 md:py-12 bg-white" style="height: calc(100vh - 48px)">
-        <div class="flex flex-col h-full space-y-4">
-          <div class="flex flex-col space-y-2">
-            <div class="migas mb-4 text-brand-2 flex flex-row space-x-2 items-center flex-wrap">
-              <div class="home">
-                <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
-                     height="24" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"/>
-                </svg>
-              </div>
-              <div class="miga flex flex-row items-center space-x-2">
-                <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
-                </svg>
-                <span routerLink="/wizard" class="t-body-2 cursor-pointer">Gallagher</span>
-              </div>
-              <div class="miga flex flex-row items-center space-x-2">
-                <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-                     fill="none">
-                  <path
-                    d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
-                </svg>
-                <span routerLink="/wizard" class="t-body-2 cursor-pointer">Seguros</span>
-              </div>
-              <div class="miga flex flex-row items-center space-x-2">
-                <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-                     fill="none">
-                  <path
-                    d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
-                </svg>
-                <span routerLink="wizard/bpmn" class="t-body-2 cursor-pointer">Procesos</span>
-              </div>
-              <div class="miga flex flex-row items-center space-x-2">
-                <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-                     fill="none">
-                  <path
-                    d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
-                </svg>
-                <span routerLink="wizard/bpmn" class="t-body-2 cursor-pointer">N° 1</span>
-              </div>
-            </div>
-            <span class="t-h5 text-black">{{bpm?.name}}</span>
-          </div>
-          <div class="visor bg-mono-10 rounded overflow-hidden h-full"></div>
-          <div>
-            <button class="w-full b-outline" (click)="leave()">Regresar</button>
-          </div>
-        </div>
-      </div>
-      <app-footer></app-footer>
-    </ng-container>
-  </app-layout>
-</div>-->
-
 <div class=" h-screen">
   <div class="header-show-bpmn ec-container flex flex-row items-center justify-between bg-white h-14 border-b border-mono-30 ">
     <div class="left flex flex-row items-center space-x-4">
@@ -137,14 +78,6 @@
               <span>{{'SAVE_BPMN' | translate}}</span>
             </button>
           </div>
-          <div class="flex flex-col flex-1">
-            <button (click)="showConfirm = true" class="w-full justify-start text-alert-error hover:bg-alert-error hover:text-white">
-              <div><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.0003 1.45825C11.4445 1.45825 12.6247 2.58863 12.7044 4.0129L12.7087 4.16659H17.0837C17.4288 4.16659 17.7087 4.44641 17.7087 4.79159C17.7087 5.108 17.4735 5.36949 17.1685 5.41088L17.0837 5.41659H16.4203L15.3535 16.2659C15.243 17.3901 14.3324 18.2582 13.2192 18.3286L13.0729 18.3333H6.92777C5.79811 18.3333 4.84504 17.512 4.66602 16.4111L4.64711 16.2659L3.57949 5.41659H2.91699C2.60058 5.41659 2.33908 5.18146 2.2977 4.87639L2.29199 4.79159C2.29199 4.47517 2.52712 4.21368 2.83218 4.17229L2.91699 4.16659H7.29199C7.29199 2.67081 8.50455 1.45825 10.0003 1.45825ZM15.1645 5.41659H4.83533L5.8911 16.1436C5.94006 16.6412 6.33393 17.0285 6.82186 17.0779L6.92777 17.0833H13.0729C13.573 17.0833 13.9969 16.7292 14.0939 16.2484L14.1095 16.1436L15.1645 5.41659ZM11.4587 7.70825C11.7751 7.70825 12.0366 7.94338 12.078 8.24844L12.0837 8.33325V14.1666C12.0837 14.5118 11.8038 14.7916 11.4587 14.7916C11.1422 14.7916 10.8807 14.5565 10.8394 14.2514L10.8337 14.1666V8.33325C10.8337 7.98807 11.1135 7.70825 11.4587 7.70825ZM8.54199 7.70825C8.85841 7.70825 9.1199 7.94338 9.16129 8.24844L9.16699 8.33325V14.1666C9.16699 14.5118 8.88717 14.7916 8.54199 14.7916C8.22558 14.7916 7.96408 14.5565 7.9227 14.2514L7.91699 14.1666V8.33325C7.91699 7.98807 8.19681 7.70825 8.54199 7.70825ZM10.0003 2.70825C9.23518 2.70825 8.60767 3.29751 8.54683 4.04698L8.54199 4.16659H11.4587C11.4587 3.36117 10.8057 2.70825 10.0003 2.70825Z"/>
-              </svg></div>
-              <span>{{'DELETE' | translate}}</span>
-            </button>
-          </div>
         </div>
       </div>
       <button class="bg-alert-success t-button-1 text-white hover:opacity-80" (click)="publishBpm()">
@@ -171,7 +104,6 @@
               <span>Editar</span>
             </div>
           </button>
-          <!--button mat-menu-item *ngIf="existQueue"-->
           <button mat-menu-item (click)='initActivitiesForm()' *ngIf='existQueue' class="outline-none">
             <div class="flex gap-2 items-center">
               <span appIcon iconName="setting"></span>
@@ -195,6 +127,5 @@
 
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
 <app-block-page [show]="isBlockedPage"></app-block-page>
-<app-confirm-dialog [show]="showConfirm" type="warning" body="¿Esta seguro de querer borrar el diagram BPMN?" (onEvent)="confirmDeleteBpm($event)"></app-confirm-dialog>
 <app-confirm-dialog [show]="showConfirmDeleteQueue" type="warning" title="¿Esta seguro de querer borrar el diagram BPMN?" body="Si realiza esta acción se eliminara toda la configuración de la cola seleccionada!" (onEvent)="confirmDeleteQueue($event)"></app-confirm-dialog>
 <app-confirm-dialog [show]="showConfirmExit" type="warning" body="Si realiza esta acción y no ha guardado sus cambios, esto se perderan!" title="¿Esta seguro de querer salir del modelador?" (onEvent)="confirmExit($event)"></app-confirm-dialog>

@@ -1,5 +1,4 @@
 import { GridsterItem, GridsterConfig, Draggable, Resizable, PushDirections } from 'angular-gridster2';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 
 export interface Form {
   doctype?: string;
@@ -32,7 +31,7 @@ export interface Formly {
   steps?: StepType[];
   modelId?: string;
   isUnique?: boolean;
-  forms?: FormlyFieldConfig[];
+  forms?: any[];
 }
 
 export interface StepType {

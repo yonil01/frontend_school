@@ -12,6 +12,7 @@ import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {typeTasks, typeTimes} from "@app/core/utils/constants/constant";
+import {IconsMaterial} from "@app/core/constants/icons/material-icons";
 
 @Component({
   selector: 'app-config',
@@ -28,6 +29,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input('queue-selected') parentQueue!: Queue;
   public taskForm: FormGroup;
+  public icons: any[] = IconsMaterial;
   public tasks: Execution[] = [];
   public tasksDisplay: Execution[] = [];
   public tasksPagination: Execution[] = [];
@@ -74,7 +76,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    console.log(this.parentQueue);
     if (this.parentQueue) {
       this.getRoles();
       const taskFind = this.parentQueue.executions ? [...this.parentQueue.executions] : [];

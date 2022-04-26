@@ -91,7 +91,7 @@
                     </div>
                   </button>
                   <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
-                          tooltip="Eliminar grupo documental" (click)="showAlertDeleteDtg = true">
+                          tooltip="Eliminar grupo documental" (click)="showAlertDeleteDtg = true; docTypeGroupSelected = docTypeGroup">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -336,32 +336,53 @@
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Código</label>
             <input class="ec-input" type="number" formControlName="code">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('code')?.invalid && doctypeForm.get('code')?.touched && doctypeForm.get('code')?.hasError('required')">
+              El codigo es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Nombre</label>
             <input class="ec-input" type="text" formControlName="name">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('name')?.invalid && doctypeForm.get('name')?.touched && doctypeForm.get('name')?.hasError('required')">
+              El nombre es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Retención Electrónica</label>
             <input class="ec-input" type="number" formControlName="retencion_electronic">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_electronic')?.invalid && doctypeForm.get('retencion_electronic')?.touched && doctypeForm.get('retencion_electronic')?.hasError('required')">
+              El tipo de retención electrónica es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Retención AG</label>
             <input class="ec-input" type="number" formControlName="retencion_ag">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ag')?.invalid && doctypeForm.get('retencion_ag')?.touched && doctypeForm.get('retencion_ag')?.hasError('required')">
+              El tipo de retención AG es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Retención AC</label>
             <input class="ec-input" type="number" formControlName="retencion_ac">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ac')?.invalid && doctypeForm.get('retencion_ac')?.touched && doctypeForm.get('retencion_ac')?.hasError('required')">
+              El tipo de retención AC es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Retención AH</label>
             <input class="ec-input" type="number" formControlName="retencion_ah">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ah')?.invalid && doctypeForm.get('retencion_ah')?.touched && doctypeForm.get('retencion_ah')?.hasError('required')">
+              El tipo de retención AH es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Formato</label>
             <ec-dropdown [filter]="true" placeholder="{{'Seleccione un formato'}}" formControlName="format"
                          [icon]="true" optionLabel="label" optionValue="value" [data]="format"
                          [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('format')?.invalid && doctypeForm.get('format')?.touched && doctypeForm.get('format')?.hasError('required')">
+              El tipo de formato AH es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Procedimiento</label>
@@ -372,28 +393,40 @@
             <input class="ec-input" type="text" formControlName="url_path">
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Clase</label>
+            <label class="t-caption-2 text-mono-70">Icono</label>
             <ec-dropdown class="font-icon-material" placeholder="SELECCIONE UN ÍCONO"
                          formControlName="class" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="icons" [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('class')?.invalid && doctypeForm.get('class')?.touched && doctypeForm.get('class')?.hasError('required')">
+              El icono es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Tipo de Soporte</label>
             <ec-dropdown [filter]="true" placeholder="{{'Seleccioner un Tipo de Soporte'}}"
                          formControlName="tipo_soporte" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="typeSupport" [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('tipo_soporte')?.invalid && doctypeForm.get('tipo_soporte')?.touched && doctypeForm.get('tipo_soporte')?.hasError('required')">
+              El tipo de soporte es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Disposición Final</label>
             <ec-dropdown [filter]="true" placeholder="{{'Seleccione una Disposición Final'}}"
                          formControlName="final_disposition" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="disposition_final" [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('final_disposition')?.invalid && doctypeForm.get('final_disposition')?.touched && doctypeForm.get('final_disposition')?.hasError('required')">
+              El tipo de disposición final es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Almacenamiento</label>
             <ec-dropdown [filter]="true" placeholder="{{'Seleccione el Almacenamiento'}}"
                          formControlName="storage_id" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="storages" [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('storage_id')?.invalid && doctypeForm.get('storage_id')?.touched && doctypeForm.get('storage_id')?.hasError('required')">
+              El tipo de almacenamiento es requerido
+            </small>
           </div>
           <div class="grid grid-cols-2 gap-4 col-span-2">
             <div class="flex flex-row space-x-2 items-center">
