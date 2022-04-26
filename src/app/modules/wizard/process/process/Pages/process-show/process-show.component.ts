@@ -856,16 +856,14 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   private validateBpmn(): boolean {
+    debugger;
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(this.bpmnXML, 'text/xml');
     const processXml = xmlDoc.getElementById('Process_1');
     // @ts-ignore
     const xmlText = new XMLSerializer().serializeToString(processXml);
-    const qtyProcess =
-      (xmlText.match(/id="Activity_/g) || []).length +
-      (xmlText.match(/id="TimerEventDefinition_/g) || []).length +
-      (xmlText.match(/id="Gateway_/g) || []).length;
-    if (this.bpm.queues && qtyProcess !== this.bpm.queues.length) {
+    const qtyProcess = (xmlText.match(/id="Activity_/g) || []).length + (xmlText.match(/id="TimerEventDefinition_/g) || []).length + (xmlText.match(/id="Gateway_/g) || []).length;
+    if (this.bpm.queues && qtyProcess) {
       this.messageService.add({type: 'warning', message: 'Debe configurar todas las colas del proceso!', life: 5000});
       return false;
     }
@@ -882,7 +880,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
         } else {
           Object.assign(queueMap, {[q.sequences || '']: q.name});
         }
-        if (q.executions && q.executions.length >= 1) {
+        /*if (q.executions && q.executions.length >= 1) {
           for (const e of q.executions) {
             if (!e.rules || e.rules.length < 1) {
               this.messageService.add({
@@ -900,7 +898,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
             life: 5000
           });
           return false;
-        }
+        }*/
       }
     }
 
