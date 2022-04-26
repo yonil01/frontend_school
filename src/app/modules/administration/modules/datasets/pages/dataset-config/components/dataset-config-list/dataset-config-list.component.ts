@@ -170,7 +170,7 @@ export class DatasetConfigListComponent implements OnInit {
         const csv: string = reader.result as string;
         let datasetsValuesPersistense: DatasetValue[] = [];
         datasetsValuesPersistense = csv.split('\n').map((row) => {
-          const data = row.split(','); // split by comma
+          const data = row.split(';'); // split by comma
           data[data.length - 1] = data[data.length - 1].replace('\r', '');
           return {
             value: data[0],
