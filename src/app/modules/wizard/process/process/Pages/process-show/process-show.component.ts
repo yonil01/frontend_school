@@ -908,6 +908,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   public async exportSaveDocuments(): Promise<Array<any>> {
+    debugger;
     this.isBlockedPage = true;
     let svgFile;
     let xmlFile;
@@ -920,8 +921,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     const documentIdSVG = await this.saveDocument(svgFile);
     const documentIdBPMN = await this.saveDocument(xmlFile);
     if (!documentIdBPMN || !documentIdSVG) {
-      // this.isAnnounceDialog = true;
-      // this.isDeleteDialog = false;
       this.messageService.add({type: 'error', life: 5000, message: 'Error al guardar los documentos'});
       return [0, 0];
     }

@@ -1,10 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-  Customer,
   DocTypeGroups,
   DocTypes,
   DocTypesDisplay,
-  Entity,
   Project
 } from "@app/core/models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -50,10 +48,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public typeSupport: { label: string, value: string }[] = typeSupport;
   public format: { label: string, value: string }[] = formatsDocs;
   public disposition_final: { label: string, value: string }[] = dispositionFinal;
-  docTypes: DocTypes[] = [];
-  docTypeGroupForm: FormGroup;
-  doctypeGruop!: DocTypeGroups;
-  project: Project = {
+  public docTypeGroupForm: FormGroup;
+  private project: Project = {
     customers_id: "",
     department: "",
     description: "",
@@ -63,16 +59,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     phone: "",
     product_owner: ""
   };
-  client: Customer = {};
-  valorCode: string = '';
-  entity: Entity = {};
-  entidades: string[] = [];
-
-  // Listar Entidades
-  selectedOptions: any[] = [];
-
-  isShowDoctypegroup = false;
-  isShowAddAutoname = false;
+  private valorCode: string = '';
 
   public view: string = 'docTypesGroup';
   public showAlertDeleteDtg: boolean = false;
@@ -119,12 +106,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
-    this.client = JSON.parse(sessionStorage.getItem('client') || '');
     this.getDoctypeGroups();
     this.valueCode();
     this.store.select('doctype').subscribe(({doctypeGroups, doctypeGroup}) => {
       this.docTypeGroups = JSON.parse(JSON.stringify(doctypeGroups));
-      this.doctypeGruop = doctypeGroup;
       this.valueCode();
     });
 
@@ -159,7 +144,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   public selectedDocTypeGroup(doctypegroup: DocTypeGroups): void {
-    this.doctypeGruop = doctypegroup;
     this.docTypeGroupSelected = doctypegroup;
     if (this.docTypeGroupSelected.doctypes) {
       this.docTypesDisplay = [];
@@ -171,7 +155,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   public editDocTypeGroups(docTypeGroup: DocTypeGroups): void {
-    this.isShowDoctypegroup = true;
     this.docTypeGroupForm.patchValue({
       name: docTypeGroup.name
     });
@@ -179,9 +162,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.view = 'docTypesGroupEdit';
   }
 
-  showAddDocType() {
+  public showAddDocType(): void {
     this.view = 'doctypeCreate';
-    // this.store.dispatch(controlDoctypes({docType: {}, indexDocType: 0, operation: 'add'}));
   }
 
   private valueCode(): void {
@@ -207,7 +189,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   private createDoctypeGroups(doctypegroup: DocTypeGroups): void {
-    this.isShowDoctypegroup = false;
     this._subscription.add(
       this.doctypegroupService.createDoctypeGroup(doctypegroup).subscribe({
         next: (res) => {
@@ -230,7 +211,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   private updateDoctypeGroups(doctypegroup: DocTypeGroups): void {
-    this.isShowDoctypegroup = false;
     const data = JSON.parse(JSON.stringify(doctypegroup));
     delete data.project;
     delete data.doctypes;
@@ -306,7 +286,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               this.messageService.add({type: 'error', message: res.msg, life: 5000});
             } else {
               this.messageService.add({type: 'success', message: res.msg, life: 5000});
-              this.doctypeGruop = {};
               this._subscription.add(
                 this.doctypegroupService.getDoctypeGroupsByProjectID(this.project.id.toLowerCase()).subscribe({
                   next: (resp) => {
@@ -350,10 +329,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             this.docTypeGroupSelected.doctypes = this.docTypeGroupSelected.doctypes?.filter(d => d.id !== this.docTypeSelected.id);
             this.docTypesDisplay = this.docTypesDisplay?.filter(d => d.docType.id !== this.docTypeSelected.id);
-            const index = this.docTypes.findIndex(d => d.id === this.docTypeSelected.id);
-            if (index !== -1) {
-              this.docTypes[index] = this.docTypeSelected;
-            }
             this.docTypeSelected = {};
           }
           this.isBlockPage = false;
@@ -397,7 +372,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   public updateDoctype(doctype: DocTypes): void {
-    this.isShowAddAutoname = false;
     const data = doctype;
     delete data.doctypes_entities;
     this.isBlockPage = true;
@@ -447,7 +421,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         const doctypeGroup: DocTypeGroups = {
           ...this.docTypeGroupForm.value,
           id: this.docTypeGroupSelected.id?.toLocaleLowerCase(),
-          project_id: this.docTypeGroupSelected.project?.id.toLocaleLowerCase(),
+          project_id: this.project?.id.toLocaleLowerCase(),
         };
         this.updateDoctypeGroups(doctypeGroup);
       } else {
