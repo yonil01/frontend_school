@@ -33,7 +33,7 @@ export const ConfigElement = [
     name: 'Formularios',
     icon: '../../../assets/img/forms-icon.svg',
     description: 'Presione aquí para configurar lo correspondiente a formularios.',
-    route: 'dymanic-forms',
+    route: 'dynamic-forms',
   },
   {
     name: 'BPMN',
