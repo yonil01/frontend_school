@@ -11,10 +11,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {ToastService} from "ecapture-ng-ui";
-import {
-  controlDoctypegroups,
-  showDoctypegroup
-} from "@app/core/store/actions/doctype.action";
+import {controlDoctypegroups,} from "@app/core/store/actions/doctype.action";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
 import {Subscription} from "rxjs/internal/Subscription";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -175,15 +172,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   public editDocTypeGroups(docTypeGroup: DocTypeGroups): void {
     this.isShowDoctypegroup = true;
-    //this.docTypeGroupForm.get('docTypeGroup')?.setValue(docTypeGroup.name);
     this.docTypeGroupForm.patchValue({
       name: docTypeGroup.name
     });
+    this.docTypeGroupSelected = docTypeGroup;
     this.view = 'docTypesGroupEdit';
-    // this.store.dispatch(showDoctypegroup({operation: 'edit'}));
-    /*this.cancelAutoname();
-    this.cancelDoctype();
-    this.cancelDoctypeEntity();*/
   }
 
   showAddDocType() {
@@ -215,11 +208,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   private createDoctypeGroups(doctypegroup: DocTypeGroups): void {
     this.isShowDoctypegroup = false;
-    const dtgRedux = {
-      id: doctypegroup.id,
-      name: doctypegroup.name,
-      project: doctypegroup.project_id || ''
-    };
     this._subscription.add(
       this.doctypegroupService.createDoctypeGroup(doctypegroup).subscribe({
         next: (res) => {
@@ -229,7 +217,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             this.view = 'docTypesGroup';
             this.docTypeGroups.push(doctypegroup);
-            // this.store.dispatch(addDoctypegroup({doctypegroup: dtgRedux as DocTypeGroups}));
           }
           this.isBlockPage = false;
         },
@@ -278,6 +265,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     if (event) {
       this.deleteDoctypeGroups();
     } else {
+      this.docTypeGroupSelected = {};
       this.showAlertDeleteDtg = false;
     }
   }
@@ -300,8 +288,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   private deleteDoctypeGroups(): void {
-    const id = this.doctypeGruop.id?.toLocaleLowerCase() || '';
-    const data = this.doctypeGruop;
+    const id = this.docTypeGroupSelected.id?.toLocaleLowerCase() || '';
+    const data = this.docTypeGroupSelected;
+    this.showAlertDeleteDtg = false;
     if (data.doctypes && data.doctypes.length > 0) {
       this.messageService.add({
         type: 'warning',
@@ -319,16 +308,19 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               this.messageService.add({type: 'success', message: res.msg, life: 5000});
               this.doctypeGruop = {};
               this._subscription.add(
-                this.doctypegroupService.getDoctypeGroupsProject().subscribe({
+                this.doctypegroupService.getDoctypeGroupsByProjectID(this.project.id.toLowerCase()).subscribe({
                   next: (resp) => {
                     if (resp.error) {
                       this.messageService.add({type: 'error', message: res.msg, life: 5000});
                     } else {
                       this.store.dispatch(controlDoctypegroups({doctypegroups: resp.data}));
                     }
+                    this.docTypeGroupSelected = {};
+                    this.isBlockPage = false;
                   },
                   error: (err: HttpErrorResponse) => {
                     console.error(err);
+                    this.isBlockPage = false;
                     this.messageService.add({type: 'error', message: err.message, life: 5000});
                   }
                 })
@@ -453,7 +445,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     } else {
       if (this.view === 'docTypesGroupEdit') {
         const doctypeGroup: DocTypeGroups = {
-          ...this.docTypeGroups,
           ...this.docTypeGroupForm.value,
           id: this.docTypeGroupSelected.id?.toLocaleLowerCase(),
           project_id: this.docTypeGroupSelected.project?.id.toLocaleLowerCase(),
@@ -465,6 +456,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           id: uuidv4().toLowerCase(),
           project_id: this.project.id.toLocaleLowerCase(),
         };
+        this.isBlockPage = true;
         this.createDoctypeGroups(doctypeGroup);
       }
     }
