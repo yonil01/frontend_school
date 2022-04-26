@@ -779,6 +779,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       delete bpmPersistense.queues;
       delete bpmPersistense.user_deletes;
       delete bpmPersistense.project;
+      delete bpmPersistense.created_at;
+      delete bpmPersistense.updated_at;
       bpmPersistense.document_id_svg = this.bpm.document_id_svg?.toString();
       bpmPersistense.document_id_bpmn = this.bpm.document_id_bpmn?.toString();
       const idAns = bpmPersistense.document_id_ans ? parseInt(bpmPersistense.document_id_ans, 10) + 1 : 1;
