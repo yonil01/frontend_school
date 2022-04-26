@@ -451,7 +451,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       });
       this.docTypeGroupForm.markAllAsTouched();
     } else {
-      if (this.view === 'edit') {
+      if (this.view === 'docTypesGroupEdit') {
         const doctypeGroup: DocTypeGroups = {
           ...this.docTypeGroups,
           ...this.docTypeGroupForm.value,
