@@ -32,6 +32,7 @@ import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {FilterService} from "@app/ui/services/filter.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {typesQueues} from "@app/core/utils/constants/constant";
+import {IconsMaterial} from "@app/core/constants/icons/material-icons";
 
 @Component({
   selector: 'app-task-form',
@@ -75,6 +76,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   private bpm!: Process;
   public isBlockPage: boolean = false;
   public showConfirm: boolean = false;
+  public icons: any[] = IconsMaterial;
 
   constructor(
     private roleService: RoleService,

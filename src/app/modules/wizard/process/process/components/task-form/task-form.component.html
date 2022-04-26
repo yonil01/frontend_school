@@ -39,7 +39,7 @@
       </div>
       <div class="input flex flex-col space-y-1">
         <label class="t-caption-2 text-mono-70">{{'ICON' | translate}}</label>
-        <ec-dropdown [filter]="true" placeholder="{{'SELECT_ICON' | translate}}" formControlName="class" [icon]="true" optionLabel="label" [data]="[{label: 'add', value: 'add'}]" [dropStyle]="dropStyle"></ec-dropdown>
+        <ec-dropdown class="font-icon-material" [filter]="true" placeholder="{{'SELECT_ICON' | translate}}" formControlName="class" [icon]="true" optionLabel="label" [data]="icons" [dropStyle]="dropStyle"></ec-dropdown>
         <div class="text-alert-error"
              *ngIf="queueForm.get('class')?.invalid && queueForm.get('class')?.touched && queueForm.get('class')?.hasError('required')">
           <span>El campo es requerido</span>

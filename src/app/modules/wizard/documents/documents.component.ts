@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-  Attribute,
   Customer,
   DocTypeGroups,
   DocTypes,
@@ -57,9 +56,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   docTypes: DocTypes[] = [];
   docTypeGroupForm: FormGroup;
   doctypeGruop!: DocTypeGroups;
-  autoName: DocTypes = {};
-  public docEntity: DocTypes = {};
-  indexAutoname: number = 0;
   project: Project = {
     customers_id: "",
     department: "",
@@ -112,15 +108,16 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         retencion_ac: ['', Validators.required],
         retencion_ah: ['', Validators.required],
         final_disposition: ['', Validators.required],
-        digitalizacion: ['', Validators.required],
+        digitalizacion: [false, Validators.required],
         procedure: [''],
         class: ['', Validators.required],
-        is_cipher: [''],
+        is_cipher: [false],
       },
       {
         validators: this.lessCode('code'),
       },
     );
+    this.doctypeForm.get('code')?.disable();
   }
 
   ngOnInit(): void {
@@ -157,6 +154,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         },
         error: (err: HttpErrorResponse) => {
           console.error(err);
+          this.messageService.add({type: 'error', message: 'No se ha podido cargar los grupos documentales! code 103', life: 5000});
           this.isBlockPage = false;
         }
       })
@@ -173,11 +171,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       }
     }
     this.view = 'docTypesList';
-  }
-
-  showAddDocTypeGroups(): void {
-    this.isShowDoctypegroup = true;
-    this.store.dispatch(showDoctypegroup({operation: 'add'}));
   }
 
   public editDocTypeGroups(docTypeGroup: DocTypeGroups): void {
@@ -206,28 +199,18 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            this.messageService.add({type: 'success', message: res.msg, life: 5000});
             this.valorCode = res.data;
+            this.doctypeForm.get('code')?.setValue(this.valorCode);
           }
           this.isBlockPage = false;
         },
         error: (err: HttpErrorResponse) => {
           console.error(err);
           this.isBlockPage = false;
-          this.messageService.add({type: 'error', message: err.error.msg, life: 5000});
+          this.messageService.add({type: 'error', message: 'No se ha podido traer el codigo del tipo documental', life: 5000});
         }
       })
     );
-  }
-
-  showOptions(event: any, option: any, rowData: any, indexDocType: number): void {
-    this.autoName = rowData;
-    this.docEntity = rowData;
-    this.indexAutoname = indexDocType;
-    // this.store.dispatch(controlDoctypes({ doctype: rowData, indexDocType, operation: 'edit' }));
-    event.preventDefault();
-    event.stopPropagation();
-    option.show(event);
   }
 
   private createDoctypeGroups(doctypegroup: DocTypeGroups): void {
@@ -364,6 +347,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   private deleteDocType(): void {
+    this.showAlertDeleteTg = false;
     this.isBlockPage = true;
     this._subscription.add(
       this.doctypegroupService.deleteDoctype(this.docTypeSelected.id || '').subscribe({
@@ -401,7 +385,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            this.view = 'doctypes';
+            this.view = 'docTypesList';
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             this.docTypeGroupSelected.doctypes?.push(doctype);
             const docTypeGroupIndex = this.docTypeGroups.findIndex((dtg) => dtg.id === this.docTypeGroupSelected.id);
@@ -431,7 +415,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            this.view = 'doctypes';
+            this.view = 'docTypesList';
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             const docTypeIndex = this.docTypeGroupSelected.doctypes?.findIndex((dtg) => dtg.id === doctype.id);
             if (docTypeIndex && docTypeIndex > -1) {
@@ -570,6 +554,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         const docTypes: DocTypes = {
           ...this.docTypeSelected,
           ...this.doctypeForm.value,
+          code: this.doctypeForm.get('code')?.value,
           id: this.docTypeSelected.id?.toLocaleLowerCase(),
           doctypes_groups_id: this.docTypeSelected.doctypes_groups_id?.toLocaleLowerCase(),
         };
@@ -583,6 +568,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       } else {
         const doctype: DocTypes = {
           ...this.doctypeForm.value,
+          code: this.doctypeForm.get('code')?.value,
           id: uuidv4().toLowerCase(),
           doctypes_groups_id: this.docTypeGroupSelected.id?.toLocaleLowerCase(),
           autoname: '',

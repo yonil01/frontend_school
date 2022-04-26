@@ -98,7 +98,7 @@
         </div>
         <div class="input flex flex-col space-y-1">
           <label class="t-caption-2 text-mono-70">{{'ICON' | translate}}</label>
-          <ec-dropdown [filter]="true" placeholder="{{'SELECT_ICON' | translate}}" formControlName="class" [icon]="true" optionLabel="label" [data]="[{value: 'add', label: 'add'}]" [dropStyle]="dropStyle"></ec-dropdown>
+          <ec-dropdown [filter]="true" class="font-icon-material" placeholder="{{'SELECT_ICON' | translate}}" formControlName="class" [icon]="true" optionLabel="label" [data]="icons" [dropStyle]="dropStyle"></ec-dropdown>
           <div class="text-alert-error"
                *ngIf="taskForm.get('class')?.invalid && taskForm.get('class')?.touched && taskForm.get('class')?.hasError('required')">
             <span>El campo es requerido</span>
