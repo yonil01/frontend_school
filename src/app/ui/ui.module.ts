@@ -24,6 +24,7 @@ import {StepComponent} from "@app/ui/components/step/step.component";
 import {PaginationComponent} from "@app/ui/components/table/components/pagination/pagination.component";
 import {NgCircleProgressModule} from "ng-circle-progress";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -72,21 +73,22 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
     IconDirective,
     StepComponent
   ],
-  imports: [
-    CommonModule,
-    DragDropModule,
-    FormsModule,
-    NgCircleProgressModule,
-    Ng2SearchPipeModule,
-    NgCircleProgressModule.forRoot({
-      radius: 100,
-      outerStrokeWidth: 16,
-      innerStrokeWidth: 8,
-      outerStrokeColor: "#78C000",
-      innerStrokeColor: "#C7E596",
-      animationDuration: 300,
-    }),
-  ],
+    imports: [
+        CommonModule,
+        DragDropModule,
+        FormsModule,
+        NgCircleProgressModule,
+        Ng2SearchPipeModule,
+        NgCircleProgressModule.forRoot({
+            radius: 100,
+            outerStrokeWidth: 16,
+            innerStrokeWidth: 8,
+            outerStrokeColor: "#78C000",
+            innerStrokeColor: "#C7E596",
+            animationDuration: 300,
+        }),
+        TranslateModule,
+    ],
   providers: [MenuService, LocalStorageService, FilterService]
 })
 export class UiModule {

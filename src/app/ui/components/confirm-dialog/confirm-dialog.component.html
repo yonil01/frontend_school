@@ -21,10 +21,10 @@
       </div>
       <div class="mt-12 flex items-center justify-center w-full gap-2">
         <button class="btn-{{type}}-outline" (click)="action.emit(false)">
-          <span>Cancel</span>
+          <span>{{'CANCEL'|translate}}</span>
         </button>
         <button class="btn-{{type}}-solid" (click)="action.emit(true)">
-          <span>Accept</span>
+          <span>{{'ACEPT'|translate}}</span>
         </button>
       </div>
     </div>

@@ -35,7 +35,7 @@
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
           <span routerLink="/workflow" class="t-body-2 cursor-pointer">
-          Entidades
+          {{'ENTITIS' | translate}}
           </span>
         </div>
         <div class="miga flex flex-row items-center space-x-2">
@@ -52,14 +52,14 @@
       <div class="space-y-12">
         <div class="space-y-6">
           <div class="space-y-2">
-            <div class="text-2xl text-black">Valores del Autofill</div>
+            <div class="text-2xl text-black">{{'VALUES AUTOFILL'|translate}}</div>
             <div>
               <div class="flex flex-row space-x-2">
                 <div class="bg-brand-2 rounded-sm w-2"></div>
                 <div class="w-full text-mono-70 py-1">
                   <span
-                    *ngIf="!hasAttribute">Asigne uno o m&aacute;s atributos al autofill para agregar un valor.</span>
-                  <span *ngIf="hasAttribute">El valor agregado ser&aacute; una recomendaci&oacute;n para el usuario cuando seleccione el campo relacionado al autofill.</span>
+                    *ngIf="!hasAttribute">{{'ASSIGN ONE OR MORE ATTRIBUTES TO THE AUTOFILL TO ADD A VALUE.'|translate}}</span>
+                  <span *ngIf="hasAttribute">{{'THE ADDED VALUE WILL BE A RECOMMENDATION TO THE USER WHEN SELECTING THE FIELD RELATED TO THE AUTOFILL.'|translate}}</span>
                 </div>
               </div>
             </div>
@@ -67,18 +67,18 @@
           <div class="space-y-2">
           </div>
           <div *ngIf="hasAttribute">
-            <button (click)="onCreateValue()" class="b-outline w-full md:w-auto">Crear Nuevo Valor Autofill</button>
+            <button (click)="onCreateValue()" class="b-outline w-full md:w-auto">{{'CREATE NEW VALUE AUTOFILL'|translate}}</button>
           </div>
         </div>
         <div class="data space-y-4">
           <div *ngIf="hasAttribute"><input class="w-full h-10 px-2 rounded t-body-2 bg-mono-10 text-black" type="text"
-                                           placeholder="Buscar">
+                                           placeholder="{{'SEARCH'|translate}}">
           </div>
           <div *ngIf="hasAttribute" class="table-h md:block w-full">
             <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
               <div class="p-2 w-16">N°</div>
               <div *ngFor="let props of columnsTable" class="p-2 flex-1">{{props}}</div>
-              <div class="p-2 w-32">Opciones</div>
+              <div class="p-2 w-32">{{'OPTIONS'|translate}}</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
               <div *ngFor="let value of valuesAttributesAutofillsTable, let i = index" class="item w-full flex flex-row">
@@ -127,7 +127,7 @@
                       </button>
                       <div *ngIf="false"
                            class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
-                        <button class="b-ghost">Datasets</button>
+                        <button class="b-ghost">{{'DATA SETS'|translate}}</button>
                       </div>
                     </div>
                   </div>
@@ -151,11 +151,11 @@
                 d="M20.5012 25C20.5012 25.828 19.8292 26.5 19.0012 26.5C18.1733 26.5 17.5012 25.828 17.5012 25C17.5012 24.172 18.1733 23.5 19.0012 23.5C19.8292 23.5 20.5012 24.172 20.5012 25ZM43.0013 23.5C42.1733 23.5 41.5013 24.172 41.5013 25C41.5013 25.828 42.1733 26.5 43.0013 26.5C43.8293 26.5 44.5013 25.828 44.5013 25C44.5013 24.172 43.8293 23.5 43.0013 23.5ZM31.0012 61.72C14.0612 61.72 0.28125 47.94 0.28125 31C0.28125 14.06 14.0612 0.279999 31.0012 0.279999C47.9412 0.279999 61.7213 14.06 61.7213 31C61.7213 47.94 47.9412 61.72 31.0012 61.72ZM31.0012 1.72C14.8552 1.72 1.72125 14.854 1.72125 31C1.72125 47.144 14.8552 60.28 31.0012 60.28C47.1452 60.28 60.2812 47.146 60.2812 31C60.2812 14.854 47.1452 1.72 31.0012 1.72ZM42.4033 45.4C42.3633 45.344 38.4992 39.72 31.0012 39.72C23.5033 39.72 19.6372 45.344 19.5992 45.4L18.4012 44.602C18.5732 44.342 22.7092 38.28 30.9992 38.28C39.2892 38.28 43.4272 44.342 43.5993 44.602L42.4033 45.4Z"
                 fill="#595B5D"/>
             </svg>
-            <span>Para agregar un valor debe asignar un atributo como mímino a este autofill.</span>
+            <span>{{'TO ADD A VALUE YOU MUST ASSIGN AT LEAST ONE ATTRIBUTE TO THIS AUTOFILLT.'|translate}}</span>
           </div>
         </div>
         <div>
-          <button (click)="onReturn()" class="b-outline w-full md:w-auto">Regresar</button>
+          <button (click)="onReturn()" class="b-outline w-full md:w-auto">{{'RETURN'|translate}}</button>
         </div>
       </div>
 

@@ -12,7 +12,7 @@
         <div class="input-group relative  flex items-stretch w-full mb-4 rounded bg-mono-10 border">
           <input type="search"
                  class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-mono-70 font-normal rounded transition ease-in-out  bg-mono-10 m-0 focus:text-mono-70 focus:border-blue-600 focus:outline-none "
-                 placeholder="Buscar Formulario" aria-label="Search" aria-describedby="button-addon2"
+                 placeholder="{{'SEARCH FORM'|translate}}" aria-label="Search" aria-describedby="button-addon2"
                  [(ngModel)]="filterTerm"
           >
           <span
@@ -64,13 +64,13 @@
                     [ngClass]="index !==0 ?'py-3 lg:p-0':'py-3 lg:py-4'"
                     class="text-sm font-medium text-gray-900 text-left text-brand-2 hidden lg:table-cell"
                 >
-                  <span [ngClass]="index !==0 ?'lg:hidden lg:p-0':''">Entidad</span>
+                  <span [ngClass]="index !==0 ?'lg:hidden lg:p-0':''">{{'ENTITY'|translate}}</span>
                 </th>
                 <th scope="col"
                     [ngClass]="index !==0 ?'py-3 lg:p-0':'py-3 lg:py-4'"
                     class="text-sm font-medium text-gray-900 px-3 lg:px-6  text-left text-brand-2 w-1 hidden lg:table-cell "
                 >
-                  <span [ngClass]="index !==0 ?'lg:hidden lg:p-0':''">Opciones</span>
+                  <span [ngClass]="index !==0 ?'lg:hidden lg:p-0':''">{{'OPTIONS'|translate}}</span>
                 </th>
               </tr>
               </thead>
@@ -80,7 +80,7 @@
                   class="px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-400 hidden lg:table-cell">{{ index + 1 }}</td>
                 <td class="text-sm text-gray-400 font-light px-3 lg:px-0 py-2 lg:py-4 text-left  whitespace-nowrap">
                   <div class="inline">
-                    <p class="block lg:hidden ">Entidad</p>
+                    <p class="block lg:hidden ">{{'ENTITY'|translate}}</p>
                     <p class="text-ms font-medium lg:text-sm font-bold overflow-hidden">{{dataSource.name}}</p>
                   </div>
                 </td>
@@ -96,7 +96,7 @@
                 <td
                   class="px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-400 hidden lg:table-cell"></td>
                 <td class="text-sm text-gray-400 font-light p-0 whitespace-nowrap">
-                  <p class="block px-3 lg:hidden">Atributo</p>
+                  <p class="block px-3 lg:hidden">{{'ATTRIBITE'|translate}}</p>
                   <app-table-standar
                     [dataSource]="dataSource.datasource!"
                     [columns]="tableStyle.columns"
