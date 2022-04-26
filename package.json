@@ -47,8 +47,10 @@
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "uuid": "^8.3.2",
-    "xlsx": "^0.18.5",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "xlsx": "*",
+    "@ng-idle/core": "^11.1.0",
+    "@ng-idle/keepalive": "^11.0.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.0.3",

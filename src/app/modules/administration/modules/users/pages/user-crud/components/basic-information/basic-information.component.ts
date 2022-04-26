@@ -36,6 +36,7 @@ export class BasicInformationComponent implements OnInit {
   public secretKey: string;
   public disabledNext: boolean;
   public showLoader: any = showLoader;
+  public isBlockPage: boolean = false;
   public typeExecution: number;
 
   constructor( private _formBuilder: FormBuilder,
@@ -103,7 +104,8 @@ export class BasicInformationComponent implements OnInit {
   }
 
   saveForm(): void {
-    this.showLoading(true);
+    //this.showLoading(true);
+    this.isBlockPage = true;
     if (this.returnExistUser()) {
       this.updateUser();
     } else {
@@ -136,8 +138,10 @@ export class BasicInformationComponent implements OnInit {
       this.user = userPersistence;
       this.returnUser.emit(this.user)
       this.userService.createUser(userPersistence).subscribe((resp: Response) => {
+        debugger
         if (resp.error) {
-          this.showLoading(false);
+          //this.showLoading(false);
+          this.isBlockPage = false;
           this.addToast({
             type: 'error',
             message: resp.msg,
@@ -151,7 +155,8 @@ export class BasicInformationComponent implements OnInit {
           });
           this.disabledNext = false;
           this.getUserByID(userPersistence.id!);
-          this.showLoading(false);
+          //this.showLoading(false);
+          this.isBlockPage = false;
           if (this.typeExecution === 1) {
             this.changeStatusStep(0);
           }
@@ -163,7 +168,8 @@ export class BasicInformationComponent implements OnInit {
         message: 'Completa todos los campos',
         life: 5000,
       });
-      this.showLoader(false);
+      this.isBlockPage = false;
+      //this.showLoader(false);
     }
   }
 
@@ -191,36 +197,47 @@ export class BasicInformationComponent implements OnInit {
   }
 
   private updateUser(): void {
-    const userPersistence: User = {};
-    userPersistence.id = this.user.id?.toLowerCase();
-    userPersistence.username = this.formBasicInfo.get('username')?.value;
-    userPersistence.name = this.formBasicInfo.get('name')?.value;
-    userPersistence.last_name = this.formBasicInfo.get('last_name')?.value;
-    userPersistence.email_notifications = this.formBasicInfo.get('email_notifications')?.value;
-    userPersistence.identification_number = this.formBasicInfo.get('identification_number')?.value;
-    userPersistence.identification_type = this.formBasicInfo.get('identification_type')?.value;
-    userPersistence.password = '';
-    userPersistence.password_comfirm = '';
-    this.userService.updateUser(userPersistence).subscribe((resp: Response) => {
-      if (!resp.error) {
-        this.addToast({
-          type: 'success',
-          message: resp.msg,
-          life: 5000,
-        });
-        this.showLoading(false);
-        if (this.typeExecution === 1) {
-          this.changeStatusStep(0);
+    if (this.formBasicInfo.valid) {
+      const userPersistence: User = {};
+      userPersistence.id = this.user.id?.toLowerCase();
+      userPersistence.username = this.formBasicInfo.get('username')?.value;
+      userPersistence.name = this.formBasicInfo.get('name')?.value;
+      userPersistence.last_name = this.formBasicInfo.get('last_name')?.value;
+      userPersistence.email_notifications = this.formBasicInfo.get('email_notifications')?.value;
+      userPersistence.identification_number = this.formBasicInfo.get('identification_number')?.value;
+      userPersistence.identification_type = this.formBasicInfo.get('identification_type')?.value;
+      userPersistence.password = '';
+      userPersistence.password_comfirm = '';
+      this.userService.updateUser(userPersistence).subscribe((resp: Response) => {
+        if (!resp.error) {
+          this.addToast({
+            type: 'success',
+            message: resp.msg,
+            life: 5000,
+          });
+          //this.showLoading(false);
+          this.isBlockPage = false;
+          if (this.typeExecution === 1) {
+            this.changeStatusStep(0);
+          }
+        } else {
+          this.addToast({
+            type: 'error',
+            message: resp.msg,
+            life: 5000,
+          });
+          //this.showLoading(false);
+          this.isBlockPage = false;
         }
-      } else {
-        this.addToast({
-          type: 'error',
-          message: resp.msg,
-          life: 5000,
-        });
-        this.showLoading(false);
-      }
-    });
+      });
+    }else{
+      this.addToast({
+        type: 'error',
+        message: 'Dato(s) inválido(s)',
+        life: 5000,
+      });
+      this.isBlockPage = false;
+    }
   }
 
   public returnExistUser(): boolean {

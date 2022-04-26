@@ -5,7 +5,7 @@ import {
   showLoader, showToast,
   styleTableUser
 } from "@app/modules/administration/modules/users/models/model-user/constans-user";
-import {Response, User} from "@app/core/models";
+import {Response, Roles, User} from "@app/core/models";
 import {Router} from "@angular/router";
 import {UsersService} from "@app/modules/administration/modules/users/service/user/users.service";
 import {DataContentUser} from "@app/modules/administration/modules/users/models/model-user/model-user";
@@ -83,7 +83,7 @@ export class UsersComponent implements OnInit {
             value2: user.last_name,
             value3: user.email_notifications,
             value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
-            value5: user.roles ? user.roles[0].name : '',
+            value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
           }
           this.styleTable.dataSource?.push(newUser);
         })
@@ -98,6 +98,18 @@ export class UsersComponent implements OnInit {
         });
       }
     });
+  }
+
+  public getRoles(roles: Roles[]): string {
+    let textTemp: string = '';
+    if (roles.length) {
+      roles.forEach((data: Roles, index:number)=>{
+        if (data.name) {
+          textTemp = textTemp + data.name + (index+1 !== roles.length ?', ':'');
+        }
+      })
+    }
+    return textTemp;
   }
 
   public eventTableOption(resp:any): void {
@@ -304,7 +316,7 @@ export class UsersComponent implements OnInit {
     // @ts-ignore
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(ArrayObject);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.utils.book_append_sheet(wb, ws, 'Roles Exportados');
 
     XLSX.writeFile(wb, this.fileName);
     this.dataExport = [];

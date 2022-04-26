@@ -15,10 +15,10 @@ const routes: Routes = [
     path: 'documents',
     loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule)
   },
-  /*{
+  {
     path: 'dynamic-forms',
     loadChildren: () => import('./dynamic-forms/dynamic-forms.module').then(m => m.DynamicFormsModule)
-  },*/
+  },
   {
     path: 'bpmn',
     loadChildren: () => import('./process/process.module').then(m => m.ProcessModule)
