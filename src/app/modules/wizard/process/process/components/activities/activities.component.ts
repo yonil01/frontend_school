@@ -599,8 +599,10 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     // @ts-ignore
     delete executionActivity.params;
     this.isBlockPage = true;
+    const data: any = executionActivity;
+    delete data.rule_params;
     this._subscription.add(
-      this.processService.createExecutionRule(executionActivity).subscribe({
+      this.processService.createExecutionRule(data).subscribe({
         next: (res) => {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});

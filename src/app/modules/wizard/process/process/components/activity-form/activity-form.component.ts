@@ -261,7 +261,10 @@ export class ActivityFormComponent implements OnInit {
       }
       if (this.isCreate) {
         const rule: Rule = {
-          code: 0, description: "", execution_id: "", rule_params: [],
+          code: 0,
+          description: "",
+          execution_id: "",
+          rule_params: [],
           name: this.form.value.name,
           first: 0,
           child_true: 0,
