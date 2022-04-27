@@ -4,7 +4,7 @@ import {Entity, Response} from "@app/core/models";
 import {EntityService} from "@app/modules/wizard/entidades/services/entities.service";
 import {Store} from "@ngrx/store";
 // @ts-ignore
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {AppState} from "@app/core/store/app.reducers";
 import {addEntity, editEntity} from "@app/core/store/actions/entity.action";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -30,6 +30,7 @@ export class EntitiesCreateEditComponent implements OnInit {
   public client!: Client;
   public project!: Project;
   public isBlock: boolean = false;
+
   constructor(private entityService: EntityService,
               private store: Store<AppState>,
               private _fb: FormBuilder
@@ -38,18 +39,22 @@ export class EntitiesCreateEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isBlock = true;
     this.createEditForm = this._fb.group({
       name: ['', [Validators.required, noWhitespaceValidator(), Validators.minLength(3), Validators.maxLength(50)]],
-      is_unique: [false]
+      is_unique: [false],
+      description: ['', [Validators.required, Validators.maxLength(255)]],
     })
     if (this.selectedEntity) {
       this.isEdit = true;
       this.entity = this.selectedEntity;
-     this.createEditForm.setValue({
+      this.createEditForm.setValue({
         name: this.entity.name,
-        is_unique: this.entity.is_unique
+        is_unique: this.entity.is_unique,
+        description: this.entity.description || ''
       })
       this.createEditForm.get('is_unique')?.disable()
+      this.createEditForm.get('name')?.disable()
     }
     if (sessionStorage.getItem('client') && sessionStorage.getItem('project')) {
       // @ts-ignore
@@ -57,10 +62,11 @@ export class EntitiesCreateEditComponent implements OnInit {
       // @ts-ignore
       this.project = JSON.parse(sessionStorage.getItem('project'));
     }
+    this.isBlock = false;
   }
 
   onCancelCreateEntities() {
-   this.onReturn()
+    this.onReturn()
   }
 
   onReturn() {
@@ -72,7 +78,7 @@ export class EntitiesCreateEditComponent implements OnInit {
   }
 
   onCreateEntity(entity: Entity) {
-    if(this.createEditForm.valid) {
+    if (this.createEditForm.valid) {
       if (entity) {
         const entity: Entity = {
           ...this.createEditForm.value,
