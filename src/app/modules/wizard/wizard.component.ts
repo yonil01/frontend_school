@@ -19,8 +19,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class WizardComponent implements OnInit, OnDestroy {
   public readonly dropStyle: DropdownModel = dropStyle;
   private _subscription: Subscription = new Subscription();
-  public clients: DataDrop[] = [];
-  public projects: DataDrop[] = [];
+  public clients: Client[] = [];
+  public projects: Project[] = [];
   public projectName: string = '';
   public clientName: string = '';
   public configList: any[] = [];
@@ -41,19 +41,15 @@ export class WizardComponent implements OnInit, OnDestroy {
             this._messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
             if (res.data) {
-              console.log(res.data);
-              const data = res.data.filter((c: Client) => c.projects?.length);
-              if (data) this.clients = data.map((client: Client) => ({
-                label: client.name,
-                value: client
-              }));
+              const data = res.data.filter( (c: Client) => c.projects?.length );
+              if (data) this.clients = data;
+              if (this.isExistClientAndProject()) this.setInitDropdown();
             } else {
               this._messageService.add({type: 'info', message: 'No hay clientes configurados!', life: 5000});
             }
           }
         },
         error: (err: HttpErrorResponse) => {
-          console.error(err);
           this._messageService.add({type: 'error', message: err.message, life: 5000});
         }
       })
@@ -68,34 +64,44 @@ export class WizardComponent implements OnInit, OnDestroy {
     this._subscription.unsubscribe();
   }
 
-  public selectClient(client: any): void {
-    if (client) {
-      if(client.name !== this.clientName){
-        this.projectID = '';
-      }
-      this.clientName = client.name;
-      const projects = client.projects;
-      this.projects = projects.map((project: Project) => ({label: project.name, value: project}));
+  public isExistClientAndProject = () => sessionStorage.getItem('client') && sessionStorage.getItem('project');
 
-    } else {
-      //this.isDisableGenerated = true;
-      this.isGenerate = false;
-      this.projects = [];
-      this.projectID = '';
-      this.clientID = '';
-    }
-    sessionStorage.setItem('client', JSON.stringify(client));
+  public getClient = () => JSON.parse(sessionStorage.getItem('client') || '');
+
+  public getProject = () => JSON.parse(sessionStorage.getItem('project') || '');
+
+  public setInitDropdown() {
+    this.clientName = this.getClient().name;
+    this.projectName = this.getProject().name;
+    this.clientID = this.getClient().id;
+    this.projects = this.getClient().projects;
+    this.projectID = this.getProject().id;
+    this.isGenerate = true;
   }
 
-  public selectProject(project: any) {
+  public selectClient(client: Client): void {
+    if (client) {
+      this.clientName = client.name;
+      const projects = client.projects;
+      this.projects = projects;
+      sessionStorage.setItem('client', JSON.stringify(client));
+    } else {
+      this.isGenerate = false;
+      this.projects = [];
+      this.clientID = this.projectID = '';
+      sessionStorage.removeItem('client');
+      sessionStorage.removeItem('project');
+    }
+  }
+
+  public selectProject(project: Project) {
     if (project) {
       this.projectName = project.name;
-      //this.isDisableGenerated = false;
+      sessionStorage.setItem('project', JSON.stringify(project));
     } else {
-      //this.isDisableGenerated = true;
       this.isGenerate = false;
+      sessionStorage.removeItem('project');
     }
-    sessionStorage.setItem('project', JSON.stringify(project));
   }
 
 }
