@@ -350,3 +350,49 @@ export class GetDoctypeGroupsByProjectIDQuery extends Query<Response> {
     }
   `;
 }
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetDoctypeByIDQuery extends Query<Response> {
+  document = gql`
+    query getDoctypeByID($id: String!) {
+      getDoctypeByID(id: $id) {
+        error
+        data {
+          id
+          required {
+             id
+             name
+             version
+             is_active
+          }
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetDoctypeQuery extends Query<Response> {
+  document = gql`
+    query getDoctype{
+      getDoctype {
+        error
+        data {
+          id
+          name
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}

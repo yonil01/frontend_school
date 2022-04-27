@@ -10,7 +10,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {ToastService} from "ecapture-ng-ui";
-import {controlDoctypegroups,} from "@app/core/store/actions/doctype.action";
+import {controlDoctypegroup, controlDoctypegroups, editDoctypegroup,} from "@app/core/store/actions/doctype.action";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
 import {Subscription} from "rxjs/internal/Subscription";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -21,6 +21,7 @@ import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {dispositionFinal, formatsDocs, typeSupport} from "@app/core/utils/constants/constant";
 import {IconsMaterial} from '@app/core/constants/icons/material-icons';
+import {ActivatedRoute, Route, Router, RouterLink} from "@angular/router";
 
 interface OptionsDropdown {
   label: string;
@@ -75,6 +76,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store: Store<AppState>,
     private messageService: ToastService,
+    private router: Router
   ) {
 
     this.docTypeGroupForm = this.fb.group({
@@ -138,7 +140,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           this.isBlockPage = false;
         },
         error: (err: HttpErrorResponse) => {
-          console.error(err);
           this.messageService.add({type: 'error', message: 'No se ha podido cargar los grupos documentales! code 103', life: 5000});
           this.isBlockPage = false;
         }
@@ -551,6 +552,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         this.createDoctype(doctype);
       }
     }
+  }
+
+  public redirectAnnexe(docType: DocTypeGroups) {
+    sessionStorage.setItem('doctype', JSON.stringify(docType))
+    this.router.navigate(["/wizard/documents/annexes-doc"])
   }
 
 }

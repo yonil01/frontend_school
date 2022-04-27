@@ -102,7 +102,7 @@ export class AppComponent implements OnDestroy {
     idle.onTimeoutWarning.subscribe((countdown: any) => {
 
       this.idleState = 'Tiempo en desuso de app ' + countdown + ' segundos!';
-      console.log(countdown)
+      // console.log(countdown)
       if(countdown == 1){
         this.logout();
         this.timed = true;

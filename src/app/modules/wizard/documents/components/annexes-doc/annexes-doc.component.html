@@ -46,7 +46,7 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span class="t-body-2 cursor-pointer">Nombre Tipo Documental</span>
+          <span class="t-body-2 cursor-pointer">{{doctypeGroups.name}}</span>
         </div>
       </div>
       <span class="t-h5 text-black">Documentos Anexos</span>
@@ -54,28 +54,28 @@
         <div class="section-1 w-full space-y-10">
           <div class="register-annexes space-y-6">
             <span class="t-subtitle-1 text-mono-70">{{isEdit ? 'Edición':'Registro'}} de Anexos</span>
-            <form class="grid grid-cols-2 gap-4">
+            <form class="grid grid-cols-2 gap-4" [formGroup]="formAnnexe">
               <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
                 <label class="t-caption-2 text-mono-70">Nombre</label>
-                <input class="ec-input" type="text">
-                <small class="text-alert-error">
+                <input class="ec-input" type="text" formControlName="name">
+                <small *ngIf="formAnnexe.get('name')?.errors && formAnnexe.get('name')?.touched" class="text-alert-error">
                   El campo es requerido
                 </small>
               </div>
               <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
                 <label class="t-caption-2 text-mono-70">Versión</label>
-                <input class="ec-input" type="text">
-                <small class="text-alert-error">
+                <input class="ec-input" type="text" formControlName="version">
+                <small *ngIf="formAnnexe.get('version')?.errors && formAnnexe.get('version')?.touched" class="text-alert-error">
                   El campo es requerido
                 </small>
               </div>
               <div class="flex flex-row col-span-2 space-x-2 items-center">
-                <input id="is_active" class="w-4 h-4" type="checkbox">
+                <input id="is_active" class="w-4 h-4" type="checkbox" formControlName="is_active">
                 <label for="is_active" class="t-body-2 text-black flex-1">Activo</label>
               </div>
             </form>
             <div class="flex flex-row gap-4">
-              <button class="b-solid">{{isEdit ? 'Actualizar':'Agregar'}} Anexo</button>
+              <button class="b-solid" (click)="addedAnnexe()">{{isEdit ? 'Actualizar':'Agregar'}} Anexo</button>
               <button *ngIf="isEdit" class="b-outline">Cancelar</button>
             </div>
           </div>
@@ -873,6 +873,7 @@
   </ng-container>
 </app-layout>
 
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
 <!--
 <app-block-page [show]="isBlockPage"></app-block-page>
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
