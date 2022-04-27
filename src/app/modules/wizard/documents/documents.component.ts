@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
+  Customer,
   DocTypeGroups,
   DocTypes,
   DocTypesDisplay,
@@ -49,7 +50,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public format: { label: string, value: string }[] = formatsDocs;
   public disposition_final: { label: string, value: string }[] = dispositionFinal;
   public docTypeGroupForm: FormGroup;
-  private project: Project = {
+  public client: Customer = {};
+  public project: Project = {
     customers_id: "",
     department: "",
     description: "",
@@ -105,6 +107,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.client = JSON.parse(sessionStorage.getItem('client') || '');
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.getDoctypeGroups();
     this.valueCode();
