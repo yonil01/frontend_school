@@ -19,6 +19,9 @@ import {controlBpm} from "@app/core/store/actions/bpm.action";
 import {AppState} from "@app/core/store/app.reducers";
 import {Store} from "@ngrx/store";
 import {HttpErrorResponse} from "@angular/common/http";
+import {IconsMaterial} from "@app/core/constants/icons/material-icons";
+import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
+import {dropStyle} from "@app/core/models/dropdown/dropdown";
 
 interface ProcessCard {
   process: Process;
@@ -35,6 +38,8 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   private _subscription: Subscription = new Subscription();
   private readonly defaultSVG: SafeResourceUrl;
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
+  public icons: any[] = IconsMaterial;
+  public readonly dropStyle: DropdownModel = dropStyle;
   public project: Project;
   public roles: Role[] = [];
   public docTypes: DocTypes[] = [];

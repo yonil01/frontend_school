@@ -5,7 +5,6 @@ import {Activity, Attribute, DocTypes, Entity, ParamActivity, Process, Role, Rul
 // Store
 import {Store} from '@ngrx/store';
 import {AppState} from '@app/core/store/app.reducers';
-import {map, startWith} from 'rxjs/operators';
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 
@@ -219,7 +218,6 @@ export class ActivityFormComponent implements OnInit {
           objFormLy = {
             key: obj.name,
             className: 'row-input',
-            // type: obj.type,
             type: 'input',
             defaultValue: value ? value : null,
             templateOptions: {
@@ -227,26 +225,9 @@ export class ActivityFormComponent implements OnInit {
               label: obj.name,
               placeholder: obj.label,
               required: true,
-              // options: obj.type === 'select' ? list : null,
             },
             rules: {},
-            hooks: {
-              onInit: (field: any) => {
-                /*const obs = field.form.get('attribute').valueChanges.pipe(
-                  startWith(''),
-                  map(() => {
-                    // if (attributeId && this.attributes?.length) {
-                    //   const attribute = this.attributes.find((a) => a.id.toLowerCase() === attributeId.toLowerCase());
-                    //   field.templateOptions.type = attribute.type.toLowerCase();
-                    // } else {
-                    //   field.templateOptions.type = 'text';
-                    // }
-                  }),
-                );
-
-                obs.subscribe();*/
-              },
-            },
+            hooks: {},
           };
         } else {
           objFormLy = {

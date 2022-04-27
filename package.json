@@ -22,6 +22,8 @@
     "@angular/router": "~12.0.3",
     "@apollo/client": "^3.5.7",
     "@auth0/angular-jwt": "^5.0.2",
+    "@ng-idle/core": "^11.1.0",
+    "@ng-idle/keepalive": "^11.0.3",
     "@ngrx/store": "^12.5.1",
     "@ngrx/store-devtools": "^12.5.1",
     "@ngx-translate/core": "^13.0.0",
@@ -45,12 +47,11 @@
     "primeicons": "^5.0.0",
     "primeng": "^12.2.2",
     "rxjs": "~6.6.0",
+    "split.js": "^1.6.5",
     "tslib": "^2.1.0",
     "uuid": "^8.3.2",
-    "zone.js": "~0.11.4",
     "xlsx": "*",
-    "@ng-idle/core": "^11.1.0",
-    "@ng-idle/keepalive": "^11.0.3"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.0.3",

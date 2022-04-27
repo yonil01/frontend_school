@@ -175,11 +175,7 @@
     </div>
   </div>
 
-  <div *ngIf="showView === 'activities'">
-    <div class="text-xl text-black">
-      <span>{{task.name}}</span>
-    </div>
-
+  <div *ngIf="showView === 'activities'" style="height: calc(100vh - 48px)">
     <app-activities [executionInput]="task" [executions]="tasks" (backTasks)="backTasks($event)"></app-activities>
   </div>
 

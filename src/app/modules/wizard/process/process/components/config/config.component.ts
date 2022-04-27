@@ -287,6 +287,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
 
   public deleteExecution(event: boolean): void {
     if (event) {
+      this.showAlert = false;
       this._subscription.add(
         this.processService.deleteExecution(this.executionSelected.id?.toLowerCase() || '').subscribe({
           next: (res) => {

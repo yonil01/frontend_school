@@ -359,6 +359,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             if (docTypeGroupIndex > -1) {
               this.docTypeGroups[docTypeGroupIndex].doctypes = this.docTypeGroupSelected.doctypes;
             }
+            this.doctypeForm.reset();
+            this.docTypesDisplay.push({active: false, docType: doctype});
           }
           this.isBlockPage = false;
         },
@@ -396,6 +398,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             if (index !== -1) {
               this.docTypesDisplay[index].docType = doctype;
             }
+            this.doctypeForm.reset();
           }
           this.isBlockPage = false;
         },
