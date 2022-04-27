@@ -41,7 +41,7 @@ export class WizardComponent implements OnInit, OnDestroy {
             this._messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
             if (res.data) {
-              const data = res.data.filter((c: Client) => c.projects?.length);
+              const data = res.data.filter( (c: Client) => c.projects?.length );
               if (data) this.clients = data;
               if (this.isExistClientAndProject()) this.setInitDropdown();
             } else {
