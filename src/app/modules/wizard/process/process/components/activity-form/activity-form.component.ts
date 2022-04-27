@@ -112,7 +112,7 @@ export class ActivityFormComponent implements OnInit {
             label: obj.name,
             placeholder: obj.label,
             required: true,
-            options: obj.type === 'select' ? list : null,
+            options: obj.type === 'select' ? list : [],
           },
           rules: {},
           hooks: {}
@@ -129,7 +129,7 @@ export class ActivityFormComponent implements OnInit {
             label: obj.name,
             placeholder: obj.label,
             required: true,
-            options: obj.type === 'select' ? list : null,
+            options: obj.type === 'select' ? list : [],
           },
           rules: {},
           hooks: {}
@@ -146,7 +146,7 @@ export class ActivityFormComponent implements OnInit {
             label: obj.name,
             placeholder: obj.label,
             required: true,
-            options: obj.type === 'select' ? list : null,
+            options: obj.type === 'select' ? list : [],
           },
           rules: {},
           hooks: {}
@@ -163,7 +163,7 @@ export class ActivityFormComponent implements OnInit {
             label: obj.name,
             placeholder: obj.label,
             required: true,
-            options: obj.type === 'select' ? list : null,
+            options: obj.type === 'select' ? list : [],
           },
           rules: {},
           hooks: {
@@ -225,6 +225,7 @@ export class ActivityFormComponent implements OnInit {
               label: obj.name,
               placeholder: obj.label,
               required: true,
+              options: []
             },
             rules: {},
             hooks: {},
@@ -239,7 +240,7 @@ export class ActivityFormComponent implements OnInit {
               label: obj.name,
               placeholder: obj.label,
               required: true,
-              options: obj.type === 'select' ? list : null,
+              options: obj.type === 'select' ? [] : [],
             },
             rules: {},
             hooks: {}
@@ -297,9 +298,6 @@ export class ActivityFormComponent implements OnInit {
   public executeHook(field: any, value: any): void {
     if (field.hasOwnProperty('hooks') && field.hooks.hasOwnProperty('getValueChangeByIDItem')) {
       field.hooks.getValueChangeByIDItem(field, value);
-    }
-    if (field.hasOwnProperty('hooks') && field.hooks.hasOwnProperty('onInit')) {
-      field.hooks.onInit(field);
     }
   }
 }
