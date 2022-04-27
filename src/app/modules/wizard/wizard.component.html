@@ -74,12 +74,14 @@
                     <div class="item flex-1 col-span-1">
                       <div class="label-dropdown">Cliente</div>
                       <ec-dropdown [(ngModel)]="clientID" [dropStyle]="dropStyle" [data]="clients"
-                                   (onChangeValue)="selectClient($event)" placeholder="Seleccione un Cliente" optionLabel="label" [showClear]="true"></ec-dropdown>
+                                   (onChangeValue)="selectClient($event)" placeholder="Seleccione un Cliente"
+                                   optionLabel="name" optionValue="id" [onlyValue]="false" [showClear]="true"></ec-dropdown>
                     </div>
                     <div class="item flex-1 col-span-1">
                       <div class="label-dropdown">Proyecto</div>
                       <ec-dropdown [(ngModel)]="projectID" [dropStyle]="dropStyle" [icon]="true" [data]="projects"
-                                   (onChangeValue)="selectProject($event)" placeholder="Seleccione un Proyecto" optionLabel="label" [showClear]="true"></ec-dropdown>
+                                   (onChangeValue)="selectProject($event)" placeholder="Seleccione un Proyecto"
+                                   optionLabel="name" optionValue="id" [onlyValue]="false" [showClear]="true"></ec-dropdown>
                     </div>
                     <div class="col-span-2 md:col-span-1">
                       <button class="bg-brand-1 t-button-2 text-white w-full md:w-auto mt-2"
