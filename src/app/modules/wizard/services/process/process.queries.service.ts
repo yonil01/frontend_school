@@ -119,52 +119,69 @@ export class GetProcessDistinctProcessRootQuery extends Query<Response> {
 export class GetProcessByProjectIDQuery extends Query<Response> {
   document = gql`
     query getProcessByProjectID($project_id: String!) {
-      getProcessByProjectID(project_id: $project_id) {
-        error
-        data {
+  getProcessByProjectID(project_id: $project_id) {
+    error
+    data {
+      id
+      name
+      description
+      class
+      ans
+      project {
+        id
+      }
+      process_root
+      percent_alert
+      process_doctypes {
+        id
+        doctype {
           id
           name
-          description
-          class
-          ans
-          project {
-            id
-          }
-          process_root
-          percent_alert
-          process_doctypes {
-            id
-            doctype {
-              id
-              name
-            }
-          }
-          process_roles {
-            id
-            role {
-              id
-              name
-            }
-          }
-          queues {
-            id
-            name
-          }
-          type_process
-          status
-          document_id_bpmn
-          document_id_svg
-          document_id_ans
-          version
-          is_locked
-          locked_info
-          is_published
         }
-        code
-        type
-        msg
+      }
+      process_roles {
+        id
+        role {
+          id
+          name
+        }
+      }
+      queues {
+        id
+        name
+      }
+      type_process
+      status
+      document_id_bpmn
+      document_id_svg
+      document_id_ans
+      version
+      is_locked
+      locked_info
+      is_published
+    \tsla {
+        id
+        name
+        ans_type_id
+        workflow_id
+        id_user
+        reminders {
+          id
+          name
+          ans_id
+          reminder_type
+          percent_reminder
+          notification_id
+        }
+        created_at
+        updated_at
       }
     }
+    code
+    type
+    msg
+  }
+}
   `;
 }
 
@@ -198,6 +215,24 @@ export class GetProcessByIDQuery extends Query<Response> {
           is_locked
           locked_info
           is_published
+          sla {
+                  id
+                  name
+                  ans_type_id
+                  workflow_id
+                  id_user
+                  reminders {
+                    id
+                    name
+                    ans_id
+                    reminder_type
+                    percent_reminder
+                    notification_id
+                  }
+                  created_at
+                  updated_at
+                }
+
           process_doctypes {
             id
             doctype {
@@ -923,5 +958,212 @@ export class DeleteRuleParamsByRuleIDQuery extends Mutation {
         msg
       }
     }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateAns extends Mutation {
+  document = gql`
+    mutation CreateAns($rq: RequestNewAns!) {
+      createAns(input: $rq) {
+        error
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UpdateAns extends Mutation {
+  document = gql`
+    mutation updateAns($rq: RequestUpdateAns!) {
+      updateAns(input: $rq) {
+        error
+        code
+        data {
+          id
+          name
+        }
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetModuleAns extends Query<Response> {
+  document = gql`
+    query getAns {
+      getAns {
+        data {
+          id
+          name
+          ans_type_id
+          workflow_id
+          id_user
+          created_at
+          updated_at
+        }
+        error
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetAnsById extends Query<Response> {
+  document = gql`
+    query getAnsByID($id: ID!) {
+  getAnsByID(id: $id) {
+    error
+    data {
+      id
+      name
+      ans_type_id
+      workflow_id
+      id_user
+      reminders {
+        id
+        ans_id
+        name
+        percent_reminder
+        reminder_type
+        notification_id
+        queue_id
+        id_user
+        created_at
+        updated_at
+      }
+      created_at
+      updated_at
+    }
+    code
+    type
+    msg
+  }
+}
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+
+export class GetModuleAndReminder extends Query<Response> {
+  document = gql`
+    query getAns {
+      getAns {
+        data {
+          id
+          name
+          ans_type_id
+          workflow_id
+          id_user
+          created_at
+          updated_at
+        }
+        error
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateAndReminder extends Mutation {
+  document = gql`
+    mutation createAnsReminder($rq: RequestNewAnsReminder!) {
+  createAnsReminder(input: $rq) {
+    error
+    code
+    data {
+      id
+      name
+      reminder_type
+      percent_reminder
+    }
+    type
+    msg
+  }
+}
+
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UpdateAndReminder extends Mutation {
+  document = gql`
+    mutation updateAnsReminder($rq: RequestUpdateAnsReminder!) {
+  updateAnsReminder(input: $rq) {
+    error
+    code
+    data {
+      id
+      name
+    }
+    type
+    msg
+  }
+}
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DeleteAnsQuery extends Mutation {
+  document = gql`
+    mutation deleteAns($id: ID!) {
+      deleteAns(id: $id) {
+        error
+        data {
+          id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DeleteReminderQuery extends Mutation {
+  document = gql`
+    mutation deleteAnsReminder($id: ID!) {
+  deleteAnsReminder(id: $id) {
+    error
+    data {
+      id
+    }
+    code
+    type
+    msg
+  }
+}
+
   `;
 }

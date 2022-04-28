@@ -19,10 +19,24 @@ import {Router} from "@angular/router";
 import {controlBpm} from "@app/core/store/actions/bpm.action";
 import {AppState} from "@app/core/store/app.reducers";
 import {Store} from "@ngrx/store";
+import {TableModel} from "@app/ui/components/table/model/table.model";
+import {Ans, Reminder} from "@app/core/models/config/ans";
+import {NotificationService} from "@app/modules/administration/services/notification/notification.service";
+import {NotificationModel} from "@app/core/models/config/notification";
 
 interface ProcessCard {
   process: Process;
   diagramSVG: any;
+}
+
+interface ListAns {
+  status: boolean,
+  value: Ans
+}
+
+interface ListReminders {
+  status: boolean,
+  value: Reminder
 }
 
 @Component({
@@ -31,7 +45,6 @@ interface ProcessCard {
   styleUrls: ['./process-list.component.scss']
 })
 export class ProcessListComponent implements OnInit, OnDestroy {
-
   private _subscription: Subscription = new Subscription();
   private readonly defaultSVG: SafeResourceUrl;
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
@@ -50,12 +63,25 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   public doctypesAvailable: DocTypes[] = [];
   public createOrUpdate: boolean = false;
   public positionStep: number = 1;
+  public AnsForm: FormGroup;
+  public ReminderForm: FormGroup;
   public currentProcess: ProcessCard = {
     diagramSVG: undefined,
     process: {}
   };
-
+  public statusEditAns: boolean = false;
   public showAlert: boolean = false;
+  public idAnsSelect: string = '';
+  public nameAnsSelect: string = '';
+  public idReminderSelect: string = '';
+  public statusEditReminder: boolean = false;
+  public activeOneAns: boolean = false;
+
+  public showReminder: boolean;
+  public dataListAns: ListAns[] = [];
+  public notifications: NotificationModel[] = [];
+
+  public dataListReminders: ListReminders[] = [];
 
   constructor(
     private _sanitizer: DomSanitizer,
@@ -68,6 +94,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
     private _filterService: FilterService,
     private _router: Router,
     private _store: Store<AppState>,
+    private _notificationService: NotificationService
   ) {
     this.processForm = _fb.group({
       name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
@@ -123,6 +150,17 @@ export class ProcessListComponent implements OnInit, OnDestroy {
       )
     );
     this.loadProcesses();
+    this.AnsForm = this._fb.group({
+      name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      type: ['', Validators.required],
+    });
+    this.ReminderForm = this._fb.group({
+      name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      reminder_type: ['', Validators.required],
+      percent_reminder: ['', Validators.required],
+      notification_id: ['', Validators.required],
+    })
+    this.showReminder = false;
   }
 
   ngOnInit(): void {
@@ -206,6 +244,74 @@ export class ProcessListComponent implements OnInit, OnDestroy {
         life: 5000
       });
     }
+  }
+
+  public onSubmitSecondStepAns():void {
+    if (this.doctypesSelected.length > 0) {
+      this.loadAns();
+      this.getNotifications();
+      this.positionStep++;
+    } else {
+      this._messageService.add({
+        message: 'Debe de seleccionar al menos un tipo documental para poder seguir!',
+        type: 'warning',
+        life: 5000
+      });
+    }
+  }
+
+  public loadAns(): void {
+    this.isBlockPage = true;
+    this.dataListAns = [];
+    this._subscription.add(
+      this._processService.getProcessByID(this.idProcess).subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.isBlockPage = false;
+            this._messageService.add({message: res.msg, type: 'error', life: 5000});
+          } else {
+            if (res.data) {
+              if (res.data.sla.length) {
+                  res.data.sla.forEach((item: Ans)=>{
+                    this.dataListAns.push({status: false, value: item})
+                  })
+              }
+              this.isBlockPage = false;
+            } else {
+              this._messageService.add({
+                message: 'No hay procesos creados para este proyecto',
+                type: 'error',
+                life: 5000
+              });
+            }
+          }
+          this.isBlockPage = false;
+        },
+        error: (err: Error) => {
+          this._messageService.add({
+            message: 'Error Cuando se trato de traer los grupos documentales',
+            type: 'error',
+            life: 5000
+          });
+          this.isBlockPage = false;
+          console.error(err);
+        }
+      })
+    );
+
+    /*if (this.showReminder) {
+      const dataTemp = this.processes.filter((data:ProcessCard)=>data.process.id===this.idProcess);
+      dataTemp[0].process.sla?.forEach((data: Ans, index: number)=> {
+        this.dataListAns[index].value = data;
+      })
+      this.changeStep(1);
+    } else {
+      this.dataListAns = [];
+      const dataTemp = this.processes.filter((data:ProcessCard)=>data.process.id===this.idProcess);
+      dataTemp[0].process.sla?.forEach((data: Ans)=> {
+        this.dataListAns.push({status: false, value: data});
+      })
+    }*/
   }
 
   public onSubmitThirdStep(): void {
@@ -612,6 +718,356 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   public showProcess(process: Process): void {
     this._store.dispatch(controlBpm({ bpm: process }));
     this._router.navigateByUrl('wizard/bpmn/show');
+  }
+
+  public saveAns():void {
+    if (this.AnsForm.valid) {
+      this.isBlockPage = true;
+      const newAns: Ans = {
+        id: this.statusEditAns ? this.idAnsSelect : uuidv4().toLowerCase(),
+        name: this.AnsForm.get('name')?.value,
+        ans_type_id: Number(this.AnsForm.get('type')?.value),
+        workflow_id: String(this.currentProcess.process.id)
+      }
+      if (this.statusEditAns) {
+        this._subscription.add(
+          this._processService.updateAns(newAns).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.isBlockPage = false;
+                this._messageService.add({message: res.msg, type: 'error', life: 5000});
+              } else {
+                this.isBlockPage = false;
+                this._messageService.add({message: res.msg, type: 'success', life: 5000});
+                this.loadAns();
+                this.AnsForm.reset();
+                this.statusEditAns = false;
+              }
+            },
+            error: (err: Error) => {
+              this.isBlockPage = false;
+              console.error(err.message);
+              this._messageService.add({
+                message: 'Ocurrio un error cuando se trato de agregar los ans!',
+                type: 'error',
+                life: 5000
+              });
+            }
+          })
+        );
+      } else {
+        this._subscription.add(
+          this._processService.createAns(newAns).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.isBlockPage = false;
+                this._messageService.add({message: res.msg, type: 'error', life: 5000});
+              } else {
+                console.log(res)
+                debugger
+                this.isBlockPage = false;
+                this._messageService.add({message: res.msg, type: 'success', life: 5000});
+                this.loadAns();
+                this.AnsForm.reset();
+              }
+            },
+            error: (err: Error) => {
+              this.isBlockPage = false;
+              console.error(err.message);
+              this._messageService.add({
+                message: 'Ocurrio un error cuando se trato de agregar los ans!',
+                type: 'error',
+                life: 5000
+              });
+            }
+          })
+        );
+      }
+    }
+  }
+
+
+  public changeStatus(index: number):void {
+    this.dataListAns[index].status = !this.dataListAns[index].status;
+    if (this.searchReminderActive()) this.activeOneAns = true; else this.activeOneAns = false;
+  }
+
+  public changeStatusReminder(index: number): void {
+    this.dataListReminders[index].status = !this.dataListReminders[index].status;
+  }
+
+  public changeStep(index: number):void {
+    if (this.searchReminderActive() && index) {
+      this.dataListReminders = [];
+      const dataAnsActive = Object.assign( {}, ...this.dataListAns.filter((data:ListAns)=>data.status));
+      this.idAnsSelect = dataAnsActive.value.id;
+      this.nameAnsSelect = dataAnsActive.value.name;
+      if (dataAnsActive.value.reminders) {
+        dataAnsActive.value.reminders?.forEach((data:Reminder)=> {
+          const notify = Object.assign({},...this.notifications.filter((item:NotificationModel)=>item.id===data.notification_id));
+          const reminderTemp: Reminder = {
+            id: data.id,
+            name: data.name,
+            reminder_type: data.reminder_type,
+            percent_reminder: data.percent_reminder,
+            notification_id: notify.name,
+            ans_id: data.ans_id,
+            id_user: data.id_user,
+            queue_id: data.queue_id,
+          }
+          this.dataListReminders.push({status: false, value: reminderTemp});
+        });
+      }
+      this.showReminder = true;
+    } else {
+      this.loadAns();
+      this.showReminder = false;
+    }
+  }
+
+  public searchReminderActive():boolean {
+    if (this.dataListAns.length) {
+      const countActive = this.dataListAns.filter((data:ListAns)=>data.status);
+      return countActive.length === 1;
+    }
+    return false;
+  }
+
+
+  public addReminder():void {
+    if (this.ReminderForm.valid) {
+      this.isBlockPage = true;
+      const dataAns = this.dataListAns.filter((data:ListAns)=>{
+        return data.status
+      })
+      const NewReminder: Reminder = {
+        id: this.statusEditReminder ? this.idReminderSelect :uuidv4().toLowerCase(),
+        name: this.ReminderForm.get('name')?.value,
+        percent_reminder: Number(this.ReminderForm.get('percent_reminder')?.value),
+        ans_id: dataAns[0].value.id,
+        reminder_type: Number(this.ReminderForm.get('reminder_type')?.value),
+        notification_id: this.ReminderForm.get('notification_id')?.value,
+        queue_id: "4e09c5d5-1db1-4de2-8bc7-1b69d85ba775",
+        id_user: "4e09c5d5-1db1-4de2-8bc7-1b69d85ba775"
+      }
+      if (this.statusEditReminder) {
+        this._subscription.add(
+          this._processService.updateAndReminder(NewReminder).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this._messageService.add({message: res.msg, type: 'error', life: 5000});
+                this.isBlockPage = false;
+              } else {
+                this.isBlockPage = false;
+                this.getAnsByiD(this.idAnsSelect);
+                this._messageService.add({message: res.msg, type: 'success', life: 5000});
+                this.ReminderForm.reset();
+
+              }
+            },
+            error: (err: Error) => {
+              this.isBlockPage = false;
+              console.error(err.message);
+              this._messageService.add({
+                message: 'Ocurrio un error cuando se trato de crear el recordatorio!',
+                type: 'error',
+                life: 5000
+              });
+              this.isBlockPage = false;
+            }
+          })
+        );
+      } else {
+        this._subscription.add(
+          this._processService.createAndReminder(NewReminder).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this._messageService.add({message: res.msg, type: 'error', life: 5000});
+                this.isBlockPage = false;
+              } else {
+                this.isBlockPage = false;
+                this.getAnsByiD(this.idAnsSelect);
+                this._messageService.add({message: res.msg, type: 'success', life: 5000});
+                this.ReminderForm.reset();
+
+              }
+            },
+            error: (err: Error) => {
+              this.isBlockPage = false;
+              console.error(err.message);
+              this._messageService.add({
+                message: 'Ocurrio un error cuando se trato de crear el recordatorio!',
+                type: 'error',
+                life: 5000
+              });
+              this.isBlockPage = false;
+            }
+          })
+        );
+      }
+    }
+  }
+
+  public deleteAns():void {
+    this.isBlockPage = true;
+    this.dataListAns.forEach((data: ListAns)=>{
+      if (data.status) {
+        this._processService.deleteAns(data.value.id?.toLowerCase() || '').subscribe({
+          next: (res) => {
+            if (res.error) {
+              this._messageService.add({message: res.msg, type: 'error', life: 5000});
+            } else {
+              this._messageService.add({
+                message: 'Se elimino ANS seleccionado',
+                type: 'success',
+                life: 5000
+              });
+            }
+            this.isBlockPage = false;
+            this.loadAns();
+          },
+          error: (err: Error) => {
+            this.isBlockPage = false;
+            this._messageService.add({
+              message: 'Ocurrio un error cuando se trato de eliminar los tipos documentales el proceso!',
+              type: 'error',
+              life: 5000
+            });
+            console.error(err.message);
+          }
+        })
+      }
+    })
+  }
+
+  public getNotifications(): void {
+    this._subscription.add(
+      this._notificationService.getNotifications().subscribe({
+        next: (res) => {
+          if (res.error) {
+            this._messageService.add({
+              type: 'error',
+              message: res.msg,
+              life: 5000,
+            })
+            this.isBlockPage = false;
+          } else {
+            if (res.data.length) {
+              this.notifications = res.data
+            }
+            this.isBlockPage = false;
+          }
+        },
+        error: (err: Error) => {
+          this._messageService.add({
+            type: 'error',
+            message: 'Error contactese con el administrador!',
+            life: 5000,
+          })
+        }
+      })
+    );
+  }
+
+  public editAns(data: Ans): void {
+    this.AnsForm.get('name')?.setValue(data.name);
+    this.AnsForm.get('type')?.setValue(data.ans_type_id);
+    this.idAnsSelect = data.id;
+    this.statusEditAns = true;
+  }
+
+  public deleteReminder(): void {
+    this.isBlockPage = true;
+    this.dataListReminders.forEach((data: ListReminders)=>{
+      if (data.status) {
+        this._processService.deleteReminder(data.value.id?.toLowerCase() || '').subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.isBlockPage = true;
+              this._messageService.add({message: res.msg, type: 'error', life: 5000});
+            } else {
+              this.getAnsByiD(this.idAnsSelect);
+              this._messageService.add({
+                message: 'Se elimino la relacion del tipo documental',
+                type: 'success',
+                life: 5000
+              });
+            }
+            this.isBlockPage = false;
+          },
+          error: (err: Error) => {
+            this.isBlockPage = false;
+            this._messageService.add({
+              message: 'Ocurrio un error cuando se trato de eliminar los tipos documentales el proceso!',
+              type: 'error',
+              life: 5000
+            });
+            console.error(err.message);
+          }
+        })
+      }
+    })
+  }
+
+  public editReminder(data: Reminder): void {
+    this.idReminderSelect = data.id;
+    this.ReminderForm.get('name')?.setValue(data.name);
+    this.ReminderForm.get('reminder_type')?.setValue(data.reminder_type);
+    this.ReminderForm.get('percent_reminder')?.setValue(data.percent_reminder);
+    this.ReminderForm.get('notification_id')?.setValue(data.notification_id);
+    this.statusEditReminder = true;
+  }
+
+  public getAnsByiD(Id: string): void {
+    this.isBlockPage = true;
+    this._subscription.add(
+      this._processService.getAndsByID(Id).subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.isBlockPage = false;
+            this._messageService.add({message: res.msg, type: 'error', life: 5000});
+          } else {
+            if (res.data) {
+              if (res.data.reminders.length) {
+                this.dataListReminders = [];
+                res.data.reminders.forEach((data:Reminder)=> {
+                  const notify = Object.assign({},...this.notifications.filter((item:NotificationModel)=>item.id===data.notification_id));
+                  const reminderTemp: Reminder = {
+                    id: data.id,
+                    name: data.name,
+                    reminder_type: data.reminder_type,
+                    percent_reminder: data.percent_reminder,
+                    notification_id: notify.name,
+                    ans_id: data.ans_id,
+                    id_user: data.id_user,
+                    queue_id: data.queue_id,
+                  }
+                  this.dataListReminders.push({status: false, value: reminderTemp});
+                })
+                this.isBlockPage = false;
+              }
+
+            } else {
+              this.isBlockPage = false;
+              this._messageService.add({
+                message: 'No hay recordatorios para este ans',
+                type: 'error',
+                life: 5000
+              });
+            }
+          }
+        },
+        error: (err: Error) => {
+          this._messageService.add({
+            message: 'Error Cuando se trato de traer los grupos documentales',
+            type: 'error',
+            life: 5000
+          });
+          this.isBlockPage = false;
+          console.error(err);
+        }
+      })
+    );
   }
 
 }

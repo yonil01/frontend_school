@@ -1,0 +1,46 @@
+<div class="space-y-8 py-4">
+  <div >
+    <div class="text-2xl text-black">{{isEdit?'Editar':'Crear'}} Notificaión</div>
+  </div>
+  <div class="grid grid-cols-2 gap-4" [formGroup]="formNotification">
+    <div class="flex flex-col ">
+      <label>Nombre</label>
+      <input class="input-style" type="text" formControlName="name">
+    </div>
+    <div class="flex flex-col">
+      <label>Remitente</label>
+      <input class="input-style" type="text" formControlName="email_from">
+    </div>
+    <div class="flex flex-col">
+      <label>Destino</label>
+      <input class="input-style" type="text" formControlName="email_to">
+    </div>
+    <div class="flex flex-col ">
+      <label>Email</label>
+      <input class="input-style" type="text" formControlName="subject_email">
+    </div>
+    <div class="flex flex-col ">
+      <label>Template</label>
+      <input class="input-style" type="text" formControlName="template">
+    </div>
+    <div class="flex flex-col ">
+      <label>Url Pop</label>
+      <input class="input-style" type="text" formControlName="url_pop">
+    </div>
+    <div class="w-full grid">
+      <label class="t-caption-2 text-mono-70 dark:text-mono-30">Timer</label>
+      <select class="ec-input" formControlName="timer_id">
+        <option *ngFor="let timer of timers" [ngValue]="timer.id">{{timer.name}}</option>
+      </select>
+    </div>
+
+  </div>
+  <div class="w-1/4">
+    <app-button (click)="saveForm()"
+                type="button" label="Guardar"
+                brColor="bg-brand-1"
+                bgColor="bg-brand-1"
+                txtColor="text-white" class="h-12 w-full whitespace-nowrap"></app-button>
+  </div>
+</div>
+<app-block-page [show]="isBlockPage"></app-block-page>

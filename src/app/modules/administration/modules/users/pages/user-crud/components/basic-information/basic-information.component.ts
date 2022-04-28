@@ -66,7 +66,7 @@ export class BasicInformationComponent implements OnInit {
     this.typeExecution = 0;
 
     this.formBasicInfo = this._formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9_]+$')]],
+      username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       name: ['', [Validators.required, Validators.maxLength(255), Validators.pattern('[a-zA-Z ]{2,255}')]],
       last_name: ['', [Validators.required, Validators.maxLength(255), Validators.pattern('[a-zA-Z ]{2,255}')]],
       email_notifications: ['', [
@@ -122,6 +122,8 @@ export class BasicInformationComponent implements OnInit {
   }
 
   createUser(): void {
+    console.log(this.formBasicInfo)
+    debugger
     if (this.formBasicInfo.valid) {
       const userPersistence: User = {};
       userPersistence.id = uuidv4().toLowerCase();

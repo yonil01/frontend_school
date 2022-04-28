@@ -14,7 +14,7 @@ import {FilterService} from "@app/ui/services/filter.service";
 import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-dialog.component";
 import {SideTaskComponent} from './components/side-task/side-task.component';
 import {PaginatorComponent} from './components/paginator/paginator.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EcTooltipDirective} from './directives/ec-tooltip.directive';
 import {TableComponent} from "@app/ui/components/table/table.component";
 import {IconDirective} from "@app/ui/directivas/icon.directive";
@@ -24,6 +24,14 @@ import {StepComponent} from "@app/ui/components/step/step.component";
 import {PaginationComponent} from "@app/ui/components/table/components/pagination/pagination.component";
 import {NgCircleProgressModule} from "ng-circle-progress";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
+import { ListSelectComponent } from './components/list-select/list-select.component';
+import {DropdownModule} from "ecapture-ng-ui";
+import {TranslateModule} from "@ngx-translate/core";
+import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -55,23 +63,26 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
     ConfirmDialogComponent,
     SideTaskComponent,
     PaginatorComponent,
-    EcTooltipDirective
-  ],
-  exports: [
-    FooterComponent,
-    BlockPageComponent,
-    LayoutComponent,
-    PickTaskComponent,
-    ConfirmDialogComponent,
-    SideTaskComponent,
-    PaginatorComponent,
     EcTooltipDirective,
-    TableComponent,
-    ButtonComponent,
-    ButtonComponent,
-    IconDirective,
-    StepComponent
+    ListSelectComponent
   ],
+    exports: [
+        FooterComponent,
+        BlockPageComponent,
+        LayoutComponent,
+        PickTaskComponent,
+        ConfirmDialogComponent,
+        SideTaskComponent,
+        PaginatorComponent,
+        EcTooltipDirective,
+        TableComponent,
+        ButtonComponent,
+        ButtonComponent,
+        IconDirective,
+        StepComponent,
+        ListSelectComponent,
+
+    ],
   imports: [
     CommonModule,
     DragDropModule,
@@ -86,6 +97,14 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
       innerStrokeColor: "#C7E596",
       animationDuration: 300,
     }),
+    DropdownModule,
+    TranslateModule,
+    NgxMaterialTimepickerModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
   ],
   providers: [MenuService, LocalStorageService, FilterService]
 })

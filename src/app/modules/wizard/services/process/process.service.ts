@@ -14,6 +14,13 @@ import {
 import {Observable} from 'rxjs';
 import * as queries from '../process/process.queries.service';
 import {Rule, Param} from '@app/core/models';
+import {Ans, Reminder} from "@app/core/models/config/ans";
+import {
+  CreateAndReminder,
+  CreateAns, DeleteAnsQuery, DeleteReminderQuery, GetAnsById,
+  GetModuleAndReminder,
+  GetModuleAns, UpdateAndReminder, UpdateAns,
+} from "../process/process.queries.service";
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +66,16 @@ export class ProcessService {
     private deleteExecutionRuleQuery: queries.DeleteExecutionRuleQuery,
     private deleteRuleParamsByRuleIDQuery: queries.DeleteRuleParamsByRuleIDQuery,
     private updateQueueCommentQuery: queries.UpdateQueueCommentQuery,
+
+    private newAns: CreateAns,
+    private getModuleAns: GetModuleAns,
+    private getModuleReminder: GetModuleAndReminder,
+    private newAndReminder: CreateAndReminder,
+    private updateModuleAndReminder: UpdateAndReminder,
+    private deleteModuleAns: DeleteAnsQuery,
+    private getAnsModuleById: GetAnsById,
+    private updateModuleAns: UpdateAns,
+    private daleteModuleReminder: DeleteReminderQuery
   ) {
   }
 
@@ -407,5 +424,68 @@ export class ProcessService {
       };
       xhr.send();
     });
+  }
+
+  createAns(Ans: Ans): Observable<Response> {
+    return this.newAns
+      .mutate({
+        rq: {data: Ans},
+      })
+      .pipe(map(({data}: any) => data.createAns));
+  }
+
+  updateAns(Ans: Ans): Observable<Response> {
+    return this.updateModuleAns
+      .mutate({
+        rq: {data: Ans},
+      })
+      .pipe(map(({data}: any) => data.updateAns));
+  }
+
+  getAns(): Observable<Response> {
+    return this.getModuleAns.watch().valueChanges.pipe(map(({data}: any) => data.getAns));
+  }
+  getReminders(): Observable<Response> {
+    return this.getModuleReminder.watch().valueChanges.pipe(map(({data}: any) => data.getModules));
+  }
+
+  createAndReminder(reminder: Reminder): Observable<Response> {
+    return this.newAndReminder
+      .mutate({
+        rq: {data: reminder},
+      })
+      .pipe(map(({data}: any) => data.createAnsReminder));
+  }
+
+  updateAndReminder(reminder: Reminder): Observable<Response> {
+    return this.updateModuleAndReminder
+      .mutate({
+        rq: {data: reminder},
+      })
+      .pipe(map(({data}: any) => data.updateAnsReminder));
+  }
+
+  deleteAns(id: string): Observable<Response> {
+    return this.deleteModuleAns
+      .mutate({
+        id: id,
+      })
+      .pipe(map(({data}: any) => data.deleteAns));
+  }
+
+  public getAndsByID(id: string): Observable<Response> {
+    return this.getAnsModuleById.watch({id}).valueChanges.pipe(first(), map(({data}: any) => data.getAnsByID));
+  }
+
+  deleteReminder(id: string): Observable<Response> {
+    return this.daleteModuleReminder
+      .mutate({
+        id: id,
+      })
+      .pipe(map(({data}: any) => {
+        console.log(data)
+        debugger
+        return data.deleteAnsReminder
+      }));
   }
 }

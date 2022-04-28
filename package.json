@@ -22,6 +22,8 @@
     "@angular/router": "~12.0.3",
     "@apollo/client": "^3.5.7",
     "@auth0/angular-jwt": "^5.0.2",
+    "@ng-idle/core": "^11.1.0",
+    "@ng-idle/keepalive": "^11.0.3",
     "@ngrx/store": "^13.0.2",
     "@ngrx/store-devtools": "^13.0.2",
     "@ngx-formly/core": "^5.11.2",
@@ -38,6 +40,9 @@
     "diagram-js": "^8.2.0",
     "ecapture-ng-ui": "^0.0.76",
     "graphql": "^15.8.0",
+    "ng-circle-progress": "^1.6.0",
+    "ng2-search-filter": "^0.5.1",
+    "ngx-material-timepicker": "^5.5.3",
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-quicklink": "^0.2.7",
     "ngx-table-pagination": "^1.1.5",
@@ -48,12 +53,8 @@
     "tailwindcss": "^2.1.4",
     "tslib": "^2.1.0",
     "uuid": "^8.3.2",
-    "zone.js": "~0.11.4",
-    "ng-circle-progress": "^1.6.0",
-    "ng2-search-filter": "^0.5.1",
     "xlsx": "*",
-    "@ng-idle/core": "^11.1.0",
-    "@ng-idle/keepalive": "^11.0.3"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.0.3",
