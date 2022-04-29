@@ -53,7 +53,7 @@
       <div class="flex flex-row gap-6">
         <div class="section-1 w-full space-y-10">
           <div class="register-annexes space-y-6">
-            <span class="t-subtitle-1 text-mono-70">{{isEdit ? 'Edición' : 'Registro'}} de Anexos</span>
+            <span class="t-subtitle-1 text-mono-70">{{isEditAnnexe ? 'Edición' : 'Registro'}} de Anexos</span>
             <form class="grid grid-cols-2 gap-4" [formGroup]="formAnnexe">
               <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
                 <label class="t-caption-2 text-mono-70">Nombre</label>
@@ -65,7 +65,7 @@
               </div>
               <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
                 <label class="t-caption-2 text-mono-70">Versión</label>
-                <input class="ec-input" type="text" formControlName="version">
+                <input class="ec-input" type="text" formControlName="version" (keypress)="onlyNumbers($event)">
                 <small *ngIf="formAnnexe.get('version')?.errors && formAnnexe.get('version')?.touched"
                        class="text-alert-error">
                   El campo es requerido
@@ -77,14 +77,17 @@
               </div>
             </form>
             <div class="flex flex-row gap-4">
-              <button class="b-solid" (click)="addedAnnexe()">{{isEdit ? 'Actualizar' : 'Agregar'}} Anexo</button>
-              <button *ngIf="isEdit" class="b-outline">Cancelar</button>
+              <button class="b-solid"
+                      (click)="isEditAnnexe ? updateAnnexe() : createdAnnexe()">{{isEditAnnexe ? 'Actualizar' : 'Agregar'}}
+                Anexo
+              </button>
+              <button *ngIf="isEditAnnexe" class="b-outline" (click)="cancelEdition()">Cancelar</button>
             </div>
           </div>
           <div class="list-annexes space-y-2">
             <span class="t-subtitle-1 text-mono-70">Lista de Anexos</span>
             <div class="table w-full overflow-hidden border border-mono-30 rounded bg-white-p drop-shadow-lg p-4 gap-4">
-              <div *ngIf="false" class="notify-null flex flex-col space-y-2 items-center p-12">
+              <div *ngIf="!annexesAll.length" class="notify-null flex flex-col space-y-2 items-center p-12">
                 <div class="text-brand-2">
                   <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -94,7 +97,7 @@
                 <span
                   class="t-body-1 text-mono-70">No hay registros actualmente.</span>
               </div>
-              <div class="table-h w-full">
+              <div *ngIf="annexesAll.length" class="table-h w-full">
                 <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
                   <div class="p-2 w-12">N°</div>
                   <div class="p-2 flex-1">Nombre</div>
@@ -103,8 +106,8 @@
                   <div class="p-2 w-32">Opciones</div>
                 </div>
                 <div class="table-body t-body-1 text-mono-70">
-                  <div class="item w-full flex flex-row {{annexeDisplay === position ? 'bg-mono-10':''}}"
-                       *ngFor="let item of annexesDocForPag; let position = index" (click)="annexeDisplay=position">
+                  <div class="item w-full flex flex-row {{annexeDisplayIndex === position ? 'bg-mono-10':''}}"
+                       *ngFor="let item of annexesDocForPag; let position = index" (click)="annexeDisplayIndex=position">
                     <div class="flex items-center p-2 w-12">{{annexesAll.indexOf(item) + 1}}</div>
                     <div class="flex items-center p-2 flex-1 break-all">{{item.name}}</div>
                     <div class="flex items-center p-2 w-16 break-all">{{item.version}}</div>
@@ -112,7 +115,7 @@
                     <div class="flex items-center p-2 w-32">
                       <div class="w-full flex flex-row">
                         <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
-                                tooltip="Editar Anexo">
+                                tooltip="Editar Anexo" (click)="loadDataForEdition(item); annexeSelected=item;">
                           <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -122,7 +125,7 @@
                           </div>
                         </button>
                         <button class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10" ecTooltip
-                                tooltip="Configurar Anexo">
+                                tooltip="Configurar Anexo" (click)="loadConfiguration(); annexeSelected=item">
                           <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -152,7 +155,7 @@
         </div>
         <div class="border-l border-mono-30"></div>
         <div class="section-2 w-full">
-          <div *ngIf="!annexeDisplay" class="notify-null flex flex-col space-y-2 items-center p-12">
+          <div *ngIf="!doctypeConfiguration.length" class="notify-null flex flex-col space-y-2 items-center p-12">
             <div class="text-brand-2">
               <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -162,11 +165,11 @@
             <span
               class="t-body-1 text-mono-70">Seleccione la opción de configuración de un anexo.</span>
           </div>
-          <div *ngIf="annexeDisplay" class="setting-annex w-full drop-shadow-lg bg-white">
+          <div *ngIf="doctypeConfiguration.length" class="setting-annex w-full drop-shadow-lg bg-white">
             <div class="tabs w-full flex flex-row">
               <button (click)="isTab1=true"
                       class="flex-1 h-10 t-subtitle-1 {{isTab1 ? 'text-black bg-white-p border border-b-0 border-mono-30 rounded-t' : 'text-mono-30 border border-b-0 border-white'}}">
-                Configuración Anexo
+                Configuración Anexo {{annexeSelected.name}}
               </button>
               <button (click)="isTab1=false"
                       class="flex-1 h-10 t-subtitle-1 {{isTab1 ? 'text-mono-30 border border-b-0 border-white' : 'text-black bg-white-p border border-b-0 border-mono-30 rounded-t'}}">
@@ -200,7 +203,8 @@
                 </div>
               </div>
               <div class="doctypes w-full space-y-4 overflow-y-auto" style="max-height: 400px">
-                <div *ngFor="let docTYPE of doctypeAll" class="doctype flex flex-row items-center justify-between gap-4">
+                <div *ngFor="let docTYPE of doctypeConfiguration"
+                     class="doctype flex flex-row items-center justify-between gap-4">
                   <div class="left flex flex-row items-center space-x-2">
                     <div class="text-mono-70">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -211,7 +215,7 @@
                     <span class="t-body-1 text-black break-all">{{docTYPE.name}}</span>
                   </div>
                   <div class="right flex flex-row items-center space-x-1">
-                    <button class="text-alert-info rounded px-2 h-8 hover:bg-mono-10">
+                    <button *ngIf="docTYPE.is_required" class="text-alert-info rounded px-2 h-8 hover:bg-mono-10">
                       <span class="t-caption-2 text-mono-70">Requerido</span>
                       <div>
                         <svg class="toggle-on text-alert-warning" width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -236,7 +240,7 @@
                       </div>
                     </button>
                     <div>
-                      <input class="w-4 h-4" type="checkbox">
+                      <input class="w-4 h-4" type="checkbox" [(ngModel)]="docTYPE.is_required" (click)="updateAnnexeRequiredDoctype(doctype)">
                     </div>
                   </div>
                 </div>
@@ -517,14 +521,14 @@
 <app-confirm-dialog [show]="showConfirm" type="warning"
                     title="¿Esta seguro de querer borrar el Anexo?"
                     body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
-                    (onEvent)="confirmDeleteAnnexe($event)"
+                    (onEvent)="confirmDeleteAnnexe($event); showConfirm=false"
 ></app-confirm-dialog>
-<app-confirm-dialog [show]="showConfirm" type="warning"
+<app-confirm-dialog [show]="false" type="warning"
                     title="¿Esta seguro de querer borrar el Anexo?"
                     body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
                     (onEvent)="confirmDeleteAnnexe($event)"
 ></app-confirm-dialog>
-<app-confirm-dialog [show]="showConfirm" type="warning"
+<app-confirm-dialog [show]="false" type="warning"
                     title="¿Esta seguro de querer borrar el Anexo?"
                     body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
                     (onEvent)="confirmDeleteAnnexe($event)"

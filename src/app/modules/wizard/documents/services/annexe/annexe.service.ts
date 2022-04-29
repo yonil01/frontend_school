@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Entity, Response} from "@app/core/models";
+import {Entity, Response, ResponseAnnexe} from "@app/core/models";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {
@@ -33,7 +33,7 @@ export class AnnexeService {
               private deleteRequiredAttributesMutation: DeleteRequiredAttributes) {
   }
 
-  public createRequired(annexe: AnnexeRequestModel): Observable<Response> {
+  public createRequired(annexe: AnnexeRequestModel): Observable<ResponseAnnexe> {
     return this.createRequiredMutation
       .mutate({
         requestRequired: {data: annexe},
@@ -41,7 +41,7 @@ export class AnnexeService {
       .pipe(map(({data}: any) => data.createRequired));
   }
 
-  public updateRequired(annexe: AnnexeRequestModel): Observable<Response> {
+  public updateRequired(annexe: AnnexeRequestModel): Observable<ResponseAnnexe> {
     return this.updateRequiredMutation
       .mutate({
         requestUpdateRequired: {data: annexe},

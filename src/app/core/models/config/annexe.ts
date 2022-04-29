@@ -2,7 +2,7 @@ export interface AnnexeRequestModel {
   id?: string,
   name?: string,
   doctype_id?: string,
-  version?: boolean,
+  version?: number,
   is_active?: boolean
 }
 
@@ -33,6 +33,7 @@ export interface Required {
   id: string,
   name?: string,
   required_doctypes?: RequiredDoctypes[]
+  RequiredAttributeCommon: RequiredAttributeCommon[]
   version?: number,
   is_active?: boolean
 }
@@ -61,4 +62,10 @@ export interface ComparisonSymbol {
 export interface Preposition {
   Id: string,
   name: string
+}
+
+export interface RequiredAttributeCommon {
+  id?: string,
+  required_id?: string,
+  attribute_id?: string
 }

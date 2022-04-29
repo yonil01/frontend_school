@@ -12,6 +12,14 @@ export class CreateRequiredMutation extends Mutation {
         error
         data {
           id
+          name
+          version
+          is_active
+          required_doctypes {
+            id
+            doctype_related_id
+            is_required
+          }
         }
         code
         type
@@ -31,6 +39,14 @@ export class UpdateRequiredMutation extends Mutation {
         error
         data {
           id
+          name
+          version
+          is_active
+          required_doctypes {
+            id
+            doctype_related_id
+            is_required
+          }
         }
         code
         type
