@@ -107,7 +107,8 @@
                 </div>
                 <div class="table-body t-body-1 text-mono-70">
                   <div class="item w-full flex flex-row {{annexeDisplayIndex === position ? 'bg-mono-10':''}}"
-                       *ngFor="let item of annexesDocForPag; let position = index" (click)="annexeDisplayIndex=position">
+                       *ngFor="let item of annexesDocForPag; let position = index"
+                       (click)="annexeDisplayIndex=position">
                     <div class="flex items-center p-2 w-12">{{annexesAll.indexOf(item) + 1}}</div>
                     <div class="flex items-center p-2 flex-1 break-all">{{item.name}}</div>
                     <div class="flex items-center p-2 w-16 break-all">{{item.version}}</div>
@@ -230,7 +231,8 @@
                         </svg>
                       </div>
                     </button>
-                    <button *ngIf="docTYPE.is_required" class="w-8 h-8 text-alert-info rounded px-2 hover:bg-mono-10" ecTooltip
+                    <button *ngIf="docTYPE.is_required" class="w-8 h-8 text-alert-info rounded px-2 hover:bg-mono-10"
+                            ecTooltip
                             tooltip="Configurar Anexo">
                       <div>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -240,7 +242,8 @@
                       </div>
                     </button>
                     <div>
-                      <input class="w-4 h-4" type="checkbox" [(ngModel)]="docTYPE.is_required" (click)="createAnnexeRequiredDoctype(docTYPE)">
+                      <input class="w-4 h-4" type="checkbox" [(ngModel)]="docTYPE.is_required"
+                             (click)="createAnnexeRequiredDoctype(docTYPE)">
                     </div>
                   </div>
                 </div>
@@ -507,6 +510,144 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end z-50 fixed top-0 left-0 w-full h-full" style="background-color: rgba(0,0,0,0.5)">
+      <div class="pt-12 w-full lg:w-2/3 h-full bg-white lg:border-l lg:border-mono-30 overflow-y-auto" style="height: calc(100vh)">
+        <div class="header pl-4 md:pl-6 lg:pl-12 pr-4 py-2 flex justify-between items-center">
+          <span class="t-h5 text-mono-70">Registro de Atributo</span>
+          <button class="b-ghost w-12">
+            <span class="svg">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4.2097 4.3871L4.29289 4.29289C4.65338 3.93241 5.22061 3.90468 5.6129 4.2097L5.70711 4.29289L12 10.585L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L13.415 12L19.7071 18.2929C20.0676 18.6534 20.0953 19.2206 19.7903 19.6129L19.7071 19.7071C19.3466 20.0676 18.7794 20.0953 18.3871 19.7903L18.2929 19.7071L12 13.415L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L10.585 12L4.29289 5.70711C3.93241 5.34662 3.90468 4.77939 4.2097 4.3871L4.29289 4.29289L4.2097 4.3871Z"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+        <div class="body p-4 md:p-6 lg:p-12 space-y-4">
+          <form class="space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+                <label class="t-caption-2 text-mono-70">Entidad</label>
+                <select class="ec-input" type="text"></select>
+                <small class="text-alert-error">
+                  El campo es requerido
+                </small>
+              </div>
+              <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+                <label class="t-caption-2 text-mono-70">Atributo</label>
+                <select class="ec-input" type="text"></select>
+                <small class="text-alert-error">
+                  El campo es requerido
+                </small>
+              </div>
+              <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+                <label class="t-caption-2 text-mono-70">Comparación</label>
+                <select class="ec-input" type="text">
+                  <option value="=">Igual (=)</option>
+                  <option value="=">Mayor Igual (>=)</option>
+                  <option value="=">Menor Igual (<=)</option>
+                  <option value="=">Mayor (>)</option>
+                  <option value="=">Menor (<)</option>
+                </select>
+                <small class="text-alert-error">
+                  El campo es requerido
+                </small>
+              </div>
+              <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+                <label class="t-caption-2 text-mono-70">Valor</label>
+                <input class="ec-input" type="text">
+                <small class="text-alert-error">
+                  El campo es requerido
+                </small>
+              </div>
+              <div class="flex flex-row items-center gap-6">
+                <div class="flex flex-row space-x-2 items-center">
+                  <input id="is_and" class="w-4 h-4" type="radio" formControlName="is_active">
+                  <label for="is_and" class="t-body-2 text-black flex-1">AND (y)</label>
+                </div>
+                <div class="flex flex-row space-x-2 items-center">
+                  <input id="is_or" class="w-4 h-4" type="radio" formControlName="is_active">
+                  <label for="is_or" class="t-body-2 text-black flex-1">OR (o)</label>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="b-solid">Agregar Atributo</button>
+            </div>
+          </form>
+          <div class="list-annexes space-y-2">
+            <span class="t-subtitle-1 text-mono-70">Lista de Anexos</span>
+            <div class="table w-full overflow-hidden border border-mono-30 rounded bg-white-p drop-shadow-lg p-4 gap-4">
+              <div *ngIf="!annexesAll.length" class="notify-null flex flex-col space-y-2 items-center p-12">
+                <div class="text-brand-2">
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M39.54 62.72C29.406 62.72 24.722 58.284 18.732 51.516C17.044 49.61 11.862 43.996 11.862 43.996L10.86 42.888C8.42603 40.21 7.28003 38.852 7.28003 37.97C7.28003 36.888 8.02803 35.926 9.38403 35.256C11.76 34.084 15.642 33.964 18.022 35.794C19.812 37.17 23.376 41.016 25.28 43.12V14C25.28 11.224 27.216 9.28601 29.988 9.28001C29.988 9.28001 29.988 9.28001 29.99 9.28001C29.99 9.28001 29.992 9.28001 29.996 9.28001C29.998 9.28001 30 9.28001 30.002 9.28001C32.782 9.28601 34.72 11.224 34.72 14V29.28H47.824C52.896 29.28 56.72 32.836 56.72 37.552V45.572C56.72 54.478 54.638 62.72 39.54 62.72ZM12.93 43.032C12.934 43.036 18.12 48.654 19.81 50.566C25.54 57.038 30.008 61.28 39.54 61.28C52.604 61.28 55.28 55 55.28 45.572V37.552C55.28 33.656 52.074 30.718 47.824 30.718H34C33.602 30.718 33.28 30.396 33.28 29.998V14C33.28 12.04 31.96 10.722 29.996 10.72C28.038 10.722 26.72 12.04 26.72 14V45C26.72 45.298 26.536 45.566 26.256 45.674C25.978 45.782 25.66 45.704 25.462 45.476C25.402 45.41 19.496 38.74 17.146 36.934C15.296 35.516 11.968 35.588 10.022 36.55C9.19603 36.956 8.72203 37.476 8.72203 37.972C8.83603 38.52 10.848 40.732 11.928 41.922L12.93 43.032ZM21.51 23.458C18.814 21.07 17.268 17.622 17.268 14C17.268 6.98601 22.974 1.28001 29.988 1.28001C37.002 1.28001 42.708 6.98601 42.708 14C42.708 17.622 41.162 21.068 38.466 23.458L37.508 22.38C39.896 20.264 41.266 17.21 41.266 14C41.266 7.78001 36.208 2.72001 29.986 2.72001C23.766 2.72001 18.706 7.78001 18.706 14C18.706 17.21 20.076 20.266 22.464 22.38L21.51 23.458Z"/>
+                  </svg>
+                </div>
+                <span
+                  class="t-body-1 text-mono-70">No hay registros actualmente.</span>
+              </div>
+              <div *ngIf="annexesAll.length" class="table-h w-full">
+                <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
+                  <div class="p-2 w-12">N°</div>
+                  <div class="p-2 flex-1">Nombre</div>
+                  <div class="p-2 w-16">Versión</div>
+                  <div class="p-2 w-16">Activo</div>
+                  <div class="p-2 w-32">Opciones</div>
+                </div>
+                <div class="table-body t-body-1 text-mono-70">
+                  <div class="item w-full flex flex-row {{annexeDisplayIndex === position ? 'bg-mono-10':''}}"
+                       *ngFor="let item of annexesDocForPag; let position = index"
+                       (click)="annexeDisplayIndex=position">
+                    <div class="flex items-center p-2 w-12">{{annexesAll.indexOf(item) + 1}}</div>
+                    <div class="flex items-center p-2 flex-1 break-all">{{item.name}}</div>
+                    <div class="flex items-center p-2 w-16 break-all">{{item.version}}</div>
+                    <div class="flex items-center p-2 w-16 break-all">{{item.is_active ? 'Sí' : 'No'}}</div>
+                    <div class="flex items-center p-2 w-32">
+                      <div class="w-full flex flex-row">
+                        <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
+                                tooltip="Editar Anexo" (click)="loadDataForEdition(item); annexeSelected=item;">
+                          <div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"/>
+                            </svg>
+                          </div>
+                        </button>
+                        <button class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10" ecTooltip
+                                tooltip="Configurar Anexo" (click)="loadConfiguration(item)">
+                          <div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M12.0132 2.25006C12.7471 2.25852 13.4782 2.34332 14.1947 2.5031C14.5074 2.57285 14.7413 2.83357 14.7768 3.15202L14.947 4.67887C15.024 5.37992 15.6159 5.9109 16.3216 5.91164C16.5113 5.91194 16.6989 5.87244 16.8742 5.79489L18.2748 5.17962C18.5661 5.05165 18.9064 5.12142 19.1239 5.35368C20.1361 6.4347 20.8899 7.73121 21.3287 9.14564C21.4233 9.45064 21.3144 9.78209 21.0573 9.97156L19.8159 10.8867C19.4617 11.1469 19.2526 11.5601 19.2526 11.9995C19.2526 12.439 19.4617 12.8522 19.8166 13.113L21.0592 14.0284C21.3163 14.2178 21.4253 14.5493 21.3307 14.8544C20.8921 16.2685 20.1387 17.565 19.1271 18.6462C18.9098 18.8784 18.5697 18.9483 18.2785 18.8207L16.8721 18.2046C16.4698 18.0285 16.0077 18.0543 15.6275 18.274C15.2473 18.4938 14.9942 18.8813 14.9459 19.3178L14.7769 20.8445C14.742 21.1593 14.5131 21.4182 14.205 21.4916C12.7566 21.8362 11.2475 21.8362 9.79901 21.4916C9.49088 21.4182 9.26202 21.1593 9.22716 20.8445L9.05834 19.32C9.00875 18.8843 8.75532 18.498 8.3754 18.279C7.99549 18.06 7.53418 18.0344 7.13318 18.2094L5.72655 18.8257C5.4352 18.9534 5.09501 18.8833 4.87776 18.651C3.8656 17.5685 3.11217 16.2706 2.67418 14.8549C2.57984 14.5499 2.68884 14.2187 2.94582 14.0294L4.18915 13.1134C4.54329 12.8532 4.75245 12.44 4.75245 12.0005C4.75245 11.5611 4.54329 11.1479 4.18869 10.8873L2.94614 9.97291C2.68877 9.78351 2.57967 9.45184 2.67434 9.14664C3.1131 7.73221 3.86692 6.4357 4.8791 5.35468C5.09657 5.12242 5.43691 5.05265 5.72822 5.18062L7.1286 5.79579C7.53154 5.97262 7.99478 5.94591 8.37675 5.72275C8.75707 5.50215 9.01026 5.11428 9.05914 4.6777L9.22922 3.15202C9.26474 2.83341 9.49884 2.5726 9.81178 2.503C10.5291 2.34348 11.2609 2.25871 12.0132 2.25006ZM12.0133 3.74996C11.5593 3.75531 11.1065 3.79449 10.6588 3.86708L10.5499 4.84425C10.448 5.75374 9.92101 6.56108 9.1314 7.01909C8.33695 7.48323 7.36834 7.53909 6.52556 7.16923L5.62727 6.77462C5.05534 7.46879 4.60012 8.25141 4.2795 9.09174L5.0773 9.67885C5.81611 10.2217 6.25245 11.0837 6.25245 12.0005C6.25245 12.9173 5.81611 13.7794 5.07807 14.3216L4.27902 14.9103C4.59936 15.7521 5.05465 16.5362 5.62698 17.2317L6.53211 16.8351C7.3702 16.4692 8.33222 16.5228 9.12451 16.9795C9.91679 17.4362 10.4453 18.2418 10.549 19.1527L10.6579 20.1366C11.5476 20.2878 12.4564 20.2878 13.3461 20.1366L13.455 19.1527C13.5558 18.2421 14.0837 17.4337 14.877 16.9753C15.6702 16.5169 16.6342 16.4631 17.4738 16.8305L18.3782 17.2268C18.95 16.5323 19.4051 15.7495 19.7257 14.909L18.9277 14.3212C18.1889 13.7784 17.7526 12.9163 17.7526 11.9995C17.7526 11.0827 18.1889 10.2207 18.9268 9.67853L19.7237 9.09116C19.403 8.25067 18.9478 7.4679 18.3757 6.77362L17.4793 7.16743C17.1139 7.32907 16.7188 7.41226 16.3196 7.41164C14.85 7.4101 13.6165 6.30361 13.4561 4.84389L13.3472 3.86676C12.9016 3.79426 12.4536 3.75518 12.0133 3.74996ZM12.0007 8.25001C14.0717 8.25001 15.7507 9.92894 15.7507 12C15.7507 14.0711 14.0717 15.75 12.0007 15.75C9.9296 15.75 8.25067 14.0711 8.25067 12C8.25067 9.92894 9.9296 8.25001 12.0007 8.25001ZM12.0007 9.75001C10.758 9.75001 9.75067 10.7574 9.75067 12C9.75067 13.2427 10.758 14.25 12.0007 14.25C13.2433 14.25 14.2507 13.2427 14.2507 12C14.2507 10.7574 13.2433 9.75001 12.0007 9.75001Z"/>
+                            </svg>
+                          </div>
+                        </button>
+                        <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
+                                tooltip="Eliminar Anexo" (click)="annexeSelected=item; showConfirm=true">
+                          <div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"/>
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <app-paginator [data]="annexesAll" (current-data-page)="annexesDocForPag = $event"></app-paginator>
             </div>
           </div>
         </div>
