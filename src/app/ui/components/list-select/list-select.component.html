@@ -1,73 +1,54 @@
 <div class="w-1/2 flex grid-cols-2">
-  <div *ngFor="let data of dataStatus; index as i" class="w-full p-2 border-2 border-mono-10 cursor-pointer
-  flex  content-center justify-center " [ngClass]="data.status?'bg-mono-10 ':'bg-transparent'"
-       (click)="changeStatusTab(i)">
-    <span class="items-center text-center">{{data.label}}</span>
+  <div *ngFor="let item of stileSelectList" class="w-full p-2 border-2 border-mono-10 cursor-pointer
+  flex  content-center justify-center "
+       >
+    <span class="items-center text-center">{{item?.title}}</span>
   </div>
 </div>
-<div *ngIf="dataStatus[0].status" class="w-full space-y-4 p-6 border-2 border-mono-10 ">
+<div  class="w-full space-y-4 p-6 border-2 border-mono-10 ">
   <div>
-    <h3>Horaios de trabajo</h3>
+    <h3>{{selectData?.subTitle}}</h3>
   </div>
   <div class="py-2 h-72 w-full border-2 border-mono-10 overflow-scroll">
-    <div *ngFor="let data of listSelect; index as i">
-      <div class="w-full flex grid-cols-4  hover:bg-mono-10 cursor-pointer" [ngClass]="data.status&&i!==0?'bg-mono-10':'bg-transparent'"
-           (click)="changeStatusSelect(i)">
-        <span *ngFor="let key of Object.values(data.value)" class="w-full p-2" [ngClass]="i?'':'font-bold'">
-          {{key}}
-        </span>
-      </div>
-    </div>
+    <table class="min-w-full  bg-transparent w-full border-collapse">
+      <thead >
+      <tr class="border-b border-black" >
+        <th scope="col" class="text-xs lg:text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-left text-brand-2 w-1">
+          N°
+        </th>
+        <ng-container *ngFor="let column of selectData?.columns; index as i">
+          <th scope="col" class="text-xs lg:text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-left text-brand-2 "
+              [ngClass]="(i+1) === selectData.columns?.length ? 'text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-center text-brand-2 w-4' : ''">
+            {{ column.label }}
+          </th>
+        </ng-container>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of selectData?.dataSource; index as index">
+          <td class="px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-400">{{ index + 1 }}</td>
+          <ng-container *ngFor="let key of Object.values(data)">
+            <td *ngIf="Object(key) !== key" class="text-sm text-mono-70 font-normal font-light px-3 lg:px-6 py-2 lg:py-4">
+              {{key}}
+            </td>
+          </ng-container>
+          <td class="text-sm text-center text-gray-400 font-light px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap flex content-center">
+          <span *ngFor="let option of selectData.options;" class="cursor-pointer px-2" appIcon [iconName]="option.icon + ' table'"
+                [iconColor]="option.color" (click)="eventRunOption({value: data.value, type: option.type})"></span>
+          </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 <div>
-  <ng-content>
+  <ng-content select="[ng-form-select]">
   </ng-content>
 </div>
-  <!--<div class="w-full flex space-x-4 grid-cols-2" [formGroup]="formWorkingHours" >
-    <div class="w-full">
-      <div>
-        <span class="text-sm ">Desde</span>
-      </div>
-      <div class="w-full flex space-x-4 grid-cols-2">
-        <ec-dropdown [filter]="true" placeholder="{{'SELECT DAY' | translate}}" [showClear]="true" formControlName="start_day"
-                     [data]="dataWeek" [dropStyle]="dropStyle"
-        ></ec-dropdown>
-        <div>
-          <div class="min-time-example">
-            <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="start_time"
-                   [ngxTimepicker]="min" [min]="'03:15 am'" readonly>
-            <ngx-material-timepicker #min></ngx-material-timepicker>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="w-full">
-      <div>
-        <span class="text-sm ">Hasta</span>
-      </div>
-      <div class="w-full flex space-x-4 grid-cols-2">
-        <ec-dropdown [filter]="true" placeholder="{{'SELECT DAY' | translate}}" [showClear]="true" formControlName="end_day"
-                     [data]="dataWeek" [dropStyle]="dropStyle"
-        ></ec-dropdown>
-        <div>
-          <div class="min-time-example">
-            <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="end_time"
-                   [ngxTimepicker]="minu" [min]="'03:15 am'" readonly>
-            <ngx-material-timepicker #minu></ngx-material-timepicker>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>-->
 
   <div class="w-full flex justify-end">
     <div class="w-1/2 flex grid-cols-2 space-x-4 mt-4">
-      <app-button (click)="addWorkingHours()"
-        type="button" label="Agregar"
-        brColor="border-brand-1"
-        bgColor="bg-brand-1"
-        txtColor="text-white" class="h-12 w-full"></app-button>
-      <app-button (click)="deleteWorkingHours()"
+      <ng-content select="[ng-button-add]"></ng-content>
+      <app-button
         type="button" label="Quitar"
                   brColor="border-brand-1"
                   bgColor="bg-transparent"
@@ -75,76 +56,4 @@
     </div>
   </div>
 </div>
-<div *ngIf="dataStatus[1].status" class="w-full space-y-4 p-6 border-2 border-mono-10 ">
-  <div>
-    <h3>Festivo</h3>
-  </div>
-  <div class="py-2 h-72 w-full border-2 border-mono-10 overflow-scroll">
-    <div *ngFor="let data of listSelectHoliday; index as i">
-      <div class="w-full flex grid-cols-5  hover:bg-mono-10 cursor-pointer" [ngClass]="data.status&&i!==0?'bg-mono-10':'bg-transparent'"
-           (click)="changeStatusSelectHoliday(i)">
-          <span *ngFor="let key of Object.values(data.value)" class="w-full p-2" [ngClass]="i?'':'font-bold'">
-          {{key}}
-        </span>
-      </div>
-    </div>
-  </div>
 
-  <div class="w-full space-y-4" [formGroup]="formHoliday">
-    <div class="grid w-1/2 space-y-2">
-      <label>Nombre</label>
-      <input class="input-style" type="text" formControlName="name">
-    </div>
-
-    <div class="w-full flex space-x-4 grid-cols-4">
-      <div class="flex flex-col flex-1 space-y-1">
-        <label>Fecha inicio</label>
-        <mat-form-field appearance="fill">
-          <mat-label>MM/DD/YYYY</mat-label>
-          <input matInput [matDatepicker]="dp1" formControlName="start_date">
-          <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
-          <mat-datepicker #dp1></mat-datepicker>
-        </mat-form-field>
-      </div>
-      <div class="space-y-2">
-        <label>Hora</label>
-        <div class="min-time-example">
-          <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="start_time"
-                 [ngxTimepicker]="min" [min]="'03:15 am'" readonly>
-          <ngx-material-timepicker #min></ngx-material-timepicker>
-        </div>
-      </div>
-      <div class="flex flex-col flex-1 space-y-1">
-        <label>Fecha inicio</label>
-        <mat-form-field appearance="fill">
-          <mat-label>MM/DD/YYYY</mat-label>
-          <input matInput [matDatepicker]="dp2" formControlName="end_date">
-          <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
-          <mat-datepicker #dp2></mat-datepicker>
-        </mat-form-field>
-      </div>
-      <div class="space-y-2">
-        <label>Hora</label>
-        <div class="min-time-example">
-          <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="end_time"
-                 [ngxTimepicker]="min1" [min]="'03:15 am'" readonly>
-          <ngx-material-timepicker #min1></ngx-material-timepicker>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="w-full flex justify-end">
-    <div class="w-1/2 flex grid-cols-2 space-x-4 mt-4">
-      <app-button (click)="addFormHoliday()"
-        type="button" label="Agregar"
-        brColor="border-brand-1"
-        bgColor="bg-brand-1"
-        txtColor="text-white" class="h-12 w-full"></app-button>
-      <app-button type="button" label="Quitar" (click)="deleteHoliday()"
-                  brColor="border-brand-1"
-                  bgColor="bg-transparent"
-                  txtColor="text-brand-1" class="h-12 w-full"></app-button>
-    </div>
-  </div>
-</div>

@@ -6,9 +6,51 @@
     </div>
   </div>
   <div class="flex w-full justify-center " >
-    <app-list-select>
-      <ng-container>
-        <button>daad</button>
+    <app-list-select [stileSelectList]="dataStyleList">
+      <ng-container ng-form-select>
+        <div class="w-full flex space-x-4 grid-cols-2" [formGroup]="formWorkingDaysWeek" >
+          <div class="w-full">
+            <div>
+              <span class="text-sm ">Desde</span>
+            </div>
+            <div class="w-full flex space-x-4 grid-cols-2">
+              <ec-dropdown [filter]="true" placeholder="{{'SELECT DAY' | translate}}" [showClear]="true" formControlName="start_day"
+                           [data]="dataWeek" [dropStyle]="dropStyle"
+              ></ec-dropdown>
+              <div>
+                <div class="min-time-example">
+                  <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="start_time"
+                         [ngxTimepicker]="min" [min]="'03:15 am'" readonly>
+                  <ngx-material-timepicker #min></ngx-material-timepicker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w-full">
+            <div>
+              <span class="text-sm ">Hasta</span>
+            </div>
+            <div class="w-full flex space-x-4 grid-cols-2">
+              <ec-dropdown [filter]="true" placeholder="{{'SELECT DAY' | translate}}" [showClear]="true" formControlName="end_day"
+                           [data]="dataWeek" [dropStyle]="dropStyle"
+              ></ec-dropdown>
+              <div>
+                <div class="min-time-example">
+                  <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="end_time"
+                         [ngxTimepicker]="minu" [min]="'03:15 am'" readonly>
+                  <ngx-material-timepicker #minu></ngx-material-timepicker>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container ng-button-add>
+        <app-button
+          type="button" label="Agregar"
+          brColor="border-brand-1"
+          bgColor="bg-brand-1"
+          txtColor="text-white" class="h-12 w-full"></app-button>
       </ng-container>
     </app-list-select>
   </div>

@@ -49,3 +49,12 @@ export interface StatusPage {
   name: string,
   show: boolean;
 }
+
+export interface CalendarWorkingDayWeek {
+    id: string,
+    name: string,
+    day_number: number,
+    start_time: string,
+    end_time: string,
+    calendar_id: string,
+  }

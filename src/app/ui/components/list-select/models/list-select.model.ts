@@ -1,28 +1,18 @@
-export interface ModelListSelect  {
-  status: boolean,
-  value: ModelWorkingHours,
+export interface ItemSelectList {
+  title?: string,
+  subTitle?: string,
+  columns?: Column[],
+  dataSource?: any[],
+  options?: Option[],
 }
 
-export interface ModelListSelectHoliday  {
-  status: boolean,
-  value: ModelDateHoliday,
-}
-
-export interface ModelWorkingHours {
-  start_day: string,
-  start_time: string,
-  end_day: string,
-  end_time: string,
-}
-export interface ModelDateHoliday {
-  name: string,
-  start_date: string,
-  start_time: string,
-  end_date: string,
-  end_time: string,
-}
-
-export interface ChangeTab {
+export interface Column {
   label: string,
-  status: boolean
+}
+
+export interface Option {
+  icon: string;
+  color: string;
+  visibility: boolean,
+  type: string
 }

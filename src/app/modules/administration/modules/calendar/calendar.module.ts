@@ -6,13 +6,14 @@ import {CalendarComponent} from "@app/modules/administration/modules/calendar/ca
 import {CalendarRoutingModule} from "@app/modules/administration/modules/calendar/calendar-routing.module";
 import {UiModule} from "@app/ui/ui.module";
 import { CreateCalendarComponent } from './pages/create-calendar/create-calendar.component';
-import {InputTextModule, ToastModule} from "ecapture-ng-ui";
+import {DropdownModule, InputTextModule, ToastModule} from "ecapture-ng-ui";
 import {TranslateModule} from "@ngx-translate/core";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatNativeDateModule} from "@angular/material/core";
 import { SettingCalendarComponent } from './pages/setting-calendar/setting-calendar.component';
+import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 //  primeng module
 
 
@@ -36,6 +37,8 @@ import { SettingCalendarComponent } from './pages/setting-calendar/setting-calen
     MatInputModule,
     MatNativeDateModule,
     ToastModule,
+    DropdownModule,
+    NgxMaterialTimepickerModule,
 
   ],
   providers: []
