@@ -125,7 +125,7 @@
                           </div>
                         </button>
                         <button class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10" ecTooltip
-                                tooltip="Configurar Anexo" (click)="loadConfiguration(); annexeSelected=item">
+                                tooltip="Configurar Anexo" (click)="loadConfiguration(item)">
                           <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -230,7 +230,7 @@
                         </svg>
                       </div>
                     </button>
-                    <button class="w-8 h-8 text-alert-info rounded px-2 hover:bg-mono-10" ecTooltip
+                    <button *ngIf="docTYPE.is_required" class="w-8 h-8 text-alert-info rounded px-2 hover:bg-mono-10" ecTooltip
                             tooltip="Configurar Anexo">
                       <div>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -240,7 +240,7 @@
                       </div>
                     </button>
                     <div>
-                      <input class="w-4 h-4" type="checkbox" [(ngModel)]="docTYPE.is_required" (click)="updateAnnexeRequiredDoctype(doctype)">
+                      <input class="w-4 h-4" type="checkbox" [(ngModel)]="docTYPE.is_required" (click)="createAnnexeRequiredDoctype(docTYPE)">
                     </div>
                   </div>
                 </div>

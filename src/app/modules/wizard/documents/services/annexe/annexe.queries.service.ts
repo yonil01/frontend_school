@@ -19,6 +19,25 @@ export class CreateRequiredMutation extends Mutation {
             id
             doctype_related_id
             is_required
+            required_attributes {
+              id
+              entity_id
+              attribute_id
+              comparison_symbol {
+                Id
+                name
+              }
+              value
+              preposition {
+                Id
+                name
+              }
+            }
+          }
+          required_attributes_common {
+            id
+            required_id
+            attribute_id
           }
         }
         code

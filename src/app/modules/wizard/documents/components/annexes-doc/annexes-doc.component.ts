@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Customer, DocTypeGroups, DocTypes, Project, Response} from "@app/core/models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AnnexeRequestModel, Required} from "@app/core/models/config/annexe";
+import {AnnexeDoctypesRequestModel, AnnexeRequestModel, Required} from "@app/core/models/config/annexe";
 import {AnnexeService} from "@app/modules/wizard/documents/services/annexe/annexe.service";
 import {State, Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
@@ -42,7 +42,7 @@ export class AnnexesDocComponent implements OnInit {
 
   public doctype!: DocTypes;
   public doctypeAll: DocTypes[] = [];
-  public doctypeConfiguration: any[] = [];
+  public doctypeConfiguration: { id?: string, name?: string, is_required?: boolean }[] = [];
   public annexesAll!: Required[];
 
   public annexeDisplayIndex!: number;
@@ -135,7 +135,7 @@ export class AnnexesDocComponent implements OnInit {
             this.showMessageError(res.msg);
           } else {
             this._messageService.add({type: 'succes', message: 'Anexo actualizado correctamente!', life: 5000});
-            this.annexesAll = this.annexesAll.map( (_annexe) => _annexe.id === annexe.id ? res.data : _annexe )
+            this.annexesAll = this.annexesAll.map((_annexe) => _annexe.id === annexe.id ? res.data : _annexe)
             this.annexeSelected = {} as Required;
             this.isEditAnnexe = false;
             this.resetFormAnnexe();
@@ -216,26 +216,76 @@ export class AnnexesDocComponent implements OnInit {
     this.formAnnexe.reset({name: '', version: '', is_active: false});
   }
 
-  public loadConfiguration(){
-    this.showConfiguration = !this.showConfiguration;
-    if(this.showConfiguration){
-      this.doctypeConfiguration = this.doctypeAll.map( (doctype) => {
+  public loadConfiguration(annexe: Required) {
+    this.showConfiguration = !false;
+    if (this.showConfiguration) {
+      this.annexeSelected = annexe;
+      this.doctypeConfiguration = this.doctypeAll.map((_doctype: DocTypes) => {
         return {
-          id: doctype.id,
-          name: doctype.name,
-          is_required: false,
-          required_id: '',
-          doctype_related_id: ''
+          id: _doctype.id,
+          name: _doctype.name,
+          is_required: this.isDoctypeRequiredForAnnexe(_doctype)
         }
-      } )
-    }else{
+      })
+    } else {
+      this.doctypeConfiguration = [];
       this.annexeSelected = {} as Required;
     }
   }
 
-  public updateAnnexeRequiredDoctype(doctype: DocTypes){
-    console.log(this.annexeSelected)
-    console.log(doctype)
+  private isDoctypeRequiredForAnnexe(doctype: DocTypes): boolean {
+    let is_required = false;
+    const annexe = this.annexesAll.find((_annexe) => _annexe.id === this.annexeSelected.id)
+    if (annexe?.required_doctypes) {
+      is_required = !!annexe.required_doctypes.find(_doctype => _doctype.id === doctype.id)
+    }
+
+    return is_required;
+  }
+
+  public createAnnexeRequiredDoctype(doctype: { id?: string, name?: string, is_required?: boolean }) {
+    this.isBlockPage = true;
+    if (!doctype.is_required) {
+      const requiredDoctype: AnnexeDoctypesRequestModel = {
+        id: uuidv4().toLowerCase(),
+        is_required: true,
+        required_id: this.annexeSelected.id,
+        // @ts-ignore
+        doctype_related_id: doctype.id
+      }
+      this._annexeService.createRequiredDoctype(requiredDoctype).subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.showMessageError('Error: ' + res.msg);
+            doctype.is_required = false;
+          } else {
+            this.showMessageError('Exito: ' + res.msg);
+            doctype.is_required = true;
+          }
+          this.isBlockPage = false;
+        },
+        error: (err: Error) => this.showMessageError('Error: ' + err.message)
+      })
+    } else {
+      this.deleteAnnexeRequiredDoctype(doctype);
+    }
+    return false;
+  }
+
+  private deleteAnnexeRequiredDoctype(doctype: { id?: string, name?: string, is_required?: boolean }) {
+    this._annexeService.deleteRequiredDoctype('').subscribe({
+      next: (res) => {
+        if (res.error) {
+          this.showMessageError('Error: ' + res.msg);
+          doctype.is_required = true;
+        } else {
+          this.showMessageError('Exito: ' + res.msg);
+          doctype.is_required = false;
+        }
+        this.isBlockPage = false;
+      },
+      error: (err: Error) => this.showMessageError('Error: ' + err.message)
+    })
   }
 
 }

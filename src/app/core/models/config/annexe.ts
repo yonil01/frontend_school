@@ -7,11 +7,10 @@ export interface AnnexeRequestModel {
 }
 
 export interface AnnexeDoctypesRequestModel {
-  id?: string,
-  name?: string,
-  doctype_id?: string,
-  version?: boolean,
-  is_active?: boolean
+  id: string,
+  required_id: string,
+  doctype_related_id: string,
+  is_required: boolean
 }
 
 export interface AnnexeAttributesRequestModel {
@@ -33,7 +32,7 @@ export interface Required {
   id: string,
   name?: string,
   required_doctypes?: RequiredDoctypes[]
-  RequiredAttributeCommon: RequiredAttributeCommon[]
+  requiredAttributeCommon: RequiredAttributeCommon[]
   version?: number,
   is_active?: boolean
 }
