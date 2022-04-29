@@ -21,6 +21,9 @@ export class DatasetConfigListComponent implements OnInit {
   public selectedDatasetValue?: DatasetValue;
   public showDelete: boolean = false;
   public isDeleteAll: boolean = false;
+  public tableIndex: number = 0;
+  public currentRowPage: number = 0;
+  public datasetsValuesTable: any;
 
   constructor(private datasetsService: DatasetsService,
               private messageService: ToastService) {
@@ -67,8 +70,8 @@ export class DatasetConfigListComponent implements OnInit {
     this.showValuesList = false;
   }
 
-  onEditValue(i: number) {
-    this.selectedDatasetValue = this.datasetsValues[i];
+  onEditValue(value: any) {
+    this.selectedDatasetValue = this.datasetsValues[this.datasetsValues.indexOf(value)];
     this.showValuesList = false;
     this.showCreateValue = true;
   }
@@ -120,8 +123,8 @@ export class DatasetConfigListComponent implements OnInit {
     }
   }
 
-  onDeleteValue(i: number) {
-    this.selectedDatasetValue = this.datasetsValues[i];
+  onDeleteValue(value: any) {
+    this.selectedDatasetValue = this.datasetsValues[this.datasetsValues.indexOf(value)];
     this.showDelete = true;
   }
 
@@ -166,9 +169,9 @@ export class DatasetConfigListComponent implements OnInit {
         this.isBlockPage = true;
         const csv: string = reader.result as string;
         let datasetsValuesPersistense: DatasetValue[] = [];
-        datasetsValuesPersistense = csv.split('\n').map((row) => {
-          const data = row.split(','); // split by comma
-          data[data.length - 1] = data[data.length - 1].replace('\r', '');
+        debugger
+        datasetsValuesPersistense = csv.split('\r').map((row) => {
+          const data = row.split(';'); // split by comma
           return {
             value: data[0],
             description: data[1],
@@ -177,9 +180,7 @@ export class DatasetConfigListComponent implements OnInit {
             dataset_id: this.dataset?.id?.toLowerCase(),
           };
         });
-        if(datasetsValuesPersistense[datasetsValuesPersistense.length - 1].value === '') {
           datasetsValuesPersistense.pop();
-        }
         this.datasetsService.createDatasetsValues(datasetsValuesPersistense).subscribe((res) => {
           if (res.error) {
             this.messageService.add({
@@ -205,5 +206,21 @@ export class DatasetConfigListComponent implements OnInit {
 
   onShowHome() {
     this.backHome.emit(true);
+  }
+
+  getData($event: any) {
+    this.datasetsValuesTable = $event;
+  }
+
+  getCurrentRowPage($event: number) {
+    if(this.tableIndex == 1){
+      this.currentRowPage = 0;
+    } else {
+      this.currentRowPage = $event;
+    }
+  }
+
+  getCurrentPage($event: number) {
+    this.tableIndex = $event;
   }
 }

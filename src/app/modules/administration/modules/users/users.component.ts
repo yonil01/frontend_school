@@ -83,7 +83,7 @@ export class UsersComponent implements OnInit {
             value2: user.last_name,
             value3: user.email_notifications,
             value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
-            value5: user.roles ? this.getRoles(user.roles) : '',
+            value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
           }
           this.styleTable.dataSource?.push(newUser);
         })
@@ -315,7 +315,7 @@ export class UsersComponent implements OnInit {
     // @ts-ignore
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(ArrayObject);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.utils.book_append_sheet(wb, ws, 'Roles Exportados');
 
     XLSX.writeFile(wb, this.fileName);
     this.dataExport = [];

@@ -3,6 +3,7 @@ import {AttributeAutofill, Dataset, Project} from "@app/core/models";
 export interface Entity {
   id?: string;
   name?: string;
+  description?: string;
   project?: Project;
   project_id?: string;
   is_unique?: boolean;

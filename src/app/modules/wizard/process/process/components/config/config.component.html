@@ -98,7 +98,7 @@
         </div>
         <div class="input flex flex-col space-y-1">
           <label class="t-caption-2 text-mono-70">{{'ICON' | translate}}</label>
-          <ec-dropdown [filter]="true" placeholder="{{'SELECT_ICON' | translate}}" formControlName="class" [icon]="true" optionLabel="label" [data]="[{value: 'add', label: 'add'}]" [dropStyle]="dropStyle"></ec-dropdown>
+          <ec-dropdown [filter]="true" class="font-icon-material" placeholder="{{'SELECT_ICON' | translate}}" formControlName="class" [icon]="true" optionLabel="label" [data]="icons" [dropStyle]="dropStyle"></ec-dropdown>
           <div class="text-alert-error"
                *ngIf="taskForm.get('class')?.invalid && taskForm.get('class')?.touched && taskForm.get('class')?.hasError('required')">
             <span>El campo es requerido</span>
@@ -122,7 +122,7 @@
         </div>
         <div class="input flex flex-col space-y-1 col-span-2">
           <label class="t-caption-2 text-mono-70">{{'DESCRIPTION' | translate}}</label>
-          <textarea class="ec-input h-16" formControlName="description"></textarea>
+          <textarea class="ec-input" style="height: 5rem!important;" formControlName="description"></textarea>
           <div class="text-alert-error"
                *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched && taskForm.get('description')?.hasError('required')">
             <span>El campo es requerido</span>
@@ -139,8 +139,7 @@
       </form>
       <div class="flex flex-row space-x-4 lg:w-2/3 ">
         <button class="flex-1 md:flex-none b-outline" (click)="cancelCreateOrEdit()">{{'CANCEL' | translate}}</button>
-        <button class="flex-1 md:flex-none b-solid" (click)="saveTask()"
-                >{{'SAVE' | translate}}</button>
+        <button class="flex-1 md:flex-none b-solid" (click)="saveTask()">{{'SAVE' | translate}}</button>
       </div>
     </div>
     <div *ngIf="positionStep === 1 && taskForm.get('type')?.value === 3">
@@ -176,11 +175,7 @@
     </div>
   </div>
 
-  <div *ngIf="showView === 'activities'">
-    <div class="text-xl text-black">
-      <span>{{task.name}}</span>
-    </div>
-
+  <div *ngIf="showView === 'activities'" style="height: calc(100vh - 48px)">
     <app-activities [executionInput]="task" [executions]="tasks" (backTasks)="backTasks($event)"></app-activities>
   </div>
 

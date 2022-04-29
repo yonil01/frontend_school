@@ -8,7 +8,7 @@ import {PasswordsNotAllowedCrudComponent} from "@app/modules/administration/modu
 const routes: Routes = [
   {path: '', redirectTo: 'list'},
   {path: 'list', component: PasswordsNotAllowedListComponent},
-  {path: 'detail', component: PasswordsNotAllowedCrudComponent}
+  {path: 'crud', component: PasswordsNotAllowedCrudComponent}
 ];
 
 @NgModule({

@@ -95,7 +95,7 @@ export class RoleService {
       .mutate({
         rq: {data: roles},
       })
-      .pipe(map(({data}: any) => data.createRoleProject));
+      .pipe(map(({data}: any) => data.createRolesProject));
   }
 
   getRolesProjectByID(id: string): Observable<Response> {
@@ -105,9 +105,9 @@ export class RoleService {
   deleteRoleProject(id: string): Observable<Response> {
     return this.deleteRoleProjectQuery
       .mutate({
-        rq: {id: id},
+        rq: id,
       })
-      .pipe(map(({data}: any) => data.deleteRoleProject));
+      .pipe(map(({data}: any) => data.deleteRolesProject));
   }
 
   // CRUD Roles

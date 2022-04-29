@@ -1,21 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-  Attribute,
-  Customer,
   DocTypeGroups,
   DocTypes,
   DocTypesDisplay,
-  Entity,
   Project
 } from "@app/core/models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {ToastService} from "ecapture-ng-ui";
-import {
-  controlDoctypegroups,
-  showDoctypegroup
-} from "@app/core/store/actions/doctype.action";
+import {controlDoctypegroups,} from "@app/core/store/actions/doctype.action";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
 import {Subscription} from "rxjs/internal/Subscription";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -24,6 +18,13 @@ import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.mode
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
+import {dispositionFinal, formatsDocs, typeSupport} from "@app/core/utils/constants/constant";
+import {IconsMaterial} from '@app/core/constants/icons/material-icons';
+
+interface OptionsDropdown {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-documents',
@@ -44,16 +45,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public docTypesDisplayPagination: DocTypesDisplay[] = [];
   public docTypeSelected!: DocTypes;
   public storages: any[] = [];
-  public typeSupport: any[] = [];
-  public format: any[] = [];
-  public disposition_final: any[] = [];
-  docTypes: DocTypes[] = [];
-  docTypeGroupForm: FormGroup;
-  doctypeGruop!: DocTypeGroups;
-  autoName: DocTypes = {};
-  public docEntity: DocTypes = {};
-  indexAutoname: number = 0;
-  project: Project = {
+  public typeSupport: { label: string, value: string }[] = typeSupport;
+  public format: { label: string, value: string }[] = formatsDocs;
+  public disposition_final: { label: string, value: string }[] = dispositionFinal;
+  public docTypeGroupForm: FormGroup;
+  private project: Project = {
     customers_id: "",
     department: "",
     description: "",
@@ -63,29 +59,14 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     phone: "",
     product_owner: ""
   };
-  client: Customer = {};
-  valorCode: string = '';
-  selectedAttribute!: Attribute;
-  indexAttribute: number = 0;
-  validateAutoname: string[] = [];
-  validateEntity: string[] = [];
-  entity: Entity = {};
-  entidades: string[] = [];
+  private valorCode: string = '';
 
-  // Listar Entidades
-  selectedOptions: any[] = [];
-  selectedEntities: any[] = [];
-
-  isShowDoctypegroup = false;
-  isShowAddDocType = false;
-  isShowAddAutoname = false;
-  isShowEditEntity = false;
-
-  columnsDocTypes: any[] = [];
   public view: string = 'docTypesGroup';
   public showAlertDeleteDtg: boolean = false;
   public showAlertDeleteTg: boolean = false;
   public doctypeForm: FormGroup;
+
+  public icons: OptionsDropdown[] = [];
 
   constructor(
     private doctypegroupService: DoctypegroupService,
@@ -94,37 +75,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     private messageService: ToastService,
   ) {
 
-    this.disposition_final = [
-      {label: 'Conservación Total', value: 'CT'},
-      {label: 'Microfilmación', value: 'M'},
-      {label: 'Digitalización', value: 'D'},
-      {label: 'Eliminar', value: 'E'},
-    ];
-
-    this.typeSupport = [
-      {label: 'Electrónico', value: 'E'},
-      {label: 'Físico', value: 'F'},
-    ];
-
     this.docTypeGroupForm = this.fb.group({
       name: ['', Validators.required],
     });
-
-    this.format = [
-      {label: 'dcs', value: 'dcs'},
-      {label: 'frm', value: 'frm'},
-      {label: 'wkf', value: 'wkf'},
-      {label: 'tif', value: 'tif'},
-      {label: 'jpg', value: 'jpg'},
-      {label: 'png', value: 'png'},
-      {label: 'pdf', value: 'pdf'},
-      {label: 'doc', value: 'doc'},
-      {label: 'sys', value: 'sys'},
-      {label: 'dsb', value: 'dsb'},
-      {label: 'vsr', value: 'vsr'},
-      {label: 'tpl', value: 'tpl'},
-      {label: 'rpt', value: 'rpt'},
-    ];
 
     this.doctypeForm = this.fb.group(
       {
@@ -139,35 +92,29 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         retencion_ac: ['', Validators.required],
         retencion_ah: ['', Validators.required],
         final_disposition: ['', Validators.required],
-        digitalizacion: ['', Validators.required],
+        digitalizacion: [false, Validators.required],
         procedure: [''],
         class: ['', Validators.required],
-        is_cipher: [''],
+        is_cipher: [false],
       },
       {
         validators: this.lessCode('code'),
       },
     );
+    this.doctypeForm.get('code')?.disable();
   }
 
   ngOnInit(): void {
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
-    this.client = JSON.parse(sessionStorage.getItem('client') || '');
     this.getDoctypeGroups();
     this.valueCode();
     this.store.select('doctype').subscribe(({doctypeGroups, doctypeGroup}) => {
       this.docTypeGroups = JSON.parse(JSON.stringify(doctypeGroups));
-      this.doctypeGruop = doctypeGroup;
       this.valueCode();
     });
 
-    this.columnsDocTypes = [
-      {field: 'code', header: 'Código'},
-      {field: 'name', header: 'Nombre'},
-      {field: 'url_path', header: 'URL'},
-      {field: 'format', header: 'Formato'},
-    ];
-
+    // ICON SYSTEM
+    this.icons = IconsMaterial;
     this.getStorage();
   }
 
@@ -189,6 +136,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         },
         error: (err: HttpErrorResponse) => {
           console.error(err);
+          this.messageService.add({type: 'error', message: 'No se ha podido cargar los grupos documentales! code 103', life: 5000});
           this.isBlockPage = false;
         }
       })
@@ -196,7 +144,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   public selectedDocTypeGroup(doctypegroup: DocTypeGroups): void {
-    this.doctypeGruop = doctypegroup;
     this.docTypeGroupSelected = doctypegroup;
     if (this.docTypeGroupSelected.doctypes) {
       this.docTypesDisplay = [];
@@ -207,24 +154,16 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.view = 'docTypesList';
   }
 
-  showAddDocTypeGroups(): void {
-    this.isShowDoctypegroup = true;
-    this.store.dispatch(showDoctypegroup({operation: 'add'}));
-  }
-
   public editDocTypeGroups(docTypeGroup: DocTypeGroups): void {
-    this.isShowDoctypegroup = true;
-    this.docTypeGroupForm.get('docTypeGroup')?.setValue(docTypeGroup.name);
+    this.docTypeGroupForm.patchValue({
+      name: docTypeGroup.name
+    });
+    this.docTypeGroupSelected = docTypeGroup;
     this.view = 'docTypesGroupEdit';
-    // this.store.dispatch(showDoctypegroup({operation: 'edit'}));
-    /*this.cancelAutoname();
-    this.cancelDoctype();
-    this.cancelDoctypeEntity();*/
   }
 
-  showAddDocType() {
+  public showAddDocType(): void {
     this.view = 'doctypeCreate';
-    // this.store.dispatch(controlDoctypes({docType: {}, indexDocType: 0, operation: 'add'}));
   }
 
   private valueCode(): void {
@@ -235,37 +174,21 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            this.messageService.add({type: 'success', message: res.msg, life: 5000});
             this.valorCode = res.data;
+            this.doctypeForm.get('code')?.setValue(this.valorCode);
           }
           this.isBlockPage = false;
         },
         error: (err: HttpErrorResponse) => {
           console.error(err);
           this.isBlockPage = false;
-          this.messageService.add({type: 'error', message: err.error.msg, life: 5000});
+          this.messageService.add({type: 'error', message: 'No se ha podido traer el codigo del tipo documental', life: 5000});
         }
       })
     );
   }
 
-  showOptions(event: any, option: any, rowData: any, indexDocType: number): void {
-    this.autoName = rowData;
-    this.docEntity = rowData;
-    this.indexAutoname = indexDocType;
-    // this.store.dispatch(controlDoctypes({ doctype: rowData, indexDocType, operation: 'edit' }));
-    event.preventDefault();
-    event.stopPropagation();
-    option.show(event);
-  }
-
   private createDoctypeGroups(doctypegroup: DocTypeGroups): void {
-    this.isShowDoctypegroup = false;
-    const dtgRedux = {
-      id: doctypegroup.id,
-      name: doctypegroup.name,
-      project: doctypegroup.project_id || ''
-    };
     this._subscription.add(
       this.doctypegroupService.createDoctypeGroup(doctypegroup).subscribe({
         next: (res) => {
@@ -275,7 +198,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             this.view = 'docTypesGroup';
             this.docTypeGroups.push(doctypegroup);
-            // this.store.dispatch(addDoctypegroup({doctypegroup: dtgRedux as DocTypeGroups}));
           }
           this.isBlockPage = false;
         },
@@ -289,7 +211,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   private updateDoctypeGroups(doctypegroup: DocTypeGroups): void {
-    this.isShowDoctypegroup = false;
     const data = JSON.parse(JSON.stringify(doctypegroup));
     delete data.project;
     delete data.doctypes;
@@ -324,6 +245,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     if (event) {
       this.deleteDoctypeGroups();
     } else {
+      this.docTypeGroupSelected = {};
       this.showAlertDeleteDtg = false;
     }
   }
@@ -346,8 +268,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   private deleteDoctypeGroups(): void {
-    const id = this.doctypeGruop.id?.toLocaleLowerCase() || '';
-    const data = this.doctypeGruop;
+    const id = this.docTypeGroupSelected.id?.toLocaleLowerCase() || '';
+    const data = this.docTypeGroupSelected;
+    this.showAlertDeleteDtg = false;
     if (data.doctypes && data.doctypes.length > 0) {
       this.messageService.add({
         type: 'warning',
@@ -363,18 +286,20 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               this.messageService.add({type: 'error', message: res.msg, life: 5000});
             } else {
               this.messageService.add({type: 'success', message: res.msg, life: 5000});
-              this.doctypeGruop = {};
               this._subscription.add(
-                this.doctypegroupService.getDoctypeGroupsProject().subscribe({
+                this.doctypegroupService.getDoctypeGroupsByProjectID(this.project.id.toLowerCase()).subscribe({
                   next: (resp) => {
                     if (resp.error) {
                       this.messageService.add({type: 'error', message: res.msg, life: 5000});
                     } else {
                       this.store.dispatch(controlDoctypegroups({doctypegroups: resp.data}));
                     }
+                    this.docTypeGroupSelected = {};
+                    this.isBlockPage = false;
                   },
                   error: (err: HttpErrorResponse) => {
                     console.error(err);
+                    this.isBlockPage = false;
                     this.messageService.add({type: 'error', message: err.message, life: 5000});
                   }
                 })
@@ -393,6 +318,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   private deleteDocType(): void {
+    this.showAlertDeleteTg = false;
     this.isBlockPage = true;
     this._subscription.add(
       this.doctypegroupService.deleteDoctype(this.docTypeSelected.id || '').subscribe({
@@ -403,10 +329,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             this.docTypeGroupSelected.doctypes = this.docTypeGroupSelected.doctypes?.filter(d => d.id !== this.docTypeSelected.id);
             this.docTypesDisplay = this.docTypesDisplay?.filter(d => d.docType.id !== this.docTypeSelected.id);
-            const index = this.docTypes.findIndex(d => d.id === this.docTypeSelected.id);
-            if (index !== -1) {
-              this.docTypes[index] = this.docTypeSelected;
-            }
             this.docTypeSelected = {};
           }
           this.isBlockPage = false;
@@ -430,13 +352,15 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            this.view = 'doctypes';
+            this.view = 'docTypesList';
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             this.docTypeGroupSelected.doctypes?.push(doctype);
             const docTypeGroupIndex = this.docTypeGroups.findIndex((dtg) => dtg.id === this.docTypeGroupSelected.id);
             if (docTypeGroupIndex > -1) {
               this.docTypeGroups[docTypeGroupIndex].doctypes = this.docTypeGroupSelected.doctypes;
             }
+            this.doctypeForm.reset();
+            this.docTypesDisplay.push({active: false, docType: doctype});
           }
           this.isBlockPage = false;
         },
@@ -450,7 +374,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   public updateDoctype(doctype: DocTypes): void {
-    this.isShowAddAutoname = false;
     const data = doctype;
     delete data.doctypes_entities;
     this.isBlockPage = true;
@@ -460,7 +383,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            this.view = 'doctypes';
+            this.view = 'docTypesList';
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             const docTypeIndex = this.docTypeGroupSelected.doctypes?.findIndex((dtg) => dtg.id === doctype.id);
             if (docTypeIndex && docTypeIndex > -1) {
@@ -475,6 +398,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             if (index !== -1) {
               this.docTypesDisplay[index].docType = doctype;
             }
+            this.doctypeForm.reset();
           }
           this.isBlockPage = false;
         },
@@ -496,12 +420,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       });
       this.docTypeGroupForm.markAllAsTouched();
     } else {
-      if (this.view === 'edit') {
+      if (this.view === 'docTypesGroupEdit') {
         const doctypeGroup: DocTypeGroups = {
-          ...this.docTypeGroups,
           ...this.docTypeGroupForm.value,
           id: this.docTypeGroupSelected.id?.toLocaleLowerCase(),
-          project_id: this.docTypeGroupSelected.project?.id.toLocaleLowerCase(),
+          project_id: this.project?.id.toLocaleLowerCase(),
         };
         this.updateDoctypeGroups(doctypeGroup);
       } else {
@@ -510,6 +433,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           id: uuidv4().toLowerCase(),
           project_id: this.project.id.toLocaleLowerCase(),
         };
+        this.isBlockPage = true;
         this.createDoctypeGroups(doctypeGroup);
       }
     }
@@ -599,6 +523,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         const docTypes: DocTypes = {
           ...this.docTypeSelected,
           ...this.doctypeForm.value,
+          code: this.doctypeForm.get('code')?.value,
           id: this.docTypeSelected.id?.toLocaleLowerCase(),
           doctypes_groups_id: this.docTypeSelected.doctypes_groups_id?.toLocaleLowerCase(),
         };
@@ -612,6 +537,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       } else {
         const doctype: DocTypes = {
           ...this.doctypeForm.value,
+          code: this.doctypeForm.get('code')?.value,
           id: uuidv4().toLowerCase(),
           doctypes_groups_id: this.docTypeGroupSelected.id?.toLocaleLowerCase(),
           autoname: '',

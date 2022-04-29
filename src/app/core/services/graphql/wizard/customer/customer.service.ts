@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import gql from 'graphql-tag';
-import { Query } from 'apollo-angular';
-import { map } from 'rxjs/operators';
-import { Customer, Response } from '@app/core/models';
-import { Observable } from 'rxjs';
+import {Query} from 'apollo-angular';
+import {map} from 'rxjs/operators';
+import {Customer, Response} from '@app/core/models';
+import {Observable} from 'rxjs';
 
 export interface ResponseGetCustomers {
   data: Customer[];
@@ -49,12 +49,12 @@ export class GetCustomersQuery extends Query<ResponseGetCustomers> {
   providedIn: 'root',
 })
 export class CustomerService {
-  constructor(private getCustomersQuery: GetCustomersQuery) {}
-  getCustomers(): Observable<Response> {
-    return this.getCustomersQuery
-      .watch({
-        errorPolicy: 'all',
-      })
-      .valueChanges.pipe(map(({ data }: any) => data.getCustomer));
+  constructor(
+    private getCustomersQuery: GetCustomersQuery
+  ) {
+  }
+
+  public getCustomers(): Observable<Response> {
+    return this.getCustomersQuery.watch({errorPolicy: 'all'}).valueChanges.pipe(map(({data}: any) => data.getCustomer));
   }
 }

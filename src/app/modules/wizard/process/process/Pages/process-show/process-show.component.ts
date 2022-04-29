@@ -22,6 +22,7 @@ import CustomRulesModules from '../../rules';
 
 // @ts-ignore
 import * as BpmnJSViewer from 'bpmn-js/dist/bpmn-viewer.production.min.js';
+
 // @ts-ignore
 import * as BpmnJSModeler from 'bpmn-js/dist/bpmn-modeler.production.min.js';
 import {controlBpm, controlElement, controlSide, controlTask} from "@app/core/store/actions/bpm.action";
@@ -49,7 +50,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
 
   public bpm: Process = {};
   public versions: any[] = [];
-  public isShowVersions = false;
   public versionBpm: any;
   public isChangedVersion = false;
   public queueSelected: Queue = {
@@ -89,7 +89,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   public currentElement: any;
   public isDeleteDialog: boolean = false;
   public isAnnounceDialog: boolean = false;
-  public isPublishDialog: boolean = false;
   public existQueue: boolean = false;
   public showSide: boolean = false;
   public isChanged = {val: false};
@@ -98,8 +97,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   private bpmnJS: BpmnJSModeler = new BpmnJSModeler();
   private bpmnXML: string = '';
   private elementAdded: boolean = false;
-  public showMenu: boolean = false;
-  public showConfirm: boolean = false;
   public showConfirmExit: boolean = false;
   public showConfirmDeleteQueue: boolean = false;
   private queueDelete!: Queue;
@@ -341,9 +338,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   private initModelerBPMN(): void {
-    console.log(CustomRulesModules);
     this.bpmnJS.destroy();
-    // TODO window.processELS = this.processELS;
     this.bpmnJS = new BpmnJSModeler({
       keyboard: {bindTo: document},
       additionalModules: [CustomRulesModules],
@@ -361,9 +356,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     this.importDiagram(this.bpmnXML);
   }
 
-  /**
-   * BPMN Diagram Events initilization
-   */
   private initializeBpmnEvents() {
     this.bpmnJS.on('commandStack.changed', () => this.stackElement());
     this.bpmnJS.on('element.changed', (event: any) => this.changeElement(event));
@@ -532,6 +524,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     event.originalEvent.preventDefault();
     event.originalEvent.stopPropagation();
     this.existQueue = false;
+    this.showOptions = false;
     const type = event.element.type;
     if (type.indexOf('Task') > -1 || type.indexOf('IntermediateCatchEvent') > -1 || type.indexOf('Gateway') > -1) {
       this.contextMenuPosition = {x: event.originalEvent.clientX + 'px', y: event.originalEvent.clientY + 'px'};
@@ -551,8 +544,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       const result = await this.bpmnJS.saveXML({format: true});
       this.bpmnXML = result.xml;
 
-
-      console.log(this.queueSelected);
       this.store.dispatch(controlTask({task: this.queueSelected}));
       this.store.dispatch(controlElement({element: JSON.parse(JSON.stringify(this.currentElement.businessObject))}));
       this.contextMenu.openMenu();
@@ -597,36 +588,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
 
   // TODO implement get history
   public getHistory() {
-  }
-
-  public confirmDeleteBpm(event: boolean): void {
-    if (event) {
-      this.deleteProcess();
-    } else {
-      this.showConfirm = false;
-    }
-  }
-
-  public deleteProcess(): void {
-    this.isBlockedPage = true;
-    this._subscription.add(
-      this.processService.deleteBpm(this.bpm.id || '').subscribe({
-        next: (res) => {
-          if (res.error) {
-            this.messageService.add({type: 'error', message: res.msg, life: 5000});
-          } else {
-            this.messageService.add({type: 'success', message: res.msg, life: 5000});
-            this.router.navigateByUrl('/wizard/bpmn');
-          }
-          this.isBlockedPage = false;
-        },
-        error: (err: HttpErrorResponse) => {
-          this.isBlockedPage = false;
-          this.messageService.add({type: 'error', message: err.message, life: 5000});
-          console.error(err)
-        }
-      })
-    );
   }
 
   public initTaskForm(): void {
@@ -714,7 +675,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            console.log('unlock process');
+            // console.log('unlock process');
           }
         },
         error: (err: Error) => {
@@ -747,6 +708,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       const newBpmVersion: Process = this.bpm;
       newBpmVersion.process_root = this.bpm.process_root;
       newBpmVersion.version = this.versions.length + 1;
+      newBpmVersion.document_id_bpmn = this.bpm.document_id_bpmn?.toString();
+      newBpmVersion.document_id_svg = this.bpm.document_id_svg?.toString();
       delete newBpmVersion.id;
       this.isBlockedPage = true;
       this._subscription.add(
@@ -819,6 +782,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       delete bpmPersistense.queues;
       delete bpmPersistense.user_deletes;
       delete bpmPersistense.project;
+      delete bpmPersistense.created_at;
+      delete bpmPersistense.updated_at;
       bpmPersistense.document_id_svg = this.bpm.document_id_svg?.toString();
       bpmPersistense.document_id_bpmn = this.bpm.document_id_bpmn?.toString();
       const idAns = bpmPersistense.document_id_ans ? parseInt(bpmPersistense.document_id_ans, 10) + 1 : 1;
@@ -896,19 +861,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
   }
 
   private validateBpmn(): boolean {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(this.bpmnXML, 'text/xml');
-    const processXml = xmlDoc.getElementById('Process_1');
-    // @ts-ignore
-    const xmlText = new XMLSerializer().serializeToString(processXml);
-    const qtyProcess =
-      (xmlText.match(/id="Activity_/g) || []).length +
-      (xmlText.match(/id="TimerEventDefinition_/g) || []).length +
-      (xmlText.match(/id="Gateway_/g) || []).length;
-    if (this.bpm.queues && qtyProcess !== this.bpm.queues.length) {
-      this.messageService.add({type: 'warning', message: 'Debe configurar todas las colas del proceso!', life: 5000});
-      return false;
-    }
     const queueMap: any = {};
     if (this.bpm.queues) {
       for (const q of this.bpm.queues) {
@@ -921,25 +873,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
           return false;
         } else {
           Object.assign(queueMap, {[q.sequences || '']: q.name});
-        }
-        if (q.executions && q.executions.length >= 1) {
-          for (const e of q.executions) {
-            if (!e.rules || e.rules.length < 1) {
-              this.messageService.add({
-                type: 'warning',
-                message: `Debe configurar las actividades de la Ejecución: ${e.name}`,
-                life: 5000
-              });
-              return false;
-            }
-          }
-        } else {
-          this.messageService.add({
-            type: 'warning',
-            message: `Debe configurar las actividades de la Cola de Proceso: ${q.name}`,
-            life: 5000
-          });
-          return false;
         }
       }
     }
@@ -955,25 +888,26 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       xmlFile = await this.exportXMLB64();
       svgFile = await this.exportSVGB64();
     } catch (err) {
-      return [0, 0];
+      return [this.bpm.document_id_svg, this.bpm.document_id_bpmn];
     }
-    const documentIdSVG = await this.saveDocument(svgFile);
-    const documentIdBPMN = await this.saveDocument(xmlFile);
-    if (!documentIdBPMN || !documentIdSVG) {
-      // this.isAnnounceDialog = true;
-      // this.isDeleteDialog = false;
-      this.messageService.add({type: 'error', life: 5000, message: 'Error al guardar los documentos'});
-      return [0, 0];
+    try {
+      const documentIdSVG = await this.saveDocument(svgFile);
+      const documentIdBPMN = await this.saveDocument(xmlFile);
+      if (!documentIdBPMN || !documentIdSVG) {
+        this.messageService.add({type: 'error', life: 5000, message: 'Error al guardar los documentos'});
+        return [this.bpm.document_id_svg, this.bpm.document_id_bpmn];
+      }
+
+      this.isBlockedPage = false;
+      this.messageService.add({type: 'success', life: 5000, message: 'Documentos guardados correctamente'});
+      return [documentIdSVG, documentIdBPMN];
+
+    } catch (err) {
+      return [this.bpm.document_id_svg, this.bpm.document_id_bpmn];
     }
-    this.isBlockedPage = false;
-    this.messageService.add({type: 'success', life: 5000, message: 'Documentos guardados correctamente'});
-    return [documentIdSVG, documentIdBPMN];
+
   }
 
-  /**
-   * Export BPMN diagram to XML
-   * @return xml string
-   */
   private exportSVGB64(): Promise<string> {
     return new Promise((res, rej) => {
       this.bpmnJS.saveSVG({format: true}, (err: any, svg: any) => {
@@ -986,10 +920,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     });
   }
 
-  /**
-   * Export BPMN diagram to XML
-   * @return xml string
-   */
   private exportXMLB64(): Promise<string> {
     return new Promise((res, rej) => {
       this.bpmnJS.saveXML({format: true}, (err: any, xml: any) => {
@@ -1003,11 +933,6 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
     });
   }
 
-  /**
-   *  Save file Document diagram (BPMN & SVG) with ECMStoreDocument in EcatchDB
-   *  @input file document to save
-   *  @return datapagesID
-   */
   private saveDocument(file: string): Promise<any> {
     const document: Document = {
       doctype_id: '20507613-19dc-43e0-936e-ffc176ae6bb2',

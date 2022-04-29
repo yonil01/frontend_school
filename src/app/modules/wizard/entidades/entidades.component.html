@@ -108,12 +108,12 @@
               <div class="p-2 w-32">Opciones</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
-              <div class="item w-full flex flex-row" *ngFor="let entitie of entities, let i = index">
-                <div class="flex items-center p-2 w-16">{{i + 1}}</div>
+              <div class="item w-full flex flex-row" *ngFor="let entitie of entitiesTable, let i = index">
+                <div class="flex items-center p-2 w-16">{{entities.indexOf(entitie) + 1}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{entitie.name}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
-                    <button *ngIf="false" (click)="onEditEntity(i)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                    <button (click)="onEditEntity(entitie)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -122,7 +122,7 @@
                         </svg>
                       </div>
                     </button>
-                    <button (click)="onDelete(i)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                    <button (click)="onDelete(entitie)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -131,7 +131,7 @@
                         </svg>
                       </div>
                     </button>
-                    <button (click)="onShowEntitiesList(i)" class="w-10 text-alert-success px-2 h-10 hover:bg-mono-10">
+                    <button (click)="onShowEntitiesList(entitie)" class="w-10 text-alert-success px-2 h-10 hover:bg-mono-10">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -145,6 +145,16 @@
               </div>
             </div>
           </div>
+          <!--PAGINATOR-->
+          <app-paginator *ngIf="entities.length > 0"
+                         [data]="entities"
+                         [rows-per-page]="[5,10,15,20]"
+                         [initial-row]="5"
+                         (current-data-page)="getData($event)"
+                         (current-row-page)="getCurrentRowPage($event)"
+                         (current-page)="getCurrentPage($event)"
+          ></app-paginator>
+          <!--PAGINATOR-->
         </div>
       </div>
     </div>

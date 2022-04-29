@@ -40,7 +40,7 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
   ) {
     this.roleForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(60)]],
+      name: ['', []],
       description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(60)]],
       sessions_allowed: ['', [Validators.required, Validators.min(1), Validators.max(10000)]],
       see_all_users: [false]
@@ -85,20 +85,26 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   }
 
   saveRole() {
-    if(!this.roleForm.invalid){
-      if(!this.isEdit){
+    const description: string = this.roleForm.get('description')?.value+"";
+    const re = / /gi;
+    const descriptionRefactor: string = description.replace(re,'_')+"";
+    const name: string = descriptionRefactor.toLowerCase();
+    this.roleForm.get('name')?.setValue(name);
+
+    if (!this.roleForm.invalid) {
+      if (!this.isEdit) {
         this.role = {
           id: uuidv4().toLowerCase(),
           ...this.roleForm.value,
         };
-      }else{
+      } else {
         this.role = {
           id: this.role.id,
           ...this.roleForm.value,
         };
       }
       this.showConfirm = true;
-    }else{
+    } else {
       this._messageService.add({type: 'error', message: 'Complete los campos correctamente.', life: 5000});
     }
   }
@@ -115,13 +121,18 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
               project: this.project.id,
               role_id: res.data.id
             };
-            this._roleService.createRoleProject(roleProject).subscribe((res: Response) => {
-              if(res.error){
-                this._messageService.add({type: 'error', message: 'No se pudo asignar el rol al proyecto - ' + res.msg, life: 5000});
+            this._roleService.createRoleProject(roleProject).subscribe((res2: Response) => {
+              if (res2.error) {
+                this._messageService.add({
+                  type: 'error',
+                  message: 'No se pudo asignar el rol al proyecto - ' + res2.msg,
+                  life: 5000
+                });
+              } else {
+                this._messageService.add({type: 'success', message: 'Rol Creado Correctamente', life: 5000});
+                this._router.navigateByUrl('wizard/roles');
               }
             });
-            this._messageService.add({type: 'success', message: 'Rol Creado Correctamente', life: 5000});
-            this._router.navigateByUrl('wizard/roles');
           }
           this.showConfirm = false;
         });
@@ -139,10 +150,10 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
       }
     } else {
       this.showConfirm = false;
-      if(!this.isEdit){
+      if (!this.isEdit) {
         this.roleForm.reset();
         this._messageService.add({type: 'info', message: 'Registro Cancelado', life: 5000});
-      }else{
+      } else {
         this._messageService.add({type: 'info', message: 'Edición Cancelada', life: 5000});
       }
     }

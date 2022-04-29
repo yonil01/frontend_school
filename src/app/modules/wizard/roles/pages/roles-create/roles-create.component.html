@@ -4,13 +4,13 @@
       <form action="" class="flex flex-col space-y-12">
         <span class="t-h5 text-black dark:text-white">{{isEdit ? 'Editar' : 'Crear'}} Rol</span>
         <div class="grid gap-4">
-          <div class="flex flex-col space-y-1 lg:w-1/2">
+          <!--<div class="flex flex-col space-y-1 lg:w-1/2">
             <label class="t-caption-2 text-mono-70" for="name">Nombre</label>
             <input type="text" formControlName="name" id="name" value="{{role.name}}" class="ec-input">
             <span *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
-          </div>
+          </div>-->
           <div class="flex flex-col space-y-1 lg:w-1/2">
-            <label class="t-caption-2 text-mono-70">Descripción</label>
+            <label class="t-caption-2 text-mono-70">Nombre</label>
             <input type="text" formControlName="description" id="description" value="{{role.description}}" class="ec-input">
             <span *ngIf="roleForm.get('description')?.invalid && roleForm.get('description')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
           </div>
@@ -25,10 +25,9 @@
           </div>
         </div>
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <div *ngIf="isEdit"><button type="reset" class="w-full md:w-auto b-ghost">Reestablecer Valores</button></div>
           <div class="flex flex-row space-x-4">
             <button routerLink="/wizard/roles" class="flex-1 md:flex-none b-outline">Cancelar</button>
-            <button type="submit" class="flex-1 md:flex-none b-solid">Guardar</button>
+            <button [disabled]="roleForm.invalid" type="submit" class="flex-1 md:flex-none b-solid">Guardar</button>
           </div>
         </div>
       </form>

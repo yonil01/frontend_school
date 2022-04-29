@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs/internal/Subscription";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {DEFAULT_BPMN_BASE64} from "@app/core/constants/bpmn/default-bpmn-b64";
-import {Project, StepsCreateProcess} from "@app/core/models/wizard/wizard";
+import {Project} from "@app/core/models/wizard/wizard";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
 import {ToastService} from "ecapture-ng-ui";
@@ -11,7 +11,6 @@ import {ProcessService} from "@app/modules/wizard/services/process/process.servi
 import {DocumentService} from '@app/core/services/graphql/doc/document/document.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {v4 as uuidv4} from 'uuid';
-import {dataStepProcess} from "@app/core/utils/constants/constant";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {FilterService} from "@app/ui/services/filter.service";
@@ -23,6 +22,10 @@ import {TableModel} from "@app/ui/components/table/model/table.model";
 import {Ans, Reminder} from "@app/core/models/config/ans";
 import {NotificationService} from "@app/modules/administration/services/notification/notification.service";
 import {NotificationModel} from "@app/core/models/config/notification";
+import {HttpErrorResponse} from "@angular/common/http";
+import {IconsMaterial} from "@app/core/constants/icons/material-icons";
+import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
+import {dropStyle} from "@app/core/models/dropdown/dropdown";
 
 interface ProcessCard {
   process: Process;
@@ -48,6 +51,8 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   private _subscription: Subscription = new Subscription();
   private readonly defaultSVG: SafeResourceUrl;
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
+  public icons: any[] = IconsMaterial;
+  public readonly dropStyle: DropdownModel = dropStyle;
   public project: Project;
   public roles: Role[] = [];
   public docTypes: DocTypes[] = [];
@@ -61,7 +66,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   public rolesAvailable: Role[] = [];
   public doctypesSelected: DocTypes[] = [];
   public doctypesAvailable: DocTypes[] = [];
-  public createOrUpdate: boolean = false;
+  public view: string = 'listProcess';
   public positionStep: number = 1;
   public AnsForm: FormGroup;
   public ReminderForm: FormGroup;
@@ -102,7 +107,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
       icon: ['', Validators.required],
       ans: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
       alert: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
-      description: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
+      description: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8000)]]
     });
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.defaultSVG = this._sanitizer.bypassSecurityTrustResourceUrl(DEFAULT_BPMN_BASE64);
@@ -125,7 +130,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
     );
 
     this._subscription.add(
-      this._doctypeGroupService.getDoctypeGroupsProject().subscribe(
+      this._doctypeGroupService.getDoctypeGroupsByProjectID(this.project.id).subscribe(
         {
           next: (res) => {
             if (res.error) {
@@ -138,7 +143,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
               }
             }
           },
-          error: (err) => {
+          error: (err: HttpErrorResponse) => {
             this._messageService.add({
               message: 'Error Cuando se trato de traer los grupos documentales',
               type: 'error',
@@ -382,6 +387,9 @@ export class ProcessListComponent implements OnInit, OnDestroy {
       process_root: this.currentProcess.process.process_root?.toLowerCase(),
       project: this.currentProcess.process.project.id.toLowerCase(),
       version: this.currentProcess.process.version,
+      document_id_bpmn: this.currentProcess.process.document_id_bpmn,
+      document_id_svg: this.currentProcess.process.document_id_svg,
+      document_id_ans: this.currentProcess.process.document_id_ans
     };
     this.isBlockPage = true;
     this._subscription.add(
@@ -413,7 +421,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   }
 
   public cancelCreateOrUpdate(): void {
-    this.createOrUpdate = false;
+    this.view = 'listProcess';
     this.idProcess = '';
     this.positionStep = 1;
     this.processForm.reset();
@@ -453,6 +461,12 @@ export class ProcessListComponent implements OnInit, OnDestroy {
                 const doctype = this.docTypes.find(d => d.id === doc.doctype_id);
                 if (doctype) {
                   this.doctypesSelected.push(doctype);
+                  this.currentProcess.process.process_doctypes?.push({
+                    id: doc.id,
+                    process_id: doc.process_id,
+                    doctype_id: doc.doctype_id,
+                    doctype
+                  });
                   this.doctypesAvailable = this.doctypesAvailable.filter(d => d.id !== doctype.id);
                 }
               }
@@ -509,6 +523,8 @@ export class ProcessListComponent implements OnInit, OnDestroy {
             }
           })
         );
+      } else {
+        this.isBlockPage = false;
       }
     }
   }
@@ -536,10 +552,15 @@ export class ProcessListComponent implements OnInit, OnDestroy {
               type: 'success',
               life: 5000
             });
-            for (const doc of processRole) {
-              const roles = this.roles.find(d => d.id === doc.role_id);
+            for (const roleItem of processRole) {
+              const roles = this.roles.find(d => d.id === roleItem.role_id);
               if (roles) {
-                this.currentProcess.process.process_roles?.push(doc);
+                this.currentProcess.process.process_roles?.push({
+                  id: roleItem.id,
+                  process_id: roleItem.process_id,
+                  role_id: roleItem.role_id,
+                  role: roles
+                });
                 this.rolesSelected.push(roles);
                 this.rolesAvailable = this.rolesAvailable.filter(d => d.id !== roles.id);
               }
@@ -625,20 +646,20 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   }
 
   public onCreateProcess(): void {
-    this.createOrUpdate = true;
+    this.view = 'createProcess';
     this.doctypesAvailable = this.docTypes;
     this.rolesAvailable = this.roles;
   }
 
   public onUpdateProcess(processCard: ProcessCard): void {
-    this.createOrUpdate = true;
+    this.view = 'editProcess';
     this.currentProcess = processCard;
     this.idProcess = processCard.process.id || '';
     this.processForm.get('name')?.setValue(processCard.process.name || '');
-    this.processForm.get('type')?.setValue(processCard.process.type_process || '');
+    this.processForm.get('type')?.setValue(processCard.process.type_process?.toString() || '');
     this.processForm.get('icon')?.setValue(processCard.process.class || '');
-    this.processForm.get('ans')?.setValue(processCard.process.ans || '');
-    this.processForm.get('alert')?.setValue(processCard.process.percent_alert || '');
+    this.processForm.get('ans')?.setValue(processCard.process.ans || 0);
+    this.processForm.get('alert')?.setValue(processCard.process.percent_alert || 0);
     this.processForm.get('description')?.setValue(processCard.process.description || '');
     this.loadProcessDoctypesAndProcessRoles(processCard);
   }
@@ -717,7 +738,13 @@ export class ProcessListComponent implements OnInit, OnDestroy {
 
   public showProcess(process: Process): void {
     this._store.dispatch(controlBpm({ bpm: process }));
-    this._router.navigateByUrl('wizard/bpmn/show');
+    this.isBlockPage = true;
+    this._router.navigateByUrl('wizard/bpmn/show').then(() => {
+      this.isBlockPage = false;
+    }).catch((err) => {
+      this.isBlockPage = false;
+      console.error(err);
+    });
   }
 
   public saveAns():void {
@@ -763,8 +790,6 @@ export class ProcessListComponent implements OnInit, OnDestroy {
                 this.isBlockPage = false;
                 this._messageService.add({message: res.msg, type: 'error', life: 5000});
               } else {
-                console.log(res)
-                debugger
                 this.isBlockPage = false;
                 this._messageService.add({message: res.msg, type: 'success', life: 5000});
                 this.loadAns();

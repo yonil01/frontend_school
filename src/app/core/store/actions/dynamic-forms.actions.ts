@@ -85,7 +85,6 @@ import { DocTypes } from '@app/core/models';
 import { Form, StepType, Formly } from '@app/core/models/config/form';
 import { Container } from '@app/core/models/config/form';
 import { Dashboard } from '@app/core/models/config/form';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 
 export const controlDashboard = createAction(
   '[dynamic-forms] load Dashboard',

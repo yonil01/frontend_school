@@ -26,24 +26,64 @@
           <span routerLink="/wizard" class="t-body-2 cursor-pointer">Mensajes</span>
         </div>
       </div>
-      <div class="description mb-6 flex flex-col space-y-2">
+      <div *ngIf="!createOrEdit" class="description mb-6 flex flex-col space-y-2">
         <span class="t-h5 text-black dark:text-white">Mensajes</span>
         <div>
           <ul class="t-body-1 pl-4">
-            <li class="list-disc text-mono-70">25 mensajes registradas actualmente.</li>
-            <li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>
+            <li class="list-disc text-mono-70">{{messages.length}} mensajes registradas actualmente.</li>
           </ul>
         </div>
       </div>
       <div *ngIf="!createOrEdit" class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
         <div>
-          <button routerLink="/admin/message/create" class="b-solid w-full md:w-auto">Crear Mensaje</button>
+          <button (click)="createOrEdit = true" class="b-solid w-full md:w-auto">Crear Mensaje</button>
         </div>
-        <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"></div>
+        <button class="rounded px-4 bg-alert-info h-10 text-black" (click)="exportCSV()" [disabled]="messages.length <= 0">
+          <div>
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"
+                 fill="none">
+              <path
+                d="M10.3333 2V6.5C10.3333 7.32843 11.0049 8 11.8333 8H16.3333V16.5C16.3333 17.3284 15.6617 18 14.8333 18H5.83331C5.00489 18 4.33331 17.3284 4.33331 16.5V3.5C4.33331 2.67157 5.00489 2 5.83331 2H10.3333ZM11.3333 2.25V6.5C11.3333 6.77614 11.5572 7 11.8333 7H16.0833L11.3333 2.25Z"
+                fill="white"/>
+            </svg>
+          </div>
+          <span>CSV</span>
+        </button>
+        <button class="rounded bg-alert-success h-10 text-black" (click)="exportExcel()" [disabled]="messages.length <= 0">
+          <div>
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                 fill="none">
+              <path
+                d="M10 17H14.5C15.8807 17 17 15.8807 17 14.5V14H10V17ZM17 13V7H3V13H17ZM3 14H9V17H5.5C4.11929 17 3 15.8807 3 14.5V14ZM10 6H17V5.5C17 4.11929 15.8807 3 14.5 3H10V6ZM9 3V6H3V5.5C3 4.11929 4.11929 3 5.5 3H9Z"
+                fill="white"/>
+            </svg>
+          </div>
+          <span>EXCEL</span>
+        </button>
+        <button class="rounded bg-alert-error h-10 text-black" (click)="exportPdf()" [disabled]="messages.length <= 0">
+          <div>
+            <svg class="fill-current" id="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 viewBox="0 0 32 32">
+              <polygon points="30 18 30 16 24 16 24 26 26 26 26 22 29 22 29 20 26 20 26 18 30 18" fill="white"/>
+              <path
+                d="M19,26H15V16h4a3.0033,3.0033,0,0,1,3,3v4A3.0033,3.0033,0,0,1,19,26Zm-2-2h2a1.0011,1.0011,0,0,0,1-1V19a1.0011,1.0011,0,0,0-1-1H17Z"
+                fill="white"/>
+              <path d="M11,16H6V26H8V23h3a2.0027,2.0027,0,0,0,2-2V18A2.0023,2.0023,0,0,0,11,16ZM8,21V18h3l.001,3Z"
+                    fill="white"/>
+              <path
+                d="M22,14V10a.9092.9092,0,0,0-.3-.7l-7-7A.9087.9087,0,0,0,14,2H4A2.0059,2.0059,0,0,0,2,4V28a2,2,0,0,0,2,2H20V28H4V4h8v6a2.0059,2.0059,0,0,0,2,2h6v2Zm-8-4V4.4L19.6,10Z"
+                fill="white"/>
+              <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" width="24" height="24"
+                    fill="none"/>
+            </svg>
+          </div>
+          <span>PDF</span>
+        </button>
+        <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar" (input)="filterMessages($event)"></div>
       </div>
       <div *ngIf="!createOrEdit" class="data space-y-4 mt-4">
         <div class="table-v md:hidden flex flex-col space-y-4">
-          <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+          <div   class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
             <span class="text-mono-70 t-caption-1">N° 1</span>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">ID</span>
@@ -71,7 +111,7 @@
                   </svg>
                 </div>
               </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+              <button  class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -93,7 +133,7 @@
             <div class="p-2 w-24">Opciones</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
-            <div *ngFor="let message of messages, let i = index" class="register-table w-full flex flex-row">
+            <div *ngFor="let message of messagesPagination, let i = index" class="register-table w-full flex flex-row">
               <div class="flex items-center p-2 w-16">{{i + 1}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{message.id}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{message.spa}}</div>
@@ -110,7 +150,7 @@
                       </svg>
                     </div>
                   </button>
-                  <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                  <button (click)="showDelete(message.id || 0) " class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -126,14 +166,15 @@
         </div>
         <div class="pagination flex flex-row items-center justify-between">
           <div class="left">
-            <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
+            <select class="h-8 w-16 bg-mono-10 t-body-2 text-black" [(ngModel)]="paginationValue" (change)="resetPagination($event)">
               <option>10</option>
               <option>20</option>
               <option>30</option>
             </select>
           </div>
           <div class="right flex items-center flex-row space-x-1">
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
+            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === 1 || currentLengthPg === 1"
+                    (click)="beforePagination()">
               <div>
                 <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
@@ -143,9 +184,10 @@
               </div>
             </button>
             <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-              <span class="t-body-2">1/2</span>
+              <span class="t-body-2">{{currentPg}}/{{currentLengthPg}}</span>
             </div>
-            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30">
+            <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30" [disabled]="currentPg === currentLengthPg"
+                    (click)="nextPagination()">
               <div>
                 <svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
@@ -160,6 +202,7 @@
       <div *ngIf="createOrEdit" class="flex flex-col lg:items-center space-y-12">
         <span class="t-h5 text-black dark:text-white">{{idMessages === 0 ? 'Crear' : 'Editar'}} Mensaje</span>
         <form [formGroup]="messageForm" class="space-y-4 grid grid-cols-2 gap-4 lg:w-2/3">
+
           <div class="input flex flex-col space-y-1 col-span-2">
             <label class="t-caption-2 text-mono-70">Mensaje en Español</label>
             <input class="ec-input" type="text" formControlName="spa">
@@ -185,10 +228,11 @@
               </div>
             </div>
           </div>
+
         </form>
         <div class="flex flex-row space-x-4 lg:w-2/3">
-          <button routerLink="/admin/message/list" class="flex-1 md:flex-none b-outline">Cancelar</button>
-          <button class="flex-1 md:flex-none b-solid" (click)="editMessage()">Guardar</button>
+          <button  class="flex-1 md:flex-none b-outline" (click)="createOrEdit = false; idMessages=0">Cancelar</button>
+          <button class="flex-1 md:flex-none b-solid" (click)="sendForm()">Guardar</button>
         </div>
       </div>
     </div>
@@ -252,3 +296,6 @@
 </div>
 
 <app-block-page [show]="isShowBlockPage"></app-block-page>
+<app-confirm-dialog [show]="showAlert" type="warning" [title]="'Mensajes '" body="Desea eliminar el mensaje?"
+                    (onEvent)="cancelCloseDialog($event)"></app-confirm-dialog>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>

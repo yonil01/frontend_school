@@ -115,22 +115,12 @@ export class ProcessService {
       );
   }
 
-  createProcess(bpm: Process): Observable<Response> {
-    // const newBpm = JSON.parse(JSON.stringify(bpm));
-    // delete newBpm.id;
-    return this.createProcessQuery
-      .mutate({
-        request: {data: bpm},
-      })
-      .pipe(map(({data}: any) => data.createProcess));
+  public createProcess(bpm: Process): Observable<Response> {
+    return this.createProcessQuery.mutate({request: {data: bpm}}).pipe(map(({data}: any) => data.createProcess));
   }
 
-  updateProcess(bpm: Process): Observable<Response> {
-    return this.updateProcessQuery
-      .mutate({
-        request: {data: bpm},
-      })
-      .pipe(map(({data}: any) => data.updateProcess));
+  public updateProcess(bpm: Process): Observable<Response> {
+    return this.updateProcessQuery.mutate({request: {data: bpm}}).pipe(map(({data}: any) => data.updateProcess));
   }
 
   lockProcess(id: string): Observable<Response> {

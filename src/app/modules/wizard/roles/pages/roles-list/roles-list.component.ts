@@ -2,13 +2,14 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs/internal/Subscription";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {ToastService} from "ecapture-ng-ui";
-import {Customer, Project, Response, Role, RolesProject} from "@app/core/models";
+import {Customer, Project, Response, Role, RoleAllowed, RolesProject} from "@app/core/models";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {Router} from "@angular/router";
 import {controlRole, deleteDatedisallowed, deleteRole} from "@app/core/store/actions/roles.action";
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-roles-list',
@@ -21,6 +22,7 @@ export class RolesListComponent implements OnInit, OnDestroy {
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
   public isBlockPage: boolean = false;
   public roles: Role[] = [];
+  public rolesForPagination: Role[] = [];
   private client: Customer;
   private project: Project;
   public nameClient: string = '';
@@ -51,8 +53,6 @@ export class RolesListComponent implements OnInit, OnDestroy {
           } else {
             if (res.data) {
               this.roles = res.data;
-              console.log(this.roles);
-              console.log(res.data);
             } else {
               this._messageService.add({type: 'error', message: 'No roles found', life: 5000});
             }
@@ -80,6 +80,7 @@ export class RolesListComponent implements OnInit, OnDestroy {
   public showRole(role: Role): void {
     this._store.dispatch(controlRole({ role: role, index: 0 }));
     this._router.navigateByUrl('wizard/roles/manager');
+    console.log(role);
   }
 
   public createRole(): void {
@@ -127,25 +128,44 @@ export class RolesListComponent implements OnInit, OnDestroy {
   }
 
   confirmDialogDelete(event: boolean) {
+    this.showConfirmDelete = false;
+    this.isBlockPage = true;
     if (event) {
-      this._roleService.deleteRole(this.data || '').subscribe((res: Response) => {
-        if (res.error) {
-          this._messageService.add({type: 'error', message: 'Error en la Eliminación', life: 5000});
-        } else {
-          const role: any = this.roles.find(role => role.id === this.data) || {};
-          this._roleService.deleteRoleProject(role.projects.first().id || '').subscribe((res: Response) => {
-            if(res.error){
-              this._messageService.add({type: 'error', message: 'No se pudo eliminar la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
+      const role: Role = this.roles[this.indexRoleDelete];
+      const roleProject = role.projects?.find(project => project.project.id?.toLocaleLowerCase() === this.project.id.toLocaleLowerCase())?.id || '';
+      this._roleService.deleteRoleProject(roleProject || '').subscribe((res: Response) => {
+        if(res.error){
+          this._messageService.add({type: 'error', message: 'No se pudo eliminar la relación entre el Rol y el Proyecto - '+res.msg, life: 5000});
+        }else{
+          this._roleService.deleteRole(this.data || '').subscribe((res: Response) => {
+            if (res.error) {
+              this._messageService.add({type: 'error', message: 'Error en la Eliminación', life: 5000});
+            }else{
+              this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
+              this._store.dispatch(deleteRole({ indexRole: this.indexRoleDelete }));
+              this.isBlockPage = false;
             }
           });
-          this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
-          this._store.dispatch(deleteRole({ indexRole: this.indexRoleDelete }));
         }
-        this.showConfirmDelete = false;
       });
     } else {
-      this.showConfirmDelete = false;
+      this.isBlockPage = false;
     }
   }
+
+  exportRoles(): void {
+    const ArrayObject:any = [];
+    ArrayObject.push(['Nombre','Descripción','Sesiones','Ver todos los usuarios'])
+    for(let role of this.roles){
+      ArrayObject.push([role.name,role.description,role.sessions_allowed,role.see_all_users ? 'Sí':'No'])
+    }
+    // @ts-ignore
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(ArrayObject);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Roles');
+
+    XLSX.writeFile(wb, 'Roles '+this.client.name+' '+this.project.name+'.xlsx');
+  }
+
 
 }

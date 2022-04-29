@@ -40,6 +40,10 @@ export class EntityListValuesComponent implements OnInit {
   public form = new FormGroup({});
   public showCreateValue: boolean = false;
   public selectedValue: any;
+  public tableIndex: number = 0;
+  public currentRowPage: number = 0;
+  public valuesAttributesAutofillsTable: any;
+
 
   constructor(private _localStorage: LocalStorageService,
               private autofillsService: AutofillsService,
@@ -145,8 +149,8 @@ export class EntityListValuesComponent implements OnInit {
     this.showValues = false;
   }
 
-  confirmDelete(i: number) {
-    this.selectedValue = this.ResponsevaluesAttributesAutofills[i];
+  confirmDelete(value: any) {
+    this.selectedValue = this.ResponsevaluesAttributesAutofills[this.ResponsevaluesAttributesAutofills.indexOf(value)];
     this.isDelete = true;
   }
 
@@ -167,5 +171,20 @@ export class EntityListValuesComponent implements OnInit {
     } else {
       this.isDelete = false;
     }
+  }
+  getData($event: any) {
+    this.valuesAttributesAutofillsTable = $event;
+  }
+
+  getCurrentRowPage($event: number) {
+    if (this.tableIndex == 1) {
+      this.currentRowPage = 0;
+    } else {
+      this.currentRowPage = $event;
+    }
+  }
+
+  getCurrentPage($event: number) {
+    this.tableIndex = $event;
   }
 }

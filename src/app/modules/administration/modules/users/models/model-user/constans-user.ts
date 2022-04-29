@@ -33,13 +33,13 @@ export const styleTableUser: TableModel = {
   optionsStander: [
     {
       icon: 'edit',
-      color: 'text-brand-2',
+      color: 'text-alert-info',
       visibility: true,
       type: 'edit',
     },
     {
       icon: 'lock 32',
-      color: 'text-alert-success',
+      color: 'text-alert-info',
       visibility: true,
       type: 'lock',
     },

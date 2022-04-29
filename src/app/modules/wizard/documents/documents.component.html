@@ -32,9 +32,9 @@
         <div class="table-v md:hidden flex flex-col space-y-4">
           <div class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded"
                *ngFor="let docTypeGroup of docTypeGroupsPagination; let position = index">
-            <span class="text-mono-70 t-caption-1">N° {{position + 1}}</span>
+            <span class="text-mono-70 t-caption-1">N° {{docTypeGroups.indexOf(docTypeGroup) + 1}}</span>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">{{'DOCTYPE_GROUP' | translate}}</span>
+              <span class="text-mono-70 t-caption-2">{{'Grupo Documental'}}</span>
               <span class="text-black t-body-1">{{(docTypeGroup.name || '') | replace: '_': ' '}}</span>
             </div>
             <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
@@ -71,12 +71,12 @@
         <div class="table-h hidden md:block w-full">
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
-            <div class="p-2 flex-1">{{'DOCTYPE_GROUP' | translate}}</div>
-            <div class="p-2 w-32">{{'OPTIONS' | translate}}</div>
+            <div class="p-2 flex-1">{{'Grupo Documental'}}</div>
+            <div class="p-2 w-32">{{'Opciones'}}</div>
           </div>
           <div class="table-body t-body-2 text-mono-70">
             <div class="item w-full flex flex-row" *ngFor="let docTypeGroup of docTypeGroupsPagination; let position = index">
-              <div class="flex items-center p-2 w-16">{{position + 1}}</div>
+              <div class="flex items-center p-2 w-16">{{docTypeGroups.indexOf(docTypeGroup) + 1}}</div>
               <div
                 class="flex items-center p-2 flex-1 break-all capitalize">{{(docTypeGroup.name || '') | replace: '_': ' '}}</div>
               <div class="flex items-center p-2 w-32">
@@ -86,18 +86,16 @@
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
-                          d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"
-                          fill="#0150E5"/>
+                          d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"/>
                       </svg>
                     </div>
                   </button>
                   <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
-                          tooltip="Eliminar grupo documental" (click)="showAlertDeleteDtg = true">
+                          tooltip="Eliminar grupo documental" (click)="showAlertDeleteDtg = true; docTypeGroupSelected = docTypeGroup">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
-                          d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"
-                          fill="#CA1C25"/>
+                          d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"/>
                       </svg>
                     </div>
                   </button>
@@ -106,8 +104,7 @@
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
-                          d="M6.24788 16.0021C7.21437 16.0021 7.99788 16.7856 7.99788 17.7521V20.25C7.99788 21.2165 7.21437 22 6.24788 22H3.75C2.7835 22 2 21.2165 2 20.25V17.7521C2 16.7856 2.7835 16.0021 3.75 16.0021H6.24788ZM6.24788 17.5021H3.75C3.61193 17.5021 3.5 17.6141 3.5 17.7521V20.25C3.5 20.3881 3.61193 20.5 3.75 20.5H6.24788C6.38595 20.5 6.49788 20.3881 6.49788 20.25V17.7521C6.49788 17.6141 6.38595 17.5021 6.24788 17.5021ZM9.74809 18H21.2529C21.6671 18 22.0029 18.3358 22.0029 18.75C22.0029 19.1297 21.7207 19.4435 21.3547 19.4932L21.2529 19.5H9.74809C9.33388 19.5 8.99809 19.1642 8.99809 18.75C8.99809 18.3703 9.28025 18.0565 9.64632 18.0068L9.74809 18H21.2529H9.74809ZM6.24788 9.00106C7.21437 9.00106 7.99788 9.78456 7.99788 10.7511V13.2489C7.99788 14.2154 7.21437 14.9989 6.24788 14.9989H3.75C2.7835 14.9989 2 14.2154 2 13.2489V10.7511C2 9.78456 2.7835 9.00106 3.75 9.00106H6.24788ZM6.24788 10.5011H3.75C3.61193 10.5011 3.5 10.613 3.5 10.7511V13.2489C3.5 13.387 3.61193 13.4989 3.75 13.4989H6.24788C6.38595 13.4989 6.49788 13.387 6.49788 13.2489V10.7511C6.49788 10.613 6.38595 10.5011 6.24788 10.5011ZM9.74809 11H21.2529C21.6671 11 22.0029 11.3358 22.0029 11.75C22.0029 12.1297 21.7207 12.4435 21.3547 12.4932L21.2529 12.5H9.74809C9.33388 12.5 8.99809 12.1642 8.99809 11.75C8.99809 11.3703 9.28025 11.0565 9.64632 11.0068L9.74809 11H21.2529H9.74809ZM6.24788 2C7.21437 2 7.99788 2.7835 7.99788 3.75V6.24788C7.99788 7.21437 7.21437 7.99788 6.24788 7.99788H3.75C2.7835 7.99788 2 7.21437 2 6.24788V3.75C2 2.7835 2.7835 2 3.75 2H6.24788ZM6.24788 3.5H3.75C3.61193 3.5 3.5 3.61193 3.5 3.75V6.24788C3.5 6.38595 3.61193 6.49788 3.75 6.49788H6.24788C6.38595 6.49788 6.49788 6.38595 6.49788 6.24788V3.75C6.49788 3.61193 6.38595 3.5 6.24788 3.5ZM9.74809 4H21.2529C21.6671 4 22.0029 4.33579 22.0029 4.75C22.0029 5.1297 21.7207 5.44349 21.3547 5.49315L21.2529 5.5H9.74809C9.33388 5.5 8.99809 5.16421 8.99809 4.75C8.99809 4.3703 9.28025 4.05651 9.64632 4.00685L9.74809 4H21.2529H9.74809Z"
-                          fill="#1C7D38"/>
+                          d="M6.24788 16.0021C7.21437 16.0021 7.99788 16.7856 7.99788 17.7521V20.25C7.99788 21.2165 7.21437 22 6.24788 22H3.75C2.7835 22 2 21.2165 2 20.25V17.7521C2 16.7856 2.7835 16.0021 3.75 16.0021H6.24788ZM6.24788 17.5021H3.75C3.61193 17.5021 3.5 17.6141 3.5 17.7521V20.25C3.5 20.3881 3.61193 20.5 3.75 20.5H6.24788C6.38595 20.5 6.49788 20.3881 6.49788 20.25V17.7521C6.49788 17.6141 6.38595 17.5021 6.24788 17.5021ZM9.74809 18H21.2529C21.6671 18 22.0029 18.3358 22.0029 18.75C22.0029 19.1297 21.7207 19.4435 21.3547 19.4932L21.2529 19.5H9.74809C9.33388 19.5 8.99809 19.1642 8.99809 18.75C8.99809 18.3703 9.28025 18.0565 9.64632 18.0068L9.74809 18H21.2529H9.74809ZM6.24788 9.00106C7.21437 9.00106 7.99788 9.78456 7.99788 10.7511V13.2489C7.99788 14.2154 7.21437 14.9989 6.24788 14.9989H3.75C2.7835 14.9989 2 14.2154 2 13.2489V10.7511C2 9.78456 2.7835 9.00106 3.75 9.00106H6.24788ZM6.24788 10.5011H3.75C3.61193 10.5011 3.5 10.613 3.5 10.7511V13.2489C3.5 13.387 3.61193 13.4989 3.75 13.4989H6.24788C6.38595 13.4989 6.49788 13.387 6.49788 13.2489V10.7511C6.49788 10.613 6.38595 10.5011 6.24788 10.5011ZM9.74809 11H21.2529C21.6671 11 22.0029 11.3358 22.0029 11.75C22.0029 12.1297 21.7207 12.4435 21.3547 12.4932L21.2529 12.5H9.74809C9.33388 12.5 8.99809 12.1642 8.99809 11.75C8.99809 11.3703 9.28025 11.0565 9.64632 11.0068L9.74809 11H21.2529H9.74809ZM6.24788 2C7.21437 2 7.99788 2.7835 7.99788 3.75V6.24788C7.99788 7.21437 7.21437 7.99788 6.24788 7.99788H3.75C2.7835 7.99788 2 7.21437 2 6.24788V3.75C2 2.7835 2.7835 2 3.75 2H6.24788ZM6.24788 3.5H3.75C3.61193 3.5 3.5 3.61193 3.5 3.75V6.24788C3.5 6.38595 3.61193 6.49788 3.75 6.49788H6.24788C6.38595 6.49788 6.49788 6.38595 6.49788 6.24788V3.75C6.49788 3.61193 6.38595 3.5 6.24788 3.5ZM9.74809 4H21.2529C21.6671 4 22.0029 4.33579 22.0029 4.75C22.0029 5.1297 21.7207 5.44349 21.3547 5.49315L21.2529 5.5H9.74809C9.33388 5.5 8.99809 5.16421 8.99809 4.75C8.99809 4.3703 9.28025 4.05651 9.64632 4.00685L9.74809 4H21.2529H9.74809Z"/>
                       </svg>
                     </div>
                   </button>
@@ -128,10 +125,10 @@
   <ng-container layoutBody>
     <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
       <form [formGroup]="docTypeGroupForm" class="flex flex-col space-y-12">
-        <span class="t-h5 text-black dark:text-white">{{view === 'docTypesGroupEdit' ? 'EDIT' : 'CREATE' | translate}}
+        <span class="t-h5 text-black dark:text-white">{{view === 'docTypesGroupEdit' ? 'Editar' : 'Crear' }}
           Grupo Documental</span>
         <div class="flex flex-col space-y-1 lg:w-1/2">
-          <label class="t-caption-2 text-mono-70 dark:text-mono-30">{{'NAME' | translate}}</label>
+          <label class="t-caption-2 text-mono-70 dark:text-mono-30">{{'Nombre'}}</label>
           <input type="text" class="ec-input" formControlName="name">
           <small class="text-alert-error"
                  *ngIf="docTypeGroupForm.get('name')?.touched && docTypeGroupForm.get('name')?.invalid">
@@ -140,8 +137,8 @@
         </div>
         <div class="flex flex-row space-x-4">
           <button class="flex-1 md:flex-none b-outline"
-                  (click)="view = 'docTypesGroup'; docTypeGroupForm.reset()">{{'CANCEL' | translate}}</button>
-          <button class="flex-1 md:flex-none b-solid" (click)="saveDocTypeGroups()">{{'SAVE' | translate}}</button>
+                  (click)="view = 'docTypesGroup'; docTypeGroupForm.reset()">{{'Cancelar'}}</button>
+          <button class="flex-1 md:flex-none b-solid" (click)="saveDocTypeGroups()">{{'Guardar'}}</button>
         </div>
       </form>
     </div>
@@ -325,7 +322,7 @@
     <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
       <div class="flex flex-col lg:items-center space-y-12">
         <div class="flex flex-col space-y-2 w-full lg:w-2/3">
-          <span class="t-h5 text-black dark:text-white">{{view === 'doctypeEdit' ? 'EDIT' : 'CREATE' | translate}} Tipo Documental</span>
+          <span class="t-h5 text-black dark:text-white">{{view === 'doctypeEdit' ? 'Editar' : 'Crear'}} Tipo Documental</span>
           <div>
             <div class="flex flex-row space-x-2">
               <div class="bg-brand-2 rounded-sm w-2"></div>
@@ -335,36 +332,57 @@
             </div>
           </div>
         </div>
-        <form class="space-y-4 grid grid-cols-2 gap-4 lg:w-2/3" [formGroup]="doctypeForm">
+        <form class="grid grid-cols-2 gap-4 lg:w-2/3" [formGroup]="doctypeForm">
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Código</label>
             <input class="ec-input" type="number" formControlName="code">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('code')?.invalid && doctypeForm.get('code')?.touched && doctypeForm.get('code')?.hasError('required')">
+              El codigo es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Nombre</label>
             <input class="ec-input" type="text" formControlName="name">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('name')?.invalid && doctypeForm.get('name')?.touched && doctypeForm.get('name')?.hasError('required')">
+              El nombre es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Retención Electrónica</label>
             <input class="ec-input" type="number" formControlName="retencion_electronic">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_electronic')?.invalid && doctypeForm.get('retencion_electronic')?.touched && doctypeForm.get('retencion_electronic')?.hasError('required')">
+              El tipo de retención electrónica es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Retención AG</label>
             <input class="ec-input" type="number" formControlName="retencion_ag">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ag')?.invalid && doctypeForm.get('retencion_ag')?.touched && doctypeForm.get('retencion_ag')?.hasError('required')">
+              El tipo de retención AG es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Retención AC</label>
             <input class="ec-input" type="number" formControlName="retencion_ac">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ac')?.invalid && doctypeForm.get('retencion_ac')?.touched && doctypeForm.get('retencion_ac')?.hasError('required')">
+              El tipo de retención AC es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Retención AH</label>
             <input class="ec-input" type="number" formControlName="retencion_ah">
+            <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ah')?.invalid && doctypeForm.get('retencion_ah')?.touched && doctypeForm.get('retencion_ah')?.hasError('required')">
+              El tipo de retención AH es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Formato</label>
-            <ec-dropdown [filter]="true" placeholder="{{'SELECT_FORMAT' | translate}}" formControlName="format"
+            <ec-dropdown [filter]="true" placeholder="{{'Seleccione un formato'}}" formControlName="format"
                          [icon]="true" optionLabel="label" optionValue="value" [data]="format"
                          [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('format')?.invalid && doctypeForm.get('format')?.touched && doctypeForm.get('format')?.hasError('required')">
+              El tipo de formato AH es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70">Procedimiento</label>
@@ -375,28 +393,40 @@
             <input class="ec-input" type="text" formControlName="url_path">
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Clase</label>
-            <select class="ec-input" formControlName="class">
-              <option value="add">+</option>
-            </select>
+            <label class="t-caption-2 text-mono-70">Icono</label>
+            <ec-dropdown class="font-icon-material" placeholder="SELECCIONE UN ÍCONO"
+                         formControlName="class" [icon]="true" optionLabel="label" optionValue="value"
+                         [data]="icons" [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('class')?.invalid && doctypeForm.get('class')?.touched && doctypeForm.get('class')?.hasError('required')">
+              El icono es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Tipo de Soporte</label>
-            <ec-dropdown [filter]="true" placeholder="{{'SELECT_TYPE_SUPPORT' | translate}}"
+            <ec-dropdown [filter]="true" placeholder="{{'Seleccioner un Tipo de Soporte'}}"
                          formControlName="tipo_soporte" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="typeSupport" [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('tipo_soporte')?.invalid && doctypeForm.get('tipo_soporte')?.touched && doctypeForm.get('tipo_soporte')?.hasError('required')">
+              El tipo de soporte es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Disposición Final</label>
-            <ec-dropdown [filter]="true" placeholder="{{'SELECT_FINAL_DISPOSITION' | translate}}"
+            <ec-dropdown [filter]="true" placeholder="{{'Seleccione una Disposición Final'}}"
                          formControlName="final_disposition" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="disposition_final" [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('final_disposition')?.invalid && doctypeForm.get('final_disposition')?.touched && doctypeForm.get('final_disposition')?.hasError('required')">
+              El tipo de disposición final es requerido
+            </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">Almacenamiento</label>
-            <ec-dropdown [filter]="true" placeholder="{{'SELECT_TYPE_STORAGE' | translate}}"
+            <ec-dropdown [filter]="true" placeholder="{{'Seleccione el Almacenamiento'}}"
                          formControlName="storage_id" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="storages" [dropStyle]="dropStyle"></ec-dropdown>
+            <small class="text-alert-error" *ngIf="doctypeForm.get('storage_id')?.invalid && doctypeForm.get('storage_id')?.touched && doctypeForm.get('storage_id')?.hasError('required')">
+              El tipo de almacenamiento es requerido
+            </small>
           </div>
           <div class="grid grid-cols-2 gap-4 col-span-2">
             <div class="flex flex-row space-x-2 items-center">
@@ -411,8 +441,8 @@
         </form>
         <div class="flex flex-row space-x-4 lg:w-2/3">
           <button class="flex-1 md:flex-none b-outline"
-                  (click)="view = 'docTypesList'; doctypeForm.reset()">{{'CANCEL' | translate}}</button>
-          <button class="flex-1 md:flex-none b-solid" (click)="saveDoctype()">{{'SAVE' | translate}}</button>
+                  (click)="view = 'docTypesList'; doctypeForm.reset()">{{'Cancelar'}}</button>
+          <button class="flex-1 md:flex-none b-solid" (click)="saveDoctype()">{{'Guardar'}}</button>
         </div>
       </div>
     </div>
@@ -435,7 +465,9 @@
 ></app-doc-entity>
 
 <app-block-page [show]="isBlockPage"></app-block-page>
+
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
+
 <app-confirm-dialog [show]="showAlertDeleteDtg" type="warning"
                     title="¿Esta seguro de querer borrar el grupo documental?"
                     body="Si realiza esta acción se va a elimiar el grupo documental y todos los elementos relacionados a este!"

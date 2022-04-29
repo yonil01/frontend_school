@@ -1,4 +1,5 @@
-import {Component, Input, OnInit, OnChanges, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, Output, EventEmitter, OnDestroy} from '@angular/core'
+import Split from 'split.js'
 // Store
 import {Store} from '@ngrx/store';
 import {AppState} from '@app/core/store/app.reducers';
@@ -70,8 +71,6 @@ class Node {
   label: string;
   data: Data;
   expanded: boolean = false;
-  expandedIcon: string = '';
-  collapsedIcon: string = '';
   parent!: Node;
   children: Node[];
   icon?: string;
@@ -80,10 +79,6 @@ class Node {
     this.label = label;
     this.data = data;
     this.children = children;
-  }
-
-  setLabel(label: string): void {
-    this.label = label;
   }
 }
 
@@ -100,7 +95,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   private bpm!: Process;
   private execution!: Execution;
-  private execsOpts: any[] = [];
   public treeData: any[] = [];
   public node!: Node;
   public menuItems: any[] = [];
@@ -131,6 +125,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
 
   public isBlockPage: boolean = false;
+  private splitInstance: any;
 
   constructor(
     private store: Store<AppState>,
@@ -143,12 +138,12 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     private entityService: EntityService,
   ) {
     this.executions = [];
-    this.execsOpts = [];
     this.indexExecution = 0;
   }
 
   ngOnDestroy(): void {
     this._subscription.unsubscribe();
+    this.splitInstance.destroy();
   }
 
   ngOnInit(): void {
@@ -158,6 +153,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.getData();
     this.getDataActivityForm();
+    this.initSplit();
   }
 
   ngOnChanges(): void {
@@ -194,7 +190,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
           }
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err);
+          console.error(err);
         },
       })
     );
@@ -202,22 +198,29 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   private getDataActivityForm(): void {
     this.docTypes = [];
-    this._subscription.add(
-      this.doctypegroupService.getDoctypeGroupsProject().subscribe({
-        next: (res) => {
-          if (res.error) {
-            this.messageService.add({type: 'error', message: res.msg, life: 5000});
-          } else {
-            res.data.forEach((tg: any) => {
-              if (tg.doctypes) this.docTypes = this.docTypes.concat(tg.doctypes);
-            });
-          }
-        },
-        error: (err: HttpErrorResponse) => {
-          console.log(err);
-        },
-      })
-    );
+    this.isBlockPage = true;
+    Promise.all([this.getDoctypeGroupsProjectId(), this.getEntitiesByProjectId(this.project.id.toLowerCase())]).then((res) => {
+      const docTypeGroups = res[0];
+      const entitiesProject = res[1];
+      if (docTypeGroups.error) {
+        this.messageService.add({type: 'error', message: docTypeGroups.msg, life: 5000});
+      } else if (docTypeGroups.data) {
+        docTypeGroups.data.forEach((tg: any) => {
+          if (tg.doctypes) this.docTypes = this.docTypes.concat(tg.doctypes);
+        });
+      } else {
+        this.messageService.add({type: 'info', message: 'No se encontraron tipos de documentos', life: 5000});
+      }
+
+      if (entitiesProject.error) {
+        this.messageService.add({type: 'error', message: entitiesProject.msg, life: 5000});
+      } else if (entitiesProject.data) {
+        this.entities = entitiesProject.data;
+      } else {
+        this.messageService.add({type: 'info', message: 'No se encontraron entidades', life: 5000});
+      }
+      this.isBlockPage = false;
+    })
     this._subscription.add(
       this.roleService.getRoles().subscribe({
           next: (res) => {
@@ -228,25 +231,57 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
             }
           },
           error: (err: HttpErrorResponse) => {
-            console.log(err);
+            console.error(err);
           },
         }
       )
     );
-    this._subscription.add(
-      this.entityService.getEntitiesByProject(this.project.id.toLowerCase()).subscribe({
-        next: (res) => {
-          if (res.error) {
-            this.messageService.add({type: 'error', message: res.msg, life: 5000});
-          } else {
-            this.entities = res.data;
-          }
-        },
-        error: (err: HttpErrorResponse) => {
-          console.log(err);
-        },
-      })
-    );
+  }
+
+  private getEntitiesByProjectId(id: string): Promise<Response> {
+    return new Promise<Response>((resolve, rej) => {
+      this._subscription.add(
+        this.entityService.getEntitiesByProject(id).subscribe({
+          next: (res) => {
+            resolve(res);
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error(err);
+            const error: Response = {
+              error: true,
+              msg: 'Error al obtener las entidades',
+              data: null,
+              code: 70,
+              type: 'error'
+            }
+            resolve(error);
+          },
+        })
+      );
+    })
+  }
+
+  private getDoctypeGroupsProjectId(): Promise<Response> {
+    return new Promise<Response>((resolve, rej) => {
+      this._subscription.add(
+        this.doctypegroupService.getDoctypeGroupsProject().subscribe({
+          next: (res) => {
+            resolve(res);
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error(err);
+            const error: Response = {
+              error: true,
+              msg: 'Error al obtener las entidades',
+              data: null,
+              code: 70,
+              type: 'error'
+            }
+            resolve(error);
+          },
+        })
+      );
+    })
   }
 
   private getFirstNode(rules: Rule[], execution: Node): void {
@@ -412,8 +447,9 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     this.showForm = false;
     this.activities = this.allActivities.filter((a: Activity) => a.itemtype_id === itemType);
     this.isCreate = false;
-    setTimeout(() => (this.showForm = true), 200);
-    // this.showForm = true;
+    setTimeout(() => {
+      this.showForm = true;
+    }, 200);
   }
 
   private deleteActivity(): void {
@@ -513,10 +549,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
         this.createActivityInRuleNode(rule);
         break;
       default:
-        const sibling = this.node.children.find((n) => !n.data.child_true && !n.data.child_false);
-        if (sibling) {
-          this.createActivityInExecutionNode(rule, sibling, 'child_true');
-        }
+        const sibling = this.node.children.find((n) => n.data.child_true === 0 && n.data.child_false === 0);
+        this.createActivityInExecutionNode(rule, sibling as Node, 'child_true');
         break;
     }
   }
@@ -546,6 +580,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       this.execution.rules = [];
       executionActivity.code = 1;
       executionActivity.id = uuidv4().toLowerCase();
+      // @ts-ignore
+      delete executionActivity.rule_params;
     } else {
       const maxActivityID = Math.max.apply(Math, this.execution.rules.map((a) => a.code));
       executionActivity.id = uuidv4().toLowerCase();
@@ -563,15 +599,17 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     // @ts-ignore
     delete executionActivity.params;
     this.isBlockPage = true;
+    const data: any = executionActivity;
+    delete data.rule_params;
     this._subscription.add(
-      this.processService.createExecutionRule(executionActivity).subscribe({
+      this.processService.createExecutionRule(data).subscribe({
         next: (res) => {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
             this.execution.rules.push(JSON.parse(JSON.stringify(activity)));
             this.saveParams(activity);
-            if (ruleUpdateChild) this.editRule(ruleUpdateChild as Rule, false);
+            if (Object.keys(ruleUpdateChild).length > 0) this.editRule(ruleUpdateChild as Rule, false);
             // Tree Data Update
             this.newRule.id = executionActivity.id || '';
             this.newRule.code = executionActivity.code || 0;
@@ -611,11 +649,10 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  private editRule(rule: Rule, isSaveParams: boolean): void {
-    const activity = JSON.parse(JSON.stringify(rule));
-    // @ts-ignore
+  private editRule(ruleParam: Rule, isSaveParams: boolean): void {
+    const activity = JSON.parse(JSON.stringify(ruleParam));
+    const rule = JSON.parse(JSON.stringify(ruleParam));
     delete rule.params;
-    // @ts-ignore
     delete rule.rule_params;
     rule.id = rule.id?.toLowerCase();
     rule.execution_id = this.execution.id.toLowerCase();
@@ -671,7 +708,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
                 }
               },
               error: (err: HttpErrorResponse) => {
-                console.error(err)
+                console.error(err);
+                this.messageService.add({type: 'error', message: err.message, life: 5000});
               },
             })
           );
@@ -679,23 +717,36 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         param.id = uuidv4().toLowerCase();
         param.rule_id = activity.id?.toLowerCase();
-        this.processService.createRuleParams(param).subscribe({
-          next: (res) => {
-            if (res.error) {
-              this.messageService.add({type: 'error', message: res.msg, life: 5000});
-            } else {
-              if (!this.execution.rules[this.execution.rules.length - 1].rule_params) {
-                this.execution.rules[this.execution.rules.length - 1].rule_params = [];
+        param.value = param.value?.toString();
+        this._subscription.add(
+          this.processService.createRuleParams(param).subscribe({
+            next: (res) => {
+              if (res.error) {
+                this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              } else {
+                if (!this.execution.rules[this.execution.rules.length - 1].rule_params) {
+                  this.execution.rules[this.execution.rules.length - 1].rule_params = [];
+                }
+                this.execution.rules[this.execution.rules.length - 1]?.rule_params?.push(param);
+                this.messageService.add({type: 'success', message: res.msg, life: 5000});
               }
-              this.execution.rules[this.execution.rules.length - 1]?.rule_params?.push(param);
-              this.messageService.add({type: 'success', message: res.msg, life: 5000});
-            }
-          },
-          error: (err: HttpErrorResponse) => {
-            console.error(err)
-          },
-        });
+            },
+            error: (err: HttpErrorResponse) => {
+              console.error(err);
+              this.messageService.add({type: 'error', message: err.message, life: 5000});
+            },
+          })
+        );
       }
     }
   }
+
+  public initSplit(): void {
+    this.splitInstance = Split(['.one', '.two'], {
+      sizes: [50, 50],
+      direction: 'vertical',
+      minSize: [0, 0]
+    });
+  }
+
 }

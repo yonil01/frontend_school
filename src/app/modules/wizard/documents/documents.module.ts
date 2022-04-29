@@ -10,6 +10,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DropdownModule, ToastModule} from "ecapture-ng-ui";
 import {DocEntityComponent} from "@app/modules/wizard/documents/components/doc-entity/doc-entity.component";
 import {AutonameComponent} from "@app/modules/wizard/documents/components/autoname/autoname.component";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {AutonameComponent} from "@app/modules/wizard/documents/components/autona
         ReactiveFormsModule,
         ToastModule,
         DropdownModule,
-        FormsModule
+        FormsModule,
+        MatIconModule
     ]
 })
 export class DocumentsModule {

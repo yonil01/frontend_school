@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="flex flex-col  space-y-12" *ngIf="positionStep === 0">
-    <span class="t-h5 text-black dark:text-white">{{'EXECUTION' | translate}}</span>
+    <span class="t-h5 text-black dark:text-white">{{'PROCESS_QUEUE' | translate}}</span>
     <form [formGroup]="queueForm" class=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
       <div class="input flex flex-col space-y-1">
         <label class="t-caption-2 text-mono-70">{{'NAME' | translate}}</label>
@@ -39,7 +39,7 @@
       </div>
       <div class="input flex flex-col space-y-1">
         <label class="t-caption-2 text-mono-70">{{'ICON' | translate}}</label>
-        <ec-dropdown [filter]="true" placeholder="{{'SELECT_ICON' | translate}}" formControlName="class" [icon]="true" optionLabel="label" [data]="[{label: 'add', value: 'add'}]" [dropStyle]="dropStyle"></ec-dropdown>
+        <ec-dropdown class="font-icon-material" [filter]="true" placeholder="{{'SELECT_ICON' | translate}}" formControlName="class" [icon]="true" optionLabel="label" [data]="icons" [dropStyle]="dropStyle"></ec-dropdown>
         <div class="text-alert-error"
              *ngIf="queueForm.get('class')?.invalid && queueForm.get('class')?.touched && queueForm.get('class')?.hasError('required')">
           <span>El campo es requerido</span>
@@ -61,7 +61,7 @@
       </div>
       <div class="input flex flex-col space-y-1 col-span-2">
         <label class="t-caption-2 text-mono-70">{{'DESCRIPTION' | translate}}</label>
-        <textarea class="ec-input h-16" formControlName="description"></textarea>
+        <textarea class="ec-input" style="height: 5rem!important;" formControlName="description"></textarea>
         <div class="text-alert-error"
              *ngIf="queueForm.get('description')?.invalid && queueForm.get('description')?.touched && queueForm.get('description')?.hasError('required')">
           <span>El campo es requerido</span>
@@ -77,8 +77,8 @@
     </form>
 
     <div class="flex flex-row space-x-4 lg:w-2/3 ">
-      <!--<button class="flex-1 md:flex-none b-outline">{{'CANCEL' | translate}}</button>-->
-      <button class="flex-1 md:flex-none b-solid" (click)="saveQueue()">{{'SAVE' | translate}}</button>
+      <button class="flex-1 md:flex-none b-outline" (click)="saveQueue(false)">{{'SAVE' | translate}}</button>
+      <button class="flex-1 md:flex-none b-solid" (click)="saveQueue(true)">{{'NEXT' | translate}}</button>
     </div>
   </div>
   <div *ngIf="positionStep === 1">
@@ -107,7 +107,7 @@
     </div>
     <div class="flex flex-row space-x-4 lg:w-2/3 mt-4">
       <button class="flex-1 md:flex-none b-outline" (click)="steps[positionStep].active=false;positionStep = positionStep-1"  >{{'BACK' | translate}}</button>
-      <button class="flex-1 md:flex-none b-solid" (click)="steps[positionStep].active=true;positionStep = positionStep+1">
+      <button class="flex-1 md:flex-none b-solid" (click)="steps[positionStep +1 ].active=true;positionStep = positionStep+1">
         {{'NEXT' | translate}}</button>
     </div>
   </div>
@@ -121,7 +121,7 @@
           <span>{{selectionAttributesNow.length > 0 ? selectionAttributesNow[0].name: 'Ningun Atributo Seleccionado'}}</span>
         </div>
       </div>
-      <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_ROL' | translate}}"
+      <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_ATTRIBUTE' | translate}}"
                   (input)="filterAttributes($event)"></div>
     </div>
     <div class="w-full">
@@ -132,20 +132,20 @@
           <div class="p-2 w-32 flex items-center justify-center">{{'SELECT' | translate}}</div>
         </div>
         <div class="table-body text-body-2 text-mono-70">
-          <div *ngFor="let attribute of attributesDisplay, let i = index" class="register-table w-full flex flex-row">
+          <div *ngFor="let attribute of attributesPagination, let i = index" class="register-table w-full flex flex-row">
             <div class="flex items-center p-2 w-16">{{i + 1}}</div>
-            <div class="flex items-center p-2 flex-1 break-all">{{attribute.name}}</div>
+            <div class="flex items-center p-2 flex-1 break-all capitalize">{{attribute.name | replace: '_': ' '}}</div>
             <div class="flex items-center p-2 w-32 justify-center">
               <ec-checkbox color="text-brand-d-1" [ec-value]="isSelectedAttribute(attribute)" (ec-change)="changeAttribute($event, attribute)"></ec-checkbox>
             </div>
           </div>
         </div>
       </div>
-      <app-paginator [data]="attributes" (current-data-page)="attributesDisplay = $event"></app-paginator>
+      <app-paginator [data]="attributesDisplay" (current-data-page)="attributesPagination = $event"></app-paginator>
     </div>
     <div class="flex flex-row space-x-4 lg:w-2/3 mt-4">
-      <button class="flex-1 md:flex-none b-outline" (click)="steps[positionStep].active=false;positionStep = positionStep-1"  >{{'BACK' | translate}}</button>
-      <button *ngIf="steps.length >3" class="flex-1 md:flex-none b-solid" (click)="steps[positionStep].active=true;positionStep = positionStep+1">
+      <button class="flex-1 md:flex-none b-outline" (click)="steps[positionStep].active=false; positionStep = positionStep-1"  >{{'BACK' | translate}}</button>
+      <button *ngIf="steps.length >3" class="flex-1 md:flex-none b-solid" (click)="steps[positionStep + 1].active=true;positionStep = positionStep+1">
         {{'NEXT' | translate}}</button>
     </div>
   </div>
@@ -191,7 +191,7 @@
       <app-paginator [data]="commentsOptions" (current-data-page)="commentsPaginator = $event"></app-paginator>
     </div>
     <div class="flex flex-row space-x-4 lg:w-2/3 mt-4">
-      <button class="flex-1 md:flex-none b-outline" (click)="steps[positionStep].active=false;positionStep = positionStep-1" >{{'BACK' | translate}}</button>
+      <button class="flex-1 md:flex-none b-outline" (click)="steps[positionStep].active=false;positionStep = positionStep - 1" >{{'BACK' | translate}}</button>
     </div>
   </div>
 </div>

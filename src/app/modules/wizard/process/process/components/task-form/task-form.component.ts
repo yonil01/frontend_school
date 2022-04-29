@@ -31,6 +31,8 @@ import {toastDataStyle} from "@app/core/models/toast/toast";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {FilterService} from "@app/ui/services/filter.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {typesQueues} from "@app/core/utils/constants/constant";
+import {IconsMaterial} from "@app/core/constants/icons/material-icons";
 
 @Component({
   selector: 'app-task-form',
@@ -54,11 +56,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public roles: Role[] = [];
   public attributes: Attribute[] = [];
   public attributesDisplay: Attribute[] = [];
+  public attributesPagination: Attribute[] = [];
   private selectionRoles: RolesDisplay[] = [];
   public rolesDisplay: RolesDisplay[] = [];
   public rolesPagination: RolesDisplay[] = [];
   public selectionAttributesNow: Attribute[] = [];
-  private selectionAttributesBefore: Attribute[] = [];
+  public selectionAttributesNowId: string = '';
+  private selectionAttributesBeforeID: string = '';
   public balanceType: any[] = [];
   private client: string = '';
   private project!: Project;
@@ -66,12 +70,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public commentsPaginator: QueueComment[] = [];
   public commentSelected: QueueComment = {id: '', comment: '', queue_id: ''};
   public commentForm: FormControl;
-  private readonly typeQueue: any;
+  private readonly typeQueue: any = typesQueues;
   private element: any;
   private parentQueue!: Queue;
   private bpm!: Process;
   public isBlockPage: boolean = false;
   public showConfirm: boolean = false;
+  public icons: any[] = IconsMaterial;
 
   constructor(
     private roleService: RoleService,
@@ -87,21 +92,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       {value: 1, label: 'Inactivo'},
     ];
     this.attributes = [];
-    this.typeQueue = {
-      'bpmn:SendTask': 1,
-      'bpmn:ReceiveTask': 2,
-      'bpmn:UserTask': 3,
-      'bpmn:ManualTask': 4,
-      'bpmn:BusinessRuleTask': 5,
-      'bpmn:ServiceTask': 6,
-      'bpmn:ScriptTask': 7,
-      'bpmn:IntermediateCatchEvent': 8,
-      'bpmn:ExclusiveGateway': 9,
-      'bpmn:ParallelGateway': 10,
-      'bpmn:InclusiveGateway': 11,
-      'bpmn:ComplexGateway': 12,
-      'bpmn:EventBasedGateway': 13,
-    };
     this.getBpmState();
     this.commentForm = new FormControl(null);
   }
@@ -123,14 +113,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.store.select('bpm').subscribe((res: BpmState) => {
       this.bpm = res.bpm;
       this.parentQueue = JSON.parse(JSON.stringify(res.task));
-      console.log(this.parentQueue);
       this.element = res.element;
     });
   }
 
   private initForm(): void {
     this.selectionAttributesNow = [];
-    this.selectionAttributesBefore = [];
     this.selectionRoles = [];
     const info = this.parentQueue.name ? this.parentQueue : null;
     this.commentsOptions = this.parentQueue.comments ? JSON.parse(JSON.stringify(this.parentQueue.comments)) : [];
@@ -238,15 +226,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeComment(event: any): void {
-    this.commentSelected = event.value;
-    if (event.value) {
-      this.commentForm.setValue(this.commentSelected.comment);
-    } else {
-      this.commentForm.reset();
-    }
-  }
-
   public confirmDeleteComment(event: boolean): void {
     if (event) {
       this.deleteComment();
@@ -335,13 +314,16 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   private preloadAttributes(): void {
-    // @ts-ignore
-    this.selectionAttributesNow = this.parentQueue.queue_attributes?.length ? this.attributes.filter((a) => this.parentQueue.queue_attributes[0].attribute.id.toLowerCase() === a.id?.toLowerCase()) : [];
-    this.selectionAttributesBefore = this.selectionAttributesNow ? this.selectionAttributesNow : [];
+    if (this.parentQueue.queue_attributes) {
+      const queueAttributeID = this.parentQueue.queue_attributes[0].attribute?.id || '';
+      this.selectionAttributesNow = this.attributes.filter((a) => queueAttributeID.toLowerCase() === a.id?.toLowerCase());
+      this.selectionAttributesNowId = this.parentQueue.queue_attributes[0].id;
+      this.selectionAttributesBeforeID = this.parentQueue.queue_attributes[0].id;
+    }
     this.attributesDisplay = [...this.attributes];
   }
 
-  public saveQueue(): void {
+  public saveQueue(isNextStep: boolean): void {
     if (this.queueForm.valid) {
       if (this.parentQueue.id) {
         const queuePersistense = {...this.parentQueue, ...this.queueForm.value};
@@ -366,12 +348,16 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                   this.preloadRoles();
                   this.preloadAttributes();
                 }
-                this.positionStep++;
+                if (isNextStep) {
+                  this.positionStep++;
+                  this.steps[this.positionStep].active = true;
+                }
               }
+
               this.isBlockPage = false;
               this.updateQueueEvent.emit(res);
             },
-            error: (err: Error) => {
+            error: (err: HttpErrorResponse) => {
               this.isBlockPage = false;
               console.error(err.message);
               this._messageService.add({type: 'error', message: 'Error al actualizar la cola', life: 5000});
@@ -399,12 +385,15 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                   this.preloadAttributes();
                 }
                 this._messageService.add({type: 'success', message: 'Cola creada exitosamente', life: 5000});
-                this.positionStep++;
+                if (isNextStep) {
+                  this.positionStep++;
+                  this.steps[this.positionStep].active = true;
+                }
               }
               this.isBlockPage = false;
               this.createQueueEvent.emit(res);
             },
-            error: (err: Error) => {
+            error: (err: HttpErrorResponse) => {
               this.isBlockPage = false;
               console.error(err.message);
               this._messageService.add({type: 'error', message: 'Error al crear la cola', life: 5000});
@@ -414,19 +403,19 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       }
     } else {
       this.queueForm.markAllAsTouched();
-      this._messageService.add({type: 'error', message: 'Complete todos los campos', life: 5000});
+      this._messageService.add({type: 'warning', message: 'Complete todos los campos del formulario correctamente', life: 5000});
     }
   }
 
-  public unselectedAttribute(attribute: Attribute): void {
+  public unselectedAttribute(id: string): void {
     if (this.parentQueue.queue_attributes?.length) {
       this._subscription.add(
-        this.processService.deleteQueueAttribute(attribute.id.toLowerCase()).subscribe({
+        this.processService.deleteQueueAttribute(id.toLowerCase()).subscribe({
           next: (res) => {
             if (res.error) {
               this._messageService.add({type: 'error', message: res.msg, life: 5000});
             } else {
-              this.parentQueue.queue_attributes?.splice(0, 1);
+              this.parentQueue.queue_attributes = this.parentQueue.queue_attributes?.filter(queueAttribute => queueAttribute.id !== id);
               this.updateQueueEvent.emit(res);
             }
           },
@@ -452,10 +441,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public filterAttributes(event: any): void {
     const filterValue = event.target.value;
     if (filterValue && filterValue.length) {
-      const searchFields: string[] = ('name' || 'description' || 'label').split(',');
+      const searchFields: string[] = ('name,description,label').split(',');
       this.attributesDisplay = this._filterService.filter(this.attributes, searchFields, filterValue, 'contains');
     } else {
-      this.attributesDisplay = this.attributes;
+      this.attributesDisplay = [...this.attributes];
     }
   }
 
@@ -559,15 +548,16 @@ export class TaskFormComponent implements OnInit, OnDestroy {
               if (res.error) {
                 this._messageService.add({type: 'error', message: res.msg, life: 5000});
               } else {
-                if (this.selectionAttributesBefore) {
-                  this.unselectedAttribute(this.selectionAttributesBefore[0]);
+                if (this.selectionAttributesBeforeID) {
+                  this.unselectedAttribute(this.selectionAttributesBeforeID);
                 }
                 queueAttributePersistense.attribute = attribute;
                 this.parentQueue.queue_attributes = this.parentQueue.queue_attributes ? this.parentQueue.queue_attributes : [];
                 this.parentQueue.queue_attributes.push(queueAttributePersistense);
                 this.updateQueueEvent.emit(res);
-                this.selectionAttributesBefore = this.selectionAttributesNow;
+                this.selectionAttributesBeforeID = this.selectionAttributesNowId;
                 this.selectionAttributesNow = [attribute];
+                this.selectionAttributesNowId = res.data.id;
                 this._messageService.add({type: 'success', message: 'Atributo asignado correctamente', life: 5000});
               }
               this.isBlockPage = false;

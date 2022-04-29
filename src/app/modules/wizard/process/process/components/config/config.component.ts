@@ -11,6 +11,8 @@ import {DataDrop, DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/model
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
+import {typeTasks, typeTimes} from "@app/core/utils/constants/constant";
+import {IconsMaterial} from "@app/core/constants/icons/material-icons";
 
 @Component({
   selector: 'app-config',
@@ -27,6 +29,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input('queue-selected') parentQueue!: Queue;
   public taskForm: FormGroup;
+  public icons: any[] = IconsMaterial;
   public tasks: Execution[] = [];
   public tasksDisplay: Execution[] = [];
   public tasksPagination: Execution[] = [];
@@ -35,16 +38,10 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   public rolesDisplay: RolesDisplay[] = [];
   public rolesPagination: RolesDisplay[] = [];
   public operation: string = 'add';
-  public typesTasks: any[] = [];
+  public typesTasks: {value: number, label: string}[] = typeTasks;
   public task!: Execution;
   public rolesAvailable: RolesDisplay[];
-  public timers: DataDrop[] = [
-    {value: 1, label: 'Notificar solicitud recibida'},
-    {value: 2, label: 'Crear template'},
-    {value: 3, label: 'Completitud documental'},
-    {value: 5, label: 'Timer Execution'},
-    {value: 35, label: 'Timer Execution daily'}
-  ];
+  public timers: DataDrop[] = typeTimes;
   public steps: StepModel[] = [
     {id: 1, name: 'GENERAL_INFORMATION', active: true},
     {id: 2, name: 'ROLES', active: false}
@@ -53,8 +50,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   public executionSelected!: Execution;
   public showAlert: boolean = false;
   public blockPage: boolean = false;
-
-  public showTaskManager: string = 'list';
 
   constructor(
     private fb: FormBuilder,
@@ -70,12 +65,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       timer: [0],
       description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(8000)]],
     });
-    // TODO cargar desde el api
-    this.typesTasks = [
-      {value: 1, label: 'Sistema'},
-      {value: 3, label: 'Usuario'},
-      {value: 2, label: 'Timer'},
-    ];
     this.rolesAvailable = [];
   }
 
@@ -87,7 +76,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    console.log(this.parentQueue);
     if (this.parentQueue) {
       this.getRoles();
       const taskFind = this.parentQueue.executions ? [...this.parentQueue.executions] : [];
@@ -143,17 +131,16 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
               if (res.error) {
                 this.messageService.add({type: 'error', message: res.msg, life: 5000});
               } else {
-                this.positionStep++;
                 execution.execution_roles = [];
-                // this.task = execution;
                 this.executionSelected = execution;
                 this.tasks.push(execution);
                 if (execution.type === 3) {
+                  this.positionStep++;
+                  this.steps[this.positionStep].active = true;
                   this.loadProcessProcessRoles(execution);
                 }
                 this.tasksDisplay = [...this.tasks];
                 this.messageService.add({type: 'success', message: 'Ejecuión creada correctamente!', life: 5000});
-                this.steps[this.positionStep].active = true;
               }
               this.blockPage = false;
             },
@@ -300,6 +287,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
 
   public deleteExecution(event: boolean): void {
     if (event) {
+      this.showAlert = false;
       this._subscription.add(
         this.processService.deleteExecution(this.executionSelected.id?.toLowerCase() || '').subscribe({
           next: (res) => {
@@ -353,6 +341,15 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public activeTimers(event: any): void {
+
+    if (event === 2 || event === 1) {
+      this.steps = this.steps.filter((step) => step.id !== 2);
+    } else {
+      if (this.steps.length === 1) {
+        this.steps.push({id: 2, name: 'ROLES', active: false});
+      }
+    }
+
     if (event === 2) {
       this.taskForm.get('timer')?.setValidators([Validators.required]);
       this.taskForm.get('timer')?.updateValueAndValidity();
@@ -392,7 +389,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   public editExecution(execution: Execution): void {
     this.loadProcessProcessRoles(execution);
     this.executionSelected = execution;
-    this.showView = 'editOrCreate';
+    this.showView = 'createOrUpdate';
     this.operation = 'edit';
     this.taskForm.patchValue({
       class: execution.class,
