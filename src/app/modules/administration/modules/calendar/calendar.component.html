@@ -59,6 +59,7 @@
       <div *ngIf="statusChangePage[2].show">
         <app-setting-calendar
            [calendar]="calendar"
+           (showToast)="addToastAlert($event)"
           (showEventSetting)="changePageStatus(0)"
         ></app-setting-calendar>
       </div>

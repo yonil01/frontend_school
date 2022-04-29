@@ -1,7 +1,7 @@
 <div class="w-1/2 flex grid-cols-2">
-  <div *ngFor="let item of stileSelectList" class="w-full p-2 border-2 border-mono-10 cursor-pointer
+  <div *ngFor="let item of stileSelectList; index as i" [ngClass]="itemSelected===i?'bg-brand-2 text-white':'bg-transparent'" class="w-full p-2 border-2 border-mono-10 cursor-pointer
   flex  content-center justify-center "
-       >
+       (click)="itemSelected=i; selectData=stileSelectList[i]; eventRunOption({value: i, type: 'change-status'})">
     <span class="items-center text-center">{{item?.title}}</span>
   </div>
 </div>

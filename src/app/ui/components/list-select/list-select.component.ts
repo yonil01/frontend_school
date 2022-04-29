@@ -15,9 +15,10 @@ export class ListSelectComponent implements OnInit {
   public selectData: ItemSelectList = {};
   @Output() dataReturn = new EventEmitter<any>();
   Object = Object;
+  public itemSelected: number;
 
   constructor(private _formBuilder: FormBuilder,  private datePipe: DatePipe) {
-
+    this.itemSelected = 0;
   }
 
   ngOnInit(): void {

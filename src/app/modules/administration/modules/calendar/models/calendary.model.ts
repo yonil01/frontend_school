@@ -58,3 +58,13 @@ export interface CalendarWorkingDayWeek {
     end_time: string,
     calendar_id: string,
   }
+
+export interface CalendarHolidays {
+  id?: string,
+  name?: string,
+  holiday_date?: string,
+  start_time?: string,
+  end_time?: string,
+  status_holiday_id?: number,
+  calendar_id?: string,
+}

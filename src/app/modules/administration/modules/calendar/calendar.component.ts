@@ -32,7 +32,6 @@ export class CalendarComponent implements OnInit {
   }
 
   public eventTableOption(resp:any): void {
-    debugger
     if (resp.type === 'setting') {
       this.calendar = resp.value;
       this.changePageStatus(2);
@@ -61,6 +60,7 @@ export class CalendarComponent implements OnInit {
   }
 
   public getCalendars(): void {
+    this.isBlockPage = true;
     this.styleTableCalendar.dataSource=[];
     this._subscription.add(
       this._calendarService.getCalendars().subscribe({

@@ -45,30 +45,30 @@ export const dropStyle: DropdownModel = {
 export const dataWeek: DataDrop[] = [
   {
     label: 'Lunes',
-    value: 'Monday'
+    value: 1
   },
   {
     label: 'Martes',
-    value: 'Tuesday'
+    value: 2
   },
   {
     label: 'Miercoles',
-    value: 'Wednesday'
+    value: 3
   },
   {
     label: 'Jueves',
-    value: 'Thursday'
+    value: 4
   },{
     label: 'Viernes',
-    value: 'Friday'
+    value: 5
   },
   {
     label: 'Sabado',
-    value: 'Saturday'
+    value: 6
   },
   {
     label: 'Domingo',
-    value: 'Sunday'
+    value: 7
   },
 ]
 
@@ -82,22 +82,13 @@ export const styleSelectList: ItemSelectList[] = [
         label: 'Nombre',
       },
       {
-        label: 'Remitente',
+        label: 'Fecha inicio',
       },
       {
-        label: 'Destino',
+        label: 'Fecha Fin',
       },
       {
-        label: 'Template',
-      },
-      {
-        label: 'Url Pop',
-      },
-      {
-        label: 'Timer',
-      },
-      {
-        label: 'Email',
+        label: 'Numero de dias',
       },
       {
         label: 'Opciones',
@@ -121,29 +112,23 @@ export const styleSelectList: ItemSelectList[] = [
     ],
   },
   {
-    title: 'Horario',
-    subTitle: 'Horario de trabajo de la semana',
+    title: 'Festivo',
+    subTitle: 'Horario de festivo',
     columns: [
       {
         label: 'Nombre',
       },
       {
-        label: 'Remitente',
+        label: 'Fecha Festivo',
       },
       {
-        label: 'Destino',
+        label: 'Hora inicio',
       },
       {
-        label: 'Template',
+        label: 'Hora Fin',
       },
       {
-        label: 'Url Pop',
-      },
-      {
-        label: 'Timer',
-      },
-      {
-        label: 'Email',
+        label: 'Estado',
       },
       {
         label: 'Opciones',
@@ -167,3 +152,7 @@ export const styleSelectList: ItemSelectList[] = [
     ],
   }
 ]
+export const Days = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado","Domingo"];
+export const Month = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+

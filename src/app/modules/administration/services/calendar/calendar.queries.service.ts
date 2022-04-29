@@ -43,10 +43,24 @@ export class GetCalendars extends Query {
       start_date
       end_date
       calendar_working_days_weeks{
+        id
         name
+        day_number
+        start_time
+        end_time
+        calendar_id
+        id_user
+        created_at
+        updated_at
       }
       calendar_holidays{
+        id
         name
+        holiday_date
+        start_time
+        end_time
+        status_holiday_id
+        calendar_id
       }
       id_user
       created_at
@@ -56,6 +70,7 @@ export class GetCalendars extends Query {
     msg
   }
 }
+
   `;
 }
 
@@ -125,5 +140,113 @@ export class UpdateCalendar extends Mutation {
     msg
   }
 }
+  `;
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateCalendarWorkingDaysWeeks extends Mutation {
+  document = gql`
+    mutation createCalendarWorkingDaysWeeks($rq: RequestNewCalendarWorkingDaysWeeks!) {
+  createCalendarWorkingDaysWeeks(input: $rq) {
+    error
+    code
+    data{
+      id
+      name
+      day_number
+      start_time
+      end_time
+      calendar_id
+      created_at
+      updated_at
+      id_user
+    }
+    type
+    msg
+  }
+}
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DeleteCalendarWorkingDaysWeeks extends Mutation {
+  document = gql`
+   mutation deleteCalendarWorkingDaysWeeks($id: ID!) {
+  deleteCalendarWorkingDaysWeeks(id: $id) {
+    error
+    data {
+      id
+      name
+      day_number
+      start_time
+      id_user
+      created_at
+      updated_at
+    }
+    code
+    type
+    msg
+  }
+}
+
+  `;
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UpdateCalendarWorkingDaysWeeks extends Mutation {
+  document = gql`
+  mutation updateCalendarWorkingDaysWeeks($rq: RequestUpdateCalendarWorkingDaysWeeks!) {
+  updateCalendarWorkingDaysWeeks(input: $rq) {
+    error
+    code
+    data {
+      id
+      name
+      day_number
+      start_time
+      end_time
+      calendar_id
+    }
+    type
+    msg
+  }
+}
+  `;
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateCalendarHoliday extends Mutation {
+  document = gql`
+   mutation createCalendarHoliday($rq: RequestNewCalendarHoliday!) {
+  createCalendarHoliday(input: $rq) {
+    error
+    code
+    data {
+      id
+      name
+      holiday_date
+      start_time
+      end_time
+      calendar_id
+      created_at
+      updated_at
+      id_user
+    }
+    type
+    msg
+  }
+}
+
   `;
 }
