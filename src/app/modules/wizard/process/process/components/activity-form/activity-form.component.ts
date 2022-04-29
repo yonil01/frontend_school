@@ -37,7 +37,7 @@ export class ActivityFormComponent implements OnInit {
   public readonly dropStyle: DropdownModel = dropStyle;
 
   public form!: FormGroup;
-  public formAttributes!: FormGroup;
+  public formAttributes: FormGroup = new FormGroup({});
   public fields: any[] = [];
   public statusOptions: any[] = [];
   public activityOptions: any[] = [];
