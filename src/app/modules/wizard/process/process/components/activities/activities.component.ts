@@ -744,7 +744,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   public initSplit(): void {
     this.splitInstance = Split(['.one', '.two'], {
       sizes: [50, 50],
-      direction: 'vertical',
       minSize: [0, 0]
     });
   }

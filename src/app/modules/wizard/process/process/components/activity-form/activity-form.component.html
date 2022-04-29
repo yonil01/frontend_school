@@ -50,7 +50,7 @@
     <div class="flex gap-4 justify-between items-center mt-4">
       <div class="flex gap-2 items-center justify-center">
         <span>{{'ENABLE' | translate}}</span>
-        <input type="checkbox">
+        <ec-checkbox [ec-value]="form.get('status')?.value" (ec-change)="changeStatusAttribute($event)"></ec-checkbox>
       </div>
       <button type="button" (click)="save()" class="b-solid">{{'SAVE' | translate}}</button>
     </div>

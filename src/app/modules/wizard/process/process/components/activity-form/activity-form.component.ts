@@ -73,12 +73,15 @@ export class ActivityFormComponent implements OnInit {
         activity: new FormControl(this.rule.action, Validators.required),
         status: new FormControl(this.rule.status, Validators.required),
       });
+      console.log(this.rule);
       if (activity) {
         this.fields = [];
         activity.parameters?.forEach((p: ParamActivity) => {
           const parameter = this.rule.rule_params?.find((param) => param.name === p.name);
-          const field = this.buildFormLyObject(p, parameter?.value);
-          this.form.addControl(field.key, new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field)));
+          const field = this.buildFormLyObject(p, p.type_param || 0, parameter?.value);
+          if (field.type !== 'frm') {
+            this.form.addControl(field.key, new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field)));
+          }
           this.fields.push(field);
         });
         for (const field of this.fields) {
@@ -98,12 +101,18 @@ export class ActivityFormComponent implements OnInit {
     this.fields = [];
     const activity = this.activities.find((act) => act.name === event);
     if (activity) {
+      this.attributesCurrent = [];
+      this.formAttributes = new FormGroup({});
       activity?.parameters?.forEach((p: ParamActivity) => {
-        this.typeParam = p.type_param || 0;
         this.attributesCurrent = [];
         this.formAttributes = new FormGroup({});
-        const field = this.buildFormLyObject(p);
-        this.form.addControl(field.key, new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field)));
+        const field = this.buildFormLyObject(p, p.type_param || 0);
+        if (field.type !== 'frm') {
+          if (this.form.controls[field.key]) {
+            this.form.controls[field.key].setValue('');
+          }
+          this.form.addControl(field.key, new FormControl(field.defaultValue ? field.defaultValue : '', this.buildValidators(field)));
+        }
         this.fields.push(field);
       });
       for (const field of this.fields) {
@@ -114,7 +123,7 @@ export class ActivityFormComponent implements OnInit {
     }
   }
 
-  private buildFormLyObject(obj: ParamActivity, value?: string): any {
+  private buildFormLyObject(obj: ParamActivity, typeParam: number, value?: string): any {
     let list;
     let objFormLy: {};
     switch (obj.list) {
@@ -125,6 +134,7 @@ export class ActivityFormComponent implements OnInit {
           className: 'row-input',
           type: obj.type,
           defaultValue: value ? value : null,
+          typeParam,
           templateOptions: {
             label: obj.name,
             placeholder: obj.label,
@@ -142,6 +152,7 @@ export class ActivityFormComponent implements OnInit {
           className: 'row-input',
           type: obj.type,
           defaultValue: value ? value : null,
+          typeParam,
           templateOptions: {
             label: obj.name,
             placeholder: obj.label,
@@ -159,6 +170,7 @@ export class ActivityFormComponent implements OnInit {
           className: 'row-input',
           type: obj.type,
           defaultValue: value ? value : null,
+          typeParam,
           templateOptions: {
             label: obj.name,
             placeholder: obj.label,
@@ -175,6 +187,7 @@ export class ActivityFormComponent implements OnInit {
           key: obj.name,
           className: 'row-input',
           type: obj.type,
+          typeParam,
           defaultValue: value ? value : null,
           templateOptions: {
             label: obj.name,
@@ -187,7 +200,7 @@ export class ActivityFormComponent implements OnInit {
             getValueChangeByIDItem: (field: any, id: string) => {
               this.attributes = this.entities.find((e) => e.id?.toLowerCase() === id.toLowerCase())?.attributes || [];
               const att: any[] = this.attributes.map((a) => ({value: a.id.toLowerCase(), label: a.name}));
-
+              this.typeParam = field.typeParam;
               const indexItem = this.fields.findIndex((f) => f.rules.hasOwnProperty('getValueChangeByIDItem') && f.rules.getValueChangeByIDItem.key === field.key);
               if (indexItem !== -1) {
                 this.fields[indexItem].templateOptions.options = att;
@@ -204,9 +217,18 @@ export class ActivityFormComponent implements OnInit {
             onInit: (field: any) => {
               this.attributes = this.entities.find((e) => e.id?.toLowerCase() === this.form.get(field.key)?.value.toLowerCase())?.attributes || [];
               const att: any[] = this.attributes.map((a) => ({value: a.id.toLowerCase(), label: a.name}));
+              this.typeParam = field.typeParam;
               const indexItem = this.fields.findIndex((f) => f.rules.hasOwnProperty('onInit') && f.rules.onInit.key === field.key);
               if (indexItem !== -1) {
                 this.fields[indexItem].templateOptions.options = att;
+                if (this.fields[indexItem].type !== 'frm') {
+                  this.attributesCurrent = [];
+                  this.formAttributes = new FormGroup({});
+                } else {
+                  const attributes = this.rule.rule_params.map((rp) => ({name: rp.name, value: rp.value})) || [];
+                  this.formAttributes = this.buildFormGroup(this.attributes, attributes);
+                  this.attributesCurrent = this.attributes;
+                }
               }
             }
           }
@@ -220,6 +242,7 @@ export class ActivityFormComponent implements OnInit {
           className: 'row-input',
           type: 'select',
           defaultValue: value ? value : null,
+          typeParam,
           templateOptions: {
             label: obj.name,
             placeholder: obj.label,
@@ -243,6 +266,7 @@ export class ActivityFormComponent implements OnInit {
           className: '',
           type: 'frm',
           defaultValue: value ? value : null,
+          typeParam,
           templateOptions: {
             label: obj.name,
             placeholder: obj.label,
@@ -267,6 +291,7 @@ export class ActivityFormComponent implements OnInit {
             className: 'row-input',
             type: 'input',
             defaultValue: value ? value : null,
+            typeParam,
             templateOptions: {
               type: 'text',
               label: obj.name,
@@ -283,6 +308,7 @@ export class ActivityFormComponent implements OnInit {
             className: 'row-input',
             type: obj.type,
             defaultValue: value ? value : null,
+            typeParam,
             templateOptions: {
               label: obj.name,
               placeholder: obj.label,
@@ -308,7 +334,9 @@ export class ActivityFormComponent implements OnInit {
       }
 
       if (Object.keys(this.formAttributes.value).length > 0) {
-
+        for (const key in this.formAttributes.value) {
+          paramsList.push({name: key, value: this.formAttributes.value[key], type_param: this.typeParam});
+        }
       }
 
       if (this.isCreate) {
@@ -401,4 +429,9 @@ export class ActivityFormComponent implements OnInit {
       field.hooks.getValueChangeByIDItem(field, value);
     }
   }
+
+  public changeStatusAttribute(value: any): void {
+    this.form.get('status')?.setValue(value);
+  }
+
 }
