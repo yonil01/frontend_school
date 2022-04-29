@@ -19,18 +19,18 @@ import {MatIconModule} from "@angular/material/icon";
     DocEntityComponent,
     AutonameComponent
   ],
-    imports: [
-        CommonModule,
-        DocumentsRoutingModule,
-        UiModule,
-        PipesModule,
-        TranslateModule,
-        ReactiveFormsModule,
-        ToastModule,
-        DropdownModule,
-        FormsModule,
-        MatIconModule
-    ]
+  imports: [
+    CommonModule,
+    DocumentsRoutingModule,
+    UiModule,
+    PipesModule,
+    TranslateModule,
+    ReactiveFormsModule,
+    ToastModule,
+    DropdownModule,
+    FormsModule,
+    MatIconModule,
+  ]
 })
 export class DocumentsModule {
 }

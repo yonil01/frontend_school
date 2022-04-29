@@ -37,6 +37,12 @@ export interface Attribute {
   autofill_attributes: number[];
 }
 
+export interface AttributeValue {
+  name: string;
+  value: string;
+}
+
+
 export interface AttributeDataset {
   id?: string;
   dataset_id?: string;

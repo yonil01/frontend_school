@@ -25,6 +25,8 @@ import {PaginationComponent} from "@app/ui/components/table/components/paginatio
 import {NgCircleProgressModule} from "ng-circle-progress";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {RouterModule} from "@angular/router";
+import {EcTemplateDirective} from "@app/ui/directives/ec-template.directive";
+import {DropdownModule} from "ecapture-ng-ui";
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import {RouterModule} from "@angular/router";
     ConfirmDialogComponent,
     SideTaskComponent,
     PaginatorComponent,
-    EcTooltipDirective
+    EcTooltipDirective,
+    EcTemplateDirective
   ],
   exports: [
     FooterComponent,
@@ -73,22 +76,23 @@ import {RouterModule} from "@angular/router";
     IconDirective,
     StepComponent
   ],
-    imports: [
-        CommonModule,
-        DragDropModule,
-        FormsModule,
-        NgCircleProgressModule,
-        Ng2SearchPipeModule,
-        NgCircleProgressModule.forRoot({
-            radius: 100,
-            outerStrokeWidth: 16,
-            innerStrokeWidth: 8,
-            outerStrokeColor: "#78C000",
-            innerStrokeColor: "#C7E596",
-            animationDuration: 300,
-        }),
-        RouterModule,
-    ],
+  imports: [
+    CommonModule,
+    DragDropModule,
+    FormsModule,
+    DropdownModule,
+    NgCircleProgressModule,
+    Ng2SearchPipeModule,
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
+    RouterModule,
+  ],
   providers: [MenuService, LocalStorageService, FilterService]
 })
 export class UiModule {

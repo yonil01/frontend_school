@@ -136,7 +136,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         },
         error: (err: HttpErrorResponse) => {
           console.error(err);
-          this.messageService.add({type: 'error', message: 'No se ha podido cargar los grupos documentales! code 103', life: 5000});
+          this.messageService.add({
+            type: 'error',
+            message: 'No se ha podido cargar los grupos documentales! code 103',
+            life: 5000
+          });
           this.isBlockPage = false;
         }
       })
@@ -164,6 +168,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   public showAddDocType(): void {
     this.view = 'doctypeCreate';
+    this.doctypeForm.get('code')?.enable();
+    /*if (this.docTypeGroupSelected.doctypes && this.docTypeGroupSelected.doctypes?.length) {
+      const code = this.docTypeGroupSelected.doctypes[this.docTypeGroupSelected.doctypes.length - 1].code || 0;
+      this.doctypeForm.get('code')?.setValue(code);
+    }*/
   }
 
   private valueCode(): void {
@@ -182,7 +191,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         error: (err: HttpErrorResponse) => {
           console.error(err);
           this.isBlockPage = false;
-          this.messageService.add({type: 'error', message: 'No se ha podido traer el codigo del tipo documental', life: 5000});
+          this.messageService.add({
+            type: 'error',
+            message: 'No se ha podido traer el codigo del tipo documental',
+            life: 5000
+          });
         }
       })
     );
@@ -330,6 +343,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             this.docTypeGroupSelected.doctypes = this.docTypeGroupSelected.doctypes?.filter(d => d.id !== this.docTypeSelected.id);
             this.docTypesDisplay = this.docTypesDisplay?.filter(d => d.docType.id !== this.docTypeSelected.id);
             this.docTypeSelected = {};
+            this.valueCode();
           }
           this.isBlockPage = false;
         },
@@ -361,6 +375,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
             }
             this.doctypeForm.reset();
             this.docTypesDisplay.push({active: false, docType: doctype});
+            this.valueCode();
           }
           this.isBlockPage = false;
         },

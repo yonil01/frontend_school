@@ -34,7 +34,7 @@
     "bpmn-js-properties-panel": "^0.46.0",
     "crypto-js": "^4.1.1",
     "diagram-js": "^8.2.0",
-    "ecapture-ng-ui": "^0.0.76",
+    "ecapture-ng-ui": "^0.0.80",
     "file-saver": "^2.0.5",
     "graphql": "^15.8.0",
     "jspdf": "^2.5.1",

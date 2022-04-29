@@ -75,7 +75,8 @@
                       <div class="label-dropdown">Cliente</div>
                       <ec-dropdown [(ngModel)]="clientID" [dropStyle]="dropStyle" [data]="clients"
                                    (onChangeValue)="selectClient($event)" placeholder="Seleccione un Cliente"
-                                   optionLabel="name" optionValue="id" [onlyValue]="false" [showClear]="true"></ec-dropdown>
+                                   optionLabel="name" optionValue="id" [onlyValue]="false" [showClear]="true">
+                      </ec-dropdown>
                     </div>
                     <div class="item flex-1 col-span-1">
                       <div class="label-dropdown">Proyecto</div>
