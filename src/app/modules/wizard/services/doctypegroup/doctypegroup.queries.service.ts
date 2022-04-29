@@ -330,6 +330,12 @@ export class GetDoctypeGroupsByProjectIDQuery extends Query<Response> {
             url_path
             storage_id
             format
+            required {
+              id
+              name
+              version
+              is_active
+            }
             autoname
             tipo_soporte
             retencion_electronic

@@ -1,5 +1,6 @@
 import { Entity } from './entity';
 import {Project} from "@app/core/models";
+import {Required} from "@app/core/models/config/annexe";
 
 export interface DocTypeGroups {
   id?: string;
@@ -34,6 +35,7 @@ export interface DocTypes {
   is_cipher?: boolean;
   doctypes_entities?: DoctypeEntities[];
   doctypes_groups_id?: string;
+  required?: Required[];
 }
 
 export interface DoctypeEntities {

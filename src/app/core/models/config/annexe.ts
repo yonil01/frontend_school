@@ -1,17 +1,40 @@
-export interface NewRequired {
+export interface AnnexeRequestModel {
+  id?: string,
+  name?: string,
+  doctype_id?: string,
+  version?: boolean,
+  is_active?: boolean
+}
+
+export interface AnnexeDoctypesRequestModel {
+  id?: string,
+  name?: string,
+  doctype_id?: string,
+  version?: boolean,
+  is_active?: boolean
+}
+
+export interface AnnexeAttributesRequestModel {
+  id?: string,
+  name?: string,
+  doctype_id?: string,
+  version?: number,
+  is_active?: boolean
+}
+
+export interface RequiredDoctypeModel {
   id: string,
-  name: string,
-  doctype_id: string,
-  version: boolean,
-  is_active: boolean
+  required_id: string,
+  doctype_related_id: string,
+  is_required: boolean
 }
 
 export interface Required {
-  id?: string,
-  name: string,
+  id: string,
+  name?: string,
   required_doctypes?: RequiredDoctypes[]
-  version: number,
-  is_active: boolean
+  version?: number,
+  is_active?: boolean
 }
 
 export interface RequiredDoctypes {

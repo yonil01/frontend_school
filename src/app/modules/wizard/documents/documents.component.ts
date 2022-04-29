@@ -10,7 +10,12 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {ToastService} from "ecapture-ng-ui";
-import {controlDoctypegroup, controlDoctypegroups, editDoctypegroup,} from "@app/core/store/actions/doctype.action";
+import {
+  controlDoctype,
+  controlDoctypegroup,
+  controlDoctypegroups,
+  editDoctypegroup,
+} from "@app/core/store/actions/doctype.action";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
 import {Subscription} from "rxjs/internal/Subscription";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -140,7 +145,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           this.isBlockPage = false;
         },
         error: (err: HttpErrorResponse) => {
-          this.messageService.add({type: 'error', message: 'No se ha podido cargar los grupos documentales! code 103', life: 5000});
+          this.messageService.add({
+            type: 'error',
+            message: 'No se ha podido cargar los grupos documentales! code 103',
+            life: 5000
+          });
           this.isBlockPage = false;
         }
       })
@@ -186,7 +195,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         error: (err: HttpErrorResponse) => {
           console.error(err);
           this.isBlockPage = false;
-          this.messageService.add({type: 'error', message: 'No se ha podido traer el codigo del tipo documental', life: 5000});
+          this.messageService.add({
+            type: 'error',
+            message: 'No se ha podido traer el codigo del tipo documental',
+            life: 5000
+          });
         }
       })
     );
@@ -554,7 +567,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public redirectAnnexe(docType: DocTypeGroups) {
+  public redirectAnnexe(docType: DocTypes, indexDocType: number) {
+    this.store.dispatch(controlDoctype({docType, indexDocType}));
+
     sessionStorage.setItem('doctype', JSON.stringify(docType))
     this.router.navigate(["/wizard/documents/annexes-doc"])
   }

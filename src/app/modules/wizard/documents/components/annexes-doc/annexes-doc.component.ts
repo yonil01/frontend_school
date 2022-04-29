@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Customer, DocTypeGroups, Project} from "@app/core/models";
+import {Customer, DocTypeGroups, DocTypes, Project, Response} from "@app/core/models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {NewRequired, Required} from "@app/core/models/config/annexe";
+import {AnnexeRequestModel, Required} from "@app/core/models/config/annexe";
 import {AnnexeService} from "@app/modules/wizard/documents/services/annexe/annexe.service";
 import {State, Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
@@ -11,6 +11,7 @@ import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.mode
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {ToastService} from "ecapture-ng-ui";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
+import {ConfirmationService} from "primeng/api";
 
 
 interface AnnexDoc {
@@ -24,7 +25,7 @@ interface AnnexDoc {
   selector: 'app-annexes-doc',
   templateUrl: './annexes-doc.component.html',
   styleUrls: ['./annexes-doc.component.scss'],
-  providers: [ToastService]
+  providers: [ToastService, ConfirmationService]
 })
 
 export class AnnexesDocComponent implements OnInit {
@@ -36,8 +37,7 @@ export class AnnexesDocComponent implements OnInit {
   public nameClient: string = '';
   public nameProject: string = '';
 
-  public annexesDoc: AnnexDoc[] = [];
-  public annexesDocForPag: AnnexDoc[] = [];
+  public annexesDocForPag: Required[] = [];
   public isEdit = false;
   public isConfig = true;
   public isTab1 = true;
@@ -47,17 +47,35 @@ export class AnnexesDocComponent implements OnInit {
 
   public formAnnexe!: FormGroup;
 
-  public doctypeGroups!: DocTypeGroups;
+  public doctype!: DocTypes;
+  public doctypeAll: DocTypes[] = [];
+  public annexesAll!: Required[];
+
+  public annexeDisplay!: number;
+  public showConfirm = false;
+
+  public annexeSelected!: Required;
+  public isBlockPage = true;
 
   constructor(private _annexeService: AnnexeService, private _fb: FormBuilder, private store: Store<AppState>,
-              private _route: Router, private _messageService: ToastService,
+              private _route: Router, private _messageService: ToastService, private _confirmService: ConfirmationService,
               private _doctypeGroupService: DoctypegroupService) {
 
-    if (sessionStorage.getItem('doctype')) {
-      this.doctypeGroups = JSON.parse(sessionStorage.getItem('doctype') || '')
-    } else {
-      this._route.navigate(['wizard/documents'])
-    }
+    this.store.select('doctype').subscribe((doctypeState) => {
+
+      doctypeState.doctypeGroups.forEach((e) => {
+        if (e.doctypes) this.doctypeAll.push(...e.doctypes);
+      })
+
+      const {doctype} = doctypeState;
+      if ('id' in doctype) {
+        this.doctype = {...doctype};
+        this.annexesAll = doctype.required || [];
+        this.isBlockPage = false;
+      } else {
+        this._route.navigate(["/wizard/documents"])
+      }
+    })
 
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.client = JSON.parse(sessionStorage.getItem('client') || '');
@@ -70,55 +88,21 @@ export class AnnexesDocComponent implements OnInit {
       is_active: [false, []],
     })
 
-    /*if(this.doctypeGroups?.id){
-      this._doctypeGroupService.getRequiredByDoctypeID(this.doctypeGroups?.id).subscribe({
-        next: (res)=>{
-          console.log('correct',res)
-          console.log(this.doctypeGroups  )
-        },
-        error: ()=>{
-
-        }
-      })
-
-      this._doctypeGroupService.getAllDoctype().subscribe({
-        next: (res)=>{
-          console.log('correct all',res)
-          console.log(this.doctypeGroups  )
-        },
-        error: ()=>{
-
-        }
-      })
-    }*/
-
   }
 
   ngOnInit(): void {
-    this.annexesDoc.push({
-      name: 'Persona Jurídica',
-      version: 1,
-      isActive: true,
-      selected: true
-    });
-    this.annexesDoc.push({
-      name: 'Persona Natural',
-      version: 2,
-      isActive: false,
-      selected: false
-    });
   }
 
   public addedAnnexe() {
     if (this.formAnnexe.valid) {
-      const required: NewRequired = {
+      const annexe: AnnexeRequestModel = {
         id: uuidv4().toLowerCase(),
         name: this.formAnnexe.get('name')?.value,
         version: this.formAnnexe.get('version')?.value,
         is_active: this.formAnnexe.get('is_active')?.value,
-        doctype_id: this.doctypeGroups.id?.toString() || ''
+        doctype_id: this.doctype.id?.toString() || ''
       }
-      this._annexeService.createRequired(required).subscribe({
+      this._annexeService.createRequired(annexe).subscribe({
         next: (res: any) => {
           if (res.error) {
             this._messageService.add({type: 'error', message: res.msg, life: 5000})
@@ -137,5 +121,58 @@ export class AnnexesDocComponent implements OnInit {
   }
 
   public onlyNumbers = {}
+
+  public confirmDeleteAnnexe(isConfirm: boolean): void {
+    if (isConfirm) {
+      if (!this.annexeSelected.required_doctypes) {
+        this.deleteAnnexe();
+      } else {
+        this.showConfirm = false;
+        this._messageService.add({
+          type: 'warning',
+          message: 'No se puede eliminar el tipo de documento porque tiene entidades asociadas',
+          life: 5000
+        });
+      }
+    } else {
+      this.showConfirm = false;
+    }
+  }
+
+  private updateAnnexe() {
+    this._annexeService.deleteRequired(this.annexeSelected.id).subscribe({
+      next: (res: Response) => {
+        if (res.error) {
+          this._messageService.add({type: 'error', message: res.msg, life: 5000});
+        } else {
+          this._messageService.add({type: 'succes', message: 'Annexo borrado correctamente!', life: 5000});
+          this.annexesAll = this.annexesAll.filter((annexe) => annexe.id !== this.annexeSelected.id);
+          this.annexeSelected = {} as Required;
+        }
+        this.showConfirm = false;
+      },
+      error: () => {
+        this._messageService.add({type: 'error', message: 'Conexión perdida con el servidor!', life: 5000});
+      }
+    })
+  }
+
+  private deleteAnnexe() {
+    this._annexeService.deleteRequired(this.annexeSelected.id).subscribe({
+      next: (res: Response) => {
+        if (res.error) {
+          this._messageService.add({type: 'error', message: res.msg, life: 5000});
+        } else {
+          this._messageService.add({type: 'succes', message: 'Annexo borrado correctamente!', life: 5000});
+          this.annexesAll = this.annexesAll.filter((annexe) => annexe.id !== this.annexeSelected.id);
+          this.annexeSelected = {} as Required;
+        }
+        this.showConfirm = false;
+      },
+      error: () => {
+        this._messageService.add({type: 'error', message: 'Conexión perdida con el servidor!', life: 5000});
+      }
+    })
+  }
 
 }
