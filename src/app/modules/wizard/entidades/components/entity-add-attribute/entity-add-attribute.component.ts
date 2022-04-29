@@ -56,6 +56,8 @@ export class EntityAddAttributeComponent implements OnInit {
 
   getCascadingdatasets(): void {
     this.isBlock = true;
+    console.log(this.selectedCascading)
+    debugger
     const attributes = this.entity?.attributes ? JSON.parse(JSON.stringify(this.entity.attributes)) : [];
     this.cascadingdatasetsService.getAttributeCascadingDataset().subscribe((res) => {
       this.attributesSelected = [];

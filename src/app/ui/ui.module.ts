@@ -14,7 +14,7 @@ import {FilterService} from "@app/ui/services/filter.service";
 import {ConfirmDialogComponent} from "@app/ui/components/confirm-dialog/confirm-dialog.component";
 import {SideTaskComponent} from './components/side-task/side-task.component';
 import {PaginatorComponent} from './components/paginator/paginator.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EcTooltipDirective} from './directives/ec-tooltip.directive';
 import {TableComponent} from "@app/ui/components/table/table.component";
 import {IconDirective} from "@app/ui/directivas/icon.directive";
@@ -24,9 +24,16 @@ import {StepComponent} from "@app/ui/components/step/step.component";
 import {PaginationComponent} from "@app/ui/components/table/components/pagination/pagination.component";
 import {NgCircleProgressModule} from "ng-circle-progress";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
+import { ListSelectComponent } from './components/list-select/list-select.component';
+import {DropdownModule} from "ecapture-ng-ui";
+import {TranslateModule} from "@ngx-translate/core";
+import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatNativeDateModule} from "@angular/material/core";
 import {RouterModule} from "@angular/router";
 import {EcTemplateDirective} from "@app/ui/directives/ec-template.directive";
-import {DropdownModule} from "ecapture-ng-ui";
 
 @NgModule({
   declarations: [
@@ -59,9 +66,18 @@ import {DropdownModule} from "ecapture-ng-ui";
     SideTaskComponent,
     PaginatorComponent,
     EcTooltipDirective,
-    EcTemplateDirective
+    EcTemplateDirective,
+    ListSelectComponent
   ],
   exports: [
+    FooterComponent,
+    BlockPageComponent,
+    LayoutComponent,
+    PickTaskComponent,
+    ConfirmDialogComponent,
+    SideTaskComponent,
+    PaginatorComponent,
+    EcTooltipDirective,
     FooterComponent,
     BlockPageComponent,
     LayoutComponent,
@@ -74,13 +90,13 @@ import {DropdownModule} from "ecapture-ng-ui";
     ButtonComponent,
     ButtonComponent,
     IconDirective,
-    StepComponent
+    StepComponent,
+    ListSelectComponent,
   ],
   imports: [
     CommonModule,
     DragDropModule,
     FormsModule,
-    DropdownModule,
     NgCircleProgressModule,
     Ng2SearchPipeModule,
     NgCircleProgressModule.forRoot({
@@ -91,7 +107,15 @@ import {DropdownModule} from "ecapture-ng-ui";
       innerStrokeColor: "#C7E596",
       animationDuration: 300,
     }),
-    RouterModule,
+    DropdownModule,
+    TranslateModule,
+    NgxMaterialTimepickerModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    RouterModule
   ],
   providers: [MenuService, LocalStorageService, FilterService]
 })

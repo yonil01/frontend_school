@@ -1,0 +1,61 @@
+<div class="space-y-8 py-4">
+  <div >
+    <div class="text-2xl text-black">{{Object.keys(this.timer).length?'Editar':'Crear'}} Timer</div>
+  </div>
+  <div class="grid grid-cols-2 gap-4" [formGroup]="formTimer">
+    <div class="flex flex-col ">
+      <label>Nombre</label>
+      <input class="input-style" type="text" formControlName="name">
+    </div>
+    <div class="flex flex-col">
+      <label>Tipo</label>
+      <input class="input-style" type="text" formControlName="type">
+    </div>
+    <div class="flex flex-col">
+      <label>Frecuencia</label>
+      <input class="input-style" type="number" formControlName="frequency">
+    </div>
+    <div class="flex flex-col ">
+      <label>Dia de la semana</label>
+      <input class="input-style" type="text" formControlName="day_of_week">
+    </div>
+    <div class="flex flex-col ">
+      <label>Dia de la mes</label>
+      <input class="input-style" type="text" formControlName="day_of_month">
+    </div>
+    <div class="flex flex-col ">
+      <label>Cron</label>
+      <input class="input-style" type="text" formControlName="cron">
+    </div>
+    <div class="flex flex-col flex-1 space-y-1">
+      <label>Fecha Inicio</label>
+      <mat-form-field appearance="fill">
+        <mat-label>MM/DD/YYYY</mat-label>
+        <input matInput [matDatepicker]="dp1" formControlName="begin_at">
+        <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+        <mat-datepicker #dp1></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col flex-1 space-y-1">
+      <label>Fecha Fin</label>
+      <mat-form-field appearance="fill">
+        <mat-label>MM/DD/YYYY</mat-label>
+        <input matInput [matDatepicker]="dp2" formControlName="end_at">
+        <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+        <mat-datepicker #dp2></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+  </div>
+  <div class="w-1/4">
+    <app-button (click)="saveForm()"
+                type="button" label="Guardar"
+                brColor="bg-brand-1"
+                bgColor="bg-brand-1"
+                txtColor="text-white" class="h-12 w-full whitespace-nowrap"></app-button>
+  </div>
+</div>
+<app-block-page [show]="isBlockPage"></app-block-page>
+
