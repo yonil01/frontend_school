@@ -24,7 +24,6 @@ export class LayoutComponent implements OnInit {
   }
 
   public loadUrl() {
-    debugger
     window.location.reload();
   }
 }

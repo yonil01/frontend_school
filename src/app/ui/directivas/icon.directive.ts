@@ -20,6 +20,7 @@ import {
   iconChevronVectorRightOutline32
 } from "@app/ui/icons/chevron-vector/chevron-vector-right/icon";
 import {iconChevronVectorLeftOutline32} from "@app/ui/icons/chevron-vector/chevron-vector-left/icon";
+import {SettingIconOutlineBase} from "@app/ui/icons/setting/icon";
 
 
 
@@ -74,6 +75,8 @@ export class IconDirective implements OnInit {
       return this.findIconAlertOnOutline(iconPosition, this.iconColor)
     } else if (iconName === 'chevron-vector') {
       return this.findIconChevronVectorOutline(iconPosition, this.iconColor);
+    } else if (iconName === 'setting') {
+      return this.findIconSetting(iconPosition, this.iconColor);
     }
       return '';
   }
@@ -185,6 +188,13 @@ export class IconDirective implements OnInit {
       return iconChevronVectorRightOutline32.replace('$2', iconColor);
     } else if (iconPosition === 'left') {
       return  iconChevronVectorLeftOutline32.replace('$2', iconColor);
+    }
+    return '';
+  }
+
+  public findIconSetting(iconPosition: string, iconColor: string): string {
+    if (iconPosition === '32') {
+      return SettingIconOutlineBase.replace('$2', iconColor);
     }
     return '';
   }

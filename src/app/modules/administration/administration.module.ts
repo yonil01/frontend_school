@@ -9,7 +9,7 @@ import {UiModule} from "@app/ui/ui.module";
 
 @NgModule({
   declarations: [
-    AdministrationComponent
+    AdministrationComponent,
   ],
   imports: [
     CommonModule,

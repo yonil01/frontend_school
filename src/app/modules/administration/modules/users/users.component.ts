@@ -70,7 +70,7 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  public  getUsers(): void {
+  public getUsers(): void {
     this.styleTable.dataSource = [];
     this.showLoader[0].value = true;
     this.userService.getUsersByRolesAllow().subscribe((res) => {
@@ -113,7 +113,6 @@ export class UsersComponent implements OnInit {
   }
 
   public eventTableOption(resp:any): void {
-    debugger
     if (resp.type === 'edit') {
       this.showEdit = true;
       this.user = resp.value;
