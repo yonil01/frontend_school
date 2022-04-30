@@ -1,38 +1,17 @@
-import {Component, OnInit, Output, EventEmitter, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-// store
-import {Store} from '@ngrx/store';
-import {AppState} from '@app/core/store/app.reducers';
-import {BpmState} from '@app/core/store/reducers';
-// Services
-import {RoleService} from '@app/core/services/graphql/auth/role/role.service';
-import {EntityService} from '@app/modules/wizard/services/entity/entity.service';
-// Models
-import {
-  Process,
-  Queue,
-  Role,
-  Attribute,
-  Response,
-  Project,
-  QueueRole,
-  QueueAttribute,
-  StepModel, RolesDisplay
-} from '@app/core/models';
-import {QueueComment} from '@app/core/models/config/process';
-import {v4 as uuidv4} from 'uuid';
-import {ProcessService} from '@app/modules/wizard/services/process/process.service';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Execution, ExecutionRole, Queue, Role, RolesDisplay, StepModel} from "@app/core/models";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastService} from "ecapture-ng-ui";
-import {Subscription} from "rxjs/internal/Subscription";
-import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
+import {FilterService} from "@app/ui/services/filter.service";
+import {IconsMaterial} from "@app/core/constants/icons/material-icons";
+import {DataDrop, DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
-import {FilterService} from "@app/ui/services/filter.service";
-import {HttpErrorResponse} from "@angular/common/http";
-import {typesQueues} from "@app/core/utils/constants/constant";
-import {IconsMaterial} from "@app/core/constants/icons/material-icons";
+import {typeTasks, typeTimes} from "@app/core/utils/constants/constant";
+import {v4 as uuidv4} from "uuid";
+import {Subscription} from "rxjs/internal/Subscription";
+import {ProcessService} from "@app/modules/wizard/services/process/process.service";
 
 @Component({
   selector: 'app-task-form',
@@ -40,542 +19,265 @@ import {IconsMaterial} from "@app/core/constants/icons/material-icons";
   styleUrls: ['./task-form.component.scss']
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
-  @Output() createQueueEvent = new EventEmitter<Response>();
-  @Output() updateQueueEvent = new EventEmitter<Response>();
-  @Output() updateNameEvent = new EventEmitter<string>();
-  private _subscription: Subscription = new Subscription();
+
+  @Input() task!: Execution;
+  @Input() typeTask: string = '';
+  @Input('queue') queue!: Queue;
+  @Input('roles') roles: Role[] = [];
+  @Output('cancel-form') cancelForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output('save-task') saveTaskEvent: EventEmitter<Execution> = new EventEmitter<Execution>();
+  @Output('save-role') saveRoleEvent: EventEmitter<ExecutionRole> = new EventEmitter<ExecutionRole>();
+
+  public steps: StepModel[] = [
+    {id: 1, name: 'GENERAL_INFORMATION', active: true}
+  ];
+
+  public positionStep: number = 0;
+  public operation: string = 'add';
+  public taskForm: FormGroup;
+  public icons: any[] = IconsMaterial;
   public readonly dropStyle: DropdownModel = dropStyle;
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
-  public queueForm!: FormGroup;
-  public steps: StepModel[] = [
-    {id: 1, name: 'GENERAL_INFORMATION', active: true},
-    {id: 2, name: 'ROLES', active: false},
-    {id: 3, name: 'ATTRIBUTES', active: false}
-  ];
-  public positionStep: number = 0;
-  public roles: Role[] = [];
-  public attributes: Attribute[] = [];
-  public attributesDisplay: Attribute[] = [];
-  public attributesPagination: Attribute[] = [];
-  private selectionRoles: RolesDisplay[] = [];
+  public timers: DataDrop[] = typeTimes;
+  public blockPage: boolean = false;
+  public _subscription: Subscription = new Subscription();
+  public tasks: Execution[] = [];
+  public executionSelected!: Execution;
   public rolesDisplay: RolesDisplay[] = [];
   public rolesPagination: RolesDisplay[] = [];
-  public selectionAttributesNow: Attribute[] = [];
-  public selectionAttributesNowId: string = '';
-  private selectionAttributesBeforeID: string = '';
-  public balanceType: any[] = [];
-  private client: string = '';
-  private project!: Project;
-  public commentsOptions: QueueComment[] = [];
-  public commentsPaginator: QueueComment[] = [];
-  public commentSelected: QueueComment = {id: '', comment: '', queue_id: ''};
-  public commentForm: FormControl;
-  private readonly typeQueue: any = typesQueues;
-  private element: any;
-  private parentQueue!: Queue;
-  private bpm!: Process;
-  public isBlockPage: boolean = false;
-  public showConfirm: boolean = false;
-  public icons: any[] = IconsMaterial;
+  public rolesAvailable: RolesDisplay[] = [];
 
   constructor(
-    private roleService: RoleService,
-    private entityService: EntityService,
-    private route: ActivatedRoute,
-    private store: Store<AppState>,
-    private processService: ProcessService,
-    private _messageService: ToastService,
-    private _filterService: FilterService
+    private fb: FormBuilder,
+    private messageService: ToastService,
+    private _filterService: FilterService,
+    private _processService: ProcessService,
   ) {
-    this.balanceType = [
-      {value: 0, label: 'Activo'},
-      {value: 1, label: 'Inactivo'},
-    ];
-    this.attributes = [];
-    this.getBpmState();
-    this.commentForm = new FormControl(null);
-  }
-
-  ngOnInit() {
-    this.rolesPagination = [];
-    this.client = sessionStorage.getItem('client') || '';
-    this.project = JSON.parse(sessionStorage.getItem('project') || '');
-    this.initForm();
-    this.getRoles();
-    this.getKeywords();
+    this.taskForm = fb.group({
+      class: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      type: ['', Validators.required],
+      timer: [''],
+      description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(8000)]],
+    });
   }
 
   ngOnDestroy(): void {
     this._subscription.unsubscribe();
   }
 
-  private getBpmState(): void {
-    this.store.select('bpm').subscribe((res: BpmState) => {
-      this.bpm = res.bpm;
-      this.parentQueue = JSON.parse(JSON.stringify(res.task));
-      this.element = res.element;
-    });
-  }
-
-  private initForm(): void {
-    this.selectionAttributesNow = [];
-    this.selectionRoles = [];
-    const info = this.parentQueue.name ? this.parentQueue : null;
-    this.commentsOptions = this.parentQueue.comments ? JSON.parse(JSON.stringify(this.parentQueue.comments)) : [];
-    this.queueForm = new FormGroup({
-      name: new FormControl(info ? info.name : null, Validators.required),
-      sequences: new FormControl(info ? info.sequences : this.bpm.queues ? this.bpm.queues.length + 1 : 1, Validators.required),
-      balance_type: new FormControl(info ? +info.balance_type : null, Validators.required),
-      class: new FormControl(info ? info.class : null, Validators.required),
-      ans: new FormControl(info ? info.ans : null, Validators.required),
-      percent_alert: new FormControl(info ? +info.percent_alert : null, Validators.required),
-      must_confirm_comment: new FormControl(info ? info.must_confirm_comment : false, Validators.required),
-      comments: new FormControl(''),
-      description: new FormControl(info ? info.description : null, Validators.required),
-    });
-    if (this.element.name) this.queueForm.patchValue({name: this.element.name});
-  }
-
-  public updateName(): void {
-    this.updateNameEvent.emit(this.queueForm.get('name')?.value);
-  }
-
-  public saveComment(): void {
-    if (this.commentSelected.id === '') {
-      this.addComment();
+  ngOnInit(): void {
+    if (this.typeTask === 'USER') {
+      this.steps.push({id: 2, name: 'ROLES', active: false});
+      this.taskForm.get('type')?.setValue('User');
+    } else if (this.typeTask === 'SYSTEM') {
+      this.taskForm.get('type')?.setValue('System');
     } else {
-      this.updateComment();
+      this.taskForm.get('type')?.setValue('Timer');
+      this.activeTimers();
     }
   }
 
-  private addComment(): void {
-    if (this.commentForm.value !== '') {
-      const commentPersisten: QueueComment = {
+  public activeTimers(): void {
+    this.taskForm.get('timer')?.setValidators([Validators.required]);
+    this.taskForm.get('timer')?.updateValueAndValidity();
+  }
+
+  public changeRole($event: boolean, roleID: string): void {
+    if ($event) {
+      const executionRole: ExecutionRole = {
         id: uuidv4().toLowerCase(),
-        comment: this.commentForm.value,
-        queue_id: this.parentQueue.id?.toLowerCase()
+        execution_id: this.executionSelected.id?.toLowerCase(),
+        role_id: roleID.toLowerCase(),
       };
-      this.isBlockPage = true;
-      this._subscription.add(
-        this.processService.createQueueComment(commentPersisten).subscribe({
-          next: (res) => {
-            if (res.error) {
-              this._messageService.add({type: 'error', message: res.msg, life: 5000})
-            } else {
-              this.commentsOptions = [...this.commentsOptions, commentPersisten];
-              this.commentForm.reset();
-            }
-            this.isBlockPage = false;
-            this.updateQueueEvent.emit(res);
-          },
-          error: (err: HttpErrorResponse) => {
-            this.isBlockPage = false;
-            console.error(err.error);
-            this._messageService.add({
-              type: 'error',
-              message: err.error.msg,
-              life: 5000
-            });
-          }
-        })
-      );
+      this.createExecutionRole(executionRole, roleID)
     } else {
-      this.commentForm.markAllAsTouched();
-      this._messageService.add({type: 'warning', message: 'El comentario no puede estar vacío!', life: 5000});
-    }
-  }
-
-  private updateComment(): void {
-    if (this.commentForm.value !== '') {
-      const commentPersisten: QueueComment = {
-        id: this.commentSelected.id?.toLowerCase(),
-        comment: this.commentForm.value,
-        queue_id: this.parentQueue.id?.toLowerCase()
-      };
-      this.isBlockPage = true;
-      this._subscription.add(
-        this.processService.updateQueueComment(commentPersisten).subscribe({
-          next: (res) => {
-            if (res.error) {
-              this._messageService.add({type: 'error', message: res.msg, life: 5000});
-            } else {
-              const indexComment = this.commentsOptions.findIndex((cm) => cm.id?.toLowerCase() === this.commentSelected.id?.toLowerCase());
-              if (indexComment !== -1) {
-                this.commentsOptions[indexComment] = commentPersisten;
-              }
-              this.commentSelected = {comment: '', id: '', queue_id: ''};
-              this.commentForm.reset();
-            }
-            this.isBlockPage = false;
-            this.updateQueueEvent.emit(res);
-          },
-          error: (err: Error) => {
-            this.isBlockPage = false;
-            console.error(err.message);
-            this._messageService.add({
-              type: 'error',
-              message: 'Error al actualizar el comentario',
-              life: 5000
-            });
-          }
-        })
-      );
-    } else {
-      this._messageService.add({type: 'warning', message: 'El comentario no puede estar vacío!', life: 5000});
-      this.commentForm.markAllAsTouched();
-    }
-  }
-
-  public confirmDeleteComment(event: boolean): void {
-    if (event) {
-      this.deleteComment();
-    } else {
-      this.showConfirm = false;
-      this.commentSelected = {comment: '', id: '', queue_id: ''};
-    }
-  }
-
-  private deleteComment(): void {
-    if (this.commentSelected) {
-      this._subscription.add(
-        this.processService.deleteQueueComment(this.commentSelected.id?.toLowerCase() || '').subscribe({
-          next: (res) => {
-            if (res.error) {
-              this._messageService.add({type: 'error', message: res.msg, life: 5000});
-            } else {
-              this.commentsOptions = this.commentsOptions.filter((cm) => cm.id?.toLowerCase() !== this.commentSelected.id?.toLowerCase());
-              this.commentSelected = {comment: '', id: '', queue_id: ''};
-              this._messageService.add({type: 'success', message: 'Comentario borrado correctamente', life: 5000});
-            }
-            this.updateQueueEvent.emit(res);
-          },
-          error: (err: Error) => {
-            console.error(err.message);
-            this._messageService.add({
-              type: 'error',
-              message: 'Error al borrar el comentario',
-              life: 5000
-            });
-          }
-        })
-      );
-    }
-  }
-
-  private getRoles(): void {
-    this._subscription.add(
-      this.roleService.getRoles().subscribe({
-        next: (res) => {
-          if (res.error) {
-            this._messageService.add({type: 'error', message: res.msg, life: 5000});
-          } else {
-            this.roles = res.data;
-            if (this.parentQueue.id) this.preloadRoles();
-          }
-        },
-        error: (err: Error) => {
-          console.error(err.message);
-          this._messageService.add({type: 'error', message: 'Error al cargar los roles!', life: 5000});
-        }
-      })
-    );
-  }
-
-  private preloadRoles(): void {
-    const rolesSelected = this.parentQueue.queue_roles ? this.roles.filter((rl) => this.parentQueue.queue_roles?.find((rq) => rq?.role.id.toLowerCase() === rl.id?.toLowerCase())) : [];
-    for (const rol of this.roles) {
-      if (rolesSelected.find((r) => r.id === rol.id)) {
-        this.rolesDisplay.push({role: rol, active: true});
-      } else {
-        this.rolesDisplay.push({role: rol, active: false});
+      const processRole = this.task.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === roleID.toLowerCase());
+      if (processRole) {
+        this.deleteExecutionRole(processRole)
       }
     }
-    this.selectionRoles = this.rolesDisplay;
   }
 
-  private getKeywords(): void {
-    this._subscription.add(
-      this.entityService.getEntitiesByProject(this.project.id.toLowerCase()).subscribe({
-        next: (res) => {
-          if (res.error) {
-            this._messageService.add({type: 'error', message: res.msg, life: 5000});
-          } else {
-            res.data.forEach((a: any) => (this.attributes = this.attributes.concat(a.attributes)));
-            this.attributes = this.attributes.filter((a) => a);
-            if (this.parentQueue.id) this.preloadAttributes();
-          }
-        },
-        error: (err: Error) => {
-          console.error(err.message);
-          this._messageService.add({type: 'error', message: 'Error al cargar las entidades del proyecto', life: 5000});
-        }
-      })
-    );
-  }
-
-  private preloadAttributes(): void {
-    if (this.parentQueue.queue_attributes) {
-      const queueAttributeID = this.parentQueue.queue_attributes[0].attribute?.id || '';
-      this.selectionAttributesNow = this.attributes.filter((a) => queueAttributeID.toLowerCase() === a.id?.toLowerCase());
-      this.selectionAttributesNowId = this.parentQueue.queue_attributes[0].id;
-      this.selectionAttributesBeforeID = this.parentQueue.queue_attributes[0].id;
-    }
-    this.attributesDisplay = [...this.attributes];
-  }
-
-  public saveQueue(isNextStep: boolean): void {
-    if (this.queueForm.valid) {
-      if (this.parentQueue.id) {
-        const queuePersistense = {...this.parentQueue, ...this.queueForm.value};
-        queuePersistense.id = this.parentQueue.id.toLowerCase();
-        queuePersistense.process_id = this.bpm.id?.toLowerCase() || '';
-        queuePersistense.id_bpmn_element = this.element.id;
-        queuePersistense.status = 0;
-        queuePersistense.type = this.typeQueue[this.element.$type];
-        delete queuePersistense.comments;
-        delete queuePersistense.queue_attributes;
-        delete queuePersistense.queue_roles;
-        delete queuePersistense.executions;
-        this.isBlockPage = true;
-        this._subscription.add(
-          this.processService.updateQueue(queuePersistense).subscribe({
-            next: (res) => {
-              if (res.error) {
-                this._messageService.add({type: 'error', message: res.msg, life: 5000});
-              } else {
-                this._messageService.add({type: 'success', message: 'Cola actualizada correctamente', life: 5000});
-                if (this.parentQueue.id) {
-                  this.preloadRoles();
-                  this.preloadAttributes();
-                }
-                if (isNextStep) {
-                  this.positionStep++;
-                  this.steps[this.positionStep].active = true;
-                }
-              }
-
-              this.isBlockPage = false;
-              this.updateQueueEvent.emit(res);
-            },
-            error: (err: HttpErrorResponse) => {
-              this.isBlockPage = false;
-              console.error(err.message);
-              this._messageService.add({type: 'error', message: 'Error al actualizar la cola', life: 5000});
-            }
-          })
-        );
+  public saveTask(): void {
+    if (this.taskForm.valid) {
+      const formValues = this.taskForm.value;
+      formValues.type = typeTasks.find((t) => t.label === formValues.type)?.value || 3;
+      const execution: Execution = {
+        ...formValues,
+        id: uuidv4().toLowerCase(),
+        queue_id: this.queue.id?.toLowerCase(),
+      };
+      if (this.operation === 'add') {
+        this.createTask(execution)
       } else {
-        const queuePersistense: Queue = this.queueForm.value;
-        queuePersistense.id = uuidv4().toLowerCase();
-        queuePersistense.process_id = this.bpm.id?.toLowerCase() || '';
-        queuePersistense.id_bpmn_element = this.element.id;
-        queuePersistense.status = 0;
-        queuePersistense.type = this.typeQueue[this.element.$type];
-        delete queuePersistense.comments;
-        this.isBlockPage = true;
-        this._subscription.add(
-          this.processService.createQueue(queuePersistense).subscribe({
-            next: (res) => {
-              if (res.error) {
-                this._messageService.add({type: 'error', message: res.msg, life: 5000});
-              } else {
-                this.parentQueue = queuePersistense;
-                if (this.parentQueue.id) {
-                  this.preloadRoles();
-                  this.preloadAttributes();
-                }
-                this._messageService.add({type: 'success', message: 'Cola creada exitosamente', life: 5000});
-                if (isNextStep) {
-                  this.positionStep++;
-                  this.steps[this.positionStep].active = true;
-                }
-              }
-              this.isBlockPage = false;
-              this.createQueueEvent.emit(res);
-            },
-            error: (err: HttpErrorResponse) => {
-              this.isBlockPage = false;
-              console.error(err.message);
-              this._messageService.add({type: 'error', message: 'Error al crear la cola', life: 5000});
-            }
-          })
-        );
+        execution.id = this.executionSelected.id?.toLowerCase();
+        this.updateTask(execution);
       }
     } else {
-      this.queueForm.markAllAsTouched();
-      this._messageService.add({type: 'warning', message: 'Complete todos los campos del formulario correctamente', life: 5000});
-    }
-  }
-
-  public unselectedAttribute(id: string): void {
-    if (this.parentQueue.queue_attributes?.length) {
-      this._subscription.add(
-        this.processService.deleteQueueAttribute(id.toLowerCase()).subscribe({
-          next: (res) => {
-            if (res.error) {
-              this._messageService.add({type: 'error', message: res.msg, life: 5000});
-            } else {
-              this.parentQueue.queue_attributes = this.parentQueue.queue_attributes?.filter(queueAttribute => queueAttribute.id !== id);
-              this.updateQueueEvent.emit(res);
-            }
-          },
-          error: (err: Error) => {
-            console.error(err);
-            this._messageService.add({message: 'Error al eliminar atributo', type: 'error', life: 5000});
-          },
-        })
-      );
+      this.taskForm.markAllAsTouched();
+      this.messageService.add({type: 'warning', message: 'Complete correctamente todos los campos!', life: 5000});
     }
   }
 
   public filterRoles(event: any): void {
     const filterValue = event.target.value;
     if (filterValue && filterValue.length) {
-      const searchFields: string[] = ('name' || 'description' || 'label').split(',');
-      this.rolesDisplay = this._filterService.filter(this.selectionRoles, searchFields, filterValue, 'contains');
+      const searchFields: string[] = ('name' || 'type' || 'label').split(',');
+      this.rolesDisplay = this._filterService.filter(this.rolesAvailable, searchFields, filterValue, 'contains');
     } else {
-      this.rolesDisplay = this.selectionRoles;
+      this.rolesDisplay = this.rolesAvailable;
     }
   }
 
-  public filterAttributes(event: any): void {
-    const filterValue = event.target.value;
-    if (filterValue && filterValue.length) {
-      const searchFields: string[] = ('name,description,label').split(',');
-      this.attributesDisplay = this._filterService.filter(this.attributes, searchFields, filterValue, 'contains');
-    } else {
-      this.attributesDisplay = [...this.attributes];
+  public backStep(): void {
+    this.positionStep--;
+    this.steps[this.positionStep].active = false;
+  }
+
+  public cancelCreateOrEdit(): void {
+    this.cancelForm.emit(true);
+    this.positionStep = 0;
+    this.steps[1].active = false;
+    this.taskForm.reset();
+    this.operation = 'add';
+  }
+
+  private loadProcessProcessRoles(task: Execution): void {
+    this.rolesDisplay = [];
+    this.rolesAvailable = [];
+    if (task) {
+      for (const r of this.roles) {
+        if (task.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === r.id?.toLowerCase())) {
+          this.rolesDisplay.push({role: r, active: true});
+        } else {
+          this.rolesDisplay.push({role: r, active: false});
+        }
+      }
+      this.rolesAvailable = [...this.rolesDisplay];
     }
   }
 
-  public changeRole($event: boolean, role: Role): void {
-    if ($event) {
-      const queueRolePersistense: QueueRole = {
-        id: uuidv4().toLowerCase(),
-        queue_id: this.parentQueue.id.toLowerCase(),
-        role_id: role.id?.toLowerCase(),
-      };
-      this.isBlockPage = true;
-      this._subscription.add(
-        this.processService.createQueueRole(queueRolePersistense).subscribe({
+  private createTask(execution: Execution): void {
+    this.blockPage = true;
+    this._subscription.add(
+      this._processService.createExecution(execution).subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            execution.execution_roles = [];
+            this.executionSelected = execution;
+            this.saveTaskEvent.emit(execution);
+            if (execution.type === 3) {
+              this.positionStep++;
+              this.steps[this.positionStep].active = true;
+              this.loadProcessProcessRoles(execution);
+            }
+            this.messageService.add({type: 'success', message: 'Ejecuión creada correctamente!', life: 5000});
+          }
+          this.blockPage = false;
+        },
+        error: (err: Error) => {
+          this.blockPage = false;
+          console.error(err.message);
+          this.messageService.add({type: 'error', message: 'No se pudo crear la ejecución!', life: 5000});
+        },
+      })
+    );
+  }
+
+  private updateTask(execution: Execution): void {
+    this.blockPage = true;
+    this._subscription.add(
+      this._processService.updateExecution(execution).subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            this.positionStep++;
+            const indexExecution = this.tasks.findIndex((t) => t.id?.toLowerCase() === execution.id?.toLowerCase());
+            if (indexExecution !== -1) {
+              this.tasks[indexExecution].name = execution.name;
+              this.tasks[indexExecution].type = execution.type;
+              this.tasks[indexExecution].class = execution.class;
+              this.tasks[indexExecution].description = execution.description;
+              this.tasks[indexExecution].timer = execution.timer;
+              this.executionSelected = execution;
+              if (execution.type === 3) {
+                this.loadProcessProcessRoles(execution);
+              }
+            }
+            this.steps[this.positionStep].active = true;
+          }
+          this.blockPage = false;
+        },
+        error: (err: Error) => {
+          this.blockPage = false;
+          console.error(err.message);
+          this.messageService.add({type: 'error', message: 'No se pudo actualizar la ejecución!', life: 5000});
+        }
+      })
+    );
+  }
+
+  private createExecutionRole(executionRole: ExecutionRole, roleID: string): void {
+    this.blockPage = true;
+    this._subscription.add(
+      this._processService.createExecutionRole(executionRole).subscribe({
           next: (res) => {
             if (res.error) {
-              this._messageService.add({type: 'error', message: res.msg, life: 5000});
-            } else {
-              queueRolePersistense.role = role;
-              this.parentQueue.queue_roles = this.parentQueue.queue_roles ? this.parentQueue.queue_roles : [];
-              const roleFindIndex = this.rolesDisplay.findIndex((r) => r.role.id === role.id);
-              if (roleFindIndex > -1) {
-                this.rolesDisplay[roleFindIndex].active = true;
+              this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              const indexRoleDisplay = this.rolesDisplay.findIndex((r) => r.role.id?.toLowerCase() === roleID.toLowerCase());
+              if (indexRoleDisplay !== -1) {
+                this.rolesDisplay[indexRoleDisplay].active = false;
+                this.rolesAvailable = this.rolesDisplay.map(role => role);
               }
-              this.parentQueue.queue_roles.push(queueRolePersistense);
-              this.updateQueueEvent.emit(res);
-              this._messageService.add({type: 'success', message: 'Rol asignado correctamente', life: 5000});
+            } else {
+              this.messageService.add({type: 'success', message: 'Rol Asignado correctamente!', life: 5000});
+              const indexRoleDisplay = this.rolesDisplay.findIndex((r) => r.role.id?.toLowerCase() === roleID.toLowerCase());
+              if (indexRoleDisplay !== -1) {
+                this.rolesDisplay[indexRoleDisplay].active = true;
+                this.rolesAvailable = this.rolesAvailable = this.rolesDisplay.map(role => role);
+              }
+              this.saveRoleEvent.emit(executionRole);
             }
-            this.isBlockPage = false;
+            this.blockPage = false;
           },
           error: (err: Error) => {
-            this.isBlockPage = false;
+            this.blockPage = false;
             console.error(err.message);
-            this._messageService.add({
-              type: 'error',
-              message: 'Error al asignar el rol a la cola de trabajo!',
-              life: 5000
-            });
-          }
-        })
-      );
-    } else {
-      const queueRole = this.parentQueue.queue_roles?.find((qr: QueueRole) => qr.role?.id?.toLowerCase() === role.id?.toLowerCase());
-      if (queueRole) {
-        this.isBlockPage = true;
-        this._subscription.add(
-          this.processService.deleteQueueRole(queueRole.id?.toLowerCase() || ' ').subscribe({
-            next: (res) => {
-              if (res.error) {
-                this._messageService.add({type: 'error', message: res.msg, life: 5000});
-              } else {
-                const roleFindIndex = this.rolesDisplay.findIndex((r) => r.role.id === role.id);
-                if (roleFindIndex > -1) {
-                  this.rolesDisplay[roleFindIndex].active = false;
-                }
-                this.parentQueue.queue_roles = this.parentQueue.queue_roles?.filter((qr) => qr.role.id.toLowerCase() !== role.id?.toLowerCase());
-                this.updateQueueEvent.emit(res);
-              }
-              this.isBlockPage = false;
-            },
-            error: (err: Error) => {
-              this.isBlockPage = false;
-              console.error(err.message);
-              this._messageService.add({type: 'error', message: 'Error al eliminar el rol', life: 5000});
+            this.messageService.add({type: 'error', message: 'No se pudo asignar el rol!', life: 5000});
+          },
+        }
+      )
+    );
+  }
+
+  private deleteExecutionRole(processRole: ExecutionRole): void {
+    this.blockPage = true;
+    this._subscription.add(
+      this._processService.deleteExecutionRole(processRole.id?.toLowerCase() || '').subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.messageService.add({type: 'error', message: res.msg, life: 5000});
+          } else {
+            const indexExecution = this.tasks.findIndex((r) => r.id?.toLowerCase() === this.executionSelected.id?.toLowerCase());
+            if (indexExecution !== -1) {
+              this.executionSelected.execution_roles = this.executionSelected.execution_roles?.filter((r) => r.id?.toLowerCase() !== processRole.id?.toLowerCase());
+              this.tasks[indexExecution].execution_roles = this.executionSelected.execution_roles;
+              this.messageService.add({type: 'success', message: 'Rol Desasignado correctamente!', life: 5000});
             }
-          })
-        );
-      }
-    }
-  }
-
-  public addCommentStep(event: boolean): void {
-    if (event) {
-      if (!this.steps.find(s => s.id === 4)) {
-        this.steps.push({
-          id: 4,
-          active: false,
-          name: 'COMMENTS',
-        });
-      }
-    } else {
-      this.steps.pop();
-    }
-  }
-
-  public isSelectedAttribute(attribute: Attribute): boolean {
-    return this.selectionAttributesNow.length > 0 && this.selectionAttributesNow[0].id === attribute.id;
-  }
-
-  public changeAttribute(event: boolean, attribute: Attribute): void {
-    if (event) {
-      if (this.selectionAttributesNow) {
-        const queueAttributePersistense: QueueAttribute = {
-          id: uuidv4().toLowerCase(),
-          queue_id: this.parentQueue.id.toLowerCase(),
-          attribute_id: attribute.id.toLowerCase()
-        };
-        this.isBlockPage = true;
-        this._subscription.add(
-          this.processService.createQueueAttribute(queueAttributePersistense).subscribe({
-            next: (res) => {
-              if (res.error) {
-                this._messageService.add({type: 'error', message: res.msg, life: 5000});
-              } else {
-                if (this.selectionAttributesBeforeID) {
-                  this.unselectedAttribute(this.selectionAttributesBeforeID);
-                }
-                queueAttributePersistense.attribute = attribute;
-                this.parentQueue.queue_attributes = this.parentQueue.queue_attributes ? this.parentQueue.queue_attributes : [];
-                this.parentQueue.queue_attributes.push(queueAttributePersistense);
-                this.updateQueueEvent.emit(res);
-                this.selectionAttributesBeforeID = this.selectionAttributesNowId;
-                this.selectionAttributesNow = [attribute];
-                this.selectionAttributesNowId = res.data.id;
-                this._messageService.add({type: 'success', message: 'Atributo asignado correctamente', life: 5000});
-              }
-              this.isBlockPage = false;
-            },
-            error: (err: Error) => {
-              this.isBlockPage = false;
-              console.error(err);
-              this._messageService.add({type: 'error', message: 'No se pudo asignar el atributo', life: 5000});
-            },
-          })
-        );
-      }
-    }
-  }
-
-  public editComment(comment: QueueComment): void {
-    this.commentSelected = comment;
-    this.commentForm.setValue(comment.comment);
+          }
+          this.blockPage = false;
+        },
+        error: (err: Error) => {
+          this.blockPage = false;
+          console.error(err.message);
+          this.messageService.add({type: 'error', message: 'No se pudo eliminar el rol!', life: 5000});
+        },
+      })
+    );
   }
 
 }

@@ -1,34 +1,33 @@
 <div class="w-full flex" style="height: calc(100vh - 3rem)">
   <div class="w-12 h-full bg-mono-10">
-    <div class="h-12 w-full flex items-center justify-center cursor-pointer b-ghost" ecTooltip tooltip="Tareas de tipo Timer">
+    <div class="h-12 w-full flex items-center justify-center cursor-pointer {{typeTask === 'TIMER' ? 'b-solid' : 'b-ghost'}}" ecTooltip tooltip="Tareas de tipo Timer" (click)="setTypeTask('timer')">
       <svg width="24" height="24" viewBox="0 0 24 24" class="fill-current" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 5C16.6944 5 20.5 8.80558 20.5 13.5C20.5 18.1944 16.6944 22 12 22C7.30558 22 3.5 18.1944 3.5 13.5C3.5 8.80558 7.30558 5 12 5ZM12 6.5C8.13401 6.5 5 9.63401 5 13.5C5 17.366 8.13401 20.5 12 20.5C15.866 20.5 19 17.366 19 13.5C19 9.63401 15.866 6.5 12 6.5ZM12 8C12.3797 8 12.6935 8.28215 12.7432 8.64823L12.75 8.75V13.25C12.75 13.6642 12.4142 14 12 14C11.6203 14 11.3065 13.7178 11.2568 13.3518L11.25 13.25V8.75C11.25 8.33579 11.5858 8 12 8ZM19.1472 5.11371L19.2298 5.17355L20.3882 6.13773C20.7066 6.40272 20.7498 6.87562 20.4849 7.19398C20.2419 7.48581 19.8243 7.54649 19.5112 7.35047L19.4286 7.29063L18.2702 6.32645C17.9518 6.06146 17.9086 5.58856 18.1735 5.2702C18.4165 4.97837 18.8341 4.91769 19.1472 5.11371ZM14.25 2.5C14.6642 2.5 15 2.83579 15 3.25C15 3.6297 14.7178 3.94349 14.3518 3.99315L14.25 4H9.75C9.33579 4 9 3.66421 9 3.25C9 2.8703 9.28215 2.55651 9.64823 2.50685L9.75 2.5H14.25Z"/>
       </svg>
     </div>
-    <div class="h-12 w-full flex items-center justify-center cursor-pointer b-ghost" ecTooltip tooltip="Tareas de tipo Systema">
+    <div class="h-12 w-full flex items-center justify-center cursor-pointer {{typeTask === 'SYSTEM' ? 'b-solid' : 'b-ghost'}}" ecTooltip tooltip="Tareas de tipo Systema" (click)="setTypeTask('system')">
       <svg width="24" height="24" viewBox="0 0 24 24" class="fill-current" xmlns="http://www.w3.org/2000/svg">
         <path d="M2.75098 16.4998H21.2497C21.6639 16.4998 21.9997 16.8356 21.9997 17.2498C21.9997 17.6295 21.7176 17.9433 21.3515 17.993L21.2497 17.9998H2.75098C2.33676 17.9998 2.00098 17.664 2.00098 17.2498C2.00098 16.8701 2.28313 16.5563 2.64921 16.5067L2.75098 16.4998H21.2497H2.75098ZM18.2504 5.00034C19.2168 5.00034 20.0004 5.78384 20.0004 6.75034V14.2506C20.0004 15.2171 19.2168 16.0006 18.2504 16.0006H5.75035C4.78385 16.0006 4.00035 15.2171 4.00035 14.2506V6.75034C4.00035 5.78384 4.78385 5.00034 5.75035 5.00034H18.2504ZM18.2504 6.50034H5.75035C5.61228 6.50034 5.50035 6.61226 5.50035 6.75034V14.2506C5.50035 14.3887 5.61228 14.5006 5.75035 14.5006H18.2504C18.3884 14.5006 18.5004 14.3887 18.5004 14.2506V6.75034C18.5004 6.61226 18.3884 6.50034 18.2504 6.50034Z"/>
       </svg>
     </div>
-    <div class="h-12 w-full flex items-center justify-center cursor-pointer b-ghost" ecTooltip tooltip="Tareas de tipo Usuario">
+    <div class="h-12 w-full flex items-center justify-center cursor-pointer {{typeTask === 'USER' ? 'b-solid' : 'b-ghost'}}" ecTooltip tooltip="Tareas de tipo Usuario" (click)="setTypeTask('user')">
       <span appIcon iconName="person"></span>
     </div>
   </div>
   <div class="flex-1 h-full p-12">
     <div>
       <div *ngIf="showView === 'list'">
-
         <div class="t-body-1 text-black dark:text-white mb-12 font-bold">
-          <span>{{'TASK' | translate}}</span>
+          <span>{{'EXECUTIONS' | translate}} ({{typeTask | translate}})</span>
         </div>
 
-        <div class="flex w-full items-center justify-between mb-6">
-          <button class="b-solid" (click)="showView = 'createOrUpdate'; operation = 'add'">{{'NEW_TASK' |  translate}}</button>
+        <div *ngIf="tasks.length && tasksDisplay.length" class="flex w-full items-center justify-between mb-6">
+          <button class="b-outline rounded-md" (click)="showView = 'createOrUpdate'; operation = 'add'">{{'NEW_TASK_TYPE_' + typeTask |  translate}}</button>
           <div><input [disabled]="tasks.length <= 0 " class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_TASK' | translate}}"
-                      (input)="filterItemsTarget($event, tasks)"></div>
+                      (input)="filterItemsTarget($event)"></div>
         </div>
 
-        <div *ngIf="tasks.length > 0" class="w-full">
+        <div *ngIf="tasks.length && tasksDisplay.length" class="w-full">
           <div class="table-h hidden md:block w-full">
             <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
               <div class="p-2 w-16">N°</div>
@@ -54,8 +53,7 @@
                         </svg>
                       </div>
                     </button>
-                    <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10"
-                            (click)="executionSelected = task; showAlert = true">
+                    <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" (click)="executionSelected = task; showAlert = true">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -80,13 +78,16 @@
           </div>
           <app-paginator [data]="tasksDisplay" (current-data-page)="tasksPagination = $event"></app-paginator>
         </div>
-        <div *ngIf="tasks.length === 0" class="w-full flex items-center justify-center text-brand-d-1 text-xl">
-          <span>No hay tareas creadas!</span>
+
+        <div *ngIf="!tasksDisplay.length" class="w-full flex flex-col items-center justify-center text-brand-d-1 text-xl font-bold gap-6">
+          <span>{{'THERE_ARE_NO_'+typeTask+'_TASKS' | translate}}!</span>
+          <button class="b-outline rounded-md" (click)="showView = 'createOrUpdate'; operation = 'add'">{{'NEW_TASK_TYPE_' + typeTask | translate}}</button>
         </div>
       </div>
 
       <div *ngIf="showView ==='createOrUpdate'">
-        <div class="flex gap-4 mb-12">
+        <app-task-form [queue]="parentQueue" [roles]="roles" (cancel-form)="cancelCreateOrEdit()" (save-task)="saveTask($event)" (save-role)="saveExecutionRole($event)" [typeTask]="typeTask"></app-task-form>
+        <!--<div class="flex gap-4 mb-12">
           <div class="flex gap-1 items-center" *ngFor="let step of steps; let position = index">
             <div class="rounded-full h-8 w-8 {{step.active ? 'bg-brand-l-1 text-white' : 'bg-mono-10 text-black'}} flex items-center justify-center"><span>{{position + 1}}</span></div>
             <div class="text-brand-d-1 t-caption-1">
@@ -161,7 +162,7 @@
         </div>
         <div *ngIf="positionStep === 1 && taskForm.get('type')?.value === 3">
           <div class="flex w-full items-center justify-between mb-5">
-            <!--<button class="b-outline">{{'SELECT_ALL' |  translate}}</button>-->
+            &lt;!&ndash;<button class="b-outline">{{'SELECT_ALL' |  translate}}</button>&ndash;&gt;
             <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_ROL' | translate}}"
                         (input)="filterRoles($event)"></div>
           </div>
@@ -189,7 +190,7 @@
             <button class="flex-1 md:flex-none b-solid" (click)="cancelCreateOrEdit()">
               {{'EXIT' | translate}}</button>
           </div>
-        </div>
+        </div>-->
       </div>
 
       <div *ngIf="showView === 'activities'">

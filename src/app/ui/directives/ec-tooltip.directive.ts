@@ -7,6 +7,7 @@ export class EcTooltipDirective implements OnDestroy {
 
   @Input() tooltip = '';
   @Input() delay? = 100;
+  @Input() position: string = 'bottom';
 
   private myPopup: any;
   private timer: number = 0;
@@ -24,6 +25,7 @@ export class EcTooltipDirective implements OnDestroy {
     this.timer = setTimeout(() => {
       let x = this.el.nativeElement.getBoundingClientRect().left + this.el.nativeElement.offsetWidth / 2;
       let y = this.el.nativeElement.getBoundingClientRect().top + this.el.nativeElement.offsetHeight + 6;
+
       this.createTooltipPopup(x, y);
     }, this.delay)
   }
@@ -41,6 +43,7 @@ export class EcTooltipDirective implements OnDestroy {
     popup.setAttribute("class", "tooltip-container");
     popup.style.top = y.toString() + "px";
     popup.style.left = x.toString() + "px";
+
     document.body.appendChild(popup);
     this.myPopup = popup;
     setTimeout(() => {

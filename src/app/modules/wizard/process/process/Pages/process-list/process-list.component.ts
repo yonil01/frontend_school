@@ -18,7 +18,6 @@ import {Router} from "@angular/router";
 import {controlBpm} from "@app/core/store/actions/bpm.action";
 import {AppState} from "@app/core/store/app.reducers";
 import {Store} from "@ngrx/store";
-import {TableModel} from "@app/ui/components/table/model/table.model";
 import {Ans, Reminder} from "@app/core/models/config/ans";
 import {NotificationService} from "@app/modules/administration/services/notification/notification.service";
 import {NotificationModel} from "@app/core/models/config/notification";
@@ -303,36 +302,6 @@ export class ProcessListComponent implements OnInit, OnDestroy {
         }
       })
     );
-
-    /*if (this.showReminder) {
-      const dataTemp = this.processes.filter((data:ProcessCard)=>data.process.id===this.idProcess);
-      dataTemp[0].process.sla?.forEach((data: Ans, index: number)=> {
-        this.dataListAns[index].value = data;
-      })
-      this.changeStep(1);
-    } else {
-      this.dataListAns = [];
-      const dataTemp = this.processes.filter((data:ProcessCard)=>data.process.id===this.idProcess);
-      dataTemp[0].process.sla?.forEach((data: Ans)=> {
-        this.dataListAns.push({status: false, value: data});
-      })
-    }*/
-  }
-
-  public onSubmitThirdStep(): void {
-    /*if (this.rolesSelected.length > 0) {
-      if (this.idProcess === '') {
-        this.createProcessRole(this.currentProcess.process);
-      } else {
-        console.log('update');
-      }
-    } else {
-      this._messageService.add({
-        message: 'Debe de seleccionar al menos un rol para poder guardar!',
-        type: 'warning',
-        life: 5000
-      });
-    }*/
   }
 
   private createProcess(): void {
@@ -814,7 +783,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
 
   public changeStatus(index: number):void {
     this.dataListAns[index].status = !this.dataListAns[index].status;
-    if (this.searchReminderActive()) this.activeOneAns = true; else this.activeOneAns = false;
+    this.activeOneAns = this.searchReminderActive();
   }
 
   public changeStatusReminder(index: number): void {
