@@ -76,10 +76,13 @@ export class BasicInformationComponent implements OnInit {
         Validators.email, Validators.minLength(5), Validators.maxLength(255)],
       ],
       identification_type: ['', Validators.required],
-      identification_number: ['', [Validators.required, Validators.maxLength(255)]],
-      password: [''],
-      password_comfirm: [''],
-    });
+      identification_number: ['', [Validators.required,  Validators.pattern(/^-?(0|[1-9]\d*)?$/), Validators.maxLength(50)]],
+      password: ['', this.returnExistUser()?'':Validators.required],
+      password_confirm: ['', this.returnExistUser()?'':Validators.required],
+    },
+      {
+        validator: [this.confirmPasswordValidator],
+      });
     this.secretKey = '';
     this.disabledNext =  false;
   }
@@ -96,6 +99,13 @@ export class BasicInformationComponent implements OnInit {
       },
     );
   }
+
+  confirmPasswordValidator = (form: FormGroup) => {
+    const password = form.get('password');
+    const password_confirm = form.get('password_confirm');
+    return password?.value === password_confirm?.value ? null : {notEqualPassword: true};
+  };
+
 
   public nextStep() {
     if (this.formBasicInfo.valid) {
@@ -134,13 +144,12 @@ export class BasicInformationComponent implements OnInit {
       userPersistence.last_name = this.formBasicInfo.get('last_name')?.value;
       userPersistence.email_notifications = this.formBasicInfo.get('email_notifications')?.value;
       userPersistence.identification_type = this.formBasicInfo.get('identification_type')?.value;
-      userPersistence.identification_number = this.formBasicInfo.get('identification_number')?.value;
+      userPersistence.identification_number = String(this.formBasicInfo.get('identification_number')?.value);
       userPersistence.password = encryptText(this.formBasicInfo.get('password')?.value, this.secretKey);
       userPersistence.password_comfirm = encryptText(this.formBasicInfo.get('password_comfirm')?.value, this.secretKey);
       this.user = userPersistence;
       this.returnUser.emit(this.user)
       this.userService.createUser(userPersistence).subscribe((resp: Response) => {
-        debugger
         if (resp.error) {
           //this.showLoading(false);
           this.isBlockPage = false;
@@ -206,7 +215,7 @@ export class BasicInformationComponent implements OnInit {
       userPersistence.name = this.formBasicInfo.get('name')?.value;
       userPersistence.last_name = this.formBasicInfo.get('last_name')?.value;
       userPersistence.email_notifications = this.formBasicInfo.get('email_notifications')?.value;
-      userPersistence.identification_number = this.formBasicInfo.get('identification_number')?.value;
+      userPersistence.identification_number = String(this.formBasicInfo.get('identification_number')?.value);
       userPersistence.identification_type = this.formBasicInfo.get('identification_type')?.value;
       userPersistence.password = '';
       userPersistence.password_comfirm = '';
@@ -221,6 +230,8 @@ export class BasicInformationComponent implements OnInit {
           this.isBlockPage = false;
           if (this.typeExecution === 1) {
             this.changeStatusStep(0);
+          } else {
+            window.location.reload();
           }
         } else {
           this.addToast({

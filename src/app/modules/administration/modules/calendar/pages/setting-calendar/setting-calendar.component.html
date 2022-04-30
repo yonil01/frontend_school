@@ -9,7 +9,7 @@
     <app-list-select [stileSelectList]="dataStyleList" (dataReturn)="eventTableOption($event)">
       <ng-container ng-form-select>
         <div *ngIf="!indexItemActive" class="w-full" [formGroup]="formWorkingDaysWeek" >
-          <div class="w-1/2 grid border">
+          <div class="w-1/2 grid">
             <label>Nombre</label>
             <input class="input-style" type="text" formControlName="name">
             <span *ngIf="formWorkingDaysWeek.get('name')?.hasError('required') && formWorkingDaysWeek.get('name')?.touched" class="text-alert-error text-xs">Campo requerido</span>
@@ -17,15 +17,16 @@
           <div class="w-full grid grid-cols-2 gap-4">
             <div class="w-full">
               <div>
-                <span class="text-sm ">Desde</span>
+                <label class="text-sm ">Desde</label>
               </div>
               <div class="w-full flex space-x-4 grid-cols-2">
-                <ec-dropdown [filter]="true" placeholder="Selecciona el dia" [showClear]="true" formControlName="start_day"
-                             [data]="dataWeek" [dropStyle]="dropStyle"
-                ></ec-dropdown>
-
+                <div class="w-full ">
+                  <select formControlName="start_day" class="ec-input w-full">
+                    <option *ngFor="let day of dataWeek" [value]="day.value">{{day.label}}</option>
+                  </select>
+                </div>
                   <div class="min-time-example">
-                    <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="start_time"
+                    <input class="w-full  h-10 border-0 text-center" placeholder="00:00:00" formControlName="start_time"
                            [ngxTimepicker]="min" [min]="'03:15 am'" readonly>
                     <ngx-material-timepicker #min></ngx-material-timepicker>
                   </div>
@@ -33,14 +34,14 @@
             </div>
             <div class="w-full">
               <div>
-                <span class="text-sm ">Hasta</span>
+                <label class="text-sm ">Hasta</label>
               </div>
               <div class="w-full flex space-x-4 grid-cols-2">
-                <ec-dropdown [filter]="true" placeholder="Selecciona el dia" [showClear]="true" formControlName="end_day"
-                             [data]="dataWeek" [dropStyle]="dropStyle"
-                ></ec-dropdown>
+                <div class="w-full">
+                  <input [disabled]="true" class="w-full h-12 ec-input text-center" value="{{arrayDays[formWorkingDaysWeek.get('start_day')?.value]}}" >
+                </div>
                   <div class="min-time-example">
-                    <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="end_time"
+                    <input class="w-full h-10 border-0 text-center" placeholder="00:00:00" formControlName="end_time"
                            [ngxTimepicker]="minu" [min]="'03:15 am'" readonly>
                     <ngx-material-timepicker #minu></ngx-material-timepicker>
                   </div>
@@ -49,15 +50,15 @@
           </div>
         </div>
         <div *ngIf="indexItemActive" class="w-full" [formGroup]="formCalendarHoliday" >
-          <div class="w-1/2 grid border">
+          <div class="w-1/2 grid">
             <label>Nombre</label>
             <input class="input-style" type="text" formControlName="name">
             <span *ngIf="formCalendarHoliday.get('name')?.hasError('required') && formCalendarHoliday.get('name')?.touched" class="text-alert-error text-xs">Campo requerido</span>
           </div>
           <div class="w-full grid grid-cols-3 gap-4">
-                <div class="flex flex-col flex-1 h-10 space-y-1">
+                <div class="flex flex-col flex-1 h-10">
                   <div>
-                    <span class="text-sm ">Dia Festivo</span>
+                    <label class="text-sm ">Dia Festivo</label>
                   </div>
                   <mat-form-field  appearance="legacy">
                     <mat-label>MM/DD/YYYY</mat-label>
@@ -66,22 +67,22 @@
                     <mat-datepicker #dp1></mat-datepicker>
                   </mat-form-field>
                 </div>
-                <div class="w-full">
+                <div class="w-full space-y-1">
                   <div>
-                    <span class="text-sm ">Hora Inicio</span>
+                    <label class="text-sm ">Hora Inicio</label>
                   </div>
                   <div class="min-time-example">
-                    <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="start_time"
+                    <input class="w-full h-10 border-0 text-center" placeholder="00:00:00" formControlName="start_time"
                            [ngxTimepicker]="min" [min]="'03:15 am'" readonly>
                     <ngx-material-timepicker #min></ngx-material-timepicker>
                   </div>
                 </div>
-                <div class="w-full">
+                <div class="w-full space-y-1">
                   <div>
-                    <span class="text-sm ">Hora Final</span>
+                    <label class="text-sm ">Hora Final</label>
                   </div>
                   <div class="min-time-example">
-                    <input class="w-full h-12 border-0 text-center" placeholder="00:00:00" formControlName="end_time"
+                    <input class="w-full h-10 border-0 text-center" placeholder="00:00:00" formControlName="end_time"
                            [ngxTimepicker]="min1" [min]="'03:15 am'" readonly>
                     <ngx-material-timepicker #min1></ngx-material-timepicker>
                   </div>

@@ -164,13 +164,16 @@ export class GetUserByIDQuery extends Query<Response> {
 export class CreateUserQuery extends Mutation {
   document = gql`
     mutation createUser($rq: RequestNewUser!) {
-      createUser(input: $rq) {
-        error
-        code
-        type
-        msg
-      }
+  createUser(input: $rq) {
+    error
+    code
+    data {
+      identification_number
     }
+    type
+    msg
+  }
+}
   `;
 }
 

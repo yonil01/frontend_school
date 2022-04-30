@@ -34,8 +34,10 @@ export class SettingCalendarComponent implements OnInit {
   public isEdit: boolean = false;
   public isBlockPage: boolean = false;
   public idCalendarWorkingDayWeek: string = '';
+  public idCalendarHoliday: string = '';
   public indexItemActive: number;
   public formCalendarHoliday: FormGroup;
+  public arrayDays = Days;
   constructor(private _formBuilder: FormBuilder,
               private datePipe: DatePipe,
               private _calendarService: CalendarService,) {
@@ -43,7 +45,6 @@ export class SettingCalendarComponent implements OnInit {
       name: ['', [Validators.required]],
       start_day: ['', [Validators.required]],
       start_time: ['', [Validators.required]],
-      end_day: ['', [Validators.required]],
       end_time: ['', [Validators.required]],
     });
     this.indexItemActive = 0;
@@ -61,9 +62,8 @@ export class SettingCalendarComponent implements OnInit {
           const newItem:any = {
             value: data,
             value1: data.name,
-            value2: this.getStructDate(data.start_time),
-            value3: this.getStructDate(data.end_time),
-            value4: data.day_number,
+            value2: Days[data.day_number]+ ' ' +this.datePipe.transform(data.start_time,'shortTime'),
+            value3: Days[data.day_number]+ ' ' +this.datePipe.transform(data.end_time,'shortTime'),
             status: {
               value: false,
             },
@@ -74,8 +74,6 @@ export class SettingCalendarComponent implements OnInit {
 
     if (this.calendar.calendar_holidays) {
       this.calendar.calendar_holidays.forEach((data:CalendarHolidays)=>{
-        console.log(data)
-        debugger
         const newItem:any = {
           value: data,
           value1: data.name,
@@ -118,8 +116,6 @@ export class SettingCalendarComponent implements OnInit {
   }
 
   public saveFormCalendarDayWeek():void {
-    console.log(this.formWorkingDaysWeek)
-    debugger
     if (this.formWorkingDaysWeek.valid) {
       this.isBlockPage = true;
       const newData:CalendarWorkingDayWeek = {
@@ -146,9 +142,8 @@ export class SettingCalendarComponent implements OnInit {
                   const newItem:any = {
                     value: res.data,
                     value1: res.data.name,
-                    value2: this.getStructDate(res.data.start_time),
-                    value3: this.getStructDate(res.data.end_time),
-                    value4: res.data.day_number,
+                    value2: Days[res.data.day_number]+ ' ' +this.datePipe.transform(res.data.start_time,'shortTime'),
+                    value3: Days[res.data.day_number]+ ' ' +this.datePipe.transform(res.data.end_time,'shortTime'),
                     status: {
                       value: false,
                     },
@@ -190,9 +185,8 @@ export class SettingCalendarComponent implements OnInit {
                 const newItem:any = {
                   value: res.data,
                   value1: res.data.name,
-                  value2: this.getStructDate(res.data.start_time),
-                  value3: this.getStructDate(res.data.end_time),
-                  value4: res.data.day_number,
+                  value2: Days[res.data.day_number]+ ' ' +this.datePipe.transform(res.data.start_time,'shortTime'),
+                  value3: Days[res.data.day_number]+ ' ' +this.datePipe.transform(res.data.end_time,'shortTime'),
                   status: {
                     value: false,
                   },
@@ -262,23 +256,71 @@ export class SettingCalendarComponent implements OnInit {
 
   public eventTableOption(resp:any): void {
      if (resp.type === 'delete') {
-      this.deleteCalendarWorkingDaysWeeks(resp.value);
+      if (!this.indexItemActive) {
+        this.deleteCalendarWorkingDaysWeeks(resp.value)
+      } else {
+        this.deleteCalendarHoliday(resp.value);
+      }
     }
      if (resp.type === 'edit') {
-       this.loadDateInForm(resp.value);
+         this.loadDateInForm(resp.value);
+
      }
      if (resp.type === 'change-status') {
        this.indexItemActive = resp.value;
      }
   }
 
+  public deleteCalendarHoliday(calendarHoliday: CalendarHolidays): void {
+    this.isBlockPage = true;
+    this._subscription.add(
+      this._calendarService.deleteCalendarHoliday(calendarHoliday.id!).subscribe({
+        next: (res) => {
+          if (res.error) {
+            this.isBlockPage = false;
+            this.addToast({
+              type: 'error',
+              message: res.msg,
+              life: 5000,
+            })
+            this.isBlockPage = false;
+          } else {
+            this.addToast({
+              type: 'success',
+              message: res.msg,
+              life: 5000,
+            })
+            const index= this.dataStyleList[0].dataSource?.findIndex((item:any)=>item.value.id===calendarHoliday.id);
+            this.dataStyleList[1].dataSource?.splice(index!, 1);
+            this.isBlockPage = false;
+          }
+        },
+        error: (err: Error) => {
+          this.isBlockPage = false;
+          this.addToast({
+            type: 'error',
+            message: ''+err,
+            life: 5000,
+          })
+        }
+      })
+    )
+  }
+
   public loadDateInForm(data: any): void {
-    this.idCalendarWorkingDayWeek = data.id;
-    this.formWorkingDaysWeek.get('name')?.setValue(data.name);
-    this.formWorkingDaysWeek.get('start_day')?.setValue(new Date(data.start_time));
-    this.formWorkingDaysWeek.get('start_time')?.setValue(this.datePipe.transform(data.start_time, 'shortTime'));
-    this.formWorkingDaysWeek.get('end_day')?.setValue(new Date(data.end_time));
-    this.formWorkingDaysWeek.get('end_time')?.setValue(this.datePipe.transform(data.end_time, 'shortTime'));
+    if (!this.indexItemActive) {
+      this.idCalendarWorkingDayWeek = data.id;
+      this.formWorkingDaysWeek.get('name')?.setValue(data.name);
+      this.formWorkingDaysWeek.get('start_day')?.setValue(data.day_number);
+      this.formWorkingDaysWeek.get('start_time')?.setValue(this.datePipe.transform(data.start_time, 'shortTime'));
+      this.formWorkingDaysWeek.get('end_time')?.setValue(this.datePipe.transform(data.end_time, 'shortTime'));
+    } else {
+      this.idCalendarHoliday = data.id;
+      this.formCalendarHoliday.get('name')?.setValue(data.name);
+      this.formCalendarHoliday.get('holiday_date')?.setValue(data.holiday_date);
+      this.formCalendarHoliday.get('start_time')?.setValue(this.datePipe.transform(data.start_time, 'shortTime'));
+      this.formCalendarHoliday.get('end_time')?.setValue(this.datePipe.transform(data.end_time, 'shortTime'));
+    }
     this.isEdit = true;
   }
 
@@ -286,7 +328,7 @@ export class SettingCalendarComponent implements OnInit {
     if (this.formCalendarHoliday.valid) {
       this.isBlockPage = true;
       const newData:CalendarHolidays = {
-        id: this.isEdit?this.idCalendarWorkingDayWeek:uuidv4().toLowerCase(),
+        id: this.isEdit?this.idCalendarHoliday:uuidv4().toLowerCase(),
         name: this.formCalendarHoliday.get('name')?.value,
         holiday_date: this.formCalendarHoliday.get('holiday_date')?.value,
         start_time: this.returnDateISOS(this.formCalendarHoliday.get('start_time')?.value),
@@ -298,6 +340,8 @@ export class SettingCalendarComponent implements OnInit {
         this._subscription.add(
           this._calendarService.updateCalendarHoliday(newData).subscribe({
             next: (res) => {
+              console.log(res)
+              debugger
               if (res.error) {
                 this.addToast({
                   type: 'error',
@@ -310,16 +354,17 @@ export class SettingCalendarComponent implements OnInit {
                   const newItem:any = {
                     value: res.data,
                     value1: res.data.name,
-                    value2: this.getStructDate(res.data.start_time),
-                    value3: this.getStructDate(res.data.end_time),
-                    value4: res.data.day_number,
+                    value2: this.datePipe.transform(res.data.holiday_date,'shortDate'),
+                    value3: this.datePipe.transform(res.data.start_time,'shortTime'),
+                    value4: this.datePipe.transform(res.data.end_time,'shortTime'),
+                    value5: res.data.status_holiday_id,
                     status: {
                       value: false,
                     },
                   }
-                  const index = this.dataStyleList[0].dataSource?.findIndex((item:any)=>item.value.id===this.idCalendarWorkingDayWeek);
+                  const index = this.dataStyleList[1].dataSource?.findIndex((item:any)=>item.value.id===this.idCalendarHoliday);
                   // @ts-ignore
-                  this.dataStyleList[0].dataSource[index] = newItem;
+                  this.dataStyleList[1].dataSource[index] = newItem;
                 }
                 this.addToast({
                   type: 'success',
@@ -353,9 +398,9 @@ export class SettingCalendarComponent implements OnInit {
                 const newItem:any = {
                   value: res.data,
                   value1: res.data.name,
-                  value2: res.data.holiday_date,
-                  value3: res.data.start_time,
-                  value4: res.data.end_time,
+                  value2: this.datePipe.transform(res.data.holiday_date,'shortDate'),
+                  value3: this.datePipe.transform(res.data.start_time,'shortTime'),
+                  value4: this.datePipe.transform(res.data.end_time,'shortTime'),
                   value5: res.data.status_holiday_id,
                   status: {
                     value: false,

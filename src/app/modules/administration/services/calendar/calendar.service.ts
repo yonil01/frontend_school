@@ -4,8 +4,8 @@ import {Response} from "@app/core/models";
 import {map} from "rxjs/operators";
 import {
   CreateCalendar, CreateCalendarHoliday, CreateCalendarWorkingDaysWeeks,
-  DeleteCalendar, DeleteCalendarWorkingDaysWeeks,
-  GetCalendars, UpdateCalendar, UpdateCalendarWorkingDaysWeeks
+  DeleteCalendar, DeleteCalendarHoliday, DeleteCalendarWorkingDaysWeeks,
+  GetCalendars, UpdateCalendar, UpdateCalendarHoliday, UpdateCalendarWorkingDaysWeeks
 } from "@app/modules/administration/services/calendar/calendar.queries.service";
 import {Calendar} from "@app/core/models/config/calendar";
 import {
@@ -27,6 +27,8 @@ export class CalendarService {
     private deleteModuleCalendarWorkingDaysWeeks: DeleteCalendarWorkingDaysWeeks,
     private updateModuleCalendarWorkingDaysWeeks: UpdateCalendarWorkingDaysWeeks,
     private createModuleCalendarHoliday: CreateCalendarHoliday,
+    private deleteModuleCalendarHoliday: DeleteCalendarHoliday,
+    private updateModuleCalendarHoliday: UpdateCalendarHoliday
   ) { }
 
   createCalendar(calendar: Calendar): Observable<Response> {
@@ -98,18 +100,18 @@ export class CalendarService {
   }
 
   deleteCalendarHoliday(id: string): Observable<Response> {
-    return this.deleteModuleCalendarWorkingDaysWeeks
+    return this.deleteModuleCalendarHoliday
       .mutate({
         id: id,
       })
-      .pipe(map(({data}: any) => data.deleteCalendarWorkingDaysWeeks));
+      .pipe(map(({data}: any) => data.deleteCalendarHoliday));
   }
 
   updateCalendarHoliday(calendarHoliday: CalendarHolidays): Observable<Response> {
-    return this.updateModuleCalendarWorkingDaysWeeks
+    return this.updateModuleCalendarHoliday
       .mutate({
         rq: {data: calendarHoliday},
       })
-      .pipe(map(({data}: any) => data.updateCalendarWorkingDaysWeeks));
+      .pipe(map(({data}: any) => data.updateCalendarHoliday));
   }
 }

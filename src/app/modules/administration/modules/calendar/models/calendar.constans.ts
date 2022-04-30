@@ -45,30 +45,30 @@ export const dropStyle: DropdownModel = {
 export const dataWeek: DataDrop[] = [
   {
     label: 'Lunes',
-    value: 1
+    value: 0
   },
   {
     label: 'Martes',
-    value: 2
+    value: 1
   },
   {
     label: 'Miercoles',
-    value: 3
+    value: 2
   },
   {
     label: 'Jueves',
-    value: 4
+    value: 3
   },{
     label: 'Viernes',
-    value: 5
+    value: 4
   },
   {
     label: 'Sabado',
-    value: 6
+    value: 5
   },
   {
     label: 'Domingo',
-    value: 7
+    value: 6
   },
 ]
 
@@ -82,14 +82,12 @@ export const styleSelectList: ItemSelectList[] = [
         label: 'Nombre',
       },
       {
-        label: 'Fecha inicio',
+        label: 'Horario Inicio',
       },
       {
-        label: 'Fecha Fin',
+        label: 'Horario Final',
       },
-      {
-        label: 'Numero de dias',
-      },
+
       {
         label: 'Opciones',
       },

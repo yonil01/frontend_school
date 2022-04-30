@@ -31,6 +31,7 @@ import {
 } from "@app/modules/wizard/process/process/components/activity-form/activity-form.component";
 import {CardModule} from "primeng/card";
 import {PipesModule} from "@app/core/pipes/pipes.module";
+import {NgCircleProgressModule} from "ng-circle-progress";
 
 
 @NgModule({
@@ -44,30 +45,39 @@ import {PipesModule} from "@app/core/pipes/pipes.module";
     ActivitiesComponent,
     ActivityFormComponent
   ],
-  imports: [
-    CommonModule,
-    ProcessRoutingModule,
-    UiModule,
-    ReactiveFormsModule,
-    FormsModule,
-    IconsModule,
-    ToastModule,
-    MatMenuModule,
-    TranslateModule,
-    DropdownModule,
-    CheckboxModule,
-    ButtonModule,
-    TreeSelectModule,
-    ContextMenuModule,
-    ToastModule,
-    PerfectScrollbarModule,
-    ToastModule,
-    ConfirmDialogModule,
-    CardModule,
-    InputTextModule,
-    InputDateModule,
-    PipesModule
-  ]
+    imports: [
+        CommonModule,
+        ProcessRoutingModule,
+        UiModule,
+        ReactiveFormsModule,
+        FormsModule,
+        IconsModule,
+        ToastModule,
+        MatMenuModule,
+        TranslateModule,
+        DropdownModule,
+        CheckboxModule,
+        ButtonModule,
+        TreeSelectModule,
+        ContextMenuModule,
+        ToastModule,
+        PerfectScrollbarModule,
+        ToastModule,
+        ConfirmDialogModule,
+        CardModule,
+        InputTextModule,
+        InputDateModule,
+        PipesModule,
+      NgCircleProgressModule.forRoot({
+        radius: 100,
+        outerStrokeWidth: 16,
+        innerStrokeWidth: 8,
+        outerStrokeColor: "#78C000",
+        innerStrokeColor: "#C7E596",
+        animationDuration: 300,
+        clockwise:true,
+      }),
+    ]
 })
 export class ProcessModule {
 }

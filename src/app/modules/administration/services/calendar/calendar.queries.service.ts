@@ -239,9 +239,67 @@ export class CreateCalendarHoliday extends Mutation {
       start_time
       end_time
       calendar_id
+      status_holiday_id
       created_at
       updated_at
       id_user
+    }
+    type
+    msg
+  }
+}
+
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DeleteCalendarHoliday extends Mutation {
+  document = gql`
+   mutation deleteCalendarHoliday($id: ID!) {
+  deleteCalendarHoliday(id: $id) {
+    error
+    data {
+       id
+      name
+      holiday_date
+      start_time
+      end_time
+      status_holiday_id
+      calendar_id
+      id_user
+      created_at
+      updated_at
+    }
+    code
+    type
+    msg
+  }
+}
+  `;
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UpdateCalendarHoliday extends Mutation {
+  document = gql`
+  mutation updateCalendarHoliday($rq: RequestUpdateCalendarHoliday!) {
+  updateCalendarHoliday(input: $rq) {
+    error
+    code
+    data {
+      id
+      name
+      holiday_date
+      start_time
+      end_time
+      status_holiday_id
+      calendar_id
+      id_user
+      updated_at
     }
     type
     msg
