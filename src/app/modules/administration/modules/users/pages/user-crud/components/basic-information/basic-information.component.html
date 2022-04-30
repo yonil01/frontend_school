@@ -114,7 +114,7 @@
           <div
             *ngIf="formBasicInfo.get('password_confirm')?.dirty && (formBasicInfo.get('password_confirm')?.errors || formBasicInfo.get('password_confirm')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo?.errors?.notEqualPassword&&formBasicInfo.get('password_confirm')?.hasError('required')">Verifica la contraseña</span>
+            <span *ngIf="formBasicInfo?.errors?.notEqualPassword&&!formBasicInfo.get('password_confirm')?.hasError('required')">Verifica la contraseña</span>
             <span *ngIf="formBasicInfo.get('password_confirm')?.hasError('required')">El descripción es requerido</span>
           </div>
         </div>

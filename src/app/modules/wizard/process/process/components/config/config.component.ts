@@ -26,6 +26,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   public readonly dropStyle: DropdownModel = dropStyle;
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
   public positionStep: number = 0;
+  public typeTask: string = 'TIMER';
 
   @Input('queue-selected') parentQueue!: Queue;
   public taskForm: FormGroup;
@@ -38,9 +39,9 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   public rolesDisplay: RolesDisplay[] = [];
   public rolesPagination: RolesDisplay[] = [];
   public operation: string = 'add';
-  public typesTasks: {value: number, label: string}[] = typeTasks;
+  public typesTasks: { value: number, label: string }[] = typeTasks;
   public task!: Execution;
-  public rolesAvailable: RolesDisplay[];
+  public rolesAvailable: RolesDisplay[] = [];
   public timers: DataDrop[] = typeTimes;
   public steps: StepModel[] = [
     {id: 1, name: 'GENERAL_INFORMATION', active: true},
@@ -80,7 +81,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
       this.getRoles();
       const taskFind = this.parentQueue.executions ? [...this.parentQueue.executions] : [];
       this.tasks = JSON.parse(JSON.stringify(taskFind));
-      this.tasksDisplay = JSON.parse(JSON.stringify(taskFind));
+      this.tasksDisplay = this.getTaskByType();
     }
   }
 
@@ -116,7 +117,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public saveTask(): void {
+  public saveTask_v1(): void {
     if (this.taskForm.valid) {
       if (this.operation === 'add') {
         const execution: Execution = {
@@ -139,7 +140,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
                   this.steps[this.positionStep].active = true;
                   this.loadProcessProcessRoles(execution);
                 }
-                this.tasksDisplay = [...this.tasks];
+                this.tasksDisplay = this.getTaskByType();
                 this.messageService.add({type: 'success', message: 'Ejecuión creada correctamente!', life: 5000});
               }
               this.blockPage = false;
@@ -320,13 +321,14 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public filterItemsTarget(event: any, dataToFilter: any): void {
+  public filterItemsTarget(event: any): void {
     const filterValue = event.target.value;
     if (filterValue && filterValue.length) {
+      const tasks = this.getTaskByType();
       const searchFields: string[] = ('name' || 'type' || 'label').split(',');
-      this.tasksDisplay = this._filterService.filter(dataToFilter, searchFields, filterValue, 'contains');
+      this.tasksDisplay = this._filterService.filter(tasks, searchFields, filterValue, 'contains');
     } else {
-      this.tasksDisplay = this.tasks;
+      this.tasksDisplay = this.getTaskByType();
     }
   }
 
@@ -359,20 +361,8 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public backStep(): void {
-    this.positionStep--;
-    this.steps[this.positionStep].active = false;
-  }
-
   public cancelCreateOrEdit(): void {
     this.showView = 'list';
-    this.positionStep = 0;
-    if (!this.steps.find(step => step.id === 2)) {
-      this.steps.push({id: 2, name: 'ROLES', active: false});
-    }
-    this.steps[1].active = false;
-    this.taskForm.reset();
-    this.operation = 'add';
     this.executionSelected = {
       class: "",
       description: "",
@@ -400,6 +390,44 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     });
     if (execution.type !== 3) {
       this.steps.pop();
+    }
+  }
+
+  public setTypeTask(typeTask: string): void {
+    switch (typeTask) {
+      case 'system':
+        this.typeTask = 'SYSTEM';
+        break;
+      case 'timer':
+        this.typeTask = 'TIMER';
+        break;
+      default:
+        this.typeTask = 'USER';
+    }
+    this.showView = 'list';
+    this.tasksDisplay = this.getTaskByType();
+  }
+
+  public getTaskByType(): Execution[] {
+    switch (this.typeTask) {
+      case 'SYSTEM':
+        return this.tasks.filter((task => task.type === 1));
+      case 'TIMER':
+        return this.tasks.filter((task => task.type === 2));
+      default:
+        return this.tasks.filter((task => task.type === 3));
+    }
+  }
+
+  public saveTask(task: Execution): void {
+    this.tasks.push(task);
+    this.tasksDisplay = this.getTaskByType();
+  }
+
+  public saveExecutionRole(executionRole: ExecutionRole): void {
+    const indexExecution = this.tasks.findIndex((r) => r.id?.toLowerCase() === this.executionSelected.id?.toLowerCase());
+    if (indexExecution !== -1) {
+      this.tasks[indexExecution]?.execution_roles?.push(executionRole);
     }
   }
 

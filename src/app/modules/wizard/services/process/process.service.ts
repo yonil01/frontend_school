@@ -332,12 +332,8 @@ export class ProcessService {
       .pipe(map(({data}: any) => data.deleteExecutionRole));
   }
 
-  createExecutionRule(rule: Rule): Observable<Response> {
-    return this.createExecutionRuleQuery
-      .mutate({
-        request: {data: rule},
-      })
-      .pipe(map(({data}: any) => data.createExecutionRule));
+  public createExecutionRule(rule: Rule): Observable<Response> {
+    return this.createExecutionRuleQuery.mutate({request: {data: rule}}).pipe(map(({data}: any) => data.createExecutionRule));
   }
 
   updateExecutionRule(rule: Rule): Observable<Response> {

@@ -11,9 +11,6 @@ export class ActivityService {
   constructor(private getActivitiesQuery: GetActivitiesQuery) {}
 
   public getActivities(): Observable<Response> {
-    return this.getActivitiesQuery.watch().valueChanges.pipe(
-      first(),
-      map(({ data }: any) => data.getActivities),
-    );
+    return this.getActivitiesQuery.watch().valueChanges.pipe(first(), map(({ data }: any) => data.getActivities));
   }
 }

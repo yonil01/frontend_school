@@ -24,7 +24,7 @@
           <span class="text-black capitalize">{{entity.templateOptions.label | replace: '_': ' '}}</span>
           <input *ngIf="entity.type === 'input'" class="ec-input w-full" type="text" [placeholder]="entity.templateOptions.placeholder" [formControlName]="entity.key">
           <ec-dropdown *ngIf="entity.type === 'select'" class="mt-1" [formControlName]="entity.key"
-                       [dropStyle]="dropStyle" [filter]="true" optionLabel="label" [data]="entity.templateOptions.options"
+                       [dropStyle]="dropStyle" [filter]="true" optionLabel="label" optionValue="value" [data]="entity.templateOptions.options"
                        [placeholder]="entity.templateOptions.placeholder" [showClear]="true" (onChangeValue)="executeHook(entity, $event)"></ec-dropdown>
           <small *ngIf="getForm.get(entity.key)?.touched && getForm.get(entity.key)?.invalid"
                  class="text-alert-error">
@@ -32,13 +32,27 @@
           </small>
         </div>
       </div>
-      <div class="flex gap-4 justify-between items-center">
-        <div class="flex gap-2 items-center justify-center">
-          <span>{{'ENABLE' | translate}}</span>
-          <input type="checkbox" formControlName="status">
-        </div>
-        <button type="button" (click)="save()" class="b-solid">{{'SAVE' | translate}}</button>
-      </div>
     </form>
+
+    <div class="mt-4 w-full h-full" *ngIf="attributesCurrent.length">
+      <form class="flex flex-col gap-4" [formGroup]="formAttributes">
+        <div *ngFor="let attribute of attributesCurrent; let position = index" class="flex flex-col gap-2 w-full">
+          <span class="text-black capitalize">{{attribute.name | replace: '_': ' '}}</span>
+          <input *ngIf="attribute.tag_html === 'Input'" class="ec-input w-full" type="text" [formControlName]="attribute.name">
+          <small *ngIf="getForm.get(attribute.name)?.touched && getForm.get(attribute.name)?.invalid"
+                 class="text-alert-error">
+            El campo es requerido
+          </small>
+        </div>
+      </form>
+    </div>
+
+    <div class="flex gap-4 justify-between items-center mt-4">
+      <div class="flex gap-2 items-center justify-center">
+        <span>{{'ENABLE' | translate}}</span>
+        <ec-checkbox [ec-value]="form.get('status')?.value" (ec-change)="changeStatusAttribute($event)"></ec-checkbox>
+      </div>
+      <button type="button" (click)="save()" class="b-solid">{{'SAVE' | translate}}</button>
+    </div>
   </p-card>
 </div>

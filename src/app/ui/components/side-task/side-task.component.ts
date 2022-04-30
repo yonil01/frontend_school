@@ -29,7 +29,7 @@ const hideAnimation = animation([
 export class SideTaskComponent implements OnInit {
 
   @Input('tile-side') title: string = '';
-
+  @Input('full-view') fullView: boolean = false;
 
   @Output('on-close') close: EventEmitter<boolean> = new EventEmitter<boolean>();
   public transformOptions: string = "translate3d(100%, 0px, 0px)";

@@ -1,10 +1,10 @@
 <div class="flex gap-4 items-center">
-  <button type="button" class="b-outline" (click)="backTasksEvent()">{{'BACK' | translate}}</button>
+  <button type="button" class="b-outline rounded-md" (click)="backTasksEvent()">{{'BACK' | translate}}</button>
   <div class="text-xl text-black"><span>{{executionInput.name}}</span></div>
 </div>
 
-<div class="w-full h-full mt-4">
-  <div class="one w-full">
+<div class="w-full h-full mt-4 flex">
+  <div class="one">
     <perfect-scrollbar>
       <p-tree
         [value]="treeData"
@@ -13,7 +13,7 @@
           margin: 'areSomeExecs' ? '1em 1em 1em 1em' : '0em 1em 1em 1em',
           width: 'calc(100% - 2em)',
           overflow: 'auto',
-          height: showForm ? '30vh' : '70vh'
+          height: '70vh'
     }"
         selectionMode="single"
         [(selection)]="node"
@@ -24,13 +24,11 @@
           <div class="node-container">
             <span class="ui-treenode-icon" [class]="node['data'].icon"></span>
             <span>{{ node['label'] }}</span>
-            <span
-              class="pi pi-circle-on on-status-icon"
+            <span class="pi pi-circle-on on-status-icon"
               *ngIf="node['data']['status'] !== null && node['data']['status']"
               pTooltip="Activo"
             ></span>
-            <span
-              class="pi pi-circle-off off-status-icon"
+            <span class="pi pi-circle-off off-status-icon"
               *ngIf="node['data']['status'] !== null && !node['data']['status']"
               pTooltip="Inactivo"
             ></span>
@@ -40,7 +38,7 @@
     </perfect-scrollbar>
   </div>
 
-  <div class="two h-full">
+  <div class="two">
     <perfect-scrollbar *ngIf="showForm">
       <div class="flex justify-end" style="margin: 0.3em 1em 0 0;">
         <i class="pi pi-times cursor-pointer" (click)="showForm = false"></i>

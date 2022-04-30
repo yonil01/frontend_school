@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BlockPageComponent} from "@app/ui/components/block-page/block-page.component";
-import {SidebarComponent} from "@app/ui/components/sidebar/sidebar.component";
 import {LayoutComponent} from "@app/ui/components/layout/layout.component";
 import {HeaderComponent} from "@app/ui/components/header/header.component";
 import {FooterComponent} from "@app/ui/components/footer/footer.component";
@@ -33,13 +32,13 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatNativeDateModule} from "@angular/material/core";
 import {RouterModule} from "@angular/router";
+import {EcTemplateDirective} from "@app/ui/directives/ec-template.directive";
 
 @NgModule({
   declarations: [
     FooterComponent,
     HeaderComponent,
     LayoutComponent,
-    SidebarComponent,
     BlockPageComponent,
     MenuComponent,
     TableComponent,
@@ -57,7 +56,6 @@ import {RouterModule} from "@angular/router";
     FooterComponent,
     HeaderComponent,
     LayoutComponent,
-    SidebarComponent,
     BlockPageComponent,
     MenuComponent,
     PickTaskComponent,
@@ -65,25 +63,33 @@ import {RouterModule} from "@angular/router";
     SideTaskComponent,
     PaginatorComponent,
     EcTooltipDirective,
+    EcTemplateDirective,
     ListSelectComponent
   ],
-    exports: [
-        FooterComponent,
-        BlockPageComponent,
-        LayoutComponent,
-        PickTaskComponent,
-        ConfirmDialogComponent,
-        SideTaskComponent,
-        PaginatorComponent,
-        EcTooltipDirective,
-        TableComponent,
-        ButtonComponent,
-        ButtonComponent,
-        IconDirective,
-        StepComponent,
-        ListSelectComponent,
-
-    ],
+  exports: [
+    FooterComponent,
+    BlockPageComponent,
+    LayoutComponent,
+    PickTaskComponent,
+    ConfirmDialogComponent,
+    SideTaskComponent,
+    PaginatorComponent,
+    EcTooltipDirective,
+    FooterComponent,
+    BlockPageComponent,
+    LayoutComponent,
+    PickTaskComponent,
+    ConfirmDialogComponent,
+    SideTaskComponent,
+    PaginatorComponent,
+    EcTooltipDirective,
+    TableComponent,
+    ButtonComponent,
+    ButtonComponent,
+    IconDirective,
+    StepComponent,
+    ListSelectComponent,
+  ],
   imports: [
     CommonModule,
     DragDropModule,
@@ -106,6 +112,7 @@ import {RouterModule} from "@angular/router";
     MatInputModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    RouterModule
   ],
   providers: [MenuService, LocalStorageService, FilterService]
 })
