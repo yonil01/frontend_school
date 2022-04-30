@@ -56,6 +56,7 @@ export class DatasetConfigListComponent implements OnInit {
       if (this.dataset.id) {
         this.datasetsService.getDatasetsValues(this.dataset.id.toString().toLowerCase()).subscribe((res) => {
           this.datasetsValues = res.data ? res.data : [];
+          this.datasetsValuesTable = res.data ? res.data : [];
           this.isBlockPage = false;
         });
       }
@@ -95,6 +96,7 @@ export class DatasetConfigListComponent implements OnInit {
             this.isBlockPage = false;
             this.isDeleteAll = false;
           } else {
+            this.datasetsValuesTable = [];
             this.datasetsValues = [];
             this.messageService.add({
               type: 'success',
@@ -164,12 +166,11 @@ export class DatasetConfigListComponent implements OnInit {
     if (files && files.length > 0) {
       const file: File = files[0];
       const reader: FileReader = new FileReader();
-      reader.readAsText(file);
+      reader.readAsBinaryString(file);
       reader.onload = (e) => {
         this.isBlockPage = true;
         const csv: string = reader.result as string;
         let datasetsValuesPersistense: DatasetValue[] = [];
-        debugger
         datasetsValuesPersistense = csv.split('\r').map((row) => {
           const data = row.split(';'); // split by comma
           return {
