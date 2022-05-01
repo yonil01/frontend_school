@@ -63,15 +63,13 @@
             <div class="flex lg:flex-1 flex-col space-y-1">
               <label class="t-caption-2 text-mono-70">Entidad</label>
               <ec-dropdown [filter]="true" placeholder="{{'SELECT_ENTITY' | translate}}" [showClear]="true"
-                           optionLabel="name" optionValue="id"
-                           [data]="entitiesList" [dropStyle]="dropStyle"
+                           optionLabel="name" optionValue="id" [data]="entitiesList" [dropStyle]="dropStyle"
                            (onChangeValue)="selectedEntity($event)"></ec-dropdown>
             </div>
             <div class="flex lg:flex-1 flex-col space-y-1">
               <label class="t-caption-2 text-mono-70">Atributo</label>
-              <ec-dropdown [filter]="true" placeholder="{{'SELECT_ATTRIBUTE' | translate}}" [showClear]="true"
-                           optionLabel="name"
-                           optionValue="id" [data]="attributesSelected" [dropStyle]="dropStyle"
+              <ec-dropdown [(ngModel)]="selectedAttributeValue" [filter]="true" placeholder="{{'SELECT_ATTRIBUTE' | translate}}" [showClear]="true"
+                           optionLabel="name" optionValue="id" [data]="attributesSelected" [onlyValue]="false" [dropStyle]="dropStyle"
                            (onChangeValue)="selectedAttribute($event)"></ec-dropdown>
             </div>
           </div>

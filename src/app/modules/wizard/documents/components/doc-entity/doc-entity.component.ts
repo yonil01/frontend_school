@@ -37,9 +37,7 @@ export class DocEntityComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
-    console.log(this.dataDoctype);
     this.getEntities(this.dataDoctype);
-    console.log(this.dataDoctype);
   }
 
   ngOnDestroy(): void {

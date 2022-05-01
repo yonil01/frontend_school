@@ -40,7 +40,7 @@
     </div>
     <div class="input flex flex-col space-y-1" *ngIf="typeTask === 'TIMER'">
       <label class="t-caption-2 text-mono-70">{{'TIMERS' | translate}}</label>
-      <ec-dropdown [filter]="true" placeholder="{{'SELECT_TIMER' | translate}}" formControlName="timer" [icon]="true" optionLabel="label" [data]="timers" [dropStyle]="dropStyle"></ec-dropdown>
+      <ec-dropdown [filter]="true" placeholder="{{'SELECT_TIMER' | translate}}" formControlName="timer" [icon]="true" optionLabel="name" optionValue="id" [data]="timers" [dropStyle]="dropStyle"></ec-dropdown>
       <div class="text-alert-error"
            *ngIf="taskForm.get('timer')?.invalid && taskForm.get('timer')?.touched && taskForm.get('timer')?.hasError('required')">
         <span>El campo es requerido</span>
@@ -99,3 +99,5 @@
       {{'EXIT' | translate}}</button>
   </div>
 </div>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-block-page [show]="blockPage"></app-block-page>

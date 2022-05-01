@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Execution, ExecutionRole, Queue, Role, RolesDisplay, StepModel} from "@app/core/models";
+import {Execution, ExecutionRole, Queue, Role, RolesDisplay, StepModel, Timer} from "@app/core/models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastService} from "ecapture-ng-ui";
 import {FilterService} from "@app/ui/services/filter.service";
@@ -12,6 +12,7 @@ import {typeTasks, typeTimes} from "@app/core/utils/constants/constant";
 import {v4 as uuidv4} from "uuid";
 import {Subscription} from "rxjs/internal/Subscription";
 import {ProcessService} from "@app/modules/wizard/services/process/process.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-task-form',
@@ -20,13 +21,14 @@ import {ProcessService} from "@app/modules/wizard/services/process/process.servi
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
 
-  @Input() task!: Execution;
+  @Input('task') executionSelected!: Execution;
   @Input() typeTask: string = '';
   @Input('queue') queue!: Queue;
   @Input('roles') roles: Role[] = [];
   @Output('cancel-form') cancelForm: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output('save-task') saveTaskEvent: EventEmitter<Execution> = new EventEmitter<Execution>();
   @Output('save-role') saveRoleEvent: EventEmitter<ExecutionRole> = new EventEmitter<ExecutionRole>();
+  @Output('delete-role') deleteRoleEvent: EventEmitter<Execution> = new EventEmitter<Execution>();
 
   public steps: StepModel[] = [
     {id: 1, name: 'GENERAL_INFORMATION', active: true}
@@ -38,14 +40,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public icons: any[] = IconsMaterial;
   public readonly dropStyle: DropdownModel = dropStyle;
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
-  public timers: DataDrop[] = typeTimes;
   public blockPage: boolean = false;
   public _subscription: Subscription = new Subscription();
-  public tasks: Execution[] = [];
-  public executionSelected!: Execution;
   public rolesDisplay: RolesDisplay[] = [];
   public rolesPagination: RolesDisplay[] = [];
   public rolesAvailable: RolesDisplay[] = [];
+  public timers: Timer[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -53,6 +53,21 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     private _filterService: FilterService,
     private _processService: ProcessService,
   ) {
+    this._subscription.add(
+    this._processService.getTimers().subscribe({
+      next: (res) => {
+        if (res.error) {
+          this.messageService.add({type: 'error', message: res.msg, life: 5000});
+        } else {
+          this.timers = res.data;
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error(err.message);
+        this.messageService.add({type: 'error', message: 'No se pudo obtener el listado de timers!', life: 5000});
+      }
+    })
+    );
     this.taskForm = fb.group({
       class: ['', Validators.required],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -76,6 +91,21 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.taskForm.get('type')?.setValue('Timer');
       this.activeTimers();
     }
+    if (this.executionSelected) {
+      this.operation = 'edit';
+      this.taskForm.get('class')?.setValue(this.executionSelected.class);
+      this.taskForm.get('name')?.setValue(this.executionSelected.name);
+      this.taskForm.get('type')?.setValue(typeTasks.find((t) => t.value === this.executionSelected.type)?.label || '');
+      this.taskForm.get('description')?.setValue(this.executionSelected.description);
+
+      console.log(this.executionSelected);
+      if (typeof this.executionSelected.timer === "string") {
+        this.taskForm.get('timer')?.setValue(this.executionSelected.timer);
+      } else {
+        this.taskForm.get('timer')?.setValue(this.executionSelected.timer.id);
+      }
+
+    }
   }
 
   public activeTimers(): void {
@@ -92,7 +122,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       };
       this.createExecutionRole(executionRole, roleID)
     } else {
-      const processRole = this.task.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === roleID.toLowerCase());
+      const processRole = this.executionSelected.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === roleID.toLowerCase());
       if (processRole) {
         this.deleteExecutionRole(processRole)
       }
@@ -195,20 +225,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            this.positionStep++;
-            const indexExecution = this.tasks.findIndex((t) => t.id?.toLowerCase() === execution.id?.toLowerCase());
-            if (indexExecution !== -1) {
-              this.tasks[indexExecution].name = execution.name;
-              this.tasks[indexExecution].type = execution.type;
-              this.tasks[indexExecution].class = execution.class;
-              this.tasks[indexExecution].description = execution.description;
-              this.tasks[indexExecution].timer = execution.timer;
-              this.executionSelected = execution;
-              if (execution.type === 3) {
-                this.loadProcessProcessRoles(execution);
-              }
+            this.executionSelected = execution;
+            if (execution.type === 3) {
+              this.positionStep++;
+              this.steps[this.positionStep].active = true;
+              this.loadProcessProcessRoles(execution);
             }
-            this.steps[this.positionStep].active = true;
+            this.messageService.add({type: 'success', message: 'Tarea actualizada con exito!', life: 5000});
+            this.saveTaskEvent.emit(execution);
           }
           this.blockPage = false;
         },
@@ -262,12 +286,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            const indexExecution = this.tasks.findIndex((r) => r.id?.toLowerCase() === this.executionSelected.id?.toLowerCase());
-            if (indexExecution !== -1) {
-              this.executionSelected.execution_roles = this.executionSelected.execution_roles?.filter((r) => r.id?.toLowerCase() !== processRole.id?.toLowerCase());
-              this.tasks[indexExecution].execution_roles = this.executionSelected.execution_roles;
-              this.messageService.add({type: 'success', message: 'Rol Desasignado correctamente!', life: 5000});
-            }
+            this.executionSelected.execution_roles = this.executionSelected.execution_roles?.filter((r) => r.id?.toLowerCase() !== processRole.id?.toLowerCase());
+            this.messageService.add({type: 'success', message: 'Rol Desasignado correctamente!', life: 5000});
+            this.deleteRoleEvent.emit(this.executionSelected);
           }
           this.blockPage = false;
         },

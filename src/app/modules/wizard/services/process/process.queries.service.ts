@@ -300,6 +300,10 @@ export class GetProcessByIDQuery extends Query<Response> {
                   value
                 }
               }
+              timer {
+                id
+                name
+              }
               execution_roles {
                 id
                 role {
@@ -367,6 +371,35 @@ export class UpdateProcessQuery extends Mutation {
         error
         data {
           id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetTimersQuery extends Query<Response> {
+  document = gql`
+    query getTimer {
+      getTimer {
+        error
+        data {
+          id
+          name
+          type
+          frequency
+          day_of_week
+          day_of_month
+          begin_at
+          end_at
+          enabled
+          is_not_running
+          last_execution
         }
         code
         type

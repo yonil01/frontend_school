@@ -19,7 +19,7 @@ import {
   CreateAndReminder,
   CreateAns, DeleteAnsQuery, DeleteReminderQuery, GetAnsById,
   GetModuleAndReminder,
-  GetModuleAns, UpdateAndReminder, UpdateAns,
+  GetModuleAns, GetTimersQuery, UpdateAndReminder, UpdateAns,
 } from "../process/process.queries.service";
 
 @Injectable({
@@ -75,7 +75,8 @@ export class ProcessService {
     private deleteModuleAns: DeleteAnsQuery,
     private getAnsModuleById: GetAnsById,
     private updateModuleAns: UpdateAns,
-    private daleteModuleReminder: DeleteReminderQuery
+    private daleteModuleReminder: DeleteReminderQuery,
+    private getTimersQuery: GetTimersQuery
   ) {
   }
 
@@ -93,26 +94,16 @@ export class ProcessService {
     );
   }
 
-  getProcessByProjectID(project_id: string): Observable<Response> {
-    return this.getProcessByProjectIDQuery.watch({project_id}).valueChanges.pipe(
-      first(),
-      map(({data}: any) => data.getProcessByProjectID),
-    );
+  public getProcessByProjectID(project_id: string): Observable<Response> {
+    return this.getProcessByProjectIDQuery.watch({project_id}).valueChanges.pipe(first(), map(({data}: any) => data.getProcessByProjectID));
   }
 
   public getProcessByID(id: string): Observable<Response> {
     return this.getProcessByIDQuery.watch({id}).valueChanges.pipe(first(), map(({data}: any) => data.getProcessByID));
   }
 
-  getLockInfo(id: string): Observable<Response> {
-    return this.getLockInfoQuery
-      .watch({
-        id,
-      })
-      .valueChanges.pipe(
-        first(),
-        map(({data}: any) => data.getProcessByID),
-      );
+  public getLockInfo(id: string): Observable<Response> {
+    return this.getLockInfoQuery.watch({id}).valueChanges.pipe(first(), map(({data}: any) => data.getProcessByID));
   }
 
   public createProcess(bpm: Process): Observable<Response> {
@@ -121,6 +112,10 @@ export class ProcessService {
 
   public updateProcess(bpm: Process): Observable<Response> {
     return this.updateProcessQuery.mutate({request: {data: bpm}}).pipe(map(({data}: any) => data.updateProcess));
+  }
+
+  public getTimers(): Observable<Response> {
+    return this.getTimersQuery.watch({}).valueChanges.pipe(map(({data}: any) => data.getTimer));
   }
 
   lockProcess(id: string): Observable<Response> {

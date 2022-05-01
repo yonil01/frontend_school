@@ -73,7 +73,6 @@ export class ActivityFormComponent implements OnInit {
         activity: new FormControl(this.rule.action, Validators.required),
         status: new FormControl(this.rule.status, Validators.required),
       });
-      console.log(this.rule);
       if (activity) {
         this.fields = [];
         activity.parameters?.forEach((p: ParamActivity) => {
@@ -212,6 +211,7 @@ export class ActivityFormComponent implements OnInit {
                   this.formAttributes = this.buildFormGroup(this.attributes, []);
                   this.attributesCurrent = this.attributes;
                 }
+                this.typeParam = this.fields[indexItem].typeParam;
               }
             },
             onInit: (field: any) => {
@@ -225,7 +225,10 @@ export class ActivityFormComponent implements OnInit {
                   this.attributesCurrent = [];
                   this.formAttributes = new FormGroup({});
                 } else {
-                  const attributes = this.rule.rule_params.map((rp) => ({name: rp.name, value: rp.value})) || [];
+                  let attributes: { name: any; value: any; }[] = [];
+                  if (this.rule && this.rule.hasOwnProperty('rule_params')) {
+                    attributes = this.rule.rule_params.map((rp) => ({name: rp.name, value: rp.value}));
+                  }
                   this.formAttributes = this.buildFormGroup(this.attributes, attributes);
                   this.attributesCurrent = this.attributes;
                 }
