@@ -98,10 +98,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.taskForm.get('type')?.setValue(typeTasks.find((t) => t.value === this.executionSelected.type)?.label || '');
       this.taskForm.get('description')?.setValue(this.executionSelected.description);
 
-      console.log(this.executionSelected);
       if (typeof this.executionSelected.timer === "string") {
         this.taskForm.get('timer')?.setValue(this.executionSelected.timer);
-      } else {
+      } else if (this.executionSelected.timer) {
         this.taskForm.get('timer')?.setValue(this.executionSelected.timer.id);
       }
 
@@ -133,11 +132,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     if (this.taskForm.valid) {
       const formValues = this.taskForm.value;
       formValues.type = typeTasks.find((t) => t.label === formValues.type)?.value || 3;
-      const execution: Execution = {
+      const execution = {
         ...formValues,
         id: uuidv4().toLowerCase(),
         queue_id: this.queue.id?.toLowerCase(),
       };
+      if (!execution.timer) {
+        delete execution.timer;
+      }
       if (this.operation === 'add') {
         this.createTask(execution)
       } else {
@@ -168,7 +170,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public cancelCreateOrEdit(): void {
     this.cancelForm.emit(true);
     this.positionStep = 0;
-    this.steps[1].active = false;
     this.taskForm.reset();
     this.operation = 'add';
   }

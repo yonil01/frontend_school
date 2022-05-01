@@ -8,7 +8,19 @@
 </div>
 
 <div class="flex flex-col  space-y-12" *ngIf="positionStep === 0">
-  <span class="t-h5 text-black dark:text-white">{{(operation === 'add' ? 'CREATE' : 'EDIT') | translate}} {{'EXECUTION' | translate}}</span>
+  <div>
+    <div>
+      <span class="t-h5 text-black dark:text-white">{{(operation === 'add' ? 'CREATE' : 'EDIT') | translate}} {{'EXECUTION' | translate}}</span>
+    </div>
+
+    <div class="flex gap-4 items-center" style="margin-top: 1rem">
+      <div class="w-2 h-10 bg-brand-d-1"></div>
+      <div class="text-mono-70 t-caption-1">
+        <span>ID: {{executionSelected.id}}</span>
+      </div>
+    </div>
+  </div>
+
   <form [formGroup]="taskForm" class=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
     <div class="input flex flex-col space-y-1">
       <label class="t-caption-2 text-mono-70">{{'NAME' | translate}}</label>
