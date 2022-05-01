@@ -91,7 +91,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.taskForm.get('type')?.setValue('Timer');
       this.activeTimers();
     }
-    if (this.executionSelected) {
+    if (this.executionSelected && this.executionSelected.id !== '') {
       this.operation = 'edit';
       this.taskForm.get('class')?.setValue(this.executionSelected.class);
       this.taskForm.get('name')?.setValue(this.executionSelected.name);
@@ -103,7 +103,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       } else if (this.executionSelected.timer) {
         this.taskForm.get('timer')?.setValue(this.executionSelected.timer.id);
       }
-
     }
   }
 
@@ -172,6 +171,17 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.positionStep = 0;
     this.taskForm.reset();
     this.operation = 'add';
+    this.executionSelected = {
+      class: "",
+      description: "",
+      execution_roles: [],
+      id: "",
+      name: "",
+      queue_id: "",
+      rules: [],
+      timer: '',
+      type: 0
+    };
   }
 
   private loadProcessProcessRoles(task: Execution): void {

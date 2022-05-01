@@ -27,7 +27,6 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   public tasksPagination: Execution[] = [];
   public selectionRoles: Role[] = [];
   public roles: Role[] = [];
-  public operation: string = 'add';
   public executionSelected!: Execution;
   public showAlert: boolean = false;
   public blockPage: boolean = false;
@@ -207,6 +206,21 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
     if (indexExecution !== -1) {
       this.tasks[indexExecution].execution_roles = this.executionSelected.execution_roles;
     }
+  }
+
+  public createTask(): void {
+    this.showView = 'createOrUpdate';
+    this.executionSelected = {
+      class: "",
+      description: "",
+      execution_roles: [],
+      id: "",
+      name: "",
+      queue_id: "",
+      rules: [],
+      timer: {},
+      type: 0
+    };
   }
 
 }

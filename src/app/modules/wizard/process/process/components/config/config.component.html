@@ -22,7 +22,7 @@
         </div>
 
         <div *ngIf="tasks.length && tasksDisplay.length" class="flex w-full items-center justify-between mb-6">
-          <button class="b-outline rounded-md" (click)="showView = 'createOrUpdate'; operation = 'add'">{{'NEW_TASK_TYPE_' + typeTask |  translate}}</button>
+          <button class="b-outline rounded-md" (click)="createTask()">{{'NEW_TASK_TYPE_' + typeTask |  translate}}</button>
           <div><input [disabled]="tasks.length <= 0 " class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_TASK' | translate}}"
                       (input)="filterTasks($event)"></div>
         </div>
@@ -88,7 +88,7 @@
 
         <div *ngIf="!tasksDisplay.length" class="w-full flex flex-col items-center justify-center text-brand-d-1 text-xl font-bold gap-6">
           <span>{{'THERE_ARE_NO_'+typeTask+'_TASKS' | translate}}!</span>
-          <button class="b-outline rounded-md" (click)="showView = 'createOrUpdate'; operation = 'add'">{{'NEW_TASK_TYPE_' + typeTask | translate}}</button>
+          <button class="b-outline rounded-md" (click)="createTask()">{{'NEW_TASK_TYPE_' + typeTask | translate}}</button>
         </div>
 
       </div>

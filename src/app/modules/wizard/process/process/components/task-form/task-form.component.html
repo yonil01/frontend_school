@@ -13,7 +13,7 @@
       <span class="t-h5 text-black dark:text-white">{{(operation === 'add' ? 'CREATE' : 'EDIT') | translate}} {{'EXECUTION' | translate}}</span>
     </div>
 
-    <div class="flex gap-4 items-center" style="margin-top: 1rem">
+    <div class="flex gap-4 items-center" style="margin-top: 1rem" *ngIf="executionSelected && executionSelected.id !== ''">
       <div class="w-2 h-10 bg-brand-d-1"></div>
       <div class="text-mono-70 t-caption-1">
         <span>ID: {{executionSelected.id}}</span>
