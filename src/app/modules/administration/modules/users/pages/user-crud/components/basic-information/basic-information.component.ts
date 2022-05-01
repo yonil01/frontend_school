@@ -38,7 +38,8 @@ export class BasicInformationComponent implements OnInit {
   public showLoader: any = showLoader;
   public isBlockPage: boolean = false;
   public typeExecution: number;
-
+  public showPassword: boolean = false;
+  public showPasswordConfirm: boolean = false;
   constructor( private _formBuilder: FormBuilder,
                private store: Store<AppState>,
                private userService: UsersService,

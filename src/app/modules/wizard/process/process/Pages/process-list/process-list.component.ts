@@ -163,12 +163,24 @@ export class ProcessListComponent implements OnInit, OnDestroy {
       reminder_type: ['', Validators.required],
       percent_reminder: ['', Validators.required],
       notification_id: ['', Validators.required],
-    })
+    },{
+      validators: [this.minValueValidator, this.maxValueValidator]
+      })
     this.showReminder = false;
   }
 
   ngOnInit(): void {
   }
+
+  minValueValidator = (form: FormGroup) => {
+    const percent_reminder = form.get('percent_reminder');
+    return Number(percent_reminder?.value) >= 0 ? null : {notEqualMinValue: true};
+  };
+
+  maxValueValidator = (form: FormGroup) => {
+    const percent_reminder = form.get('percent_reminder');
+    return Number(percent_reminder?.value) <= 100 ? null : {notEqualMaxValue: true};
+  };
 
   ngOnDestroy(): void {
     this._subscription.unsubscribe();
@@ -829,6 +841,8 @@ export class ProcessListComponent implements OnInit, OnDestroy {
 
 
   public addReminder():void {
+    console.log(this.ReminderForm)
+    debugger
     if (this.ReminderForm.valid) {
       this.isBlockPage = true;
       const dataAns = this.dataListAns.filter((data:ListAns)=>{

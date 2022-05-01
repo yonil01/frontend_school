@@ -21,6 +21,8 @@ import {
 } from "@app/ui/icons/chevron-vector/chevron-vector-right/icon";
 import {iconChevronVectorLeftOutline32} from "@app/ui/icons/chevron-vector/chevron-vector-left/icon";
 import {SettingIconOutlineBase} from "@app/ui/icons/setting/icon";
+import {eyeIconHide} from "@app/ui/icons/eye/hide/hide";
+import {eyeIconShow} from "@app/ui/icons/eye/show/show";
 
 
 
@@ -77,6 +79,8 @@ export class IconDirective implements OnInit {
       return this.findIconChevronVectorOutline(iconPosition, this.iconColor);
     } else if (iconName === 'setting') {
       return this.findIconSetting(iconPosition, this.iconColor);
+    } else if (iconName === 'eye') {
+      return this.getIconEye(this.iconColor, iconPosition);
     }
       return '';
   }
@@ -198,5 +202,15 @@ export class IconDirective implements OnInit {
     }
     return '';
   }
+
+  public getIconEye = (iconColor: string, iconPosition: string) => {
+    if (iconPosition === 'hide') {
+      return eyeIconHide.replace('$2', iconColor);
+    } else if (iconPosition === 'show') {
+      return eyeIconShow.replace('$2', iconColor);
+    } else {
+      return '';
+    }
+  };
 
 }

@@ -610,12 +610,20 @@
                     </select>
                   </div>
                   <div class="w-full grid">
-                    <label class="t-caption-2 text-mono-70 dark:text-mono-30">Porcentage</label>
-                    <select class="ec-input" formControlName="percent_reminder">
-                      <option value="30">30%</option>
-                      <option value="50">50%</option>
-                      <option value="80">80%</option>
-                    </select>
+                    <label class="t-caption-2 text-mono-70 dark:text-mono-30">Porcentaje</label>
+                    <input type="number" class="ec-input" formControlName="percent_reminder">
+                    <div class="text-xs text-alert-error"
+                         *ngIf="ReminderForm.get('percent_reminder')?.invalid && ReminderForm.get('percent_reminder')?.touched && ReminderForm.get('percent_reminder')?.hasError('required')">
+                      <span>El porcentaje del recordatorio es requerido</span>
+                    </div>
+                    <div class="text-xs text-alert-error"
+                         *ngIf="ReminderForm?.errors?.notEqualMinValue">
+                      <span>El porcentaje no puede ser menor de 0.</span>
+                    </div>
+                    <div class="text-xs text-alert-error"
+                         *ngIf="ReminderForm?.errors?.notEqualMaxValue">
+                      <span>El porcentaje no puede ser mayor de 100.</span>
+                    </div>
                   </div>
                   <div class="w-full grid">
                     <label class="t-caption-2 text-mono-70 dark:text-mono-30">Notificación</label>

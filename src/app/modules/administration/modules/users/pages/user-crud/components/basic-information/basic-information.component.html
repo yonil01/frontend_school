@@ -92,30 +92,50 @@
           </div>
         </div>
       </div>
+
+
+
       <div *ngIf="!returnExistUser()" class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full ">
         <div class="space-y-1 w-full">
+
           <label class="text-mono-70">Constraseña</label>
-          <input formControlName="password" type="password" id="password"
-                 class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
-                 required>
+          <div class="relative flex w-full flex-wrap items-stretch mb-3">
+
+            <input formControlName="password" type="{{showPassword?'text':'password'}}" class="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-mono-10 rounded text-sm border border-mono-10 outline-none focus:outline-none focus:ring w-full pr-10"/>
+            <span class="z-10 h-full leading-snug font-normal absolute text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+    <span *ngIf="!showPassword" appIcon iconColor="text-alert-info" iconName="eye hide" (click)="showPassword=!showPassword"></span>
+              <span *ngIf="showPassword" appIcon iconColor="text-alert-info" iconName="eye show" (click)="showPassword=!showPassword"></span>
+  </span>
+          </div>
           <div
             *ngIf="formBasicInfo.get('password')?.dirty && (formBasicInfo.get('password')?.errors || formBasicInfo.get('password')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('password')?.hasError('password')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('password')?.hasError('password')">La longitud minima excedida(6)</span>
-            <span *ngIf="formBasicInfo.get('password')?.hasError('password')">El descripción es requerido</span>
+            <span *ngIf="formBasicInfo.get('password')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('password')?.hasError('minlength')">La longitud minima excedida(6)</span>
+            <span *ngIf="formBasicInfo.get('password')?.hasError('required')">El descripción es requerido</span>
           </div>
         </div>
         <div class="space-y-1 w-full">
+
           <label class="text-mono-70">Confirmar Contraseña</label>
-          <input formControlName="password_confirm" type="password" id="password_confirm"
-                 class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
-                 required>
+          <div class="relative flex w-full flex-wrap items-stretch mb-3">
+
+            <input formControlName="password_confirm" type="{{showPasswordConfirm?'text':'password'}}" class="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-mono-10 rounded text-sm border border-mono-10 outline-none focus:outline-none focus:ring w-full pr-10"/>
+            <span class="z-10 h-full leading-snug font-normal absolute text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+    <span *ngIf="!showPasswordConfirm" appIcon iconColor="text-alert-info" iconName="eye hide" (click)="showPasswordConfirm=!showPasswordConfirm"></span>
+              <span *ngIf="showPasswordConfirm" appIcon iconColor="text-alert-info" iconName="eye show" (click)="showPasswordConfirm=!showPasswordConfirm"></span>
+  </span>
+          </div>
           <div
             *ngIf="formBasicInfo.get('password_confirm')?.dirty && (formBasicInfo.get('password_confirm')?.errors || formBasicInfo.get('password_confirm')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo?.errors?.notEqualPassword&&!formBasicInfo.get('password_confirm')?.hasError('required')">Verifica la contraseña</span>
+            <span *ngIf="formBasicInfo.get('password_confirm')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('password_confirm')?.hasError('minlength')">La longitud minima excedida(6)</span>
             <span *ngIf="formBasicInfo.get('password_confirm')?.hasError('required')">El descripción es requerido</span>
+          </div>
+          <div class="text-xs text-alert-error"
+               *ngIf="formBasicInfo?.errors?.notEqualPassword&&formBasicInfo.get('password_confirm')?.dirty&&!formBasicInfo.get('password')?.hasError('required')">
+            <span>La contraseña no coincide.</span>
           </div>
         </div>
 

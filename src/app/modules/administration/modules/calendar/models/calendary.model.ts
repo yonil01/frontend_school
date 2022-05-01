@@ -17,7 +17,7 @@ export const styleTableCalendar: TableModel = {
   ],
   buttonTittle: {
     showButton: true,
-    label: 'Crear Fecha',
+    label: 'Crear Calendario',
     route: ''
   },
   isSearch: true,

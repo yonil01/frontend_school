@@ -1,4 +1,4 @@
-<app-layout [typeButton]="statusChangePage[2].show?2:1">
+<app-layout [typeButton]="statusChangePage[2].show?2:statusChangePage[1].show?2:1">
   <ng-container layoutBody>
     <div class="ec-container pb-12 bg-white" style="min-height: calc(100vh - 3rem)">
       <div *ngIf="statusChangePage[0].show">
