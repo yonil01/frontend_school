@@ -292,7 +292,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         this.doctypegroupService.deleteDoctypeGroup(id).subscribe({
           next: (res) => {
             if (res.error) {
-              this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              this.messageService.add({type: 'error', message: res.msg + ' - verifique que este tipo documental no este asociado a algún proyecto, proceso, etc.', life: 5000});
             } else {
               this.messageService.add({type: 'success', message: res.msg, life: 5000});
               this._subscription.add(
