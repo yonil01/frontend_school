@@ -56,8 +56,6 @@
           (isShowCreate)="isShowCreate=false; getNotifications(); notification={}"
         ></app-create-notification>
       </div>
-
-
     </div>
     <app-footer></app-footer>
   </ng-container>
@@ -67,7 +65,5 @@
 <app-block-page [show]="isBlockPage"></app-block-page>
 <app-block-page ></app-block-page>
 
-
-
-
-
+<app-confirm-dialog [show]="showConfirmDelete" type="warning" title="Confimar Eliminación"
+                    body="¿Desea Eliminar el registro?" (onEvent)="confirmDialogDelete($event)"></app-confirm-dialog>

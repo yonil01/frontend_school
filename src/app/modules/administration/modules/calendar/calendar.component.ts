@@ -9,6 +9,8 @@ import {Subscription} from "rxjs/internal/Subscription";
 import {CalendarService} from "@app/modules/administration/services/calendar/calendar.service";
 import {Calendar} from "@app/core/models/config/calendar";
 import {DatePipe} from "@angular/common";
+import {Response, Role} from "@app/core/models";
+import {deleteRole} from "@app/core/store/actions/roles.action";
 
 @Component({
   selector: 'app-calendar',
@@ -22,6 +24,9 @@ export class CalendarComponent implements OnInit {
   private _subscription: Subscription = new Subscription();
   public isBlockPage: boolean = false;
   public calendar: Calendar = {};
+  public showConfirmDelete: boolean = false;
+  public calendarSelected: Calendar = {};
+
   constructor(private _messageService: ToastService,
               private _calendarService: CalendarService,
               private datePipe: DatePipe,
@@ -99,38 +104,49 @@ export class CalendarComponent implements OnInit {
   }
 
   public deleteCalendar(data: Calendar): void {
+    this.calendarSelected = data;
     this.isBlockPage = true;
-    this._subscription.add(
-      this._calendarService.deleteCalendar(data.id!).subscribe({
-        next: (res) => {
-          if (res.error) {
+    this.showConfirmDelete = true;
+  }
+
+  confirmDialogDelete(event: boolean) {
+    this.showConfirmDelete = false;
+    this.isBlockPage = true;
+    if (event) {
+      this._subscription.add(
+        this._calendarService.deleteCalendar(this.calendarSelected.id!).subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.isBlockPage = false;
+              this._messageService.add({
+                type: 'error',
+                message: res.msg,
+                life: 5000,
+              })
+              this.isBlockPage = false;
+            } else {
+              this._messageService.add({
+                type: 'success',
+                message: res.msg,
+                life: 5000,
+              })
+              const index= this.styleTableCalendar.dataSource?.findIndex((item:any)=>item.value.id===this.calendarSelected.id);
+              this.styleTableCalendar.dataSource?.splice(index!, 1);
+              this.isBlockPage = false;
+            }
+          },
+          error: (err: Error) => {
             this.isBlockPage = false;
             this._messageService.add({
               type: 'error',
-              message: res.msg,
+              message: ''+err,
               life: 5000,
             })
-            this.isBlockPage = false;
-          } else {
-            this._messageService.add({
-              type: 'success',
-              message: res.msg,
-              life: 5000,
-            })
-            const index= this.styleTableCalendar.dataSource?.findIndex((item:any)=>item.value.id===data.id);
-            this.styleTableCalendar.dataSource?.splice(index!, 1);
-            this.isBlockPage = false;
           }
-        },
-        error: (err: Error) => {
-          this.isBlockPage = false;
-          this._messageService.add({
-            type: 'error',
-            message: ''+err,
-            life: 5000,
-          })
-        }
-      })
-    );
+        })
+      );
+    } else {
+      this.isBlockPage = false;
+    }
   }
 }

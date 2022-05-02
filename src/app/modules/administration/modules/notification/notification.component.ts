@@ -9,6 +9,7 @@ import {NotificationService} from "@app/modules/administration/services/notifica
 import {NotificationModel} from "@app/core/models/config/notification";
 import {TimersService} from "@app/core/services/graphql/config/timers/timers.service";
 import {Timer} from "@app/core/models";
+import {Calendar} from "@app/core/models/config/calendar";
 
 @Component({
   selector: 'app-notification',
@@ -24,6 +25,9 @@ export class NotificationComponent implements OnInit {
   public notification: NotificationModel = {};
   public dateMax = new Date();
   public timers: Timer[] = [];
+
+  public showConfirmDelete: boolean = false;
+  public notificationSelected: NotificationModel = {};
 
   constructor(private _messageService: ToastService,
               private _notificationService: NotificationService,
@@ -48,41 +52,6 @@ export class NotificationComponent implements OnInit {
       this.notification = data.value;
       this.isShowCreate = true;
     }
-  }
-
-  public deleteNotification(data: NotificationModel):void {
-    this.isBlockPage = true;
-    this._subscription.add(
-      this._notificationService.deleteNotification(data.id!).subscribe({
-        next: (res) => {
-          if (res.error) {
-            this.isBlockPage = false;
-            this._messageService.add({
-              type: 'error',
-              message: res.msg,
-              life: 5000,
-            })
-            this.isBlockPage = false;
-          } else {
-            this._messageService.add({
-              type: 'success',
-              message: res.msg,
-              life: 5000,
-            })
-            this.getTimers();
-            this.isBlockPage = false;
-          }
-        },
-        error: (err: Error) => {
-          this.isBlockPage = false;
-          this._messageService.add({
-            type: 'error',
-            message: ''+err,
-            life: 5000,
-          })
-        }
-      })
-    );
   }
 
   public getNotifications(): void {
@@ -156,5 +125,51 @@ export class NotificationComponent implements OnInit {
         }
       )
     );
+  }
+
+  public deleteNotification(data: NotificationModel): void {
+    this.notificationSelected = data;
+    this.isBlockPage = true;
+    this.showConfirmDelete = true;
+  }
+
+  confirmDialogDelete(event: boolean) {
+    this.showConfirmDelete = false;
+    this.isBlockPage = true;
+    if (event) {
+      this._subscription.add(
+        this._notificationService.deleteNotification(this.notificationSelected.id!).subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.isBlockPage = false;
+              this._messageService.add({
+                type: 'error',
+                message: res.msg,
+                life: 5000,
+              })
+              this.isBlockPage = false;
+            } else {
+              this._messageService.add({
+                type: 'success',
+                message: res.msg,
+                life: 5000,
+              })
+              this.getTimers();
+              this.isBlockPage = false;
+            }
+          },
+          error: (err: Error) => {
+            this.isBlockPage = false;
+            this._messageService.add({
+              type: 'error',
+              message: ''+err,
+              life: 5000,
+            })
+          }
+        })
+      );
+    } else {
+      this.isBlockPage = false;
+    }
   }
 }

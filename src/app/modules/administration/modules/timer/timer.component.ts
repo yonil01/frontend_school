@@ -8,6 +8,7 @@ import {Subscription} from "rxjs/internal/Subscription";
 import {TimerService} from "@app/modules/administration/services/timer/timer.service";
 import {Timer, User} from "@app/core/models";
 import {DatePipe} from "@angular/common";
+import {NotificationModel} from "@app/core/models/config/notification";
 
 @Component({
   selector: 'app-timer',
@@ -23,6 +24,9 @@ export class TimerComponent implements OnInit {
   public timer: Timer = {};
   public timers: Timer[] = [];
   public dateMax = new Date();
+
+  public showConfirmDelete: boolean = false;
+  public timerSelected: Timer = {};
 
   constructor(private _messageService: ToastService,
               private datePipe: DatePipe,
@@ -90,41 +94,6 @@ export class TimerComponent implements OnInit {
     );
   }
 
-  public deleteTimer(data: Timer):void {
-    this.isBlockPage = true;
-    this._subscription.add(
-      this._timerService.deleteAns(data.id!).subscribe({
-        next: (res) => {
-          if (res.error) {
-            this.isBlockPage = false;
-            this._messageService.add({
-              type: 'error',
-              message: res.msg,
-              life: 5000,
-            })
-            this.isBlockPage = false;
-          } else {
-            this._messageService.add({
-              type: 'success',
-              message: res.msg,
-              life: 5000,
-            })
-            this.getTimers();
-            this.isBlockPage = false;
-          }
-        },
-        error: (err: Error) => {
-          this.isBlockPage = false;
-          this._messageService.add({
-            type: 'error',
-            message: ''+err,
-            life: 5000,
-          })
-        }
-      })
-    );
-  }
-
   public showToast(data: any): void {
     this._messageService.add(data);
   }
@@ -133,6 +102,52 @@ export class TimerComponent implements OnInit {
     const arrayTimer = this.styleTableTimer.dataSource?.map((data: any) => new Date(data.value.created_at));
     // @ts-ignore
     this.dateMax = new Date(Math.max(...arrayTimer));
+  }
+
+  public deleteTimer(data: Timer): void {
+    this.timerSelected = data;
+    this.isBlockPage = true;
+    this.showConfirmDelete = true;
+  }
+
+  confirmDialogDelete(event: boolean) {
+    this.showConfirmDelete = false;
+    this.isBlockPage = true;
+    if (event) {
+      this._subscription.add(
+        this._timerService.deleteAns(this.timerSelected.id!).subscribe({
+          next: (res) => {
+            if (res.error) {
+              this.isBlockPage = false;
+              this._messageService.add({
+                type: 'error',
+                message: res.msg,
+                life: 5000,
+              })
+              this.isBlockPage = false;
+            } else {
+              this._messageService.add({
+                type: 'success',
+                message: res.msg,
+                life: 5000,
+              })
+              this.getTimers();
+              this.isBlockPage = false;
+            }
+          },
+          error: (err: Error) => {
+            this.isBlockPage = false;
+            this._messageService.add({
+              type: 'error',
+              message: ''+err,
+              life: 5000,
+            })
+          }
+        })
+      );
+    } else {
+      this.isBlockPage = false;
+    }
   }
 
 }
