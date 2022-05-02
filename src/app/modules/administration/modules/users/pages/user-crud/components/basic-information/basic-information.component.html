@@ -9,8 +9,7 @@
                    class="h-12 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-mono-10 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
           </div>
-          <div
-            *ngIf="formBasicInfo.get('username')?.dirty && (formBasicInfo.get('username')?.errors || formBasicInfo.get('username')?.touched)"
+          <div *ngIf="formBasicInfo.get('username')?.dirty && (formBasicInfo.get('username')?.errors || formBasicInfo.get('username')?.touched)"
             class="text-xs text-alert-error">
             <span *ngIf="formBasicInfo.get('username')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
             <span *ngIf="formBasicInfo.get('username')?.hasError('minlength')">La longitud minima excedida(4)</span>
