@@ -101,6 +101,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         validators: this.lessCode('code'),
       },
     );
+    this.resetCustomDoctypeForm();
     this.doctypeForm.get('code')?.disable();
   }
 
@@ -112,7 +113,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       this.docTypeGroups = JSON.parse(JSON.stringify(doctypeGroups));
       this.valueCode();
     });
-
     // ICON SYSTEM
     this.icons = IconsMaterial;
     this.getStorage();
@@ -120,6 +120,25 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._subscription.unsubscribe();
+  }
+
+  public resetCustomDoctypeForm(){
+    this.doctypeForm.patchValue({
+      code: '',
+      name: '',
+      url_path: '',
+      storage_id: '',
+      format: '',
+      tipo_soporte: '',
+      retencion_electronic: '',
+      retencion_ag: '',
+      retencion_ac: '',
+      retencion_ah: '',
+      final_disposition: '',
+      digitalizacion: false,
+      class: '',
+      is_cipher: false
+    });
   }
 
   private getDoctypeGroups(): void {
@@ -370,6 +389,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               this.docTypeGroups[docTypeGroupIndex].doctypes = this.docTypeGroupSelected.doctypes;
             }
             this.doctypeForm.reset();
+            this.resetCustomDoctypeForm();
             this.docTypesDisplay.push({active: false, docType: doctype});
             this.valueCode();
           }
@@ -411,6 +431,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               this.docTypesDisplay[index].docType = doctype;
             }
             this.doctypeForm.reset();
+            this.resetCustomDoctypeForm();
           }
           this.isBlockPage = false;
         },
