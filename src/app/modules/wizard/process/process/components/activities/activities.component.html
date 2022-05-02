@@ -1,41 +1,39 @@
 <div class="flex gap-4 items-center">
   <button type="button" class="b-outline rounded-md" (click)="backTasksEvent()">{{'BACK' | translate}}</button>
-  <div class="text-xl text-black"><span>{{executionInput.name}}</span></div>
+  <div class="t-h5 text-brand-2"><span>{{executionInput.name}}</span></div>
 </div>
 
 <div class="w-full h-full mt-4 flex">
   <div class="one">
-    <perfect-scrollbar>
-      <p-tree
-        [value]="treeData"
-        layout="vertical"
-        [style]="{
-          margin: 'areSomeExecs' ? '1em 1em 1em 1em' : '0em 1em 1em 1em',
+    <p-tree
+      [value]="treeData"
+      layout="vertical"
+      [style]="{
+          margin: 'areSomeExecs' ? '0em 1em 0em 0em' : '0em 1em 0em 0em',
           width: 'calc(100% - 2em)',
           overflow: 'auto',
           height: '70vh'
     }"
-        selectionMode="single"
-        [(selection)]="node"
-        [contextMenu]="cm"
-        (click)="selectNode()"
-      >
-        <ng-template let-node pTemplate="default">
-          <div class="node-container">
-            <span class="ui-treenode-icon" [class]="node['data'].icon"></span>
-            <span>{{ node['label'] }}</span>
-            <span class="pi pi-circle-on on-status-icon"
-              *ngIf="node['data']['status'] !== null && node['data']['status']"
-              pTooltip="Activo"
-            ></span>
-            <span class="pi pi-circle-off off-status-icon"
-              *ngIf="node['data']['status'] !== null && !node['data']['status']"
-              pTooltip="Inactivo"
-            ></span>
-          </div>
-        </ng-template>
-      </p-tree>
-    </perfect-scrollbar>
+      selectionMode="single"
+      [(selection)]="node"
+      [contextMenu]="cm"
+      (click)="selectNode()"
+    >
+      <ng-template let-node pTemplate="default">
+        <div class="node-container">
+          <span class="ui-treenode-icon" [class]="node['data'].icon"></span>
+          <span>{{ node['label'] }}</span>
+          <span class="pi pi-circle-on on-status-icon"
+                *ngIf="node['data']['status'] !== null && node['data']['status']"
+                pTooltip="Activo"
+          ></span>
+          <span class="pi pi-circle-off off-status-icon"
+                *ngIf="node['data']['status'] !== null && !node['data']['status']"
+                pTooltip="Inactivo"
+          ></span>
+        </div>
+      </ng-template>
+    </p-tree>
   </div>
 
   <div class="two">

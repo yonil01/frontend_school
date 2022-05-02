@@ -6,7 +6,7 @@ import {Project} from "@app/core/models/wizard/wizard";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
 import {ToastService} from "ecapture-ng-ui";
-import {DocTypes, Process, ProcessDoctype, ProcessRole, Role} from "@app/core/models";
+import {Customer, DocTypes, Process, ProcessDoctype, ProcessRole, Role} from "@app/core/models";
 import {ProcessService} from "@app/modules/wizard/services/process/process.service";
 import {DocumentService} from '@app/core/services/graphql/doc/document/document.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -53,6 +53,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
   public icons: any[] = IconsMaterial;
   public readonly dropStyle: DropdownModel = dropStyle;
   public project: Project;
+  public client: Customer;
   public roles: Role[] = [];
   public docTypes: DocTypes[] = [];
   public processes: ProcessCard[] = [];
@@ -109,6 +110,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
       description: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8000)]]
     });
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
+    this.client = JSON.parse(sessionStorage.getItem('client') || '');
     this.defaultSVG = this._sanitizer.bypassSecurityTrustResourceUrl(DEFAULT_BPMN_BASE64);
     this._subscription.add(
       this._roleService.getRoles().subscribe(

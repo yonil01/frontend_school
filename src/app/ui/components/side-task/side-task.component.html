@@ -2,8 +2,13 @@
   <div class="block-ui z-40 bg-black opacity-60 absolute top-0 left-0 w-full h-screen">
   </div>
   <div class="modal z-50 absolute bg-white right-0 top-0 h-screen {{fullView ? 'w-full' : 'sm:w-full md:w-3/5 lg:w-2/5'}} border-l border-mono-30 dark:border-mono-70">
-    <div class="sub-header flex flex-row items-center justify-between pl-4 border-b border-mono-30 dark:border-mono-70 h-12">
-      <span class="t-body-1 text-black dark:text-white capitalize">{{title}}</span>
+    <div class="sub-header flex flex-row items-center justify-between px-12 border-b border-mono-30 dark:border-mono-70 h-12">
+      <button class="text-black p-0 w-10 dark:text-white hover:opacity-60" (click)="close.emit(true)">
+        <div><svg class="text-black" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10.2954 19.7161C10.6888 20.1037 11.322 20.099 11.7096 19.7056C12.0972 19.3122 12.0925 18.679 11.6991 18.2914L6.32876 13H19.9999C20.5522 13 20.9999 12.5523 20.9999 12C20.9999 11.4477 20.5522 11 19.9999 11H6.33536L11.6991 5.71513C12.0925 5.32751 12.0972 4.69436 11.7096 4.30096C11.322 3.90755 10.6888 3.90286 10.2954 4.29048L3.37122 11.1129C2.87431 11.6025 2.87431 12.4041 3.37122 12.8937L10.2954 19.7161Z"/>
+        </svg></div>
+      </button>
+      <span class="t-body-1 text-black dark:text-white capitalize flex-1 text-left">{{title}}</span>
       <button class="text-black p-0 w-10 dark:text-white hover:opacity-60" (click)="close.emit(true)">
         <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4.2097 4.3871L4.29289 4.29289C4.65338 3.93241 5.22061 3.90468 5.6129 4.2097L5.70711 4.29289L12 10.585L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L13.415 12L19.7071 18.2929C20.0676 18.6534 20.0953 19.2206 19.7903 19.6129L19.7071 19.7071C19.3466 20.0676 18.7794 20.0953 18.3871 19.7903L18.2929 19.7071L12 13.415L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L10.585 12L4.29289 5.70711C3.93241 5.34662 3.90468 4.77939 4.2097 4.3871L4.29289 4.29289L4.2097 4.3871Z"/>
