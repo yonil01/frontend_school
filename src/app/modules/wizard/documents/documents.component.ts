@@ -95,7 +95,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         digitalizacion: [false, Validators.required],
         procedure: [''],
         class: ['', Validators.required],
-        is_cipher: [false],
+        is_cipher: [false, Validators.required],
       },
       {
         validators: this.lessCode('code'),
