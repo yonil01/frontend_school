@@ -231,13 +231,13 @@ button:disabled{
 }
 
 .b-solid {
-  @apply t-button-1 text-white bg-brand-2
+  @apply t-button-1 text-white bg-brand-2 rounded
 }
 .b-outline {
-  @apply t-button-1 text-brand-2 border border-brand-2
+  @apply t-button-1 text-brand-2 border border-brand-2 rounded
 }
 .b-ghost {
-  @apply t-button-1 text-brand-2
+  @apply t-button-1 text-brand-2 rounded
 }
 .b-solid:hover {
   @apply bg-brand-d-1
