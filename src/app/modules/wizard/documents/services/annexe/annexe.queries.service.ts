@@ -105,6 +105,22 @@ export class CreateRequiredDoctypes extends Mutation {
         error
         data {
           id
+          doctype_related_id
+          is_required
+          required_attributes {
+            id
+            entity_id
+            attribute_id
+            comparison_symbol {
+              Id
+              name
+            }
+            value
+            preposition {
+              Id
+              name
+            }
+          }
         }
         code
         type
@@ -156,13 +172,87 @@ export class DeleteRequiredDoctypes extends Mutation {
 @Injectable({
   providedIn: 'root',
 })
-export class CreateRequiredAttributes extends Mutation {
+export class CreateRequiredAttributesCommon extends Mutation {
   document = gql`
-    mutation createRequiredDoctypes($requestRequiredAttribute: RequestNewRequiredAttribute!) {
-      createRequiredDoctypes(input: $requestRequiredAttribute) {
+    mutation createRequiredAttributeCommon($request: RequestNewRequiredAttributeCommon!) {
+      createRequiredAttributeCommon(input: $request) {
         error
         data {
           id
+          required_id
+          attribute_id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UpdateRequiredAttributesCommon extends Mutation {
+  document = gql`
+    mutation updateRequiredAttributeCommons($request: RequestUpdateRequiredAttributeCommon!) {
+      updateRequiredAttributeCommons(input: $request) {
+        error
+        data {
+          id
+          required_id
+          attribute_id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DeleteRequiredAttributesCommon extends Mutation {
+  document = gql`
+    mutation deleteRequiredAttributeCommons($id: ID!) {
+      deleteRequiredAttributeCommons(id: $id) {
+        error
+        data {
+          id
+          required_id
+          attribute_id
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateRequiredAttributes extends Mutation {
+  document = gql`
+    mutation createRequiredAttributes($request: RequestNewRequiredAttribute!) {
+      createRequiredAttributes(input: $request) {
+        error
+        data {
+          id
+          entity_id
+          attribute_id
+          comparison_symbol {
+            Id
+            name
+          }
+          value
+          preposition {
+            Id
+            name
+          }
         }
         code
         type
@@ -177,11 +267,22 @@ export class CreateRequiredAttributes extends Mutation {
 })
 export class UpdateRequiredAttributes extends Mutation {
   document = gql`
-    mutation updateRequiredAttributes($requestUpdateRequiredAttribute: RequestUpdateRequiredAttribute!) {
-      updateRequiredAttributes(input: $requestUpdateRequiredAttribute) {
+    mutation updateRequiredAttributes($request: RequestUpdateRequiredAttribute!) {
+      updateRequiredAttributes(input: $request) {
         error
         data {
           id
+          entity_id
+          attribute_id
+          comparison_symbol {
+            Id
+            name
+          }
+          value
+          preposition {
+            Id
+            name
+          }
         }
         code
         type

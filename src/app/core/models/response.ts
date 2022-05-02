@@ -1,4 +1,4 @@
-import {Required} from "@app/core/models/config/annexe";
+import {Required, RequiredDoctypes} from "@app/core/models/config/annexe";
 
 export interface Response<T = any> {
   error: boolean;
@@ -12,6 +12,15 @@ export interface Response<T = any> {
 export interface ResponseAnnexe {
   error: boolean;
   data: Required;
+  code: number;
+  msg: string;
+  type: string;
+  token?: string;
+}
+
+export interface ResponseAnnexeDoctype {
+  error: boolean;
+  data: RequiredDoctypes;
   code: number;
   msg: string;
   type: string;

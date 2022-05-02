@@ -11,7 +11,10 @@ import {DropdownModule, ToastModule} from "ecapture-ng-ui";
 import {DocEntityComponent} from "@app/modules/wizard/documents/components/doc-entity/doc-entity.component";
 import {AutonameComponent} from "@app/modules/wizard/documents/components/autoname/autoname.component";
 import {MatIconModule} from "@angular/material/icon";
-import { AnnexesDocComponent } from './components/annexes-doc/annexes-doc.component';
+import {AnnexesDocComponent} from './pages/annexes-doc/annexes-doc.component';
+import {
+  ConfigAttributeRequeridComponent
+} from './components/config-attribute-requerid/config-attribute-requerid.component';
 
 
 @NgModule({
@@ -19,20 +22,21 @@ import { AnnexesDocComponent } from './components/annexes-doc/annexes-doc.compon
     DocumentsComponent,
     DocEntityComponent,
     AutonameComponent,
-    AnnexesDocComponent
+    AnnexesDocComponent,
+    ConfigAttributeRequeridComponent
   ],
-    imports: [
-        CommonModule,
-        DocumentsRoutingModule,
-        UiModule,
-        PipesModule,
-        TranslateModule,
-        ReactiveFormsModule,
-        ToastModule,
-        DropdownModule,
-        FormsModule,
-        MatIconModule
-    ]
+  imports: [
+    CommonModule,
+    DocumentsRoutingModule,
+    UiModule,
+    PipesModule,
+    TranslateModule,
+    ReactiveFormsModule,
+    ToastModule,
+    DropdownModule,
+    FormsModule,
+    MatIconModule
+  ]
 })
 export class DocumentsModule {
 }

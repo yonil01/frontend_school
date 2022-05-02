@@ -1,0 +1,365 @@
+<app-layout>
+  <ng-container layoutBody>
+    <div class="ec-container py-6 space-y-4 md:pb-6 md:pb-12 bg-white">
+      <div class="migas mb-6 text-brand-2 flex flex-row gap-2 items-center flex-wrap">
+        <div class="home">
+          <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
+               height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"/>
+          </svg>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+          </svg>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{nameClient}}</span>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+          </svg>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{nameProject}}</span>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+          </svg>
+          <span routerLink="/wizard/documents" class="t-body-2 cursor-pointer">Grupo Documentales</span>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+          </svg>
+          <span class="t-body-2 cursor-pointer">Nombre Grupo Documental</span>
+        </div>
+        <div class="miga flex flex-row items-center space-x-2">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+          </svg>
+          <span class="t-body-2 cursor-pointer">{{doctype.name}}</span>
+        </div>
+      </div>
+      <span class="t-h5 text-black">Documentos Anexos</span>
+      <div class="flex flex-row gap-6">
+        <div class="section-1 w-full space-y-10">
+          <div class="register-annexes space-y-6">
+            <span class="t-subtitle-1 text-mono-70">{{isEditAnnexe ? 'Edición' : 'Registro'}} de Anexos</span>
+            <form class="grid grid-cols-2 gap-4" [formGroup]="formAnnexe">
+              <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+                <label class="t-caption-2 text-mono-70">Nombre</label>
+                <input class="ec-input" type="text" formControlName="name">
+                <small *ngIf="formAnnexe.get('name')?.errors && formAnnexe.get('name')?.touched"
+                       class="text-alert-error">
+                  El campo es requerido
+                </small>
+              </div>
+              <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+                <label class="t-caption-2 text-mono-70">Versión</label>
+                <input class="ec-input" type="text" formControlName="version" (keypress)="onlyNumbers($event)">
+                <small *ngIf="formAnnexe.get('version')?.errors && formAnnexe.get('version')?.touched"
+                       class="text-alert-error">
+                  El campo es requerido
+                </small>
+              </div>
+              <div class="flex flex-row col-span-2 space-x-2 items-center">
+                <input id="is_active" class="w-4 h-4" type="checkbox" formControlName="is_active">
+                <label for="is_active" class="t-body-2 text-black flex-1">Activo</label>
+              </div>
+            </form>
+            <div class="flex flex-row gap-4">
+              <button class="b-solid"
+                      (click)="isEditAnnexe ? updateAnnexe() : createdAnnexe()">{{isEditAnnexe ? 'Actualizar' : 'Agregar'}}
+                Anexo
+              </button>
+              <button *ngIf="isEditAnnexe" class="b-outline" (click)="cancelEdition()">Cancelar</button>
+            </div>
+          </div>
+          <div class="list-annexes space-y-2">
+            <span class="t-subtitle-1 text-mono-70">Lista de Anexos</span>
+            <div class="table w-full overflow-hidden border border-mono-30 rounded bg-white-p drop-shadow-lg p-4 gap-4">
+              <div *ngIf="!annexesAll.length" class="notify-null flex flex-col space-y-2 items-center p-12">
+                <div class="text-brand-2">
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M39.54 62.72C29.406 62.72 24.722 58.284 18.732 51.516C17.044 49.61 11.862 43.996 11.862 43.996L10.86 42.888C8.42603 40.21 7.28003 38.852 7.28003 37.97C7.28003 36.888 8.02803 35.926 9.38403 35.256C11.76 34.084 15.642 33.964 18.022 35.794C19.812 37.17 23.376 41.016 25.28 43.12V14C25.28 11.224 27.216 9.28601 29.988 9.28001C29.988 9.28001 29.988 9.28001 29.99 9.28001C29.99 9.28001 29.992 9.28001 29.996 9.28001C29.998 9.28001 30 9.28001 30.002 9.28001C32.782 9.28601 34.72 11.224 34.72 14V29.28H47.824C52.896 29.28 56.72 32.836 56.72 37.552V45.572C56.72 54.478 54.638 62.72 39.54 62.72ZM12.93 43.032C12.934 43.036 18.12 48.654 19.81 50.566C25.54 57.038 30.008 61.28 39.54 61.28C52.604 61.28 55.28 55 55.28 45.572V37.552C55.28 33.656 52.074 30.718 47.824 30.718H34C33.602 30.718 33.28 30.396 33.28 29.998V14C33.28 12.04 31.96 10.722 29.996 10.72C28.038 10.722 26.72 12.04 26.72 14V45C26.72 45.298 26.536 45.566 26.256 45.674C25.978 45.782 25.66 45.704 25.462 45.476C25.402 45.41 19.496 38.74 17.146 36.934C15.296 35.516 11.968 35.588 10.022 36.55C9.19603 36.956 8.72203 37.476 8.72203 37.972C8.83603 38.52 10.848 40.732 11.928 41.922L12.93 43.032ZM21.51 23.458C18.814 21.07 17.268 17.622 17.268 14C17.268 6.98601 22.974 1.28001 29.988 1.28001C37.002 1.28001 42.708 6.98601 42.708 14C42.708 17.622 41.162 21.068 38.466 23.458L37.508 22.38C39.896 20.264 41.266 17.21 41.266 14C41.266 7.78001 36.208 2.72001 29.986 2.72001C23.766 2.72001 18.706 7.78001 18.706 14C18.706 17.21 20.076 20.266 22.464 22.38L21.51 23.458Z"/>
+                  </svg>
+                </div>
+                <span
+                  class="t-body-1 text-mono-70">No hay registros actualmente.</span>
+              </div>
+              <div *ngIf="annexesAll.length" class="table-h w-full">
+                <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
+                  <div class="p-2 w-12">N°</div>
+                  <div class="p-2 flex-1">Nombre</div>
+                  <div class="p-2 w-16">Versión</div>
+                  <div class="p-2 w-16">Activo</div>
+                  <div class="p-2 w-32">Opciones</div>
+                </div>
+                <div class="table-body t-body-1 text-mono-70">
+                  <div class="item w-full flex flex-row {{annexeDisplayIndex === position ? 'bg-mono-10':''}}"
+                       *ngFor="let item of annexesDocForPag; let position = index"
+                       (click)="annexeDisplayIndex=position">
+                    <div class="flex items-center p-2 w-12">{{annexesAll.indexOf(item) + 1}}</div>
+                    <div class="flex items-center p-2 flex-1 break-all">{{item.name}}</div>
+                    <div class="flex items-center p-2 w-16 break-all">{{item.version}}</div>
+                    <div class="flex items-center p-2 w-16 break-all">{{item.is_active ? 'Sí' : 'No'}}</div>
+                    <div class="flex items-center p-2 w-32">
+                      <div class="w-full flex flex-row">
+                        <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
+                                tooltip="Editar Anexo" (click)="loadDataForEdition(item); annexeSelected=item;">
+                          <div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"/>
+                            </svg>
+                          </div>
+                        </button>
+                        <button class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10" ecTooltip
+                                tooltip="Configurar Anexo" (click)="loadConfiguration(item)">
+                          <div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M12.0132 2.25006C12.7471 2.25852 13.4782 2.34332 14.1947 2.5031C14.5074 2.57285 14.7413 2.83357 14.7768 3.15202L14.947 4.67887C15.024 5.37992 15.6159 5.9109 16.3216 5.91164C16.5113 5.91194 16.6989 5.87244 16.8742 5.79489L18.2748 5.17962C18.5661 5.05165 18.9064 5.12142 19.1239 5.35368C20.1361 6.4347 20.8899 7.73121 21.3287 9.14564C21.4233 9.45064 21.3144 9.78209 21.0573 9.97156L19.8159 10.8867C19.4617 11.1469 19.2526 11.5601 19.2526 11.9995C19.2526 12.439 19.4617 12.8522 19.8166 13.113L21.0592 14.0284C21.3163 14.2178 21.4253 14.5493 21.3307 14.8544C20.8921 16.2685 20.1387 17.565 19.1271 18.6462C18.9098 18.8784 18.5697 18.9483 18.2785 18.8207L16.8721 18.2046C16.4698 18.0285 16.0077 18.0543 15.6275 18.274C15.2473 18.4938 14.9942 18.8813 14.9459 19.3178L14.7769 20.8445C14.742 21.1593 14.5131 21.4182 14.205 21.4916C12.7566 21.8362 11.2475 21.8362 9.79901 21.4916C9.49088 21.4182 9.26202 21.1593 9.22716 20.8445L9.05834 19.32C9.00875 18.8843 8.75532 18.498 8.3754 18.279C7.99549 18.06 7.53418 18.0344 7.13318 18.2094L5.72655 18.8257C5.4352 18.9534 5.09501 18.8833 4.87776 18.651C3.8656 17.5685 3.11217 16.2706 2.67418 14.8549C2.57984 14.5499 2.68884 14.2187 2.94582 14.0294L4.18915 13.1134C4.54329 12.8532 4.75245 12.44 4.75245 12.0005C4.75245 11.5611 4.54329 11.1479 4.18869 10.8873L2.94614 9.97291C2.68877 9.78351 2.57967 9.45184 2.67434 9.14664C3.1131 7.73221 3.86692 6.4357 4.8791 5.35468C5.09657 5.12242 5.43691 5.05265 5.72822 5.18062L7.1286 5.79579C7.53154 5.97262 7.99478 5.94591 8.37675 5.72275C8.75707 5.50215 9.01026 5.11428 9.05914 4.6777L9.22922 3.15202C9.26474 2.83341 9.49884 2.5726 9.81178 2.503C10.5291 2.34348 11.2609 2.25871 12.0132 2.25006ZM12.0133 3.74996C11.5593 3.75531 11.1065 3.79449 10.6588 3.86708L10.5499 4.84425C10.448 5.75374 9.92101 6.56108 9.1314 7.01909C8.33695 7.48323 7.36834 7.53909 6.52556 7.16923L5.62727 6.77462C5.05534 7.46879 4.60012 8.25141 4.2795 9.09174L5.0773 9.67885C5.81611 10.2217 6.25245 11.0837 6.25245 12.0005C6.25245 12.9173 5.81611 13.7794 5.07807 14.3216L4.27902 14.9103C4.59936 15.7521 5.05465 16.5362 5.62698 17.2317L6.53211 16.8351C7.3702 16.4692 8.33222 16.5228 9.12451 16.9795C9.91679 17.4362 10.4453 18.2418 10.549 19.1527L10.6579 20.1366C11.5476 20.2878 12.4564 20.2878 13.3461 20.1366L13.455 19.1527C13.5558 18.2421 14.0837 17.4337 14.877 16.9753C15.6702 16.5169 16.6342 16.4631 17.4738 16.8305L18.3782 17.2268C18.95 16.5323 19.4051 15.7495 19.7257 14.909L18.9277 14.3212C18.1889 13.7784 17.7526 12.9163 17.7526 11.9995C17.7526 11.0827 18.1889 10.2207 18.9268 9.67853L19.7237 9.09116C19.403 8.25067 18.9478 7.4679 18.3757 6.77362L17.4793 7.16743C17.1139 7.32907 16.7188 7.41226 16.3196 7.41164C14.85 7.4101 13.6165 6.30361 13.4561 4.84389L13.3472 3.86676C12.9016 3.79426 12.4536 3.75518 12.0133 3.74996ZM12.0007 8.25001C14.0717 8.25001 15.7507 9.92894 15.7507 12C15.7507 14.0711 14.0717 15.75 12.0007 15.75C9.9296 15.75 8.25067 14.0711 8.25067 12C8.25067 9.92894 9.9296 8.25001 12.0007 8.25001ZM12.0007 9.75001C10.758 9.75001 9.75067 10.7574 9.75067 12C9.75067 13.2427 10.758 14.25 12.0007 14.25C13.2433 14.25 14.2507 13.2427 14.2507 12C14.2507 10.7574 13.2433 9.75001 12.0007 9.75001Z"/>
+                            </svg>
+                          </div>
+                        </button>
+                        <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
+                                tooltip="Eliminar Anexo" (click)="annexeSelected=item; showConfirm=true">
+                          <div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"/>
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <app-paginator [data]="annexesAll" (current-data-page)="annexesDocForPag = $event"></app-paginator>
+            </div>
+          </div>
+        </div>
+        <div class="border-l border-mono-30"></div>
+        <div class="section-2 w-full">
+          <div *ngIf="!doctypeConfiguration.length" class="notify-null flex flex-col space-y-2 items-center p-12">
+            <div class="text-brand-2">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M39.54 62.72C29.406 62.72 24.722 58.284 18.732 51.516C17.044 49.61 11.862 43.996 11.862 43.996L10.86 42.888C8.42603 40.21 7.28003 38.852 7.28003 37.97C7.28003 36.888 8.02803 35.926 9.38403 35.256C11.76 34.084 15.642 33.964 18.022 35.794C19.812 37.17 23.376 41.016 25.28 43.12V14C25.28 11.224 27.216 9.28601 29.988 9.28001C29.988 9.28001 29.988 9.28001 29.99 9.28001C29.99 9.28001 29.992 9.28001 29.996 9.28001C29.998 9.28001 30 9.28001 30.002 9.28001C32.782 9.28601 34.72 11.224 34.72 14V29.28H47.824C52.896 29.28 56.72 32.836 56.72 37.552V45.572C56.72 54.478 54.638 62.72 39.54 62.72ZM12.93 43.032C12.934 43.036 18.12 48.654 19.81 50.566C25.54 57.038 30.008 61.28 39.54 61.28C52.604 61.28 55.28 55 55.28 45.572V37.552C55.28 33.656 52.074 30.718 47.824 30.718H34C33.602 30.718 33.28 30.396 33.28 29.998V14C33.28 12.04 31.96 10.722 29.996 10.72C28.038 10.722 26.72 12.04 26.72 14V45C26.72 45.298 26.536 45.566 26.256 45.674C25.978 45.782 25.66 45.704 25.462 45.476C25.402 45.41 19.496 38.74 17.146 36.934C15.296 35.516 11.968 35.588 10.022 36.55C9.19603 36.956 8.72203 37.476 8.72203 37.972C8.83603 38.52 10.848 40.732 11.928 41.922L12.93 43.032ZM21.51 23.458C18.814 21.07 17.268 17.622 17.268 14C17.268 6.98601 22.974 1.28001 29.988 1.28001C37.002 1.28001 42.708 6.98601 42.708 14C42.708 17.622 41.162 21.068 38.466 23.458L37.508 22.38C39.896 20.264 41.266 17.21 41.266 14C41.266 7.78001 36.208 2.72001 29.986 2.72001C23.766 2.72001 18.706 7.78001 18.706 14C18.706 17.21 20.076 20.266 22.464 22.38L21.51 23.458Z"/>
+              </svg>
+            </div>
+            <span
+              class="t-body-1 text-mono-70">Seleccione la opción de configuración de un anexo.</span>
+          </div>
+          <div *ngIf="doctypeConfiguration.length" class="setting-annex w-full drop-shadow-lg bg-white">
+            <div class="tabs w-full flex flex-row">
+              <button (click)="isTab1=true"
+                      class="flex-1 h-10 t-subtitle-1 {{isTab1 ? 'text-black bg-white-p border border-b-0 border-mono-30 rounded-t' : 'text-mono-30 border border-b-0 border-white'}}">
+                Configuración Anexo {{annexeSelected.name}}
+              </button>
+              <button (click)="isTab1=false"
+                      class="flex-1 h-10 t-subtitle-1 {{isTab1 ? 'text-mono-30 border border-b-0 border-white' : 'text-black bg-white-p border border-b-0 border-mono-30 rounded-t'}}">
+                Atributos en Común
+              </button>
+            </div>
+            <div *ngIf="isTab1" class="bg-white-p border border-mono-30 rounded-b p-4 space-y-4">
+              <div class="filter w-full flex flex-row space-x-2">
+                <div class="search flex-1 flex flex-row h-8 overflow-hidden rounded border border-mono-30 items-center">
+                  <input #inputListDoctype type="text" placeholder="Buscar Tipo Documental"
+                         (input)="filterList(inputListDoctype.value)"
+                         class="flex-1 h-full t-body-2 placeholder-mono-30 text-black px-2">
+                  <div class="w-8">
+                    <svg class="mx-auto text-mono-70" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M6.66732 1.83331C9.33669 1.83331 11.5007 3.99727 11.5007 6.66665C11.5007 7.82123 11.0958 8.88126 10.4204 9.71252L13.6875 12.9798C13.8828 13.175 13.8828 13.4916 13.6875 13.6869C13.51 13.8644 13.2323 13.8805 13.0365 13.7353L12.9804 13.6869L9.7132 10.4197C8.88193 11.0951 7.8219 11.5 6.66732 11.5C3.99794 11.5 1.83398 9.33602 1.83398 6.66665C1.83398 3.99727 3.99794 1.83331 6.66732 1.83331ZM6.66732 2.83331C4.55023 2.83331 2.83398 4.54955 2.83398 6.66665C2.83398 8.78374 4.55023 10.5 6.66732 10.5C8.78441 10.5 10.5007 8.78374 10.5007 6.66665C10.5007 4.54955 8.78441 2.83331 6.66732 2.83331Z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  (click)="showOnlyCheckedTab1 = !showOnlyCheckedTab1; filterList(inputListDoctype.value, showOnlyCheckedTab1)"
+                  class="only-checked cursor-pointer w-auto h-8 px-2 py-1 rounded flex flex-row items-center space-x-2 border {{showOnlyCheckedTab1 ? 'text-white bg-brand-2 border-brand-2' : 'text-black border-mono-30'}}">
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12.0004 5.5C16.6139 5.5 20.5965 8.65001 21.7015 13.0644C21.8021 13.4662 21.5579 13.8735 21.1561 13.9741C20.7542 14.0746 20.347 13.8305 20.2464 13.4286C19.3075 9.67796 15.9217 7 12.0004 7C8.07729 7 4.69046 9.68026 3.75322 13.4332C3.65286 13.835 3.24572 14.0794 2.84385 13.9791C2.44197 13.8787 2.19755 13.4716 2.29792 13.0697C3.40101 8.65272 7.38484 5.5 12.0004 5.5Z"/>
+                      <path
+                        d="M10.1996 15.639L8.28033 13.7197C7.98744 13.4268 7.51256 13.4268 7.21967 13.7197C6.92678 14.0126 6.92678 14.4875 7.21967 14.7803L9.71967 17.2803C10.0315 17.5922 10.5438 17.569 10.8262 17.2302L15.8262 11.2302C16.0913 10.9119 16.0483 10.439 15.7301 10.1739C15.4119 9.90868 14.939 9.95167 14.6738 10.2699L10.1996 15.639Z"/>
+                    </svg>
+                  </div>
+                  <span class="t-body-2 select-none">Solo Check's</span>
+                </div>
+              </div>
+              <div class="doctypes w-full space-y-4 overflow-y-auto" style="max-height: 400px">
+                <ng-container *ngFor="let docTYPE of doctypeConfiguration">
+                  <div *ngIf="docTYPE.SHOW" class="doctype flex flex-row items-center justify-between gap-4">
+                    <div class="left flex flex-row items-center space-x-2">
+                      <div class="text-mono-70">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M18.5 20C18.5 20.275 18.276 20.5 18 20.5H6C5.724 20.5 5.5 20.275 5.5 20V4C5.5 3.725 5.724 3.5 6 3.5H12V8C12 9.104 12.896 10 14 10H18.5V20ZM13.5 4.621L17.378 8.5H14C13.724 8.5 13.5 8.275 13.5 8V4.621ZM19.414 8.414L13.585 2.586C13.559 2.56 13.527 2.54 13.5 2.516C13.429 2.452 13.359 2.389 13.281 2.336C13.241 2.309 13.195 2.291 13.153 2.268C13.082 2.228 13.012 2.184 12.937 2.152C12.74 2.07 12.528 2.029 12.313 2.014C12.266 2.011 12.22 2 12.172 2H12.171H12H6C4.896 2 4 2.896 4 4V20C4 21.104 4.896 22 6 22H18C19.104 22 20 21.104 20 20V10V9.828C20 9.298 19.789 8.789 19.414 8.414Z"/>
+                        </svg>
+                      </div>
+                      <span class="t-body-1 text-black break-all">{{docTYPE.name}}</span>
+                    </div>
+                    <div class="right flex flex-row items-center space-x-1">
+                      <button *ngIf="docTYPE.is_related" class="text-alert-info rounded px-2 h-8 hover:bg-mono-10">
+                        <span class="t-caption-2 text-mono-70">Requerido</span>
+                        <div>
+                          <svg *ngIf="docTYPE.is_required" (click)="updateAnnexeRequiredDoctype(docTYPE, false)"
+                               class="toggle-on text-alert-warning" width="20" height="20"
+                               viewBox="0 0 20 20" fill="none"
+                               xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M5 5C2.23858 5 0 7.23858 0 10C0 12.7614 2.23858 15 5 15H15C17.7614 15 20 12.7614 20 10C20 7.23858 17.7614 5 15 5H5ZM14.75 12.5C13.3693 12.5 12.25 11.3807 12.25 10C12.25 8.61929 13.3693 7.5 14.75 7.5C16.1307 7.5 17.25 8.61929 17.25 10C17.25 11.3807 16.1307 12.5 14.75 12.5Z"/>
+                          </svg>
+                          <svg *ngIf="!docTYPE.is_required" (click)="updateAnnexeRequiredDoctype(docTYPE, true)"
+                               class="toggle-off text-mono-70" width="20" height="20"
+                               viewBox="0 0 20 20"
+                               fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M5.25 12.5C3.86929 12.5 2.75 11.3807 2.75 10C2.75 8.61929 3.86929 7.5 5.25 7.5C6.63071 7.5 7.75 8.61929 7.75 10C7.75 11.3807 6.63071 12.5 5.25 12.5ZM20 10C20 7.23858 17.7614 5 15 5H5C2.23858 5 0 7.23858 0 10C0 12.7614 2.23858 15 5 15H15C17.7614 15 20 12.7614 20 10ZM15 6.5C16.933 6.5 18.5 8.067 18.5 10C18.5 11.933 16.933 13.5 15 13.5H5C3.067 13.5 1.5 11.933 1.5 10C1.5 8.067 3.067 6.5 5 6.5H15Z"/>
+                          </svg>
+                        </div>
+                      </button>
+                      <button *ngIf="docTYPE.is_related" class="w-8 h-8 text-alert-info rounded px-2 hover:bg-mono-10"
+                              ecTooltip tooltip="Configurar Anexo"
+                              (click)="loadConfigAttribute(docTYPE);"
+                      >
+                        <div>
+                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                               xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M1.91099 7.38266C2.28028 6.24053 2.88863 5.19213 3.69133 4.30364C3.82707 4.15339 4.04002 4.09984 4.23069 4.16802L6.14897 4.85392C6.66905 5.03977 7.24131 4.76883 7.42716 4.24875C7.44544 4.19762 7.45952 4.14507 7.46925 4.09173L7.83471 2.08573C7.87104 1.88627 8.02422 1.7285 8.22251 1.6863C8.8027 1.5628 9.39758 1.5 10.0003 1.5C10.6026 1.5 11.1971 1.56273 11.7769 1.68607C11.9752 1.72824 12.1284 1.88591 12.1648 2.08529L12.5313 4.09165C12.6303 4.63497 13.1511 4.9951 13.6944 4.89601C13.7479 4.88627 13.8004 4.87219 13.8515 4.85395L15.7698 4.16802C15.9605 4.09984 16.1734 4.15339 16.3092 4.30364C17.1119 5.19213 17.7202 6.24053 18.0895 7.38266C18.1518 7.57534 18.0918 7.78658 17.9374 7.91764L16.3825 9.23773C15.9615 9.5952 15.9101 10.2263 16.2675 10.6473C16.3027 10.6887 16.3411 10.7271 16.3825 10.7623L17.9374 12.0824C18.0918 12.2134 18.1518 12.4247 18.0895 12.6173C17.7202 13.7595 17.1119 14.8079 16.3092 15.6964C16.1734 15.8466 15.9605 15.9002 15.7698 15.832L13.8515 15.1461C13.3315 14.9602 12.7592 15.2312 12.5733 15.7512C12.5551 15.8024 12.541 15.8549 12.5312 15.9085L12.1648 17.9147C12.1284 18.1141 11.9752 18.2718 11.7769 18.3139C11.1971 18.4373 10.6026 18.5 10.0003 18.5C9.39758 18.5 8.8027 18.4372 8.22251 18.3137C8.02422 18.2715 7.87104 18.1137 7.83471 17.9143L7.46926 15.9084C7.37018 15.365 6.8494 15.0049 6.30608 15.104C6.25265 15.1137 6.20011 15.1278 6.14906 15.1461L4.23069 15.832C4.04002 15.9002 3.82707 15.8466 3.69133 15.6964C2.88863 14.8079 2.28028 13.7595 1.91099 12.6173C1.84869 12.4247 1.90876 12.2134 2.06313 12.0824L3.61798 10.7623C4.03897 10.4048 4.09046 9.77373 3.73299 9.35274C3.69784 9.31135 3.65937 9.27288 3.618 9.23775L2.06313 7.91764C1.90876 7.78658 1.84869 7.57534 1.91099 7.38266ZM8.00026 10C8.00026 11.1046 8.89569 12 10.0003 12C11.1048 12 12.0003 11.1046 12.0003 10C12.0003 8.89543 11.1048 8 10.0003 8C8.89569 8 8.00026 8.89543 8.00026 10Z"/>
+                          </svg>
+                        </div>
+                      </button>
+                      <div>
+                        <div (click)="changeAnnexeRequiredDoctype(docTYPE)" style="cursor: pointer">
+                          <input *ngIf="docTYPE.is_related" class="w-4 h-4" style="pointer-events: none" type="checkbox"
+                                 [checked]="true">
+                          <input *ngIf="!docTYPE.is_related" class="w-4 h-4" style="pointer-events: none"
+                                 type="checkbox"
+                                 [checked]="false">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div *ngIf="!isTab1" class="bg-white-p border border-mono-30 rounded-b p-4 space-y-4">
+              <div class="filter w-full flex flex-col space-y-2">
+                <div class="flex-1">
+                  <ec-dropdown [dropStyle]="dropStyle" [data]="entitiesAll"
+                               placeholder="Seleccione una entidad" optionLabel="name"
+                               optionValue="id" (onChangeValue)="changeSelectedEntity($event)"
+                               [onlyValue]="false"></ec-dropdown>
+                </div>
+                <div class="w-full flex flex-row space-x-2">
+                  <div
+                    class="search flex-1 flex flex-row h-8 overflow-hidden rounded border border-mono-30 items-center">
+                    <input type="text" placeholder="Buscar Atributo"
+                           class="flex-1 h-full t-body-2 placeholder-mono-30 text-black px-2">
+                    <div class="w-8">
+                      <svg class="mx-auto text-mono-70" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                           xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M6.66732 1.83331C9.33669 1.83331 11.5007 3.99727 11.5007 6.66665C11.5007 7.82123 11.0958 8.88126 10.4204 9.71252L13.6875 12.9798C13.8828 13.175 13.8828 13.4916 13.6875 13.6869C13.51 13.8644 13.2323 13.8805 13.0365 13.7353L12.9804 13.6869L9.7132 10.4197C8.88193 11.0951 7.8219 11.5 6.66732 11.5C3.99794 11.5 1.83398 9.33602 1.83398 6.66665C1.83398 3.99727 3.99794 1.83331 6.66732 1.83331ZM6.66732 2.83331C4.55023 2.83331 2.83398 4.54955 2.83398 6.66665C2.83398 8.78374 4.55023 10.5 6.66732 10.5C8.78441 10.5 10.5007 8.78374 10.5007 6.66665C10.5007 4.54955 8.78441 2.83331 6.66732 2.83331Z"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div (click)="showOnlyCheckedTab2 = !showOnlyCheckedTab2"
+                       class="only-checked cursor-pointer w-auto h-8 px-2 py-1 rounded flex flex-row items-center space-x-2 border {{showOnlyCheckedTab2 ? 'text-white bg-brand-2 border-brand-2' : 'text-black border-mono-30'}}">
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M12.0004 5.5C16.6139 5.5 20.5965 8.65001 21.7015 13.0644C21.8021 13.4662 21.5579 13.8735 21.1561 13.9741C20.7542 14.0746 20.347 13.8305 20.2464 13.4286C19.3075 9.67796 15.9217 7 12.0004 7C8.07729 7 4.69046 9.68026 3.75322 13.4332C3.65286 13.835 3.24572 14.0794 2.84385 13.9791C2.44197 13.8787 2.19755 13.4716 2.29792 13.0697C3.40101 8.65272 7.38484 5.5 12.0004 5.5Z"/>
+                        <path
+                          d="M10.1996 15.639L8.28033 13.7197C7.98744 13.4268 7.51256 13.4268 7.21967 13.7197C6.92678 14.0126 6.92678 14.4875 7.21967 14.7803L9.71967 17.2803C10.0315 17.5922 10.5438 17.569 10.8262 17.2302L15.8262 11.2302C16.0913 10.9119 16.0483 10.439 15.7301 10.1739C15.4119 9.90868 14.939 9.95167 14.6738 10.2699L10.1996 15.639Z"/>
+                      </svg>
+                    </div>
+                    <span class="t-body-2 select-none">Solo Check's</span>
+                  </div>
+                </div>
+              </div>
+              <div class="attributes w-full space-y-4 overflow-y-auto" style="max-height: 360px">
+                <ng-container *ngFor="let attr of attributesCommonConfig">
+                  <div class="attribute h-8 flex flex-row items-center justify-between gap-4">
+                    <div class="left flex flex-row items-center space-x-2">
+                      <div class="text-mono-70">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M18.5 20C18.5 20.275 18.276 20.5 18 20.5H6C5.724 20.5 5.5 20.275 5.5 20V4C5.5 3.725 5.724 3.5 6 3.5H12V8C12 9.104 12.896 10 14 10H18.5V20ZM13.5 4.621L17.378 8.5H14C13.724 8.5 13.5 8.275 13.5 8V4.621ZM19.414 8.414L13.585 2.586C13.559 2.56 13.527 2.54 13.5 2.516C13.429 2.452 13.359 2.389 13.281 2.336C13.241 2.309 13.195 2.291 13.153 2.268C13.082 2.228 13.012 2.184 12.937 2.152C12.74 2.07 12.528 2.029 12.313 2.014C12.266 2.011 12.22 2 12.172 2H12.171H12H6C4.896 2 4 2.896 4 4V20C4 21.104 4.896 22 6 22H18C19.104 22 20 21.104 20 20V10V9.828C20 9.298 19.789 8.789 19.414 8.414Z"/>
+                        </svg>
+                      </div>
+                      <span class="t-body-1 text-black break-all">{{attr.name}}</span>
+                    </div>
+                    <div class="right flex flex-row items-center space-x-1">
+                      <div class="w-4 h-4">
+                        <div (click)="changeAnnexeRequiredAttributeCommon(attr)" style="cursor: pointer">
+                          <input *ngIf="attr.is_common" class="w-4 h-4" style="pointer-events: none" type="checkbox"
+                                 [checked]="true">
+                          <input *ngIf="!attr.is_common" class="w-4 h-4" style="pointer-events: none"
+                                 type="checkbox"
+                                 [checked]="false">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showConfigAttribute" class="flex justify-end z-50 fixed top-0 left-0 w-full h-full"
+         style="background-color: rgba(0,0,0,0.5)">
+      <div class="pt-12 w-full lg:w-2/3 h-full bg-white lg:border-l lg:border-mono-30 overflow-y-auto"
+           style="height: calc(100vh)">
+        <app-config-attribute-requerid [entities]="entitiesAll" [annexe]="getAnnexeById(annexeSelected.id)"
+                                       [doctype_required_id]="doctype_required_selected_id"
+                                       (closeConfig)="showConfigAttribute=false"
+        ></app-config-attribute-requerid>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </ng-container>
+</app-layout>
+
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+
+<app-confirm-dialog [show]="showConfirm" type="warning"
+                    title="¿Esta seguro de querer borrar el Anexo?"
+                    body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
+                    (onEvent)="confirmDeleteAnnexe($event); showConfirm=false"
+></app-confirm-dialog>
+<app-confirm-dialog [show]="false" type="warning"
+                    title="¿Esta seguro de querer borrar el Anexo?"
+                    body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
+                    (onEvent)="confirmDeleteAnnexe($event)"
+></app-confirm-dialog>
+<app-confirm-dialog [show]="false" type="warning"
+                    title="¿Esta seguro de querer borrar el Anexo?"
+                    body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
+                    (onEvent)="confirmDeleteAnnexe($event)"
+></app-confirm-dialog>
+
+<app-block-page [show]="isBlockPage"></app-block-page>

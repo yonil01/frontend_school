@@ -1,20 +1,21 @@
 import {Injectable} from '@angular/core';
-import {Entity, Response, ResponseAnnexe} from "@app/core/models";
+import {Entity, Response, ResponseAnnexe, ResponseAnnexeDoctype} from "@app/core/models";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {
-  CreateRequiredAttributes,
+  CreateRequiredAttributes, CreateRequiredAttributesCommon,
   CreateRequiredDoctypes,
-  CreateRequiredMutation, DeleteRequiredAttributes,
+  CreateRequiredMutation, DeleteRequiredAttributes, DeleteRequiredAttributesCommon,
   DeleteRequiredDoctypes,
-  DeleteRequiredMutation, UpdateRequiredAttributes,
+  DeleteRequiredMutation, UpdateRequiredAttributes, UpdateRequiredAttributesCommon,
   UpdateRequiredDoctypes,
   UpdateRequiredMutation
 } from "@app/modules/wizard/documents/services/annexe/annexe.queries.service";
 import {
-  AnnexeAttributesRequestModel,
   AnnexeDoctypesRequestModel,
-  AnnexeRequestModel
+  AnnexeRequestModel,
+  RequiredAttributeCommon, RequiredAttributeCommonRequestModel,
+  RequiredAttributeRequestModel
 } from "@app/core/models/config/annexe";
 
 @Injectable({
@@ -28,6 +29,9 @@ export class AnnexeService {
               private createRequiredDoctypesMutation: CreateRequiredDoctypes,
               private updateRequiredDoctypesMutation: UpdateRequiredDoctypes,
               private deleteRequiredDoctypesMutation: DeleteRequiredDoctypes,
+              private createRequiredAttributesCommonMutation: CreateRequiredAttributesCommon,
+              private updateRequiredAttributesCommonMutation: UpdateRequiredAttributesCommon,
+              private deleteRequiredAttributesCommonMutation: DeleteRequiredAttributesCommon,
               private createRequiredAttributesMutation: CreateRequiredAttributes,
               private updateRequiredAttributesMutation: UpdateRequiredAttributes,
               private deleteRequiredAttributesMutation: DeleteRequiredAttributes) {
@@ -57,7 +61,7 @@ export class AnnexeService {
       .pipe(map(({data}: any) => data.deleteRequired));
   }
 
-  public createRequiredDoctype(doctype: AnnexeDoctypesRequestModel): Observable<Response> {
+  public createRequiredDoctype(doctype: AnnexeDoctypesRequestModel): Observable<ResponseAnnexeDoctype> {
     return this.createRequiredDoctypesMutation
       .mutate({
         requestRequiredDoctypes: {data: doctype},
@@ -65,7 +69,7 @@ export class AnnexeService {
       .pipe(map(({data}: any) => data.createRequiredDoctypes));
   }
 
-  public updateRequiredDoctype(doctype: AnnexeDoctypesRequestModel): Observable<Response> {
+  public updateRequiredDoctype(doctype: AnnexeDoctypesRequestModel): Observable<ResponseAnnexeDoctype> {
     return this.updateRequiredDoctypesMutation
       .mutate({
         requestUpdateRequiredDoctypes: {data: doctype},
@@ -76,23 +80,47 @@ export class AnnexeService {
   public deleteRequiredDoctype(id: string): Observable<Response> {
     return this.deleteRequiredDoctypesMutation
       .mutate({
-        id: {data: id},
+        id: id,
       })
       .pipe(map(({data}: any) => data.deleteRequiredDoctypes));
   }
 
-  public createRequiredAttribute(attribute: AnnexeAttributesRequestModel): Observable<Response> {
+  public createRequiredAttributeCommon(attribute: RequiredAttributeCommonRequestModel): Observable<Response> {
+    return this.createRequiredAttributesCommonMutation
+      .mutate({
+        request: {data: attribute},
+      })
+      .pipe(map(({data}: any) => data.createRequiredAttributeCommon));
+  }
+
+  public updateRequiredAttributeCommon(attribute: RequiredAttributeCommon): Observable<Response> {
+    return this.updateRequiredAttributesCommonMutation
+      .mutate({
+        request: {data: attribute},
+      })
+      .pipe(map(({data}: any) => data.updateRequiredAttributeCommons));
+  }
+
+  public deleteRequiredAttributeCommon(id: string): Observable<Response> {
+    return this.deleteRequiredAttributesCommonMutation
+      .mutate({
+        id: id,
+      })
+      .pipe(map(({data}: any) => data.deleteRequiredAttributeCommons));
+  }
+
+  public createRequiredAttribute(attribute: RequiredAttributeRequestModel): Observable<Response> {
     return this.createRequiredAttributesMutation
       .mutate({
-        requestRequiredAttribute: {data: attribute},
+        request: {data: attribute},
       })
       .pipe(map(({data}: any) => data.createRequiredAttributes));
   }
 
-  public updateRequiredAttribute(attribute: AnnexeAttributesRequestModel): Observable<Response> {
+  public updateRequiredAttribute(attribute: RequiredAttributeRequestModel): Observable<Response> {
     return this.updateRequiredAttributesMutation
       .mutate({
-        requestUpdateRequiredAttribute: {data: attribute},
+        request: {data: attribute},
       })
       .pipe(map(({data}: any) => data.updateRequiredAttributes));
   }
@@ -100,9 +128,9 @@ export class AnnexeService {
   public deleteRequiredAttribute(id: string): Observable<Response> {
     return this.deleteRequiredAttributesMutation
       .mutate({
-        id: {data: id},
+        id: id,
       })
-      .pipe(map(({data}: any) => data.deleteRequiredDoctypes));
+      .pipe(map(({data}: any) => data.deleteRequiredAttributes));
   }
 
 }
