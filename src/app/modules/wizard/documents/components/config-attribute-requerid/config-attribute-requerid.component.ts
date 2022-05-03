@@ -35,7 +35,7 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
   @Input() entities: Entity[] = [];
   @Input() annexe!: Required;
   @Input() doctype_required_id!: string;
-  @Output() requiredAttributes = new EventEmitter<RequiredAttribute[]>();
+  @Output() updateRequiredAttributes = new EventEmitter<RequiredAttribute[]>();
   @Output() closeConfig = new EventEmitter<boolean>();
 
   public attributes: Attribute[] = [];
@@ -47,8 +47,6 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
   public attributeDocForPag: RequiredAttribute[] = [];
 
   public attributeSelected!: RequiredAttribute;
-  public showConfirm = false;
-  public showConfigAttribute = false;
 
   public formsRequired!: FormGroup;
   public isBlockPage = false;
@@ -67,6 +65,13 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
     {Id: 3, name: 'NONE'},
   ];
 
+  public showForm: boolean = false;
+  public isCreate: boolean = false;
+  public canAddForm: boolean = false;
+
+  public valueConfirm: { show: boolean, value: any } = {show: false, value: ''};
+  public isBlockOptions = false;
+
   constructor(private _annexeService: AnnexeService, private _fb: FormBuilder,
               private _messageService: ToastService, private _cd: ChangeDetectorRef) {
     this.initForm();
@@ -78,8 +83,11 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
 
   ngOnChanges(changes: SimpleChanges): void {
     // @ts-ignore
-    const doctypeRequired: RequiredDoctypes = this.annexe.required_doctypes?.find((_doctypeRequired: RequiredDoctypes) => _doctypeRequired.id === this.doctype_required_id)
+    const doctypeRequired: RequiredDoctypes = this.annexe.required_doctypes?.find((_doctypeRequired: RequiredDoctypes) => _doctypeRequired.id === this.doctype_required_id);
     this.attributesRequiredAll = doctypeRequired?.required_attributes || [];
+    this.showForm = !this.attributesRequiredAll.length;
+    this.isCreate = !this.attributesRequiredAll.length;
+    this.canAddForm = !this.attributesRequiredAll.length;
   }
 
   ngOnInit(): void {
@@ -109,13 +117,13 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
       attribute: [data ? data.attribute_id : '', [Validators.required]],
       comparison: [data ? data.comparison_symbol.Id : '', [Validators.required]],
       value: [data ? data.value : '', [Validators.required]],
-      preposition: [data ? data.preposition.Id : '', []],
+      preposition: [data ? data.preposition.Id : 3, []],
     })
     this.attributesForm.push(newForm)
   }
 
   public validAddNewAttributeForm(index: number) {
-    if (index + 1 === this.formsRequired.get('attributes')?.value.length) {
+    if (this.canAddForm && index + 1 === this.formsRequired.get('attributes')?.value.length) {
       this.addNewFormAttribute();
     }
   }
@@ -135,7 +143,6 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
 
   public validRequiredAttribute() {
     if (this.formsRequired.valid) {
-      // this._messageService.add({type: 'success', message: 'Exito', life: 55000})
       this.prepareDataRequiredAttribute();
     } else {
       this._messageService.add({type: 'warning', message: 'Complete los campos correctamente', life: 5000})
@@ -150,9 +157,9 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
       requestAll.push({
         id: uuidv4().toLowerCase(),
         required_doctype_id: this.doctype_required_id,
-        entity_id: dataForm[0].entity.id,
-        attribute_id: dataForm[0].attribute.id,
-        comparison_symbol_id: dataForm[0].comparison.id,
+        entity_id: dataForm[0].entity.id ? dataForm[0].entity?.id : dataForm[0].entity,
+        attribute_id: dataForm[0].attribute.id ? dataForm[0].attribute.id : dataForm[0].attribute,
+        comparison_symbol_id: dataForm[0].comparison.id ? dataForm[0].comparison.id : dataForm[0].comparison,
         preposition_id: dataForm[0].preposition ? dataForm[0].preposition : 3,
         value: dataForm[0].value,
       })
@@ -170,18 +177,24 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
       })
     }
 
-    debugger
-
     this.loadCreatedAttribute(requestAll);
 
   }
 
   private async loadCreatedAttribute(requestAll: RequiredAttributeRequestModel[]) {
+    this.isBlockPage = true;
     for await (const request of requestAll) {
-      if (!await this.createRequiredAttribute(request)) return;
-      this.requiredAttributes.emit(this.attributesRequiredAll);
+      if (!await this.createRequiredAttribute(request)) {
+        this.isBlockPage = false;
+        return
+      }
+      this.updateRequiredAttributes.emit(this.attributesRequiredAll);
     }
+    this.isBlockPage = false;
+    this._messageService.add({type: 'success', message: 'Creación de atributos requeridos exitosa', life: 5000});
     this.initForm();
+    this.isCreate = false;
+    this.showForm = false;
   }
 
   private createRequiredAttribute(request: RequiredAttributeRequestModel) {
@@ -204,80 +217,211 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
     })
   }
 
-  public loadDataForEdition(attribute: RequiredAttribute, index: number) {
-    const attr = this.attributesRequiredAll.find(_att => _att.id === attribute.id);
-    this.initFormGroup();
-    if (attr) {
-      const newArray = this.attributesRequiredAll.slice(index);
-      newArray.forEach(attr => {
-        if (attr?.preposition) {
-          this.addNewFormAttribute(attribute);
-        } else {
-          return;
-        }
-      })
+  public validUpdateRequiredAttribute() {
+    if (this.formsRequired.valid) {
+      const dataForm = this.formsRequired.get('attributes')?.value;
+      const requestCreate: RequiredAttributeRequestModel[] = [];
+      let requestUpdate: RequiredAttributeRequestModel;
+
+      requestUpdate = {
+        id: this.attributeSelected.id,
+        required_doctype_id: this.doctype_required_id,
+        entity_id: dataForm[0].entity.id ? dataForm[0].entity?.id : dataForm[0].entity,
+        attribute_id: dataForm[0].attribute.id ? dataForm[0].attribute.id : dataForm[0].attribute,
+        comparison_symbol_id: dataForm[0].comparison.id ? dataForm[0].comparison.id : dataForm[0].comparison,
+        preposition_id: dataForm[0].preposition ? dataForm[0].preposition : 3,
+        value: dataForm[0].value,
+      }
+
+      if (this.attributesForm.length > 1) {
+        dataForm.slice(1).forEach((data: any) => {
+          requestCreate.push({
+            id: uuidv4().toLowerCase(),
+            required_doctype_id: this.doctype_required_id,
+            entity_id: data.entity.id,
+            attribute_id: data.attribute.id,
+            comparison_symbol_id: data.comparison.id,
+            preposition_id: data.preposition ? data.preposition : 3,
+            value: data.value,
+          })
+        })
+      }
+
+      this.setUpdateRequiredAttributes(requestUpdate, requestCreate)
+
+    } else {
+      this._messageService.add({type: 'warning', message: 'Complete los campos correctamente', life: 5000})
+      this.formsRequired.markAllAsTouched();
     }
   }
 
-  public deleteRequiredAttribute(attribute: RequiredAttribute) {
+  private async setUpdateRequiredAttributes(requestUpdate: RequiredAttributeRequestModel, requestCreate: RequiredAttributeRequestModel[]) {
     this.isBlockPage = true;
-    this._annexeService.deleteRequiredAttribute(attribute.id).subscribe({
-      next: (res) => {
-        if (res.error) {
-          this._messageService.add({type: 'error', message: res.msg, life: 5000});
-        } else {
-          this._messageService.add({type: 'success', message: 'Atributo requerido eliminado', life: 5000});
-          this.attributesRequiredAll = this.attributesRequiredAll.filter(_attr => _attr.id !== attribute.id);
-          if (this.attributesRequiredAll.length) {
-            const lastAttr = this.attributesRequiredAll[this.attributesRequiredAll.length - 1];
-            const request: RequiredAttributeRequestModel = {
-              id: lastAttr.id,
-              entity_id: lastAttr.entity_id,
-              attribute_id: lastAttr.attribute_id,
-              comparison_symbol_id: lastAttr.comparison_symbol.Id,
-              preposition_id: lastAttr.preposition.Id,
-              required_doctype_id: this.doctype_required_id,
-              value: lastAttr.value
-            }
-            this.updateRequiredAttribute(request);
-          }
+    const result = await this.updateRequiredAttribute(requestUpdate);
+
+    if (!result) {
+      this.isBlockPage = false;
+      return;
+    }
+
+    this.updateRequiredAttributes.emit(this.attributesRequiredAll);
+
+    if (requestCreate.length) {
+      for await (const request of requestCreate) {
+        if (!await this.createRequiredAttribute(request)) {
+          this.isBlockPage = false;
+          return
         }
-        this.isBlockPage = false;
-      },
-      error: (err: Error) => {
-        this.showMessageError('Error: ' + err.message)
+        this.updateRequiredAttributes.emit(this.attributesRequiredAll);
       }
+    }
+
+    this.isBlockPage = false;
+    if (result) this._messageService.add({type: 'success', message: 'Actualización exitosa', life: 5000});
+    this.initForm();
+    this.showForm = false;
+  }
+
+  public loadDataForEdition(attribute: RequiredAttribute, index: number) {
+    this.isBlockOptions = true;
+    const attr = this.attributesRequiredAll.find(_att => _att.id === attribute.id);
+    this.initFormGroup();
+    if (attr) {
+      this.addNewFormAttribute(this.attributesRequiredAll[index]);
+      this.showForm = true;
+    }
+    this.canAddForm = this.attributesRequiredAll.length === (index + 1)
+  }
+
+  public showModalConfirmDelete(attribute: RequiredAttribute, index: number) {
+    this.valueConfirm.show = true;
+    this.valueConfirm.value = {attribute, index}
+  }
+
+  public confirmOptionDelete(isConfirm: boolean) {
+    if (isConfirm) {
+      this.validateDeleteRequiredAttribute(this.valueConfirm.value.attribute, this.valueConfirm.value.index)
+    }
+    this.valueConfirm.show = false
+  }
+
+  public async validateDeleteRequiredAttribute(attribute: RequiredAttribute, index: number) {
+    if (this.attributesRequiredAll.length !== (index + 1)) {
+      this._messageService.add({
+        type: 'error',
+        message: 'Acción denegada, el atributo tiene otros atributos relacionados!',
+        life: 5000
+      });
+    } else {
+      this.isBlockPage = true;
+
+      if (!await this.deleteRequireAttribute(attribute)) {
+        this.isBlockPage = false
+        return;
+      }
+
+      if (this.attributesRequiredAll.length >= 1) {
+        const dataForm = this.attributesRequiredAll[index-1];
+        const x = this.attributesRequiredAll;
+        const requestUpdate = {
+          id: dataForm?.id,
+          required_doctype_id: this.doctype_required_id,
+          entity_id: dataForm?.entity_id,
+          attribute_id: dataForm?.attribute_id,
+          comparison_symbol_id: dataForm?.comparison_symbol.Id,
+          preposition_id: 3,
+          value: dataForm?.value,
+        }
+
+        debugger
+
+        if (!await this.updateRequiredAttribute(requestUpdate)) {
+          this.isBlockPage = false
+          return;
+        }
+
+      }
+
+      this.isBlockPage = false;
+
+      if (!this.attributesRequiredAll.length) {
+        this.isCreate = this.showForm = true;
+        console.log(this.showForm);
+        console.log('show')
+      }
+    }
+  }
+
+  private deleteRequireAttribute(attribute: RequiredAttribute) {
+    return new Promise((resolve, _) => {
+      this._annexeService.deleteRequiredAttribute(attribute.id).subscribe({
+        next: (res) => {
+          if (res.error) {
+            this._messageService.add({type: 'error', message: res.msg, life: 5000});
+            resolve(false);
+          } else {
+            this._messageService.add({type: 'success', message: 'Atributo requerido eliminado', life: 5000});
+            this.attributesRequiredAll = this.attributesRequiredAll.filter(_attr => _attr.id !== attribute.id);
+            this.updateRequiredAttributes.emit(this.attributesRequiredAll);
+            resolve(true);
+          }
+        },
+        error: (err: Error) => {
+          this.showMessageError('Error: ' + err.message);
+          resolve(false);
+        }
+      })
     })
   }
 
   private updateRequiredAttribute(request: RequiredAttributeRequestModel) {
-    this._annexeService.updateRequiredAttribute(request).subscribe({
-      next: (res) => {
-        if (res.error) {
-          this._messageService.add({type: 'error', message: res.msg, life: 5000});
-        } else {
-          this._messageService.add({type: 'success', message: 'Atributo requerido actualizado', life: 5000});
-          debugger
+    return new Promise((resolve, _) => {
+      this._annexeService.updateRequiredAttribute(request).subscribe({
+        next: (res) => {
+          if (res.error) {
+            this._messageService.add({type: 'error', message: res.msg, life: 5000});
+            resolve(false)
+          } else {
+            this.attributesRequiredAll = this.attributesRequiredAll.map(_attr => _attr.id === res.data.id ? res.data : _attr)
+            resolve(true)
+          }
+        },
+        error: (err: Error) => {
+          this.showMessageError('Error: ' + err.message);
+          resolve(false);
         }
-        this.isBlockPage = false;
-      },
-      error: (err: Error) => {
-        this.showMessageError('Error: ' + err.message)
-      }
+      })
     })
   }
 
-  public getEntityNameById(id: string) {
-    return this.entities.find(_entity => _entity.id === id)?.name
-  }
+  public getEntityNameById = (id: string) => this.entities.find(_entity => _entity.id === id)?.name;
 
-  public getAttributeNameById(id: string) {
-    return this.attributes.find(_entity => _entity.id === id)?.name
+  public getAttributeNameById(entity_id: string, attribute_id: string) {
+    const entity = this.entities.find(_entity => _entity.id === entity_id);
+    return entity?.attributes?.find(_attr => _attr.id === attribute_id)?.name
   }
 
   private showMessageError(msg?: string) {
     this.isBlockPage = false;
     this._messageService.add({type: 'error', message: msg ? msg : 'Conexión perdida con el servidor!', life: 5000});
+  }
+
+  public deleteFormNext(index: number) {
+    if ((index + 2) === this.attributesForm.length) {
+      this.attributesForm.removeAt(index + 1);
+      this.attributesForm.controls[index].get('preposition')?.setValue(3)
+    }
+  }
+
+  public cancelFormRequiredAttribute() {
+    this.initForm();
+    this.showForm = this.isBlockOptions = false;
+  }
+
+  public getLengthForm = () => this.attributesForm.length;
+
+  public getDisabled(index: number) {
+    return this.getLengthForm() >= 2 && (index + 2 >= this.getLengthForm())
   }
 
 }

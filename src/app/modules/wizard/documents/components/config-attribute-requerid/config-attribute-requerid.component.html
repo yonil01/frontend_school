@@ -9,67 +9,95 @@
             </span>
   </button>
 </div>
-<div class="body p-4 md:p-6 lg:p-12 space-y-4">
-  <form class="space-y-6" [formGroup]="formsRequired">
-    <div formArrayName="attributes" class="space-y-6">
-      <div *ngFor="let attributeForm of attributesForm.controls; let i = index">
-        <div [formGroupName]="i" class="grid grid-cols-2 gap-4">
-          <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Entidad</label>
-            <ec-dropdown formControlName="entity" [dropStyle]="dropStyle" [data]="entities"
-                         placeholder="Seleccione una entidad" optionLabel="name"
-                         optionValue="id" (onChangeValue)="changeSelectedEntity(attributeForm)"
-                         [onlyValue]="false"></ec-dropdown>
-            <small *ngIf="validFormRequiredAttribute(attributeForm, 'entity')" class="text-alert-error">
-              El campo es requerido
-            </small>
-          </div>
-          <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Atributo</label>
-            <ec-dropdown formControlName="attribute" [dropStyle]="dropStyle" [data]="getDATAttribute(attributeForm)"
-                         placeholder="Seleccione un atributo" optionLabel="name"
-                         optionValue="id" [onlyValue]="false"></ec-dropdown>
-            <small *ngIf="validFormRequiredAttribute(attributeForm, 'attribute')" class="text-alert-error">
-              El campo es requerido
-            </small>
-          </div>
-          <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Comparación</label>
-            <ec-dropdown formControlName="comparison" [dropStyle]="dropStyle" [data]="comparisonData"
-                         placeholder="Seleccione un signo de comparación" optionLabel="name"
-                         optionValue="id" [onlyValue]="false"></ec-dropdown>
-            <small *ngIf="validFormRequiredAttribute(attributeForm, 'comparison')" class="text-alert-error">
-              El campo es requerido
-            </small>
-          </div>
-          <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Valor</label>
-            <input formControlName="value" class="ec-input" type="text" style="height: 3rem">
-            <small *ngIf="validFormRequiredAttribute(attributeForm, 'value')" class="text-alert-error">
-              El campo es requerido
-            </small>
-          </div>
-          <div class="flex flex-row items-center gap-6" (click)="validAddNewAttributeForm(i)">
-            <div>
-              <label class="flex flex-row space-x-2 items-center">
-                <input formControlName="preposition" class="w-4 h-4"
-                       [value]="prepositionData[0].Id" type="radio">
-                <span class="t-body-2 text-black flex-1">AND (y)</span>
-              </label>
+<div class="body p-4 md:p-6 lg:p-8 space-y-4">
+  <div *ngIf="showForm">
+    <div class="flex flex-row space-x-2 pb-4">
+      <div class="bg-brand-2 rounded-sm w-2"></div>
+      <div class="w-full text-mono-70 py-1">
+        <span>No se puede cambiar a ‘NONE’ un atributo que está enlasado con otro.</span>
+      </div>
+    </div>
+    <form class="space-y-6" [formGroup]="formsRequired">
+      <div formArrayName="attributes" class="space-y-6">
+        <div *ngFor="let attributeForm of attributesForm.controls; let i = index">
+          <div [formGroupName]="i" class="grid grid-cols-2 gap-4">
+            <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <label class="t-caption-2 text-mono-70">Entidad</label>
+              <ec-dropdown formControlName="entity" [dropStyle]="dropStyle" [data]="entities"
+                           placeholder="Seleccione una entidad" optionLabel="name"
+                           optionValue="id" (onChangeValue)="changeSelectedEntity(attributeForm)"
+                           [onlyValue]="false"></ec-dropdown>
+              <small *ngIf="validFormRequiredAttribute(attributeForm, 'entity')" class="text-alert-error">
+                El campo es requerido
+              </small>
             </div>
-            <div class="flex flex-row space-x-2 items-center">
-              <input formControlName="preposition" class="w-4 h-4"
-                     [value]="prepositionData[1].Id" type="radio">
-              <label class="t-body-2 text-black flex-1">OR (o)</label>
+            <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <label class="t-caption-2 text-mono-70">Atributo</label>
+              <ec-dropdown formControlName="attribute" [dropStyle]="dropStyle" [data]="getDATAttribute(attributeForm)"
+                           placeholder="Seleccione un atributo" optionLabel="name"
+                           optionValue="id" [onlyValue]="false"></ec-dropdown>
+              <small *ngIf="validFormRequiredAttribute(attributeForm, 'attribute')" class="text-alert-error">
+                El campo es requerido
+              </small>
+            </div>
+            <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <label class="t-caption-2 text-mono-70">Comparación</label>
+              <ec-dropdown formControlName="comparison" [dropStyle]="dropStyle" [data]="comparisonData"
+                           placeholder="Seleccione un signo de comparación" optionLabel="name"
+                           optionValue="id" [onlyValue]="false"></ec-dropdown>
+              <small *ngIf="validFormRequiredAttribute(attributeForm, 'comparison')" class="text-alert-error">
+                El campo es requerido
+              </small>
+            </div>
+            <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <label class="t-caption-2 text-mono-70">Valor</label>
+              <input formControlName="value" class="ec-input" type="text" style="height: 3rem">
+              <small *ngIf="validFormRequiredAttribute(attributeForm, 'value')" class="text-alert-error">
+                El campo es requerido
+              </small>
+            </div>
+            <div class="flex flex-row items-center gap-6">
+              <div (click)="validAddNewAttributeForm(i)">
+                <label class="flex flex-row space-x-2 items-center">
+                  <input formControlName="preposition" class="w-4 h-4"
+                         [value]="prepositionData[0].Id" type="radio">
+                  <span class="t-body-2 text-black flex-1">AND (y)</span>
+                </label>
+              </div>
+              <div (click)="validAddNewAttributeForm(i)">
+                <label class="flex flex-row space-x-2 items-center">
+                  <input formControlName="preposition" class="w-4 h-4"
+                         [value]="prepositionData[1].Id" type="radio">
+                  <span class="t-body-2 text-black flex-1">OR (o)</span>
+                </label>
+              </div>
+              <div *ngIf="getDisabled(i)" (click)="deleteFormNext(i)">
+                <label class="flex flex-row space-x-2 items-center">
+                  <input formControlName="preposition" class="w-4 h-4"
+                         [value]="prepositionData[2].Id" type="radio">
+                  <span class="t-body-2 text-black flex-1">NONE</span>
+                </label>
+              </div>
+              <div *ngIf="!getDisabled(i)">
+                <label class="flex flex-row space-x-2 items-center disabled">
+                  <input formControlName="preposition" class="w-4 h-4"
+                         [value]="prepositionData[2].Id" type="radio">
+                  <span class="t-body-2 text-black flex-1"><del>NONE</del></span>
+                </label>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div>
-      <button class="b-solid" (click)="validRequiredAttribute()">Agregar</button>
-    </div>
-  </form>
+      <div *ngIf="isCreate">
+        <button class="b-solid" (click)="validRequiredAttribute()">Agregar</button>
+      </div>
+      <div *ngIf="!isCreate" class="flex flex-row gap-4">
+        <button class="b-solid" (click)="validUpdateRequiredAttribute()">Actualizar</button>
+        <button class="b-outline" (click)="cancelFormRequiredAttribute()">Cancelar</button>
+      </div>
+    </form>
+  </div>
   <div class="list-annexes space-y-2">
     <span class="t-subtitle-1 text-mono-70">Lista de Atributos</span>
     <div class="table w-full overflow-hidden border border-mono-30 rounded bg-white-p drop-shadow-lg p-4 gap-4">
@@ -99,14 +127,15 @@
                (click)="attributeDisplayIndex=position">
             <div class="flex items-center p-2 w-12">{{attributesRequiredAll.indexOf(item) + 1}}</div>
             <div class="flex items-center p-2 flex-1 break-all">{{getEntityNameById(item.entity_id)}}</div>
-            <div class="flex items-center p-2 flex-1 break-all">{{getAttributeNameById(item.attribute_id)}}</div>
+            <div
+              class="flex items-center p-2 flex-1 break-all">{{getAttributeNameById(item.entity_id, item.attribute_id)}}</div>
             <div class="flex items-center p-2 flex-1 break-all">{{item.comparison_symbol.name}}</div>
             <div class="flex items-center p-2 flex-1 break-all">{{item.value}}</div>
             <div class="flex items-center p-2 flex-1 break-all">{{item.preposition.name}}</div>
             <div class="flex items-center p-2 w-32">
               <div class="w-full flex flex-row">
-                <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
-                        tooltip="Editar Anexo" (click)="loadDataForEdition(item, position); attributeSelected=item;">
+                <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10 {{isBlockOptions ? 'blockOptions' : '' }}" ecTooltip
+                        tooltip="Editar atributo requerido" (click)="loadDataForEdition(item, position); attributeSelected=item;">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
@@ -115,8 +144,10 @@
                     </svg>
                   </div>
                 </button>
-                <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
-                        tooltip="Eliminar Anexo" (click)="attributeSelected=item; deleteRequiredAttribute(item)">
+                <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10 {{isBlockOptions ? 'blockOptions' : '' }}" ecTooltip
+                        tooltip="Eliminar Atributo"
+                        (click)="attributeSelected=item; showModalConfirmDelete(item, position)">
+                  <!--(click)="validateDeleteRequiredAttribute(item, position); attributeSelected=item; showConfirmDelete(item, position)">-->
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
@@ -136,4 +167,10 @@
 </div>
 
 <app-block-page [show]="isBlockPage"></app-block-page>
+
+<app-confirm-dialog [show]="valueConfirm.show" type="warning"
+                    title="¿Esta seguro de borrar esta relación de atributo?"
+                    body="Si realiza esta acción se eliminirá la relación del atributo con el anexo!"
+                    (onEvent)="confirmOptionDelete($event)"
+></app-confirm-dialog>
 

@@ -1,0 +1,7 @@
+.disabled{
+  pointer-events: none !important;
+}
+
+.blockOptions{
+  @apply text-mono-30 border-mono-10 pointer-events-none
+}

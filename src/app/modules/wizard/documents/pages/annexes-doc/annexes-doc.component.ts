@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {Customer, DocTypeGroups, DocTypes, Project, Response, ResponseAnnexeDoctype} from "@app/core/models";
+import {Customer, DocTypes, Project, Response, ResponseAnnexeDoctype} from "@app/core/models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {
   AnnexeDoctypesRequestModel,
   AnnexeRequestModel, AttributeCommonConfig,
   DoctypeConfig,
-  Required, RequiredAttributeCommon, RequiredAttributeCommonRequestModel,
+  Required, RequiredAttribute, RequiredAttributeCommon, RequiredAttributeCommonRequestModel,
   RequiredDoctypes
 } from "@app/core/models/config/annexe";
 import {AnnexeService} from "@app/modules/wizard/documents/services/annexe/annexe.service";
-import {State, Store} from "@ngrx/store";
+import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {Router} from "@angular/router";
 import {v4 as uuidv4} from "uuid";
@@ -42,7 +42,6 @@ export class AnnexesDocComponent implements OnInit {
 
   public annexesDocForPag: Required[] = [];
   public isEditAnnexe = false;
-  public isConfig = true;
   public isTab1 = true;
 
   public showOnlyCheckedTab1 = false;
@@ -53,7 +52,7 @@ export class AnnexesDocComponent implements OnInit {
   public doctype!: DocTypes;
   public doctypeAll: DocTypes[] = [];
   public doctypeConfiguration: DoctypeConfig[] = [];
-  public annexesAll!: Required[];
+  public annexesAll: Required[] = [];
 
   public entitiesAll: Entity[] = [];
   public attributesCommonConfig: AttributeCommonConfig[] = [];
@@ -66,6 +65,8 @@ export class AnnexesDocComponent implements OnInit {
   public annexeSelected!: Required;
   public doctype_required_selected_id!: string;
   public isBlockPage = true;
+  public entitySelected = '';
+  public isBlockOptions = false;
 
   public readonly dropStyle: DropdownModel = dropStyle;
 
@@ -75,14 +76,12 @@ export class AnnexesDocComponent implements OnInit {
 
     this.store.select('doctype').subscribe((doctypeState) => {
       doctypeState.doctypeGroups.forEach((e) => {
-        if (e.doctypes) this.doctypeAll.push(...e.doctypes);
+        if (e.doctypes) this.doctypeAll.push(...this.parseObject(e.doctypes));
       })
-
-      const {doctype} = doctypeState;
+      const {doctype} = this.parseObject(doctypeState);
       if ('id' in doctype) {
         this.doctype = {...doctype};
         this.annexesAll = doctype.required || [];
-        this.isBlockPage = false;
       } else {
         this._route.navigate(["/wizard/documents"])
       }
@@ -106,6 +105,8 @@ export class AnnexesDocComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  private parseObject = (object: any) => JSON.parse(JSON.stringify(object))
+
   private loadEntities() {
     this._entityService.getEntitiesByProject(this.project.id).subscribe(({
       next: (res) => {
@@ -113,6 +114,7 @@ export class AnnexesDocComponent implements OnInit {
           this._messageService.add({type: 'error', message: res.msg, life: 5000});
         } else {
           this.entitiesAll = res.data;
+          this.isBlockPage = false;
         }
       }
     }))
@@ -128,6 +130,7 @@ export class AnnexesDocComponent implements OnInit {
             this._messageService.add({type: 'error', message: res.msg, life: 5000})
           } else {
             this.annexesAll = [...this.annexesAll, res.data];
+            // this.annexesAll.push({...this.parseObject(res.data)})
             this.formAnnexe.reset({name: '', version: '', is_active: false});
             this._messageService.add({type: 'success', message: 'Anexo creado con éxito', life: 5000})
           }
@@ -143,6 +146,7 @@ export class AnnexesDocComponent implements OnInit {
   public onlyNumbers = (value: KeyboardEvent) => onlyNumbers(value);
 
   public loadDataForEdition(annexe: Required) {
+    this.isBlockOptions = true;
     this.formAnnexe.reset({name: annexe.name, version: annexe.version, is_active: annexe.is_active});
     this.isEditAnnexe = true;
     this.movePositionTop();
@@ -150,7 +154,7 @@ export class AnnexesDocComponent implements OnInit {
 
   public cancelEdition() {
     this.resetFormAnnexe();
-    this.isEditAnnexe = false;
+    this.isEditAnnexe = this.isBlockOptions = false;
     this.annexeSelected = {} as Required;
   }
 
@@ -180,7 +184,7 @@ export class AnnexesDocComponent implements OnInit {
 
   public confirmDeleteAnnexe(isConfirm: boolean): void {
     if (isConfirm) {
-      if (!this.annexeSelected.required_doctypes) {
+      if (!this.annexeSelected.required_doctypes && !this.annexeSelected.required_attributes_common) {
         this.deleteAnnexe();
       } else {
         this._messageService.add({
@@ -246,7 +250,7 @@ export class AnnexesDocComponent implements OnInit {
   }
 
   public loadConfiguration(annexe: Required) {
-    this.showConfiguration = !false;
+    this.showConfiguration = true;
     if (this.showConfiguration) {
       this.annexeSelected = annexe;
       this.doctypeConfiguration = this.doctypeAll.map((_doctype: DocTypes) => {
@@ -260,6 +264,9 @@ export class AnnexesDocComponent implements OnInit {
           SHOW: true
         }
       })
+      this.isTab1 = true;
+      this.attributesCommonConfig = [];
+      this.entitySelected = '';
     } else {
       this.doctypeConfiguration = [];
       this.annexeSelected = {} as Required;
@@ -292,68 +299,28 @@ export class AnnexesDocComponent implements OnInit {
   }
 
   private createAnnexeRequiredDoctype(doctype: DoctypeConfig) {
-    /*this.isBlockPage = false;
-
-    const res: ResponseAnnexeDoctype = {
-      error: true,
-      data: {
-        id: uuidv4().toString(),
-        is_required: false,
-        doctype_related_id: doctype.id,
-        required_attributes: []
-      },
-      code: 1,
-      msg: 'string',
-      type: 'string',
-      token: 'string'
-    }
-
-    doctype.doctype_required_id = res.data.id;
-    doctype.is_related = true;
-
-    let annexe = this.annexesAll.find((_annexe: Required) => _annexe.id === this.annexeSelected.id);
-    const newDoctypeRequired: RequiredDoctypes = {
-      id: res.data.id,
-      is_required: res.data.is_required,
-      doctype_related_id: res.data.doctype_related_id,
-      required_attributes: res.data.required_attributes,
-    }
-    if (annexe?.required_doctypes) {
-      annexe.required_doctypes = [...annexe.required_doctypes, newDoctypeRequired];
-    } else {
-      // @ts-ignore
-      annexe = {...annexe, required_doctypes: [newDoctypeRequired]}
-    }
-    this.annexesAll = this.annexesAll.map((_annexe) => _annexe.id === annexe?.id ? annexe : _annexe);
-    */
-    const requiredDoctype: AnnexeDoctypesRequestModel = {
-      id: uuidv4().toLowerCase(),
-      is_required: true,
-      required_id: this.annexeSelected.id,
-      doctype_related_id: doctype.id
-    }
+    const requiredDoctype: AnnexeDoctypesRequestModel = this.getRequestRequiredDoctype(doctype, true);
 
     this._annexeService.createRequiredDoctype(requiredDoctype).subscribe({
       next: (res: ResponseAnnexeDoctype) => {
         if (res.error) {
           this.showMessageError('Error: ' + res.msg);
         } else {
-          this._messageService.add({type: 'success', message: 'Doctype marcado como requerido', life: 5000});
+          this._messageService.add({type: 'success', message: 'Doctype asociado con éxito', life: 5000});
           doctype.doctype_required_id = res.data.id;
           doctype.is_related = true;
           let annexe = this.annexesAll.find((_annexe: Required) => _annexe.id === this.annexeSelected.id);
-          const newDoctypeRequired: RequiredDoctypes = {
+          let newDoctypeRequired: RequiredDoctypes = {
             id: res.data.id,
             is_required: res.data.is_required,
             doctype_related_id: res.data.doctype_related_id,
             required_attributes: res.data.required_attributes ? res.data.required_attributes : [],
           }
           if (annexe?.required_doctypes) {
-            debugger
-            annexe.required_doctypes = [...annexe.required_doctypes, newDoctypeRequired];
+            annexe.required_doctypes.push(newDoctypeRequired)
           } else {
             // @ts-ignore
-            annexe = {...annexe, required_doctypes: [newDoctypeRequired]}
+            annexe.required_doctypes = [newDoctypeRequired]
           }
           this.annexesAll = this.annexesAll.map((_annexe) => _annexe.id === annexe?.id ? annexe : _annexe);
         }
@@ -371,7 +338,7 @@ export class AnnexesDocComponent implements OnInit {
         if (res.error) {
           this.showMessageError('Error: ' + res.msg);
         } else {
-          this._messageService.add({type: 'success', message: 'Doctype desmarcado como requerido', life: 5000});
+          this._messageService.add({type: 'success', message: 'Doctype desasociado', life: 5000});
           this.doctypeConfiguration = this.doctypeConfiguration.map((_doctype) => {
             return _doctype.doctype_required_id === doctype.doctype_required_id ? {
               ..._doctype,
@@ -380,6 +347,11 @@ export class AnnexesDocComponent implements OnInit {
               doctype_required_id: ''
             } : _doctype
           });
+          // @ts-ignore
+          const annexe: Required = this.annexesAll.find((_annexe: Required) => _annexe.id === this.annexeSelected.id);
+          if (annexe?.required_doctypes) {
+            annexe.required_doctypes = annexe.required_doctypes?.filter((_required) => _required.id !== doctype.doctype_required_id);
+          }
         }
         this.isBlockPage = false;
       },
@@ -390,27 +362,39 @@ export class AnnexesDocComponent implements OnInit {
   public updateAnnexeRequiredDoctype(doctype: DoctypeConfig, isRequired: boolean) {
 
     this.isBlockPage = true;
-    const requiredDoctype: AnnexeDoctypesRequestModel = {
-      id: doctype.doctype_required_id,
-      is_required: isRequired,
-      required_id: this.annexeSelected.id,
-      doctype_related_id: doctype.id
-    }
+    const request: AnnexeDoctypesRequestModel = this.getRequestRequiredDoctype(doctype);
+    request.is_required = isRequired;
 
-    this._annexeService.updateRequiredDoctype(requiredDoctype).subscribe({
+    this._annexeService.updateRequiredDoctype(request).subscribe({
       next: (res) => {
         if (res.error) {
           this.showMessageError('Error: ' + res.msg);
         } else {
-          this._messageService.add({type: 'success', message: 'Doctype marcado como requerido', life: 5000});
+          this._messageService.add({type: 'success', message: 'Se actualizó correctamente', life: 5000});
           doctype.is_required = isRequired;
         }
         this.isBlockPage = false;
       },
-      error: (err: Error) => {
-        this.showMessageError('Error: ' + err.message)
-      }
+      error: (err: Error) => this.showMessageError('Error: ' + err.message)
     })
+  }
+
+  private getRequestRequiredDoctype(doctype: DoctypeConfig, isCreation?: boolean): AnnexeDoctypesRequestModel {
+    if (isCreation) {
+      return {
+        id: uuidv4().toLowerCase(),
+        is_required: false,
+        required_id: this.annexeSelected.id,
+        doctype_related_id: doctype.id
+      }
+    } else {
+      return {
+        id: doctype.doctype_required_id,
+        is_required: false,
+        required_id: this.annexeSelected.id,
+        doctype_related_id: doctype.id
+      }
+    }
   }
 
   public loadConfigAttribute(doctype: DoctypeConfig) {
@@ -422,14 +406,26 @@ export class AnnexesDocComponent implements OnInit {
     return this.annexesAll.find(annexe => annexe.id === id) || {} as Required
   }
 
-  public filterList(filter: string, checked?: boolean) {
+  public filterListDoctype(filter: string, checked?: boolean) {
     this.doctypeConfiguration = this.doctypeConfiguration.map(_doctype => {
-      return {..._doctype, SHOW: checked ? _doctype.is_related === checked : _doctype.name!.includes(filter)}
+      return {
+        ..._doctype,
+        SHOW: checked ? (_doctype.is_related === checked && _doctype.name!.includes(filter)) : _doctype.name!.includes(filter)
+      }
     })
   }
 
-  public changeSelectedEntity($entity: any) {
-    const entity: Entity | undefined = this.entitiesAll.find(_entity => _entity.id === $entity?.id)
+  public filterListAttributeCommon(filter: string, checked?: boolean) {
+    this.attributesCommonConfig = this.attributesCommonConfig.map(_attr => {
+      return {
+        ..._attr,
+        SHOW: checked ? (_attr.is_common === checked && _attr.name!.includes(filter)) : _attr.name!.includes(filter)
+      }
+    })
+  }
+
+  public changeSelectedEntity(entity_id: string) {
+    const entity: Entity | undefined = this.entitiesAll.find(_entity => _entity.id === entity_id)
     if (entity?.attributes) {
       this.attributesCommonConfig = entity?.attributes.map(_attr => {
         const {attribute_common_id, is_common} = this.validAttributeCommonForAnnexe(_attr);
@@ -452,7 +448,6 @@ export class AnnexesDocComponent implements OnInit {
     if (annexe?.required_attributes_common) {
       attributeCommon = annexe.required_attributes_common.find(_attrCommon => _attrCommon.attribute_id === attribute.id)
     }
-    // debugger
 
     return {attribute_common_id: attributeCommon?.id || '', is_common: !!attributeCommon};
   }
@@ -482,6 +477,10 @@ export class AnnexesDocComponent implements OnInit {
           this.attributesCommonConfig = this.attributesCommonConfig.map((_attr) => {
             return (_attr.id === attribute.id) ? {..._attr, attribute_common_id: res.data.id, is_common: true} : _attr;
           });
+          const annexe: Required | undefined = this.annexesAll.find((_annexe: Required) => _annexe.id === this.annexeSelected.id)
+          if (annexe?.required_attributes_common) {
+            annexe.required_attributes_common.push(res.data)
+          }
         }
         this.isBlockPage = false;
       }
@@ -489,7 +488,6 @@ export class AnnexesDocComponent implements OnInit {
   }
 
   private deleteAnnexeAttributeCommon(attribute: AttributeCommonConfig) {
-
     this.isBlockPage = true;
 
     this._annexeService.deleteRequiredAttributeCommon(attribute.attribute_common_id).subscribe({
@@ -501,6 +499,11 @@ export class AnnexesDocComponent implements OnInit {
           this.attributesCommonConfig = this.attributesCommonConfig.map((_attr) => {
             return (_attr.id === attribute.id) ? {..._attr, attribute_common_id: '', is_common: false} : _attr;
           });
+
+          const annexe: Required | undefined = this.annexesAll.find((_annexe: Required) => _annexe.id === this.annexeSelected.id)
+          if (annexe?.required_attributes_common) {
+            annexe.required_attributes_common = annexe.required_attributes_common.filter(_attr => _attr.id !== attribute.attribute_common_id)
+          }
         }
         this.isBlockPage = false;
       },
@@ -508,6 +511,14 @@ export class AnnexesDocComponent implements OnInit {
         this.showMessageError('Error: ' + err.message)
       }
     })
+  }
+
+  public updateRequiredAttributes(requiredAttribute: RequiredAttribute[]) {
+    const annexe: Required | undefined = this.annexesAll.find((_annexe: Required) => _annexe.id === this.annexeSelected.id);
+    const doctype = annexe?.required_doctypes?.find((_doctype) => _doctype.id === this.doctype_required_selected_id);
+    if (doctype?.required_attributes) {
+      doctype.required_attributes = requiredAttribute;
+    }
   }
 
 }

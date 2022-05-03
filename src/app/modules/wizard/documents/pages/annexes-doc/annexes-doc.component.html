@@ -54,8 +54,8 @@
         <div class="section-1 w-full space-y-10">
           <div class="register-annexes space-y-6">
             <span class="t-subtitle-1 text-mono-70">{{isEditAnnexe ? 'Edición' : 'Registro'}} de Anexos</span>
-            <form class="grid grid-cols-2 gap-4" [formGroup]="formAnnexe">
-              <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+            <form class="grid grid-cols-3 gap-4" [formGroup]="formAnnexe">
+              <div class="input flex flex-col space-y-1 col-span-3 md:col-span-1">
                 <label class="t-caption-2 text-mono-70">Nombre</label>
                 <input class="ec-input" type="text" formControlName="name">
                 <small *ngIf="formAnnexe.get('name')?.errors && formAnnexe.get('name')?.touched"
@@ -63,7 +63,7 @@
                   El campo es requerido
                 </small>
               </div>
-              <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <div class="input flex flex-col space-y-1 col-span-3 md:col-span-1">
                 <label class="t-caption-2 text-mono-70">Versión</label>
                 <input class="ec-input" type="text" formControlName="version" (keypress)="onlyNumbers($event)">
                 <small *ngIf="formAnnexe.get('version')?.errors && formAnnexe.get('version')?.touched"
@@ -71,9 +71,12 @@
                   El campo es requerido
                 </small>
               </div>
-              <div class="flex flex-row col-span-2 space-x-2 items-center">
-                <input id="is_active" class="w-4 h-4" type="checkbox" formControlName="is_active">
-                <label for="is_active" class="t-body-2 text-black flex-1">Activo</label>
+              <div class="input flex flex-col space-y-1 col-span-3 md:col-span-1 justify-center">
+                <div class="h-4 text-mono-70"></div>
+                <div class="flex items-center space-x-2">
+                  <input id="is_active" class="w-4 h-4" type="checkbox" formControlName="is_active">
+                  <label for="is_active" class="t-body-2 text-black flex-1">Activo</label>
+                </div>
               </div>
             </form>
             <div class="flex flex-row gap-4">
@@ -106,7 +109,7 @@
                   <div class="p-2 w-32">Opciones</div>
                 </div>
                 <div class="table-body t-body-1 text-mono-70">
-                  <div class="item w-full flex flex-row {{annexeDisplayIndex === position ? 'bg-mono-10':''}}"
+                  <div class="item w-full flex flex-row {{annexeDisplayIndex === position ? 'bg-white':''}}"
                        *ngFor="let item of annexesDocForPag; let position = index"
                        (click)="annexeDisplayIndex=position">
                     <div class="flex items-center p-2 w-12">{{annexesAll.indexOf(item) + 1}}</div>
@@ -115,7 +118,7 @@
                     <div class="flex items-center p-2 w-16 break-all">{{item.is_active ? 'Sí' : 'No'}}</div>
                     <div class="flex items-center p-2 w-32">
                       <div class="w-full flex flex-row">
-                        <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
+                        <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10 {{isBlockOptions ? 'blockOptions' : '' }}" ecTooltip
                                 tooltip="Editar Anexo" (click)="loadDataForEdition(item); annexeSelected=item;">
                           <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -125,7 +128,7 @@
                             </svg>
                           </div>
                         </button>
-                        <button class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10" ecTooltip
+                        <button class="w-10 text-alert-warning px-2 h-10 hover:bg-mono-10 {{isBlockOptions ? 'blockOptions' : '' }}" ecTooltip
                                 tooltip="Configurar Anexo" (click)="loadConfiguration(item)">
                           <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -135,7 +138,7 @@
                             </svg>
                           </div>
                         </button>
-                        <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
+                        <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10 {{isBlockOptions ? 'blockOptions' : '' }}" ecTooltip
                                 tooltip="Eliminar Anexo" (click)="annexeSelected=item; showConfirm=true">
                           <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -181,7 +184,7 @@
               <div class="filter w-full flex flex-row space-x-2">
                 <div class="search flex-1 flex flex-row h-8 overflow-hidden rounded border border-mono-30 items-center">
                   <input #inputListDoctype type="text" placeholder="Buscar Tipo Documental"
-                         (input)="filterList(inputListDoctype.value)"
+                         (input)="filterListDoctype(inputListDoctype.value, showOnlyCheckedTab1)"
                          class="flex-1 h-full t-body-2 placeholder-mono-30 text-black px-2">
                   <div class="w-8">
                     <svg class="mx-auto text-mono-70" width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -192,7 +195,7 @@
                   </div>
                 </div>
                 <div
-                  (click)="showOnlyCheckedTab1 = !showOnlyCheckedTab1; filterList(inputListDoctype.value, showOnlyCheckedTab1)"
+                  (click)="showOnlyCheckedTab1 = !showOnlyCheckedTab1; filterListDoctype(inputListDoctype.value, showOnlyCheckedTab1)"
                   class="only-checked cursor-pointer w-auto h-8 px-2 py-1 rounded flex flex-row items-center space-x-2 border {{showOnlyCheckedTab1 ? 'text-white bg-brand-2 border-brand-2' : 'text-black border-mono-30'}}">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -205,7 +208,7 @@
                   <span class="t-body-2 select-none">Solo Check's</span>
                 </div>
               </div>
-              <div class="doctypes w-full space-y-4 overflow-y-auto" style="max-height: 400px">
+              <div class="doctypes w-full space-y-4 overflow-y-auto" style="max-height: 505px">
                 <ng-container *ngFor="let docTYPE of doctypeConfiguration">
                   <div *ngIf="docTYPE.SHOW" class="doctype flex flex-row items-center justify-between gap-4">
                     <div class="left flex flex-row items-center space-x-2">
@@ -266,15 +269,16 @@
             <div *ngIf="!isTab1" class="bg-white-p border border-mono-30 rounded-b p-4 space-y-4">
               <div class="filter w-full flex flex-col space-y-2">
                 <div class="flex-1">
-                  <ec-dropdown [dropStyle]="dropStyle" [data]="entitiesAll"
+                  <ec-dropdown [dropStyle]="dropStyle" [data]="entitiesAll" [(ngModel)]="entitySelected"
                                placeholder="Seleccione una entidad" optionLabel="name"
                                optionValue="id" (onChangeValue)="changeSelectedEntity($event)"
-                               [onlyValue]="false"></ec-dropdown>
+                               ></ec-dropdown>
                 </div>
                 <div class="w-full flex flex-row space-x-2">
                   <div
                     class="search flex-1 flex flex-row h-8 overflow-hidden rounded border border-mono-30 items-center">
-                    <input type="text" placeholder="Buscar Atributo"
+                    <input #inputListAttribute type="text" placeholder="Buscar Atributo"
+                           (input)="filterListAttributeCommon(inputListAttribute.value, showOnlyCheckedTab2)"
                            class="flex-1 h-full t-body-2 placeholder-mono-30 text-black px-2">
                     <div class="w-8">
                       <svg class="mx-auto text-mono-70" width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -284,7 +288,7 @@
                       </svg>
                     </div>
                   </div>
-                  <div (click)="showOnlyCheckedTab2 = !showOnlyCheckedTab2"
+                  <div (click)="showOnlyCheckedTab2 = !showOnlyCheckedTab2; filterListAttributeCommon(inputListAttribute.value, showOnlyCheckedTab2)"
                        class="only-checked cursor-pointer w-auto h-8 px-2 py-1 rounded flex flex-row items-center space-x-2 border {{showOnlyCheckedTab2 ? 'text-white bg-brand-2 border-brand-2' : 'text-black border-mono-30'}}">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -298,9 +302,9 @@
                   </div>
                 </div>
               </div>
-              <div class="attributes w-full space-y-4 overflow-y-auto" style="max-height: 360px">
+              <div class="attributes w-full space-y-4 overflow-y-auto" style="max-height: 450px">
                 <ng-container *ngFor="let attr of attributesCommonConfig">
-                  <div class="attribute h-8 flex flex-row items-center justify-between gap-4">
+                  <div *ngIf="attr.SHOW" class="attribute h-8 flex flex-row items-center justify-between gap-4">
                     <div class="left flex flex-row items-center space-x-2">
                       <div class="text-mono-70">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -336,6 +340,7 @@
            style="height: calc(100vh)">
         <app-config-attribute-requerid [entities]="entitiesAll" [annexe]="getAnnexeById(annexeSelected.id)"
                                        [doctype_required_id]="doctype_required_selected_id"
+                                       (updateRequiredAttributes)="updateRequiredAttributes($event)"
                                        (closeConfig)="showConfigAttribute=false"
         ></app-config-attribute-requerid>
       </div>
@@ -350,16 +355,6 @@
                     title="¿Esta seguro de querer borrar el Anexo?"
                     body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
                     (onEvent)="confirmDeleteAnnexe($event); showConfirm=false"
-></app-confirm-dialog>
-<app-confirm-dialog [show]="false" type="warning"
-                    title="¿Esta seguro de querer borrar el Anexo?"
-                    body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
-                    (onEvent)="confirmDeleteAnnexe($event)"
-></app-confirm-dialog>
-<app-confirm-dialog [show]="false" type="warning"
-                    title="¿Esta seguro de querer borrar el Anexo?"
-                    body="Si realiza esta acción se va a eliminar el anexo y todos los elementos relacionados a este!"
-                    (onEvent)="confirmDeleteAnnexe($event)"
 ></app-confirm-dialog>
 
 <app-block-page [show]="isBlockPage"></app-block-page>
