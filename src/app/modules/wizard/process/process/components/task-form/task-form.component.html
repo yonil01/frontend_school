@@ -80,8 +80,7 @@
     <button class="flex-1 md:flex-none b-solid rounded-md" (click)="saveTask()">{{'SAVE' | translate}}</button>
   </div>
 </div>
-
-<div *ngIf="positionStep === 1 && taskForm.get('type')?.value === 3">
+<div *ngIf="positionStep === 1 && taskForm.get('type')?.value === 'User'">
   <div class="flex w-full items-center justify-between mb-5">
     <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'FIND_ROL' | translate}}"
                 (input)="filterRoles($event)"></div>
