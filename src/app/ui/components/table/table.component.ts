@@ -72,7 +72,13 @@ export class TableComponent implements OnInit, OnChanges {
 
   export(): void {
     const ArrayObject:any = [];
-    ArrayObject.push(['N° Identifiación', 'Apellidos Y nombres', 'Correo', 'Estado', 'Roles'])
+    const dataString: string[]=[];
+    this.tableStyle.columns.forEach((dat: any, index: number)=> {
+      if (index+1!=this.tableStyle.columns.length) {
+        dataString.push(dat.label);
+      }
+    })
+    ArrayObject.push(dataString)
     this.tableStyle.dataSource?.filter((user: any) => {
       const ArrayTem = Object.values(user)
       ArrayTem.shift();

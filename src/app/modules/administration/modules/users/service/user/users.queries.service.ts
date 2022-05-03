@@ -84,6 +84,12 @@ export class GetUsersByRolesAllowQuery extends Query<Response> {
           roles {
             id
             name
+            role_allow {
+              role_allow{
+                id
+                name
+              }
+            }
           }
           security_entities {
             id
@@ -131,6 +137,12 @@ export class GetUserByIDQuery extends Query<Response> {
           roles {
             id
             name
+            role_allow {
+          role_allow {
+            id
+            name
+          }
+        }
           }
           security_entities {
             id
@@ -164,13 +176,53 @@ export class GetUserByIDQuery extends Query<Response> {
 export class CreateUserQuery extends Mutation {
   document = gql`
     mutation createUser($rq: RequestNewUser!) {
-      createUser(input: $rq) {
-        error
-        code
-        type
-        msg
-      }
+  createUser(input: $rq) {
+    error
+    code
+    data {
+      id
+      name
+      username
+      last_name
+      email_notifications
+      identification_number
+      identification_type
+      status
+      roles {
+            id
+            name
+            role_allow {
+              role_allow{
+                id
+                name
+              }
+            }
+          }
+      security_entities {
+            id
+            entity {
+              id
+              name
+            }
+            attributes {
+              id
+              value
+              enable
+              attribute {
+                id
+                name
+              }
+            }
+          }
+      failed_attempts
+      last_change_password
+      block_date
     }
+    type
+    msg
+  }
+}
+
   `;
 }
 
@@ -505,5 +557,55 @@ export class DeleteUsersAttributeQuery extends Mutation {
         msg
       }
     }
+  `;
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetUserByName extends Mutation {
+  document = gql`
+    query getUserByName($username: String! $identification_number: String!) {
+  getUserByName(username: $username identification_number:$identification_number) {
+    error
+    code
+    data {
+      id,
+      username
+    }
+    type
+    msg
+  }
+}
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class activeQueryUser extends Mutation {
+  document = gql`
+   mutation activeUser($id: ID!) {
+  activeUser(id: $id) {
+    error
+    code
+    data {
+      id
+      username
+      name
+      last_name
+      email_notifications
+      identification_number
+      identification_type
+      status
+      failed_attempts
+      last_change_password
+    }
+    type
+    msg
+  }
+}
+
   `;
 }

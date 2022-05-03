@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-layout',
@@ -12,7 +12,7 @@ export class LayoutComponent implements OnInit {
   @Input() typeButton: number;
   @Input() styleSidebar: string = '';
 
-  constructor(private route: Router) {
+  constructor(private location: Location) {
     this.typeButton = 0;
   }
 
@@ -25,5 +25,9 @@ export class LayoutComponent implements OnInit {
 
   public loadUrl() {
     window.location.reload();
+  }
+
+  public backLoad():void {
+    this.location.back();
   }
 }

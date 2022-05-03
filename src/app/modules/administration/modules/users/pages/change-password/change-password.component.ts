@@ -16,12 +16,17 @@ export class ChangePasswordComponent implements OnInit {
   @Input() user: User;
   public secretKey: string;
   public showLoader: any = showLoader;
+  public showPassword: boolean = false;
+  public showPasswordConfirm: boolean = false;
   constructor(private _formBuilder: FormBuilder, private userService: UsersService,) {
 
     this.formPassword = this._formBuilder.group({
       password: [''],
       password_confirm: [''],
-    });
+    },
+      {
+        validators: [this.confirmPasswordValidator],
+      });
     this.secretKey = '';
     this.user = {};
   }
@@ -75,6 +80,12 @@ export class ChangePasswordComponent implements OnInit {
       });
     }
   }
+
+  confirmPasswordValidator = (form: FormGroup) => {
+    const password = form.get('password');
+    const password_confirm = form.get('password_confirm');
+    return password?.value === password_confirm?.value ? null : {notEqualPassword: true};
+  };
 
   public comparePassword(): boolean {
     if (this.formPassword.get('password')?.value === this.formPassword.get('password_confirm')?.value) {

@@ -1,11 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {StepModel} from "@app/ui/components/step/models/step-vertical-model";
 import {CrudModel} from "@app/modules/administration/modules/users/models/user-crud-model/user-crud-constans";
-import {Response, RoleAllowed, User, UserRole} from "@app/core/models";
+import {Response, RoleAllowed, Roles, RolesAllow, RolesAllowUser, User, UserRole} from "@app/core/models";
 import {UsersService} from "@app/modules/administration/modules/users/service/user/users.service";
+import { JwtHelperService } from '@auth0/angular-jwt';
+const helper = new JwtHelperService();
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 import {showLoader} from "@app/modules/administration/modules/users/models/model-user/constans-user";
+import {Subscription} from "rxjs/internal/Subscription";
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
@@ -22,6 +25,8 @@ export class RoleComponent implements OnInit {
   public usersRoles: UserRole[] = [];
   public sourceProducts: any = [];
   public targetProducts:any = [];
+  public isBlockPage: boolean = false;
+  private _subscription: Subscription = new Subscription();
   public showLoader: any = showLoader;
   @Output() showToast = new EventEmitter<any>();
   constructor(private userService: UsersService,) {
@@ -63,20 +68,43 @@ export class RoleComponent implements OnInit {
   }
 
   private getRolesAllowByUser(): void {
-    this.showLoading(true);
-    this.userService.getRolesAllowByUser().subscribe((response: Response) => {
-      if (!response.error) {
-        this.rolesAllow = response.data;
-        this.rolesForSecuryEntities = JSON.parse(JSON.stringify(this.rolesAllow));
-        this.getUsersRolesByUserID();
-      }
-    });
+    const dataToken = helper.decodeToken(String(sessionStorage.getItem('Token')));
+    this._subscription.add(
+      this.userService.getUserByID(dataToken.user.id).subscribe((resp: Response)=> {
+        if (resp.error) {
+          this.addToast({
+            type: 'error',
+            message: resp.msg,
+            life: 5000,
+          });
+        } else {
+          if (resp.data) {
+            resp.data.roles?.forEach((roles:Roles)=> {
+              if (roles.role_allow) {
+                roles.role_allow.forEach((item: RoleAllowed)=> {
+                  if (item.role_allow) {
+                    this.rolesAllow.push(item)
+                  }
+                })
+              }
+            })
+            this.getUsersRolesByUserID();
+          }
+        }
+      })
+    )
+
   }
 
   private getUsersRolesByUserID(): void {
-    this.rolesAvailables = JSON.parse(JSON.stringify(this.rolesAllow));
+    const uniqueAddresses = Array.from(new Set(this.rolesAllow.map((a: RoleAllowed) => a.role_allow?.id)))
+      .map(id => {
+        return this.rolesAllow.find((a:RoleAllowed) => a.role_allow?.id === id)
+      })
+    this.rolesAvailables = JSON.parse(JSON.stringify(uniqueAddresses));
     if (this.callServicesCount === 0 && this.user) {
-      this.userService.getUsersRolesByUserID(this.user.id ? this.user.id : '').subscribe((response) => {
+      this.userService.getUsersRolesByUserID(this.user.id ? this.user.id : '').subscribe(
+        (response) => {
         if (!response.error) {
           this.rolesSelected = [];
           this.usersRoles = response.data ? response.data : [];
@@ -89,15 +117,17 @@ export class RoleComponent implements OnInit {
               this.rolesSelected.push(roles[0]);
             }
           }
-          this.showLoading(false);
+          this.isBlockPage = false;
           this.rolesForSecuryEntities = JSON.parse(JSON.stringify(this.rolesSelected));
+        } else {
+          this.isBlockPage = false;
         }
       });
     }
   }
 
   onMoveToSelected(roles: RoleAllowed[]): void {
-    this.showLoading(true);
+    this.isBlockPage = true;
     this.callServicesCount = 0;
     for (const role of roles) {
       const userRole: UserRole = {
@@ -107,9 +137,9 @@ export class RoleComponent implements OnInit {
       };
       this.callServicesCount++;
       this.userService.createUserRoles(userRole).subscribe((res) => {
-        this.showLoading(false);
+        this.isBlockPage = false;
         this.callServicesCount--;
-        this.showLoading(true);
+        this.isBlockPage = true;
         if (res.error) {
           this.addToast({
             type: 'error',
@@ -130,7 +160,7 @@ export class RoleComponent implements OnInit {
 
 
   onMoveToAvailable(roles: RoleAllowed[]): void {
-    this.showLoading(true);
+    this.isBlockPage = true;
     this.callServicesCount = 0;
     for (const role of roles) {
       const userRole: UserRole = this.usersRoles.find((ur) =>
@@ -139,8 +169,7 @@ export class RoleComponent implements OnInit {
       )!;
       this.callServicesCount++;
       this.userService.deleteUsersRoles(userRole?.id!.toLowerCase()).subscribe((res) => {
-        this.showLoading(false);
-        this.showLoading(false);
+        this.isBlockPage = false;
         this.callServicesCount--;
         if (res.error) {
           this.addToast({
@@ -161,11 +190,6 @@ export class RoleComponent implements OnInit {
 
   }
 
-  public showLoading(value: boolean) {
-    this.showLoader.forEach((item: any) => {
-      item.value = value;
-    })
-  }
 
   public addToast(data: any): void {
     this.showToast.emit({type: data.type, message: data.message, life: data.life});

@@ -24,7 +24,7 @@ import {
   CreateUsersAttributeQuery,
   CreateUsersSecurityEntityQuery,
   DeleteUsersSecurityEntityQuery,
-  DeleteUsersAttributeQuery,
+  DeleteUsersAttributeQuery, GetUserByName, activeQueryUser,
 } from '@app/modules/administration/modules/users/service/user/users.queries.service';
 import { HttpClient } from '@angular/common/http';
 import { EnvServiceProvider } from '@app/core/services/env/env.service.provider';
@@ -52,6 +52,8 @@ export class UsersService {
     private getRolesByIdQry: GetRolesById,
     private updatePasswordByAdministratorQuery: UpdatePasswordByAdministratorQuery,
     private changepwdUserQry: ChangePassUser,
+    private getUserQueryByName: GetUserByName,
+    private activeQueryUser: activeQueryUser,
     private createUsersRolesQuery: CreateUsersRolesQuery,
     private getUsersRolesByUserIDQuery: GetUsersRolesByUserIDQuery,
     private deleteUsersRolesQuery: DeleteUsersRolesQuery,
@@ -230,5 +232,21 @@ export class UsersService {
       user = helper.decodeToken(token);
     }
     return user;
+  }
+
+  getUserByName(user: any): Observable<Response> {
+    return this.getUserQueryByName
+      .mutate(
+        user
+      )
+      .pipe(map(({ data }: any) => data.getUserByName));
+  }
+
+  activeUser(id: string): Observable<Response> {
+    return this.activeQueryUser
+      .mutate(
+        {id}
+      )
+      .pipe(map(({ data }: any) => data.activeUser));
   }
 }

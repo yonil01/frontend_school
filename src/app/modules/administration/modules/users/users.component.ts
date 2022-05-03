@@ -20,7 +20,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {encryptText} from "@app/core/utils/crypto/cypher";
 import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
-
+import {Subscription} from "rxjs/internal/Subscription";
 
 @Component({
   selector: 'app-users',
@@ -38,6 +38,7 @@ export class UsersComponent implements OnInit {
   public showLoader: any = showLoader;
   public toastStyle: ToastStyleModel = toastDataStyle;
   public dateMax = new Date();
+  private _subscription: Subscription = new Subscription();
   public secretKey: string;
   public dataExport:any =[];
   msgs: Message[] = []
@@ -51,6 +52,7 @@ export class UsersComponent implements OnInit {
               private store: Store<AppState>,
               private confirmationService: ConfirmationService,
               private messageService: MessageService,
+
   )
   {
     this.showEdit = false;
@@ -61,7 +63,6 @@ export class UsersComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     this.getUsers();
     this.store.select('env').subscribe(
       (res) => {
@@ -73,31 +74,33 @@ export class UsersComponent implements OnInit {
   public getUsers(): void {
     this.styleTable.dataSource = [];
     this.showLoader[0].value = true;
-    this.userService.getUsersByRolesAllow().subscribe((res) => {
-      if (!res.error) {
-        this.users = res.data;
-        this.users.forEach((user: any) => {
-          const newUser = {
-            value: user,
-            value1: user.identification_number,
-            value2: user.last_name,
-            value3: user.email_notifications,
-            value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
-            value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
-          }
-          this.styleTable.dataSource?.push(newUser);
-        })
-        this.getCreateAtMax();
-        this.showLoader[0].value = false;
-      } else {
-        this.showLoader[0].value = false;
-        this._messageService.add({
-          type: 'error',
-          message: 'Inicio de sesión fallido',
-          life: 5000,
-        });
-      }
-    });
+    this._subscription.add(
+      this.userService.getUsersByRolesAllow().subscribe((res) => {
+        if (!res.error) {
+          this.users = res.data;
+          this.users.forEach((user: any) => {
+            const newUser = {
+              value: user,
+              value1: user.identification_number,
+              value2: user.name+' '+user.last_name,
+              value3: user.email_notifications,
+              value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
+              value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
+            }
+            this.styleTable.dataSource?.push(newUser);
+          })
+          this.getCreateAtMax();
+          this.showLoader[0].value = false;
+        } else {
+          this.showLoader[0].value = false;
+          this._messageService.add({
+            type: 'error',
+            message: 'Inicio de sesión fallido',
+            life: 5000,
+          });
+        }
+      })
+    )
   }
 
   public getRoles(roles: Roles[]): string {
@@ -252,6 +255,7 @@ export class UsersComponent implements OnInit {
   public async createUserOfFile(data: any[]) {
     this.showLoader[0].value = true;
     const ArrayUser: User[] = []
+    const ArrayRoles: any[] = [];
     if (data.length) {
       data.forEach((us: any, index: number) => {
         if (index !== 0 && us.length) {
@@ -266,29 +270,35 @@ export class UsersComponent implements OnInit {
             password:  encryptText(us[6], this.secretKey),
             password_comfirm: encryptText(us[6], this.secretKey),
           }
+          console.log(us[7])
+          debugger
+         ArrayRoles.push({id_user: us[4], roles: us[7]?.split(',')})
           ArrayUser.push(newUser);
         }
       })
       await Promise.all(ArrayUser).then((users: User[]) => {
         users.forEach((user: User) => {
-          this.userService.createUser(user).subscribe((resp: Response) => {
-            if (resp.error) {
-              this.showLoader[0].value = false;
-              this._messageService.add({
-                type: 'error',
-                message: resp.msg,
-                life: 5000,
-              });
-              this.dataExport.push(user)
-            } else {
-              this.showLoader[0].value = false;
-              this._messageService.add({
-                type: 'success',
-                message: resp.msg,
-                life: 5000,
-              });
-            }
-          });
+          this._subscription.add(
+            this.userService.createUser(user).subscribe((resp: Response) => {
+              if (resp.error) {
+                this.showLoader[0].value = false;
+                this._messageService.add({
+                  type: 'error',
+                  message: resp.msg,
+                  life: 5000,
+                });
+                this.dataExport.push(user)
+              } else {
+                this.showLoader[0].value = false;
+                this._messageService.add({
+                  type: 'success',
+                  message: resp.msg,
+                  life: 5000,
+                });
+              }
+            })
+          );
+
         })
         this.getUsers();
       })

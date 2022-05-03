@@ -44,6 +44,7 @@ export class SecurityEntitiesComponent implements OnInit {
   public securityEntityAttributeSelected: RoleAttribute;
   public showCreateSecurityEntityAttribute: boolean = false;
   public showLoader: any = showLoader;
+  public isBlockPage: boolean = false;
   @Output() showToast = new EventEmitter<any>();
   constructor(private userService: UsersService,
               private localStorageService: LocalStorageService,) {
@@ -175,10 +176,10 @@ export class SecurityEntitiesComponent implements OnInit {
   }
 
   private getUserByID(userId: string): void {
-    this.showLoading(true);
+    this.isBlockPage = true;
     this.userService.getUserByID(userId).subscribe((resp) => {
       if (resp.error) {
-        this.showLoading(false);
+        this.isBlockPage = false;
         this.addToast({
           type: 'error',
           message: resp.msg,
@@ -207,7 +208,7 @@ export class SecurityEntitiesComponent implements OnInit {
       this.showCreateSecurityEntity = false;
     }
 
-    this.showLoading(false);
+    this.isBlockPage = false;
   }
 
   deleteSecurityEntity(securityEntity: SecurityEntity): void {
@@ -276,11 +277,6 @@ export class SecurityEntitiesComponent implements OnInit {
     });
   }
 
-  public showLoading(value: boolean) {
-    this.showLoader.forEach((item: any) => {
-      item.value = value;
-    })
-  }
   public addToast(data: any): void {
     this.showToast.emit({type: data.type, message: data.message, life: data.life});
   }
