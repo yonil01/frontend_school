@@ -17,6 +17,8 @@ import {ToastService} from "ecapture-ng-ui";
 import {showLoader, showToast} from "@app/modules/administration/modules/users/models/model-user/constans-user";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
+import {Subscription} from "rxjs/internal/Subscription";
+import {ConfirmationService, Message} from "primeng/api";
 
 @Component({
   selector: 'app-basic-information',
@@ -40,9 +42,13 @@ export class BasicInformationComponent implements OnInit {
   public typeExecution: number;
   public showPassword: boolean = false;
   public showPasswordConfirm: boolean = false;
+  msgs: Message[] = []
+  private _subscription: Subscription = new Subscription();
+
   constructor( private _formBuilder: FormBuilder,
                private store: Store<AppState>,
                private userService: UsersService,
+               private confirmationService: ConfirmationService,
   ) {
     this.user = {
       id: '',
@@ -57,7 +63,7 @@ export class BasicInformationComponent implements OnInit {
         {
           id: '',
           name: '',
-          role_allow: {}
+          role_allow: []
         }
       ],
       security_entities: [],
@@ -78,8 +84,8 @@ export class BasicInformationComponent implements OnInit {
       ],
       identification_type: ['', Validators.required],
       identification_number: ['', [Validators.required,  Validators.pattern(/^-?(0|[1-9]\d*)?$/), Validators.maxLength(50)]],
-      password: ['', this.returnExistUser()?'':Validators.required],
-      password_confirm: ['', this.returnExistUser()?'':Validators.required],
+      password: ['', Validators.required],
+      password_confirm: ['', Validators.required],
     },
       {
         validator: [this.confirmPasswordValidator],
@@ -90,6 +96,10 @@ export class BasicInformationComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.returnExistUser()) {
+      this.formBasicInfo.get('password')?.clearValidators();
+      this.formBasicInfo.get('password')?.updateValueAndValidity();
+      this.formBasicInfo.get('password_confirm')?.clearValidators();
+      this.formBasicInfo.get('password_confirm')?.updateValueAndValidity();
       this.loadUser();
     } else {
       this.disabledNext = true;
@@ -135,8 +145,6 @@ export class BasicInformationComponent implements OnInit {
   }
 
   createUser(): void {
-    console.log(this.formBasicInfo)
-    debugger
     if (this.formBasicInfo.valid) {
       const userPersistence: User = {};
       userPersistence.id = uuidv4().toLowerCase();
@@ -148,32 +156,89 @@ export class BasicInformationComponent implements OnInit {
       userPersistence.identification_number = String(this.formBasicInfo.get('identification_number')?.value);
       userPersistence.password = encryptText(this.formBasicInfo.get('password')?.value, this.secretKey);
       userPersistence.password_comfirm = encryptText(this.formBasicInfo.get('password_comfirm')?.value, this.secretKey);
-      this.user = userPersistence;
-      this.returnUser.emit(this.user)
-      this.userService.createUser(userPersistence).subscribe((resp: Response) => {
-        if (resp.error) {
-          //this.showLoading(false);
-          this.isBlockPage = false;
-          this.addToast({
-            type: 'error',
-            message: resp.msg,
-            life: 5000,
-          });
-        } else {
-          this.addToast({
-            type: 'success',
-            message: resp.msg,
-            life: 5000,
-          });
-          this.disabledNext = false;
-          this.getUserByID(userPersistence.id!);
-          //this.showLoading(false);
-          this.isBlockPage = false;
-          if (this.typeExecution === 1) {
-            this.changeStatusStep(0);
+      //this.user = userPersistence;
+      //this.returnUser.emit(this.user)
+      this._subscription.add(
+        this.userService.getUserByName({username: userPersistence.username, identification_number: userPersistence.identification_number}).subscribe(
+          (resp: Response) => {
+          if (resp.error) {
+            this.isBlockPage = false;
+            this.addToast({
+              type: 'error',
+              message: resp.msg,
+              life: 5000,
+            });
+          } else {
+            if (resp.data) {
+              this.isBlockPage = false;
+              this.confirmationService.confirm({
+                message: '¿Desea desbloquear el usuario que se encuentra en estado eliminado?',
+                header: 'Usuario Eliminado',
+                icon: 'pi pi-info-circle',
+                accept: () => {
+                  this._subscription.add(
+                    this.userService.activeUser(resp.data.id).subscribe(
+                      (resp: Response) => {
+                        if (resp.error) {
+                          this.isBlockPage = false;
+                          this.addToast({
+                            type: 'error',
+                            message: resp.msg,
+                            life: 5000,
+                          });
+                        } else {
+                          this.addToast({
+                            type: 'success',
+                            message: resp.msg,
+                            life: 5000,
+                          });
+                          this.user = resp.data;
+                          this.returnUser.emit(this.user);
+                        }
+                      })
+                  );
+                },
+                reject: () => {
+                  this.addToast({
+                    type: 'info',
+                    message: 'Usuario no creado',
+                    life: 5000,
+                  });
+                  this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
+                },
+              });
+            } else {
+              this.userService.createUser(userPersistence).subscribe(
+                (resp: Response) => {
+                if (resp.error) {
+                  //this.showLoading(false);
+                  this.isBlockPage = false;
+                  this.addToast({
+                    type: 'error',
+                    message: resp.msg,
+                    life: 5000,
+                  });
+                } else {
+                  this.addToast({
+                    type: 'success',
+                    message: resp.msg,
+                    life: 5000,
+                  });
+                  this.disabledNext = false;
+                  this.user = resp.data;
+                  this.returnUser.emit(this.user);
+                  //this.showLoading(false);
+                  this.isBlockPage = false;
+                  if (this.typeExecution === 1) {
+                    this.changeStatusStep(0);
+                  }
+                }
+              });
+            }
           }
-        }
-      });
+        })
+      );
+
     } else {
       this.addToast({
         type: 'info',

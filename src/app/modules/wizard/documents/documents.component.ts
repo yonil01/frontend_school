@@ -169,10 +169,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public showAddDocType(): void {
     this.view = 'doctypeCreate';
     this.doctypeForm.get('code')?.enable();
-    /*if (this.docTypeGroupSelected.doctypes && this.docTypeGroupSelected.doctypes?.length) {
-      const code = this.docTypeGroupSelected.doctypes[this.docTypeGroupSelected.doctypes.length - 1].code || 0;
-      this.doctypeForm.get('code')?.setValue(code);
-    }*/
   }
 
   private valueCode(): void {
@@ -296,7 +292,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         this.doctypegroupService.deleteDoctypeGroup(id).subscribe({
           next: (res) => {
             if (res.error) {
-              this.messageService.add({type: 'error', message: res.msg, life: 5000});
+              this.messageService.add({type: 'error', message: res.msg + ' - verifique que este tipo documental no este asociado a algún proyecto, proceso, etc.', life: 5000});
             } else {
               this.messageService.add({type: 'success', message: res.msg, life: 5000});
               this._subscription.add(
@@ -389,15 +385,16 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   public updateDoctype(doctype: DocTypes): void {
-    const data = doctype;
-    delete data.doctypes_entities;
+    const docTypesEntities = doctype.doctypes_entities;
+    delete doctype.doctypes_entities;
     this.isBlockPage = true;
     this._subscription.add(
-      this.doctypegroupService.updateDoctype(data).subscribe({
+      this.doctypegroupService.updateDoctype(doctype).subscribe({
         next: (res) => {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
+            doctype.doctypes_entities = docTypesEntities;
             this.view = 'docTypesList';
             this.messageService.add({type: 'success', message: res.msg, life: 5000});
             const docTypeIndex = this.docTypeGroupSelected.doctypes?.findIndex((dtg) => dtg.id === doctype.id);

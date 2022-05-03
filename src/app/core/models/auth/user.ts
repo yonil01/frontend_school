@@ -52,7 +52,7 @@ export interface RolesAllowUser {
 export interface Roles {
   id?: string;
   name?: string;
-  role_allow: RolesAllowUser;
+  role_allow: RolesAllowUser[];
 }
 
 export interface UserRole {

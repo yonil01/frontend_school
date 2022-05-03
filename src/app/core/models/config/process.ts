@@ -60,7 +60,7 @@ export interface Execution {
   queue_id: string;
   name: string;
   type: number;
-  timer: number | Timer;
+  timer: string | Timer;
   class: string;
   description: string;
   execution_roles: ExecutionRole[];
@@ -80,15 +80,7 @@ export class Timer {
   is_not_running?: boolean;
   last_execution?: Date;
   cron?: string;
-  constructor(
-    name: string,
-    freq: number,
-    dayWeek: string,
-    dayMonth: string,
-    beginAt: string,
-    endAt: string,
-    enable: boolean,
-  ) {
+  constructor(name: string, freq: number, dayWeek: string, dayMonth: string, beginAt: string, endAt: string, enable: boolean) {
     this.name = name;
     this.frequency = freq;
     this.day_of_week = dayWeek;

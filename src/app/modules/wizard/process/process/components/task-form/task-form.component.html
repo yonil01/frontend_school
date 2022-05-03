@@ -8,7 +8,19 @@
 </div>
 
 <div class="flex flex-col  space-y-12" *ngIf="positionStep === 0">
-  <span class="t-h5 text-black dark:text-white">{{(operation === 'add' ? 'CREATE' : 'EDIT') | translate}} {{'EXECUTION' | translate}}</span>
+  <div>
+    <div>
+      <span class="t-h5 text-black dark:text-white">{{(operation === 'add' ? 'CREATE' : 'EDIT') | translate}} {{'EXECUTION' | translate}}</span>
+    </div>
+
+    <div class="flex gap-4 items-center" style="margin-top: 1rem" *ngIf="executionSelected && executionSelected.id !== ''">
+      <div class="w-2 h-10 bg-brand-d-1"></div>
+      <div class="text-mono-70 t-caption-1">
+        <span>ID: {{executionSelected.id}}</span>
+      </div>
+    </div>
+  </div>
+
   <form [formGroup]="taskForm" class=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
     <div class="input flex flex-col space-y-1">
       <label class="t-caption-2 text-mono-70">{{'NAME' | translate}}</label>
@@ -40,7 +52,7 @@
     </div>
     <div class="input flex flex-col space-y-1" *ngIf="typeTask === 'TIMER'">
       <label class="t-caption-2 text-mono-70">{{'TIMERS' | translate}}</label>
-      <ec-dropdown [filter]="true" placeholder="{{'SELECT_TIMER' | translate}}" formControlName="timer" [icon]="true" optionLabel="label" [data]="timers" [dropStyle]="dropStyle"></ec-dropdown>
+      <ec-dropdown [filter]="true" placeholder="{{'SELECT_TIMER' | translate}}" formControlName="timer" [icon]="true" optionLabel="name" optionValue="id" [data]="timers" [dropStyle]="dropStyle"></ec-dropdown>
       <div class="text-alert-error"
            *ngIf="taskForm.get('timer')?.invalid && taskForm.get('timer')?.touched && taskForm.get('timer')?.hasError('required')">
         <span>El campo es requerido</span>
@@ -99,3 +111,5 @@
       {{'EXIT' | translate}}</button>
   </div>
 </div>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>
+<app-block-page [show]="blockPage"></app-block-page>

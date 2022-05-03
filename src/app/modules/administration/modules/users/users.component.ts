@@ -74,31 +74,33 @@ export class UsersComponent implements OnInit {
   public getUsers(): void {
     this.styleTable.dataSource = [];
     this.showLoader[0].value = true;
-    this.userService.getUsersByRolesAllow().subscribe((res) => {
-      if (!res.error) {
-        this.users = res.data;
-        this.users.forEach((user: any) => {
-          const newUser = {
-            value: user,
-            value1: user.identification_number,
-            value2: user.name+' '+user.last_name,
-            value3: user.email_notifications,
-            value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
-            value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
-          }
-          this.styleTable.dataSource?.push(newUser);
-        })
-        this.getCreateAtMax();
-        this.showLoader[0].value = false;
-      } else {
-        this.showLoader[0].value = false;
-        this._messageService.add({
-          type: 'error',
-          message: 'Inicio de sesión fallido',
-          life: 5000,
-        });
-      }
-    });
+    this._subscription.add(
+      this.userService.getUsersByRolesAllow().subscribe((res) => {
+        if (!res.error) {
+          this.users = res.data;
+          this.users.forEach((user: any) => {
+            const newUser = {
+              value: user,
+              value1: user.identification_number,
+              value2: user.name+' '+user.last_name,
+              value3: user.email_notifications,
+              value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
+              value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
+            }
+            this.styleTable.dataSource?.push(newUser);
+          })
+          this.getCreateAtMax();
+          this.showLoader[0].value = false;
+        } else {
+          this.showLoader[0].value = false;
+          this._messageService.add({
+            type: 'error',
+            message: 'Inicio de sesión fallido',
+            life: 5000,
+          });
+        }
+      })
+    )
   }
 
   public getRoles(roles: Roles[]): string {
@@ -278,9 +280,6 @@ export class UsersComponent implements OnInit {
         users.forEach((user: User) => {
           this._subscription.add(
             this.userService.createUser(user).subscribe((resp: Response) => {
-              console.log(ArrayRoles)
-              console.log(resp)
-              debugger
               if (resp.error) {
                 this.showLoader[0].value = false;
                 this._messageService.add({
