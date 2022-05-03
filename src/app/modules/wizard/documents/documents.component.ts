@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
+  Customer,
   DocTypeGroups,
   DocTypes,
   DocTypesDisplay,
@@ -9,7 +10,12 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {ToastService} from "ecapture-ng-ui";
-import {controlDoctypegroups,} from "@app/core/store/actions/doctype.action";
+import {
+  controlDoctype,
+  controlDoctypegroup,
+  controlDoctypegroups,
+  editDoctypegroup,
+} from "@app/core/store/actions/doctype.action";
 import {DoctypegroupService} from "@app/modules/wizard/services/doctypegroup/doctypegroup.service";
 import {Subscription} from "rxjs/internal/Subscription";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -20,6 +26,7 @@ import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
 import {dispositionFinal, formatsDocs, typeSupport} from "@app/core/utils/constants/constant";
 import {IconsMaterial} from '@app/core/constants/icons/material-icons';
+import {ActivatedRoute, Route, Router, RouterLink} from "@angular/router";
 
 interface OptionsDropdown {
   label: string;
@@ -49,7 +56,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public format: { label: string, value: string }[] = formatsDocs;
   public disposition_final: { label: string, value: string }[] = dispositionFinal;
   public docTypeGroupForm: FormGroup;
-  private project: Project = {
+  public client: Customer = {};
+  public project: Project = {
     customers_id: "",
     department: "",
     description: "",
@@ -73,6 +81,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store: Store<AppState>,
     private messageService: ToastService,
+    private router: Router
   ) {
 
     this.docTypeGroupForm = this.fb.group({
@@ -106,6 +115,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.client = JSON.parse(sessionStorage.getItem('client') || '');
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.getDoctypeGroups();
     this.valueCode();
@@ -584,6 +594,13 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         this.createDoctype(doctype);
       }
     }
+  }
+
+  public redirectAnnexe(docType: DocTypes, indexDocType: number) {
+    this.store.dispatch(controlDoctype({docType, indexDocType}));
+
+    sessionStorage.setItem('doctype', JSON.stringify(docType))
+    this.router.navigate(["/wizard/documents/annexes-doc"])
   }
 
 }

@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'white-fx': 'var(--c-white)',
-        'black-fx': 'var(--c-black)',
+        'white-p': 'var(--c-pure-white)',
+        'black-p': 'var(--c-pure-black)',
         white: 'var(--c-fl-white)',
         black: 'var(--c-fl-black)',
         blue: {

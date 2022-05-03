@@ -330,6 +330,36 @@ export class GetDoctypeGroupsByProjectIDQuery extends Query<Response> {
             url_path
             storage_id
             format
+            required {
+              id
+              name
+              version
+              is_active
+              required_doctypes {
+                id
+                doctype_related_id
+                is_required
+                required_attributes {
+                  id
+                  entity_id
+                  attribute_id
+                  comparison_symbol {
+                    Id
+                    name
+                  }
+                  value
+                  preposition {
+                    Id
+                    name
+                 }
+                }
+              }
+              required_attributes_common {
+                id
+                required_id
+                attribute_id
+              }
+            }
             autoname
             tipo_soporte
             retencion_electronic
@@ -342,6 +372,52 @@ export class GetDoctypeGroupsByProjectIDQuery extends Query<Response> {
             class
             is_cipher
           }
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetDoctypeByIDQuery extends Query<Response> {
+  document = gql`
+    query getDoctypeByID($id: String!) {
+      getDoctypeByID(id: $id) {
+        error
+        data {
+          id
+          required {
+             id
+             name
+             version
+             is_active
+          }
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetDoctypeQuery extends Query<Response> {
+  document = gql`
+    query getDoctype{
+      getDoctype {
+        error
+        data {
+          id
+          name
         }
         code
         type

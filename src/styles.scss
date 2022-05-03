@@ -7,6 +7,9 @@
 
 @layer utilities {
   :root {
+    --c-p-white: #FFFFFF;
+    --c-p-black: #242424;
+
     --c-white: #F4F5F6;
     --c-mono-10: #E3E4E7;
     --c-mono-30: #9FA3AD;
@@ -36,6 +39,9 @@
     --c-alert-warning-d: #F0B323;
   }
   .theme-light {
+    --c-pure-white: var(--c-p-white);
+    --c-pure-black: var(--c-p-black);
+
     --c-fl-white: var(--c-white);
     --c-fl-mono-10: var(--c-mono-10);
     --c-fl-mono-30: var(--c-mono-30);
@@ -65,6 +71,9 @@
 
 @layer utilities {
   .theme-dark {
+    --c-pure-white: var(--c-p-black);
+    --c-pure-black: var(--c-p-white);
+
     --c-fl-white: var(--c-black);
     --c-fl-mono-10: var(--c-mono-100);
     --c-fl-mono-30: var(--c-mono-70);

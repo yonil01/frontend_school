@@ -15,7 +15,7 @@ import {
   QueryGetMaxCodDoctype,
   GetEntitiesByIDQuery,
   CreateDoctypeEntitiesMutation,
-  DeleteDoctypeEntitiesByDtIDMutation, DeleteDoctypeEntitiesById
+  DeleteDoctypeEntitiesByDtIDMutation, DeleteDoctypeEntitiesById, GetDoctypeByIDQuery, GetDoctypeQuery
 } from '../doctypegroup/doctypegroup.queries.service';
 
 @Injectable({
@@ -37,7 +37,9 @@ export class DoctypegroupService {
     private getEntitiesByIDQuery: GetEntitiesByIDQuery,
     private createDoctypeEntitiesMutation: CreateDoctypeEntitiesMutation,
     private deleteDoctypeEntitiesByDtIDMutation: DeleteDoctypeEntitiesByDtIDMutation,
-    private deleteDoctypeEntitiesByIdMutation: DeleteDoctypeEntitiesById
+    private deleteDoctypeEntitiesByIdMutation: DeleteDoctypeEntitiesById,
+    private getDoctypeByIDQuery: GetDoctypeByIDQuery,
+    private getDoctypeQuery: GetDoctypeQuery
   ) {
   }
 
@@ -115,6 +117,21 @@ export class DoctypegroupService {
       })
       .valueChanges.pipe(map(({data}: any) => data.getDoctypeGroupsByProjectID));
   }
+
+  public getRequiredByDoctypeID(id: string): Observable<Response> {
+    return this.getDoctypeByIDQuery
+      .watch({
+        id
+      })
+      .valueChanges.pipe(map(({data}: any) => data.getDoctypeByID));
+  }
+
+  public getAllDoctype(): Observable<Response> {
+    return this.getDoctypeQuery
+      .watch()
+      .valueChanges.pipe(map(({data}: any) => data.getDoctype));
+  }
+
 }
 
 

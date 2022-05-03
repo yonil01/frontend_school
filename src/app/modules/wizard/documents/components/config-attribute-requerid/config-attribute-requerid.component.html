@@ -1,0 +1,176 @@
+<div class="header pl-4 md:pl-6 lg:pl-12 pr-4 py-2 flex justify-between items-center">
+  <span class="t-h5 text-mono-70">Configuración de Atributo</span>
+  <button class="b-ghost w-12" (click)="closeConfig.emit(true)">
+            <span class="svg">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4.2097 4.3871L4.29289 4.29289C4.65338 3.93241 5.22061 3.90468 5.6129 4.2097L5.70711 4.29289L12 10.585L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L13.415 12L19.7071 18.2929C20.0676 18.6534 20.0953 19.2206 19.7903 19.6129L19.7071 19.7071C19.3466 20.0676 18.7794 20.0953 18.3871 19.7903L18.2929 19.7071L12 13.415L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L10.585 12L4.29289 5.70711C3.93241 5.34662 3.90468 4.77939 4.2097 4.3871L4.29289 4.29289L4.2097 4.3871Z"/>
+              </svg>
+            </span>
+  </button>
+</div>
+<div class="body p-4 md:p-6 lg:p-8 space-y-4">
+  <div *ngIf="showForm">
+    <div class="flex flex-row space-x-2 pb-4">
+      <div class="bg-brand-2 rounded-sm w-2"></div>
+      <div class="w-full text-mono-70 py-1">
+        <span>No se puede cambiar a ‘NONE’ un atributo que está enlasado con otro.</span>
+      </div>
+    </div>
+    <form class="space-y-6" [formGroup]="formsRequired">
+      <div formArrayName="attributes" class="space-y-6">
+        <div *ngFor="let attributeForm of attributesForm.controls; let i = index">
+          <div [formGroupName]="i" class="grid grid-cols-2 gap-4">
+            <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <label class="t-caption-2 text-mono-70">Entidad</label>
+              <ec-dropdown formControlName="entity" [dropStyle]="dropStyle" [data]="entities"
+                           placeholder="Seleccione una entidad" optionLabel="name"
+                           optionValue="id" (onChangeValue)="changeSelectedEntity(attributeForm)"
+                           [onlyValue]="false"></ec-dropdown>
+              <small *ngIf="validFormRequiredAttribute(attributeForm, 'entity')" class="text-alert-error">
+                El campo es requerido
+              </small>
+            </div>
+            <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <label class="t-caption-2 text-mono-70">Atributo</label>
+              <ec-dropdown formControlName="attribute" [dropStyle]="dropStyle" [data]="getDATAttribute(attributeForm)"
+                           placeholder="Seleccione un atributo" optionLabel="name"
+                           optionValue="id" [onlyValue]="false"></ec-dropdown>
+              <small *ngIf="validFormRequiredAttribute(attributeForm, 'attribute')" class="text-alert-error">
+                El campo es requerido
+              </small>
+            </div>
+            <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <label class="t-caption-2 text-mono-70">Comparación</label>
+              <ec-dropdown formControlName="comparison" [dropStyle]="dropStyle" [data]="comparisonData"
+                           placeholder="Seleccione un signo de comparación" optionLabel="name"
+                           optionValue="id" [onlyValue]="false"></ec-dropdown>
+              <small *ngIf="validFormRequiredAttribute(attributeForm, 'comparison')" class="text-alert-error">
+                El campo es requerido
+              </small>
+            </div>
+            <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
+              <label class="t-caption-2 text-mono-70">Valor</label>
+              <input formControlName="value" class="ec-input" type="text" style="height: 3rem">
+              <small *ngIf="validFormRequiredAttribute(attributeForm, 'value')" class="text-alert-error">
+                El campo es requerido
+              </small>
+            </div>
+            <div class="flex flex-row items-center gap-6">
+              <div (click)="validAddNewAttributeForm(i)">
+                <label class="flex flex-row space-x-2 items-center">
+                  <input formControlName="preposition" class="w-4 h-4"
+                         [value]="prepositionData[0].Id" type="radio">
+                  <span class="t-body-2 text-black flex-1">AND (y)</span>
+                </label>
+              </div>
+              <div (click)="validAddNewAttributeForm(i)">
+                <label class="flex flex-row space-x-2 items-center">
+                  <input formControlName="preposition" class="w-4 h-4"
+                         [value]="prepositionData[1].Id" type="radio">
+                  <span class="t-body-2 text-black flex-1">OR (o)</span>
+                </label>
+              </div>
+              <div *ngIf="getDisabled(i)" (click)="deleteFormNext(i)">
+                <label class="flex flex-row space-x-2 items-center">
+                  <input formControlName="preposition" class="w-4 h-4"
+                         [value]="prepositionData[2].Id" type="radio">
+                  <span class="t-body-2 text-black flex-1">NONE</span>
+                </label>
+              </div>
+              <div *ngIf="!getDisabled(i)">
+                <label class="flex flex-row space-x-2 items-center disabled">
+                  <input formControlName="preposition" class="w-4 h-4"
+                         [value]="prepositionData[2].Id" type="radio">
+                  <span class="t-body-2 text-black flex-1"><del>NONE</del></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isCreate">
+        <button class="b-solid" (click)="validRequiredAttribute()">Agregar</button>
+      </div>
+      <div *ngIf="!isCreate" class="flex flex-row gap-4">
+        <button class="b-solid" (click)="validUpdateRequiredAttribute()">Actualizar</button>
+        <button class="b-outline" (click)="cancelFormRequiredAttribute()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+  <div class="list-annexes space-y-2">
+    <span class="t-subtitle-1 text-mono-70">Lista de Atributos</span>
+    <div class="table w-full overflow-hidden border border-mono-30 rounded bg-white-p drop-shadow-lg p-4 gap-4">
+      <div *ngIf="!attributesRequiredAll.length" class="notify-null flex flex-col space-y-2 items-center p-12">
+        <div class="text-brand-2">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M39.54 62.72C29.406 62.72 24.722 58.284 18.732 51.516C17.044 49.61 11.862 43.996 11.862 43.996L10.86 42.888C8.42603 40.21 7.28003 38.852 7.28003 37.97C7.28003 36.888 8.02803 35.926 9.38403 35.256C11.76 34.084 15.642 33.964 18.022 35.794C19.812 37.17 23.376 41.016 25.28 43.12V14C25.28 11.224 27.216 9.28601 29.988 9.28001C29.988 9.28001 29.988 9.28001 29.99 9.28001C29.99 9.28001 29.992 9.28001 29.996 9.28001C29.998 9.28001 30 9.28001 30.002 9.28001C32.782 9.28601 34.72 11.224 34.72 14V29.28H47.824C52.896 29.28 56.72 32.836 56.72 37.552V45.572C56.72 54.478 54.638 62.72 39.54 62.72ZM12.93 43.032C12.934 43.036 18.12 48.654 19.81 50.566C25.54 57.038 30.008 61.28 39.54 61.28C52.604 61.28 55.28 55 55.28 45.572V37.552C55.28 33.656 52.074 30.718 47.824 30.718H34C33.602 30.718 33.28 30.396 33.28 29.998V14C33.28 12.04 31.96 10.722 29.996 10.72C28.038 10.722 26.72 12.04 26.72 14V45C26.72 45.298 26.536 45.566 26.256 45.674C25.978 45.782 25.66 45.704 25.462 45.476C25.402 45.41 19.496 38.74 17.146 36.934C15.296 35.516 11.968 35.588 10.022 36.55C9.19603 36.956 8.72203 37.476 8.72203 37.972C8.83603 38.52 10.848 40.732 11.928 41.922L12.93 43.032ZM21.51 23.458C18.814 21.07 17.268 17.622 17.268 14C17.268 6.98601 22.974 1.28001 29.988 1.28001C37.002 1.28001 42.708 6.98601 42.708 14C42.708 17.622 41.162 21.068 38.466 23.458L37.508 22.38C39.896 20.264 41.266 17.21 41.266 14C41.266 7.78001 36.208 2.72001 29.986 2.72001C23.766 2.72001 18.706 7.78001 18.706 14C18.706 17.21 20.076 20.266 22.464 22.38L21.51 23.458Z"/>
+          </svg>
+        </div>
+        <span
+          class="t-body-1 text-mono-70">No hay atributos actualmente.</span>
+      </div>
+      <div *ngIf="attributesRequiredAll.length" class="table-h w-full">
+        <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
+          <div class="p-2 w-12">N°</div>
+          <div class="p-2 flex-1">Entidad</div>
+          <div class="p-2 flex-1">Atributo</div>
+          <div class="p-2 flex-1">Comparacion</div>
+          <div class="p-2 flex-1">Valor</div>
+          <div class="p-2 flex-1">Preposicion</div>
+          <div class="p-2 w-32">Opciones</div>
+        </div>
+        <div class="table-body t-body-1 text-mono-70">
+          <div class="item w-full flex flex-row {{attributeDisplayIndex === position ? 'bg-mono-10':''}}"
+               *ngFor="let item of attributeDocForPag; let position = index"
+               (click)="attributeDisplayIndex=position">
+            <div class="flex items-center p-2 w-12">{{attributesRequiredAll.indexOf(item) + 1}}</div>
+            <div class="flex items-center p-2 flex-1 break-all">{{getEntityNameById(item.entity_id)}}</div>
+            <div
+              class="flex items-center p-2 flex-1 break-all">{{getAttributeNameById(item.entity_id, item.attribute_id)}}</div>
+            <div class="flex items-center p-2 flex-1 break-all">{{item.comparison_symbol.name}}</div>
+            <div class="flex items-center p-2 flex-1 break-all">{{item.value}}</div>
+            <div class="flex items-center p-2 flex-1 break-all">{{item.preposition.name}}</div>
+            <div class="flex items-center p-2 w-32">
+              <div class="w-full flex flex-row">
+                <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10 {{isBlockOptions ? 'blockOptions' : '' }}" ecTooltip
+                        tooltip="Editar atributo requerido" (click)="loadDataForEdition(item, position); attributeSelected=item;">
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M21.0303 2.96967C22.4278 4.36713 22.4278 6.63286 21.0303 8.03033L9.06198 19.9987C8.7851 20.2755 8.44076 20.4754 8.063 20.5784L2.94731 21.9736C2.38744 22.1263 1.87371 21.6125 2.0264 21.0527L3.42159 15.937C3.52462 15.5592 3.72444 15.2149 4.00132 14.938L15.9696 2.96967C17.3671 1.5722 19.6328 1.5722 21.0303 2.96967ZM15.0001 6.06057L5.06198 15.9987C4.96969 16.0909 4.90308 16.2057 4.86874 16.3316L3.81889 20.1811L7.66833 19.1312C7.79425 19.0969 7.90903 19.0303 8.00132 18.938L17.9391 8.99957L15.0001 6.06057ZM17.0303 4.03033L16.0601 4.99957L18.9991 7.93957L19.9696 6.96967C20.7813 6.15799 20.7813 4.842 19.9696 4.03033C19.158 3.21865 17.842 3.21865 17.0303 4.03033Z"/>
+                    </svg>
+                  </div>
+                </button>
+                <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10 {{isBlockOptions ? 'blockOptions' : '' }}" ecTooltip
+                        tooltip="Eliminar Atributo"
+                        (click)="attributeSelected=item; showModalConfirmDelete(item, position)">
+                  <!--(click)="validateDeleteRequiredAttribute(item, position); attributeSelected=item; showConfirmDelete(item, position)">-->
+                  <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12 1.75C13.733 1.75 15.1492 3.10645 15.2449 4.81558L15.25 5H20.5C20.9142 5 21.25 5.33579 21.25 5.75C21.25 6.1297 20.9678 6.44349 20.6018 6.49315L20.5 6.5H19.704L18.4239 19.5192C18.2912 20.8683 17.1984 21.91 15.8626 21.9945L15.6871 22H8.31293C6.95734 22 5.81365 21.0145 5.59883 19.6934L5.57614 19.5192L4.295 6.5H3.5C3.1203 6.5 2.80651 6.21785 2.75685 5.85177L2.75 5.75C2.75 5.3703 3.03215 5.05651 3.39823 5.00685L3.5 5H8.75C8.75 3.20507 10.2051 1.75 12 1.75ZM18.197 6.5H5.802L7.06893 19.3724C7.12768 19.9696 7.60033 20.4343 8.18585 20.4936L8.31293 20.5H15.6871C16.2872 20.5 16.7959 20.0751 16.9123 19.4982L16.9311 19.3724L18.197 6.5ZM13.75 9.25C14.1297 9.25 14.4435 9.53215 14.4932 9.89823L14.5 10V17C14.5 17.4142 14.1642 17.75 13.75 17.75C13.3703 17.75 13.0565 17.4678 13.0068 17.1018L13 17V10C13 9.58579 13.3358 9.25 13.75 9.25ZM10.25 9.25C10.6297 9.25 10.9435 9.53215 10.9932 9.89823L11 10V17C11 17.4142 10.6642 17.75 10.25 17.75C9.8703 17.75 9.55651 17.4678 9.50685 17.1018L9.5 17V10C9.5 9.58579 9.83579 9.25 10.25 9.25ZM12 3.25C11.0818 3.25 10.3288 3.95711 10.2558 4.85647L10.25 5H13.75C13.75 4.0335 12.9665 3.25 12 3.25Z"/>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-paginator [data]="attributesRequiredAll" (current-data-page)="attributeDocForPag = $event"></app-paginator>
+    </div>
+  </div>
+</div>
+
+<app-block-page [show]="isBlockPage"></app-block-page>
+
+<app-confirm-dialog [show]="valueConfirm.show" type="warning"
+                    title="¿Esta seguro de borrar esta relación de atributo?"
+                    body="Si realiza esta acción se eliminirá la relación del atributo con el anexo!"
+                    (onEvent)="confirmOptionDelete($event)"
+></app-confirm-dialog>
+

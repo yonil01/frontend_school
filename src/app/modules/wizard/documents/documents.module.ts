@@ -11,13 +11,19 @@ import {DropdownModule, ToastModule} from "ecapture-ng-ui";
 import {DocEntityComponent} from "@app/modules/wizard/documents/components/doc-entity/doc-entity.component";
 import {AutonameComponent} from "@app/modules/wizard/documents/components/autoname/autoname.component";
 import {MatIconModule} from "@angular/material/icon";
+import {AnnexesDocComponent} from './pages/annexes-doc/annexes-doc.component';
+import {
+  ConfigAttributeRequeridComponent
+} from './components/config-attribute-requerid/config-attribute-requerid.component';
 
 
 @NgModule({
   declarations: [
     DocumentsComponent,
     DocEntityComponent,
-    AutonameComponent
+    AutonameComponent,
+    AnnexesDocComponent,
+    ConfigAttributeRequeridComponent
   ],
   imports: [
     CommonModule,
