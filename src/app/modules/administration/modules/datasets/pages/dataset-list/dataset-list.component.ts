@@ -90,7 +90,9 @@ export class DatasetListComponent implements OnInit {
 
   deleteDataset($event: any): void {
     if ($event) {
-      if (this.selectedDataset?.id)
+      if (this.selectedDataset?.id) {
+        this.isBlockPage = true
+        this.showDelete = false
         this.datasetsService.deleteDataset(this.selectedDataset.id.toLowerCase()).subscribe((res) => {
           if (res.error) {
             this.messageService.add({
@@ -98,16 +100,19 @@ export class DatasetListComponent implements OnInit {
               message: res.msg,
               life: 5000
             });
+            this.isBlockPage = false
           } else {
             this.messageService.add({
               type: 'success',
               message: 'Dataset deleted successfully',
               life: 5000
             });
+            this.isBlockPage = false
             this.showDelete = false
             this.getDatasets();
           }
         });
+      }
     } else {
       this.showDelete = false;
     }

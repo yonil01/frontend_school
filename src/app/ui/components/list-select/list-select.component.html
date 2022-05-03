@@ -1,0 +1,59 @@
+<div class="w-1/2 flex grid-cols-2">
+  <div *ngFor="let item of stileSelectList; index as i" [ngClass]="itemSelected===i?'bg-brand-2 text-white':'bg-transparent'" class="w-full p-2 border-2 border-mono-10 cursor-pointer
+  flex  content-center justify-center "
+       (click)="itemSelected=i; selectData=stileSelectList[i]; eventRunOption({value: i, type: 'change-status'})">
+    <span class="items-center text-center">{{item?.title}}</span>
+  </div>
+</div>
+<div  class="w-full space-y-4 p-6 border-2 border-mono-10 ">
+  <div>
+    <h3>{{selectData?.subTitle}}</h3>
+  </div>
+  <div class="py-2 h-72 w-full border-2 border-mono-10 overflow-scroll">
+    <table class="min-w-full  bg-transparent w-full border-collapse">
+      <thead >
+      <tr class="border-b border-black" >
+        <th scope="col" class="text-xs lg:text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-left text-brand-2 w-1">
+          N°
+        </th>
+        <ng-container *ngFor="let column of selectData?.columns; index as i">
+          <th scope="col" class="text-xs lg:text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-left text-brand-2 "
+              [ngClass]="(i+1) === selectData.columns?.length ? 'text-sm font-medium text-gray-900 px-3 lg:px-6 py-2 lg:py-4 text-center text-brand-2 w-4' : ''">
+            {{ column.label }}
+          </th>
+        </ng-container>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of selectData?.dataSource; index as index">
+          <td class="px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-400">{{ index + 1 }}</td>
+          <ng-container *ngFor="let key of Object.values(data)">
+            <td *ngIf="Object(key) !== key" class="text-sm text-mono-70 font-normal font-light px-3 lg:px-6 py-2 lg:py-4">
+              {{key}}
+            </td>
+          </ng-container>
+          <td class="text-sm text-center text-gray-400 font-light px-3 lg:px-6 py-2 lg:py-4 whitespace-nowrap flex content-center">
+          <span *ngFor="let option of selectData.options;" class="cursor-pointer px-2" appIcon [iconName]="option.icon + ' table'"
+                [iconColor]="option.color" (click)="eventRunOption({value: data.value, type: option.type})"></span>
+          </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+<div>
+  <ng-content select="[ng-form-select]">
+  </ng-content>
+</div>
+
+  <div class="w-full flex justify-end">
+    <div class="w-1/2 flex grid-cols-2 space-x-4 mt-4">
+      <ng-content select="[ng-button-add]"></ng-content>
+      <app-button
+        type="button" label="Quitar"
+                  brColor="border-brand-1"
+                  bgColor="bg-transparent"
+                  txtColor="text-brand-1" class="h-12 w-full"></app-button>
+    </div>
+  </div>
+</div>
+

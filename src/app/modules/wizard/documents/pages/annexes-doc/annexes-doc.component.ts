@@ -9,7 +9,6 @@ import {
   RequiredDoctypes
 } from "@app/core/models/config/annexe";
 import {AnnexeService} from "@app/modules/wizard/documents/services/annexe/annexe.service";
-import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {Router} from "@angular/router";
 import {v4 as uuidv4} from "uuid";
@@ -23,6 +22,7 @@ import {EntityService} from "@app/modules/wizard/services/entity/entity.service"
 import {Attribute, Entity} from "@app/modules/wizard/entidades/models/entities.models";
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
 import {dropStyle} from "@app/core/models/dropdown/dropdown";
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-annexes-doc',

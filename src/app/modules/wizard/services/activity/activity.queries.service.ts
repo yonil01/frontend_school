@@ -18,6 +18,7 @@ export class GetActivitiesQuery extends Query<Response> {
           itemtype_id
           status
           parameters {
+          type_param
             id
             name
             type

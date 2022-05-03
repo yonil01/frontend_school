@@ -115,12 +115,12 @@
     </div>
   </div>
 
-  <app-side-task [tile-side]="queueSelected.name || ''"  *ngIf="viewSide !== ''" (on-close)="hideSide()">
-    <app-task-form *ngIf="viewSide === 'taskForm'"
-      (createQueueEvent)='responseCreateQueue($event)'
-      (updateQueueEvent)='responseUpdateQueue($event)'
-      (updateNameEvent)='updateNameQueue($event)'
-    ></app-task-form>
+  <app-side-task [tile-side]="queueSelected.name || ''" [full-view]="viewSide!=='taskForm'" *ngIf="viewSide !== ''" (on-close)="hideSide()">
+    <app-queue-form *ngIf="viewSide === 'taskForm'"
+                    (createQueueEvent)='responseCreateQueue($event)'
+                    (updateQueueEvent)='responseUpdateQueue($event)'
+                    (updateNameEvent)='updateNameQueue($event)'
+    ></app-queue-form>
     <app-config *ngIf="viewSide === 'activities'" [queue-selected]="queueSelected"></app-config>
   </app-side-task>
 </div>

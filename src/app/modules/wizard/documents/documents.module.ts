@@ -35,7 +35,7 @@ import {
     ToastModule,
     DropdownModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
   ]
 })
 export class DocumentsModule {

@@ -80,6 +80,8 @@ export class WizardComponent implements OnInit, OnDestroy {
   }
 
   public selectClient(client: Client): void {
+    this.projectID = '';
+    this.isGenerate = false;
     if (client) {
       this.clientName = client.name;
       const projects = client.projects;
@@ -96,10 +98,11 @@ export class WizardComponent implements OnInit, OnDestroy {
 
   public selectProject(project: Project) {
     if (project) {
+      this.isGenerate = true;
       this.projectName = project.name;
       sessionStorage.setItem('project', JSON.stringify(project));
     } else {
-      this.isGenerate = false;
+      this.isGenerate = true;
       sessionStorage.removeItem('project');
     }
   }

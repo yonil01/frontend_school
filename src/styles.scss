@@ -240,13 +240,13 @@ button:disabled{
 }
 
 .b-solid {
-  @apply t-button-1 text-white bg-brand-2
+  @apply t-button-1 text-white bg-brand-2 rounded
 }
 .b-outline {
-  @apply t-button-1 text-brand-2 border border-brand-2
+  @apply t-button-1 text-brand-2 border border-brand-2 rounded
 }
 .b-ghost {
-  @apply t-button-1 text-brand-2
+  @apply t-button-1 text-brand-2 rounded
 }
 .b-solid:hover {
   @apply bg-brand-d-1
@@ -374,4 +374,19 @@ svg {
   left: 15px!important;
   right: 0;
   width: 100px!important;
+}
+
+.gutter {
+  @apply bg-mono-30 bg-no-repeat;
+  background-position: 50%;
+}
+
+.gutter-horizontal {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  cursor: col-resize;
+}
+
+.gutter-vertical {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  cursor: row-resize;
 }

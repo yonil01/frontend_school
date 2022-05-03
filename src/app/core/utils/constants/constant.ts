@@ -108,7 +108,7 @@ export const typeTimes = [
 ];
 
 export const typeTasks = [
-  {value: 1, label: 'Sistema'},
+  {value: 1, label: 'System'},
   {value: 2, label: 'Timer'},
-  {value: 3, label: 'Usuario'}
+  {value: 3, label: 'User'}
 ];

@@ -3,6 +3,7 @@ import {AttributeAutofill, Dataset, Project} from "@app/core/models";
 export interface Entity {
   id?: string;
   name?: string;
+  description?: string;
   project?: Project;
   project_id?: string;
   is_unique?: boolean;
@@ -36,6 +37,12 @@ export interface Attribute {
   cascading_datasets: string[];
   autofill_attributes: number[];
 }
+
+export interface AttributeValue {
+  name: string;
+  value: string;
+}
+
 
 export interface AttributeDataset {
   id?: string;

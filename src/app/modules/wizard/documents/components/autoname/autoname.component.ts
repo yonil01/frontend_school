@@ -1,8 +1,8 @@
 import {Component, OnInit, Input, EventEmitter, Output, OnDestroy} from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {AppState} from '@app/core/store/app.reducers';
-import {DocTypes, DocTypeGroups, Entity} from '@app/core/models';
+import {DocTypes, Entity} from '@app/core/models';
 import {EntityService} from '@app/modules/wizard/services/entity/entity.service';
 import {DoctypegroupService} from '@app/modules/wizard/services/doctypegroup/doctypegroup.service';
 import {ToastService} from "ecapture-ng-ui";
@@ -24,36 +24,17 @@ export class AutonameComponent implements OnInit, OnDestroy {
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
   public readonly dropStyle: DropdownModel = dropStyle;
   public showConfirmDelete: boolean = false;
-  value: string = '';
-  dataDoctype!: DocTypes;
-  isShowAddAutoname: boolean = false;
-  autonameForm!: FormGroup;
-  keywords1: any[] = [];
-  keywords2: any[] = [];
-  keywords3: any[] = [];
-  selectAtributo: string = '';
-  selectEntites: string = '';
-  listAttribut: any[] = [];
-  selectedKey: any[] = [];
-  viewAutoname: string = '';
-  viewAutoname2: any[] = [];
-  input = '';
-  entities: Entity[] = [];
-  entityList: Entity[] = [];
+  public viewAutoname: string = '';
   public entitiesList: Entity[] = [];
   public attributesSelected: Entity[] = [];
-  atribute: any;
   public optionsValue: string = '';
   public optionsDescription: string = '';
   public dataAttributeRadio: string = '';
-  project: any;
-  doctype!: DocTypes;
-  id: string = '';
-  indexDocType: number = 0;
-  doctypeGruop!: DocTypeGroups;
+  public project: any;
 
   public autonames: string[] = [];
   public showValuesAttributes: boolean = false;
+  public selectedAttributeValue: string = '';
 
   @Input() data_doctype!: DocTypes;
   @Output() cancelAndReturn = new EventEmitter<any>();
@@ -68,23 +49,16 @@ export class AutonameComponent implements OnInit, OnDestroy {
     private doctypegroupService: DoctypegroupService,
     private messageService: ToastService,
   ) {
-    this.createForms();
   }
 
   ngOnInit(): void {
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
-    this.keywords1 = [{label: 'Tipo documental', value: 'doctype'}];
-    this.selectEntites = '';
-    this.selectAtributo = '';
     this.viewAutoname = '';
-    this.selectedKey = [];
-    this.entityList = [];
     this.entitiesList = [];
     this.getEntitiesByProjectID(this.data_doctype);
     if (this.data_doctype.autoname) {
       this.viewAutoname = this.data_doctype.autoname;
       this.autonames = this.data_doctype.autoname.split('*');
-      this.selectedKey = this.data_doctype.autoname.split('*');
     }
   }
 
@@ -92,15 +66,7 @@ export class AutonameComponent implements OnInit, OnDestroy {
     this._subscription.unsubscribe();
   }
 
-  private createForms(): void {
-    this.autonameForm = this.fb.group({
-      auto_name: ['', Validators.required],
-    });
-  }
-
   private getEntitiesByProjectID(doctype: DocTypes): void {
-    this.entities = [];
-    this.entityList = [];
     this.isBlockPage = true;
     this._subscription.add(
       this.entityService.getEntitiesByProject(this.project.id).subscribe({
@@ -109,16 +75,16 @@ export class AutonameComponent implements OnInit, OnDestroy {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
             if (res.data) {
-              this.entityList = res.data;
               if (doctype.doctypes_entities) {
-                for (const entity of this.entityList) {
+                const entities: Entity[] = [];
+                for (const entity of res.data) {
                   const info = Object(doctype.doctypes_entities);
                   const ent = info.find((e: any) => e.entities.id.toLowerCase() === entity.id?.toLowerCase());
                   if (ent) {
-                    this.entities.push(entity);
+                    entities.push(entity);
                   }
                 }
-                this.entitiesList = this.entities;
+                this.entitiesList = entities;
               }
             } else {
               this.messageService.add({
@@ -150,7 +116,6 @@ export class AutonameComponent implements OnInit, OnDestroy {
   }
 
   public selectedEntity(event: any): void {
-    this.selectAtributo = '';
     this.optionsDescription = '';
     this.optionsValue = '';
     if (event) {
@@ -176,7 +141,8 @@ export class AutonameComponent implements OnInit, OnDestroy {
         );
       }
     } else {
-      this.selectAtributo = '';
+      this.selectedAttributeValue = '';
+      this.showValuesAttributes = false;
       this.optionsDescription = '';
       this.optionsValue = '';
     }
@@ -190,6 +156,7 @@ export class AutonameComponent implements OnInit, OnDestroy {
       this.optionsDescription = 'attribute-id|' + event.name;
       this.optionsValue = 'attribute-value|' + event.name;
     } else {
+      this.showValuesAttributes = false;
       this.optionsDescription = '';
       this.optionsValue = '';
     }
@@ -218,11 +185,9 @@ export class AutonameComponent implements OnInit, OnDestroy {
   }
 
   private cancel(): void {
-    this.selectedKey = [];
     this.viewAutoname = '';
     this.optionsDescription = '';
     this.optionsValue = '';
-    this.atribute = [];
   }
 
   public confirmDeleteAutoname(event: boolean): void {

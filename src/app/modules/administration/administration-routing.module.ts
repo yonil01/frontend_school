@@ -7,6 +7,9 @@ const routes: Routes = [
   {path: 'message',loadChildren: () => import('@app/modules/administration/modules/messages/messages.module').then(m => m.MessagesModule )},
   {path: 'password-not-allowed',loadChildren: () => import('@app/modules/administration/modules/passwords-not-allowed/passwords-not-allowed.module').then(m => m.PasswordsNotAllowedModule )},
   {path: 'datasets',loadChildren: () => import('@app/modules/administration/modules/datasets/datasets.module').then(m => m.DatasetsModule )},
+  {path: 'calendar',loadChildren: () => import('@app/modules/administration/modules/calendar/calendar.module').then(m => m.CalendarModule )},
+  {path: 'notification',loadChildren: () => import('@app/modules/administration/modules/notification/notification.module').then(m => m.NotificationModule )},
+  {path: 'timer',loadChildren: () => import('@app/modules/administration/modules/timer/timer.module').then(m => m.TimerModule )},
 ];
 
 @NgModule({

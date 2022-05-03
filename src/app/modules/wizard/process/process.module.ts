@@ -19,7 +19,7 @@ import {
 import {MatMenuModule} from "@angular/material/menu";
 import {ConfigComponent} from "@app/modules/wizard/process/process/components/config/config.component";
 import {TranslateModule} from "@ngx-translate/core";
-import {TaskFormComponent} from "@app/modules/wizard/process/process/components/task-form/task-form.component";
+import {QueueFormComponent} from "@app/modules/wizard/process/process/components/queue-form/queue-form.component";
 import {ActivitiesComponent} from "@app/modules/wizard/process/process/components/activities/activities.component";
 import {ButtonModule} from "primeng/button";
 import {TreeSelectModule} from "primeng/treeselect";
@@ -31,6 +31,7 @@ import {
 } from "@app/modules/wizard/process/process/components/activity-form/activity-form.component";
 import {CardModule} from "primeng/card";
 import {PipesModule} from "@app/core/pipes/pipes.module";
+import { TaskFormComponent } from './process/components/task-form/task-form.component';
 
 
 @NgModule({
@@ -40,9 +41,10 @@ import {PipesModule} from "@app/core/pipes/pipes.module";
     ProcessCreateComponent,
     ProcessShowComponent,
     ConfigComponent,
-    TaskFormComponent,
+    QueueFormComponent,
     ActivitiesComponent,
-    ActivityFormComponent
+    ActivityFormComponent,
+    TaskFormComponent
   ],
   imports: [
     CommonModule,

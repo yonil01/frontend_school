@@ -6,6 +6,7 @@ export interface Activity {
   parameters?: ParamActivity[];
   dictionaries?: Dictionary[];
   status?: number;
+  type_param?: number;
   created_at?: Date;
   updated_at?: Date;
 }
@@ -16,6 +17,7 @@ export interface ParamActivity {
   type?: string;
   list?: string;
   label?: string;
+  type_param?: number;
 }
 
 export interface Dictionary {

@@ -22,6 +22,7 @@ import CustomRulesModules from '../../rules';
 
 // @ts-ignore
 import * as BpmnJSViewer from 'bpmn-js/dist/bpmn-viewer.production.min.js';
+
 // @ts-ignore
 import * as BpmnJSModeler from 'bpmn-js/dist/bpmn-modeler.production.min.js';
 import {controlBpm, controlElement, controlSide, controlTask} from "@app/core/store/actions/bpm.action";
@@ -707,6 +708,8 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       const newBpmVersion: Process = this.bpm;
       newBpmVersion.process_root = this.bpm.process_root;
       newBpmVersion.version = this.versions.length + 1;
+      newBpmVersion.document_id_bpmn = this.bpm.document_id_bpmn?.toString();
+      newBpmVersion.document_id_svg = this.bpm.document_id_svg?.toString();
       delete newBpmVersion.id;
       this.isBlockedPage = true;
       this._subscription.add(
@@ -781,6 +784,7 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       delete bpmPersistense.project;
       delete bpmPersistense.created_at;
       delete bpmPersistense.updated_at;
+      delete bpmPersistense.sla;
       bpmPersistense.document_id_svg = this.bpm.document_id_svg?.toString();
       bpmPersistense.document_id_bpmn = this.bpm.document_id_bpmn?.toString();
       const idAns = bpmPersistense.document_id_ans ? parseInt(bpmPersistense.document_id_ans, 10) + 1 : 1;
@@ -885,17 +889,24 @@ export class ProcessShowComponent implements OnInit, AfterContentInit, OnDestroy
       xmlFile = await this.exportXMLB64();
       svgFile = await this.exportSVGB64();
     } catch (err) {
-      return [0, 0];
+      return [this.bpm.document_id_svg, this.bpm.document_id_bpmn];
     }
-    const documentIdSVG = await this.saveDocument(svgFile);
-    const documentIdBPMN = await this.saveDocument(xmlFile);
-    if (!documentIdBPMN || !documentIdSVG) {
-      this.messageService.add({type: 'error', life: 5000, message: 'Error al guardar los documentos'});
-      return [0, 0];
+    try {
+      const documentIdSVG = await this.saveDocument(svgFile);
+      const documentIdBPMN = await this.saveDocument(xmlFile);
+      if (!documentIdBPMN || !documentIdSVG) {
+        this.messageService.add({type: 'error', life: 5000, message: 'Error al guardar los documentos'});
+        return [this.bpm.document_id_svg, this.bpm.document_id_bpmn];
+      }
+
+      this.isBlockedPage = false;
+      this.messageService.add({type: 'success', life: 5000, message: 'Documentos guardados correctamente'});
+      return [documentIdSVG, documentIdBPMN];
+
+    } catch (err) {
+      return [this.bpm.document_id_svg, this.bpm.document_id_bpmn];
     }
-    this.isBlockedPage = false;
-    this.messageService.add({type: 'success', life: 5000, message: 'Documentos guardados correctamente'});
-    return [documentIdSVG, documentIdBPMN];
+
   }
 
   private exportSVGB64(): Promise<string> {

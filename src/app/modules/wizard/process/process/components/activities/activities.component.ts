@@ -1,4 +1,5 @@
-import {Component, Input, OnInit, OnChanges, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, Output, EventEmitter, OnDestroy} from '@angular/core'
+import Split from 'split.js'
 // Store
 import {Store} from '@ngrx/store';
 import {AppState} from '@app/core/store/app.reducers';
@@ -124,6 +125,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   public readonly toastStyle: ToastStyleModel = toastDataStyle;
 
   public isBlockPage: boolean = false;
+  private splitInstance: any;
 
   constructor(
     private store: Store<AppState>,
@@ -141,6 +143,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this._subscription.unsubscribe();
+    this.splitInstance.destroy();
   }
 
   ngOnInit(): void {
@@ -150,6 +153,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.getData();
     this.getDataActivityForm();
+    this.initSplit();
   }
 
   ngOnChanges(): void {
@@ -443,7 +447,9 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     this.showForm = false;
     this.activities = this.allActivities.filter((a: Activity) => a.itemtype_id === itemType);
     this.isCreate = false;
-    setTimeout(() => (this.showForm = true), 200);
+    setTimeout(() => {
+      this.showForm = true;
+    }, 200);
   }
 
   private deleteActivity(): void {
@@ -593,8 +599,10 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     // @ts-ignore
     delete executionActivity.params;
     this.isBlockPage = true;
+    const data: any = executionActivity;
+    delete data.rule_params;
     this._subscription.add(
-      this.processService.createExecutionRule(executionActivity).subscribe({
+      this.processService.createExecutionRule(data).subscribe({
         next: (res) => {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
@@ -732,4 +740,12 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
+
+  public initSplit(): void {
+    this.splitInstance = Split(['.one', '.two'], {
+      sizes: [50, 50],
+      minSize: [0, 0]
+    });
+  }
+
 }

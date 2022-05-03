@@ -1,4 +1,5 @@
 import {Attribute, DocTypes, Role} from "@app/core/models";
+import {Ans} from "@app/core/models/config/ans";
 
 export interface Process {
   id?: string;
@@ -25,9 +26,11 @@ export interface Process {
   processes_related?: string[];
   roles?: string[];
   queues?: Queue[];
+  sla?:Ans[];
   created_at?: Date;
   updated_at?: Date;
   deleted_at?: Date;
+
 }
 
 export interface Queue {
@@ -57,7 +60,7 @@ export interface Execution {
   queue_id: string;
   name: string;
   type: number;
-  timer: number | Timer;
+  timer: string | Timer;
   class: string;
   description: string;
   execution_roles: ExecutionRole[];
@@ -65,7 +68,9 @@ export interface Execution {
 }
 
 export class Timer {
+  id?:string;
   name?: string;
+  type?: string;
   frequency?: number;
   day_of_week?: string;
   day_of_month?: string;
@@ -74,15 +79,8 @@ export class Timer {
   enabled?: boolean;
   is_not_running?: boolean;
   last_execution?: Date;
-  constructor(
-    name: string,
-    freq: number,
-    dayWeek: string,
-    dayMonth: string,
-    beginAt: string,
-    endAt: string,
-    enable: boolean,
-  ) {
+  cron?: string;
+  constructor(name: string, freq: number, dayWeek: string, dayMonth: string, beginAt: string, endAt: string, enable: boolean) {
     this.name = name;
     this.frequency = freq;
     this.day_of_week = dayWeek;

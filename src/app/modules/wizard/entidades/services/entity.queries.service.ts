@@ -14,6 +14,7 @@ export class GetEntitiesByProjectQuery extends Query<Response> {
         data {
           id
           name
+          description
           is_unique
           project {
             id

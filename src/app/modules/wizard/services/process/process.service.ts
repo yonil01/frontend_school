@@ -14,6 +14,13 @@ import {
 import {Observable} from 'rxjs';
 import * as queries from '../process/process.queries.service';
 import {Rule, Param} from '@app/core/models';
+import {Ans, Reminder} from "@app/core/models/config/ans";
+import {
+  CreateAndReminder,
+  CreateAns, DeleteAnsQuery, DeleteReminderQuery, GetAnsById,
+  GetModuleAndReminder,
+  GetModuleAns, GetTimersQuery, UpdateAndReminder, UpdateAns,
+} from "../process/process.queries.service";
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +66,17 @@ export class ProcessService {
     private deleteExecutionRuleQuery: queries.DeleteExecutionRuleQuery,
     private deleteRuleParamsByRuleIDQuery: queries.DeleteRuleParamsByRuleIDQuery,
     private updateQueueCommentQuery: queries.UpdateQueueCommentQuery,
+
+    private newAns: CreateAns,
+    private getModuleAns: GetModuleAns,
+    private getModuleReminder: GetModuleAndReminder,
+    private newAndReminder: CreateAndReminder,
+    private updateModuleAndReminder: UpdateAndReminder,
+    private deleteModuleAns: DeleteAnsQuery,
+    private getAnsModuleById: GetAnsById,
+    private updateModuleAns: UpdateAns,
+    private daleteModuleReminder: DeleteReminderQuery,
+    private getTimersQuery: GetTimersQuery
   ) {
   }
 
@@ -76,44 +94,28 @@ export class ProcessService {
     );
   }
 
-  getProcessByProjectID(project_id: string): Observable<Response> {
-    return this.getProcessByProjectIDQuery.watch({project_id}).valueChanges.pipe(
-      first(),
-      map(({data}: any) => data.getProcessByProjectID),
-    );
+  public getProcessByProjectID(project_id: string): Observable<Response> {
+    return this.getProcessByProjectIDQuery.watch({project_id}).valueChanges.pipe(first(), map(({data}: any) => data.getProcessByProjectID));
   }
 
   public getProcessByID(id: string): Observable<Response> {
     return this.getProcessByIDQuery.watch({id}).valueChanges.pipe(first(), map(({data}: any) => data.getProcessByID));
   }
 
-  getLockInfo(id: string): Observable<Response> {
-    return this.getLockInfoQuery
-      .watch({
-        id,
-      })
-      .valueChanges.pipe(
-        first(),
-        map(({data}: any) => data.getProcessByID),
-      );
+  public getLockInfo(id: string): Observable<Response> {
+    return this.getLockInfoQuery.watch({id}).valueChanges.pipe(first(), map(({data}: any) => data.getProcessByID));
   }
 
-  createProcess(bpm: Process): Observable<Response> {
-    // const newBpm = JSON.parse(JSON.stringify(bpm));
-    // delete newBpm.id;
-    return this.createProcessQuery
-      .mutate({
-        request: {data: bpm},
-      })
-      .pipe(map(({data}: any) => data.createProcess));
+  public createProcess(bpm: Process): Observable<Response> {
+    return this.createProcessQuery.mutate({request: {data: bpm}}).pipe(map(({data}: any) => data.createProcess));
   }
 
-  updateProcess(bpm: Process): Observable<Response> {
-    return this.updateProcessQuery
-      .mutate({
-        request: {data: bpm},
-      })
-      .pipe(map(({data}: any) => data.updateProcess));
+  public updateProcess(bpm: Process): Observable<Response> {
+    return this.updateProcessQuery.mutate({request: {data: bpm}}).pipe(map(({data}: any) => data.updateProcess));
+  }
+
+  public getTimers(): Observable<Response> {
+    return this.getTimersQuery.watch({}).valueChanges.pipe(map(({data}: any) => data.getTimer));
   }
 
   lockProcess(id: string): Observable<Response> {
@@ -325,12 +327,8 @@ export class ProcessService {
       .pipe(map(({data}: any) => data.deleteExecutionRole));
   }
 
-  createExecutionRule(rule: Rule): Observable<Response> {
-    return this.createExecutionRuleQuery
-      .mutate({
-        request: {data: rule},
-      })
-      .pipe(map(({data}: any) => data.createExecutionRule));
+  public createExecutionRule(rule: Rule): Observable<Response> {
+    return this.createExecutionRuleQuery.mutate({request: {data: rule}}).pipe(map(({data}: any) => data.createExecutionRule));
   }
 
   updateExecutionRule(rule: Rule): Observable<Response> {
@@ -407,5 +405,68 @@ export class ProcessService {
       };
       xhr.send();
     });
+  }
+
+  createAns(Ans: Ans): Observable<Response> {
+    return this.newAns
+      .mutate({
+        rq: {data: Ans},
+      })
+      .pipe(map(({data}: any) => data.createAns));
+  }
+
+  updateAns(Ans: Ans): Observable<Response> {
+    return this.updateModuleAns
+      .mutate({
+        rq: {data: Ans},
+      })
+      .pipe(map(({data}: any) => data.updateAns));
+  }
+
+  getAns(): Observable<Response> {
+    return this.getModuleAns.watch().valueChanges.pipe(map(({data}: any) => data.getAns));
+  }
+  getReminders(): Observable<Response> {
+    return this.getModuleReminder.watch().valueChanges.pipe(map(({data}: any) => data.getModules));
+  }
+
+  createAndReminder(reminder: Reminder): Observable<Response> {
+    return this.newAndReminder
+      .mutate({
+        rq: {data: reminder},
+      })
+      .pipe(map(({data}: any) => data.createAnsReminder));
+  }
+
+  updateAndReminder(reminder: Reminder): Observable<Response> {
+    return this.updateModuleAndReminder
+      .mutate({
+        rq: {data: reminder},
+      })
+      .pipe(map(({data}: any) => data.updateAnsReminder));
+  }
+
+  deleteAns(id: string): Observable<Response> {
+    return this.deleteModuleAns
+      .mutate({
+        id: id,
+      })
+      .pipe(map(({data}: any) => data.deleteAns));
+  }
+
+  public getAndsByID(id: string): Observable<Response> {
+    return this.getAnsModuleById.watch({id}).valueChanges.pipe(first(), map(({data}: any) => data.getAnsByID));
+  }
+
+  deleteReminder(id: string): Observable<Response> {
+    return this.daleteModuleReminder
+      .mutate({
+        id: id,
+      })
+      .pipe(map(({data}: any) => {
+        console.log(data)
+        debugger
+        return data.deleteAnsReminder
+      }));
   }
 }

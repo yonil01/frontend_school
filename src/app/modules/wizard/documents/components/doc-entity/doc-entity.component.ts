@@ -37,9 +37,7 @@ export class DocEntityComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
-    console.log(this.dataDoctype);
     this.getEntities(this.dataDoctype);
-    console.log(this.dataDoctype);
   }
 
   ngOnDestroy(): void {
@@ -89,12 +87,16 @@ export class DocEntityComponent implements OnInit, OnDestroy {
   public selectTargetEntity(items: string[]): void {
     const doctypeEntidad: any[] = [];
     for (const id of items) {
+      let sequence = 1;
+      if (this.dataDoctype.doctypes_entities && this.dataDoctype.doctypes_entities.length) {
+        // @ts-ignore
+        sequence = this.dataDoctype.doctypes_entities[this.dataDoctype.doctypes_entities.length - 1].sequence + 1
+      }
       const doctypeEntities: DoctypeEntities = {
         id: uuidv4().toLowerCase(),
         doctypes_id: this.dataDoctype.id?.toLocaleLowerCase(),
         entities_id: id,
-        // @ts-ignore
-        sequence: this.dataDoctype.doctypes_entities[this.dataDoctype.doctypes_entities?.length - 1]?.sequence + 1
+        sequence
       };
       doctypeEntidad.push(doctypeEntities);
     }

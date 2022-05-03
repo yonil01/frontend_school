@@ -45,7 +45,8 @@
               <span class="text-black t-body-1">{{(docTypeGroup.name || '') | replace: '_': ' '}}</span>
             </div>
             <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
+              <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
+                      tooltip="Editar grupo documental" (click)="editDocTypeGroups(docTypeGroup)">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -53,7 +54,8 @@
                   </svg>
                 </div>
               </button>
-              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+              <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
+                      tooltip="Eliminar grupo documental" (click)="showAlertDeleteDtg = true; docTypeGroupSelected = docTypeGroup">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -61,7 +63,8 @@
                   </svg>
                 </div>
               </button>
-              <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10" (click)="selectedDocTypeGroup(docTypeGroup)">
+              <button class="w-full text-alert-success px-2 h-10 hover:bg-mono-10" ecTooltip
+                      tooltip="Ver grupo documental" (click)="selectedDocTypeGroup(docTypeGroup)">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -79,7 +82,7 @@
             <div class="p-2 w-32">{{'Opciones'}}</div>
           </div>
           <div class="table-body t-body-2 text-mono-70">
-            <div class="item w-full flex flex-row" *ngFor="let docTypeGroup of docTypeGroupsPagination; let position = index">
+            <div class="item border-b border-mono-10 w-full flex flex-row" *ngFor="let docTypeGroup of docTypeGroupsPagination; let position = index">
               <div class="flex items-center p-2 w-16">{{docTypeGroups.indexOf(docTypeGroup) + 1}}</div>
               <div
                 class="flex items-center p-2 flex-1 break-all capitalize">{{(docTypeGroup.name || '') | replace: '_': ' '}}</div>
@@ -250,20 +253,20 @@
         <div class="table-h hidden md:block w-full">
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
-            <div class="p-2 flex-1">Código</div>
+            <div class="p-2 w-24">Código</div>
             <div class="p-2 flex-1">Nombre</div>
             <div class="p-2 flex-1">Enlace (URL)</div>
-            <div class="p-2 flex-1">Formato</div>
+            <div class="p-2 w-24">Formato</div>
             <div class="p-2 w-32">Opciones</div>
           </div>
           <div class="table-body t-body-2 text-mono-70">
-            <div class="item w-full flex flex-row" *ngFor="let docType of docTypesDisplayPagination; let position = index">
+            <div class="item border-b border-mono-10 w-full flex flex-row" *ngFor="let docType of docTypesDisplayPagination; let position = index">
               <div class="flex items-center p-2 w-16">{{position + 1}}</div>
-              <div class="flex items-center p-2 flex-1 break-all">{{docType.docType.code}}</div>
+              <div class="flex items-center p-2 w-24 break-all">{{docType.docType.code}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{docType.docType.name}}</div>
               <div class="flex items-center p-2 flex-1 break-all"><span
                 class="underline  text-black t-body-1">{{docType.docType.url_path}}</span></div>
-              <div class="flex items-center p-2 flex-1 break-all">{{docType.docType.format}}</div>
+              <div class="flex items-center p-2 w-24 break-all">{{docType.docType.format}}</div>
               <div class="flex items-center p-2 w-32">
                 <div class="w-full flex flex-row">
                   <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
@@ -441,7 +444,7 @@
         </form>
         <div class="flex flex-row space-x-4 lg:w-2/3">
           <button class="flex-1 md:flex-none b-outline"
-                  (click)="view = 'docTypesList'; doctypeForm.reset()">{{'Cancelar'}}</button>
+                  (click)="view = 'docTypesList'; this.resetCustomDoctypeForm();">{{'Cancelar'}}</button>
           <button class="flex-1 md:flex-none b-solid" (click)="saveDoctype()">{{'Guardar'}}</button>
         </div>
       </div>

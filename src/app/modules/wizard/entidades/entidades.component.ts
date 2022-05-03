@@ -116,6 +116,7 @@ export class EntidadesComponent implements OnInit {
     switch ($event.id) {
       case 'create':
         this.showCreateEdit = false;
+        this.getEntitiesByProject();
         break;
       case 'list':
         this.showEntitiesList = false;
