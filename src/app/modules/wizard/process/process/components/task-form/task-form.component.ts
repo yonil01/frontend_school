@@ -85,6 +85,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     if (this.typeTask === 'USER') {
       this.steps.push({id: 2, name: 'ROLES', active: false});
       this.taskForm.get('type')?.setValue('User');
+      if (this.executionSelected) {
+        this.loadProcessProcessRoles(this.executionSelected)
+      }
     } else if (this.typeTask === 'SYSTEM') {
       this.taskForm.get('type')?.setValue('System');
     } else {
@@ -120,6 +123,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       };
       this.createExecutionRole(executionRole, roleID)
     } else {
+      debugger;
       const processRole = this.executionSelected.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === roleID.toLowerCase());
       if (processRole) {
         this.deleteExecutionRole(processRole)
@@ -157,13 +161,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       const searchFields: string[] = ('name' || 'type' || 'label').split(',');
       this.rolesDisplay = this._filterService.filter(this.rolesAvailable, searchFields, filterValue, 'contains');
     } else {
-      this.rolesDisplay = this.rolesAvailable;
+      this.rolesDisplay = this.rolesAvailable.map((r) => r);
     }
   }
 
   public backStep(): void {
-    this.positionStep--;
     this.steps[this.positionStep].active = false;
+    this.positionStep--;
   }
 
   public cancelCreateOrEdit(): void {
@@ -195,7 +199,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           this.rolesDisplay.push({role: r, active: false});
         }
       }
-      this.rolesAvailable = [...this.rolesDisplay];
+      this.rolesAvailable = this.rolesDisplay.map((r) => r);
     }
   }
 
@@ -213,7 +217,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
             if (execution.type === 3) {
               this.positionStep++;
               this.steps[this.positionStep].active = true;
-              this.loadProcessProcessRoles(execution);
+              // this.loadProcessProcessRoles(execution);
             }
             this.messageService.add({type: 'success', message: 'Ejecuión creada correctamente!', life: 5000});
           }
@@ -236,11 +240,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           if (res.error) {
             this.messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
+            execution.execution_roles = this.executionSelected.execution_roles
+            execution.rules = this.executionSelected.rules
             this.executionSelected = execution;
             if (execution.type === 3) {
               this.positionStep++;
               this.steps[this.positionStep].active = true;
-              this.loadProcessProcessRoles(execution);
             }
             this.messageService.add({type: 'success', message: 'Tarea actualizada con exito!', life: 5000});
             this.saveTaskEvent.emit(execution);
@@ -273,7 +278,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
               const indexRoleDisplay = this.rolesDisplay.findIndex((r) => r.role.id?.toLowerCase() === roleID.toLowerCase());
               if (indexRoleDisplay !== -1) {
                 this.rolesDisplay[indexRoleDisplay].active = true;
-                this.rolesAvailable = this.rolesAvailable = this.rolesDisplay.map(role => role);
+                this.rolesAvailable = this.rolesDisplay.map(role => role);
+                this.executionSelected.execution_roles.push({
+                  id: res.data.id,
+                  role: {
+                    id: roleID,
+                    name: this.rolesDisplay[indexRoleDisplay].role.name,
+                  }
+                });
               }
               this.saveRoleEvent.emit(executionRole);
             }
@@ -299,6 +311,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           } else {
             this.executionSelected.execution_roles = this.executionSelected.execution_roles?.filter((r) => r.id?.toLowerCase() !== processRole.id?.toLowerCase());
             this.messageService.add({type: 'success', message: 'Rol Desasignado correctamente!', life: 5000});
+            const indexRoleDisplay = this.rolesDisplay.findIndex((r) => r.role.id?.toLowerCase() === processRole.role?.id?.toLowerCase());
+            if (indexRoleDisplay !== -1) {
+              this.rolesDisplay[indexRoleDisplay].active = false;
+              this.rolesAvailable = this.rolesDisplay.map(role => role);
+            }
             this.deleteRoleEvent.emit(this.executionSelected);
           }
           this.blockPage = false;
