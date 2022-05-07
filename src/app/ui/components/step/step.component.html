@@ -35,7 +35,7 @@
     <ng-container *ngFor="let data of StyleStep.dataSourceStep; index as i " >
       <div *ngIf="data.focus" class="flex space-x-4 items-center lg:hidden">
         <circle-progress
-          [percent]="25"
+          [percent]="((i+1)*100)/StyleStep.dataSourceStep.length"
           [radius]="30"
           [outerStrokeWidth]="6"
           [innerStrokeWidth]="5"
@@ -48,7 +48,7 @@
           [showInnerStroke]="true"
           [showSubtitle]="false"
           [showUnits]="false"
-          title="1/4"
+          title="{{(i+1) + '/' + StyleStep.dataSourceStep.length}}"
           [titleColor]="'##00263E'"
         ></circle-progress>
         <div class="w-full">

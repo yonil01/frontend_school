@@ -11,6 +11,7 @@
   "NAMES": "Names",
   "LASTNAMES": "Last Names",
   "USER": "User",
+  "USERS": "Users",
   "CONFIRM_PASSWORD": "Confirm Password",
   "BASIC INFORMATION": "Basic information",
   "WORK FLOW": "Work Flow",
@@ -104,4 +105,5 @@
   "ICON": "Icon",
   "TIMERS": "Timers",
   "GENERAL_INFORMATION": "General Information"
+
 }

@@ -11,7 +11,7 @@ export const styleTableUser: TableModel = {
       label: 'Apellido y Nombre',
     },
     {
-      label: 'Correo',
+      label: 'EMAIL',
     },
     {
       label: 'Estado',

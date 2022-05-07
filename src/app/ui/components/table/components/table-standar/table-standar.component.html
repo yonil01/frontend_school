@@ -8,7 +8,7 @@
       <ng-container *ngFor="let column of columns; index as i">
         <th scope="col" class="text-brand-2 t-caption-1 px-3 lg:px-6 py-2 lg:py-4 text-left "
             [ngClass]="(i+1) === columns.length ? 'text-sm font-medium text-brand-2 px-3 lg:px-6 py-2 lg:py-4 text-center text-brand-2 w-4' : ''">
-          {{ column.label }}
+          {{ column.label | translate }}
         </th>
       </ng-container>
 
