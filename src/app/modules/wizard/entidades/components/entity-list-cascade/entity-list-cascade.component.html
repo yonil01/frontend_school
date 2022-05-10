@@ -29,7 +29,7 @@
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
           <span routerLink="/workflow" class="t-body-2 cursor-pointer">
-          Entidades
+          {{'ENTITIS'|translate}}
           </span>
         </div>
         <div class="miga flex flex-row items-center space-x-2">
@@ -52,37 +52,37 @@
               <div class="flex flex-row space-x-2">
                 <div class="bg-brand-2 rounded-sm w-2"></div>
                 <div class="w-full text-mono-70 py-1">
-                  <span>Accede a subventanas con el navegador por pestañas.</span>
+                  <span>{{'ACCESS THE SUB WINDOWS WITH THE TABBED BROWSER.'|translate}}</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="space-y-2">
             <div class="flex flex-row p-2 w-full lg:w-1/3 rounded bg-mono-10 space-x-2">
-              <button (click)="onChangeOption('atribute')" class="b-ghost w-full h-8">Atributos</button>
-              <button (click)="onChangeOption('autofills')" class="b-ghost w-full h-8">Autofills</button>
-              <button class="b-solid w-full h-8">Cascadings</button>
+              <button (click)="onChangeOption('atribute')" class="b-ghost w-full h-8">{{'ATTRIBUTES'|translate}}</button>
+              <button (click)="onChangeOption('autofills')" class="b-ghost w-full h-8">{{'AUTOFILLS'|translate}}</button>
+              <button class="b-solid w-full h-8">{{'CASCADINGS'|translate}}</button>
             </div>
             <div>
               <ul class="t-body-1 pl-4">
-                <li class="list-disc text-mono-70">{{cascadingDatasets.length}} Cascadings registradas actualmente.</li>
+                <li class="list-disc text-mono-70">{{cascadingDatasets.length}} {{'CASCADINGS CURRENTLY REGISTERED.'|translate}}</li>
               </ul>
             </div>
           </div>
           <div>
-            <button (click)="onCreateEditCascade()" class="b-outline w-full">Crear Nuevo Cascading</button>
+            <button (click)="onCreateEditCascade()" class="b-outline w-full">{{'CREATE NEW CASCADING'|translate}}</button>
           </div>
         </div>
         <div class="data space-y-4">
-          <div><input class="w-full h-10 px-2 rounded t-body-2 bg-mono-10 text-black" type="text" placeholder="Buscar">
+          <div><input class="w-full h-10 px-2 rounded t-body-2 bg-mono-10 text-black" type="text" placeholder="{{'SEARCH'|translate}}">
           </div>
           <div class="table-h md:block w-full">
             <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
               <div class="p-2 w-16">N°</div>
-              <div class="p-2 flex-1">Nombre</div>
-              <div class="p-2 flex-1">Descripción</div>
-              <div class="p-2 flex-1">Proceso</div>
-              <div class="p-2 w-32">Opciones</div>
+              <div class="p-2 flex-1">{{'NAME'|translate}}</div>
+              <div class="p-2 flex-1">{{'DESCRIPTION'|translate}}</div>
+              <div class="p-2 flex-1">{{'PROCESS'|translate}}</div>
+              <div class="p-2 w-32">{{'OPTIONS'}}</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
               <div *ngFor="let cascade of cascadingDatasetsTable, let i = index" class="item w-full flex flex-row">
@@ -116,7 +116,7 @@
                       </button>
                       <div *ngIf="cascade.showConfig"
                            class="absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 top-10 right-0">
-                        <button (click)="onAddAtributes(cascade)" class="b-ghost">Atributos</button>
+                        <button (click)="onAddAtributes(cascade)" class="b-ghost">{{'ATTRIBUTES'|translate}}</button>
                       </div>
                     </div>
                     <button (click)="sureDelete(cascade)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
@@ -165,7 +165,7 @@
     </div>
     <div class="t-h5 ml-4 text-black">
       <span>
-        Cargando...
+        {{'LOADING'|translate}}...
       </span>
     </div>
   </div>
@@ -193,16 +193,16 @@
       </div>
       <!-- Modal body -->
       <div class="p-6 pt-0 text-center">
-        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Está seguro de eliminar el registro
-          <b>"{{selectedCascading.name}}"</b>? Esta acción puede afectar el modelo de datos.</h3>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{'ARE YOU SERE TO REMOVE THE RECORD?'|translate}}
+          <b>"{{selectedCascading.name}}"</b> {{'THIS ACTION MAY AFFECT THE DATA MODEL.'|translate}}</h3>
         <div class="flex justify-around">
           <button (click)="deleteCascade()" data-modal-toggle="popup-modal" type="button"
                   class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-            Si, estoy seguro.
+            {{'YES, I AM SURE.'|translate}}
           </button>
           <button (click)="cancelDelete()" data-modal-toggle="popup-modal" type="button"
                   class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">
-            No, cancelar
+            {{'NO, CANCEL'|translate}}
           </button>
         </div>
       </div>

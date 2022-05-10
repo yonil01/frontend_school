@@ -4,21 +4,21 @@
       <div class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full">
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Nombre de Usuario</label>
+            <label class="text-mono-70">{{'USER NAME'|translate}}</label>
             <input formControlName="username"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-mono-10 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
           </div>
           <div *ngIf="formBasicInfo.get('username')?.dirty && (formBasicInfo.get('username')?.errors || formBasicInfo.get('username')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('username')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('username')?.hasError('minlength')">La longitud minima excedida(4)</span>
-            <span *ngIf="formBasicInfo.get('username')?.hasError('required')">El descripción es requerido</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('minlength')">{{'MINIMUM LENGTH EXCEEDED(4)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
           </div>
         </div>
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Correo Electronico</label>
+            <label class="text-mono-70">{{'EMAIL'|translate}}</label>
             <input formControlName="email_notifications" type="email_notifications" id="email_notifications"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
@@ -26,25 +26,25 @@
           <div
             *ngIf="formBasicInfo.get('email_notifications')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('email_notifications')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('email_notifications')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
             <span
-              *ngIf="formBasicInfo.get('email_notifications')?.hasError('required')">El descripción es requerido</span>
+              *ngIf="formBasicInfo.get('email_notifications')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
             <span
-              *ngIf="formBasicInfo.get('email_notifications')?.hasError('pattern')">El campo debe tener @</span>
+              *ngIf="formBasicInfo.get('email_notifications')?.hasError('pattern')">{{'THE FIELD MUST HAVE @'|translate}}</span>
 
           </div>
         </div>
       </div>
       <div class="md:flex space-y-1 md:-space-y-0 md:space-x-4 w-full">
         <div class="w-full ">
-          <label class="text-mono-70">Tipo de Identificación</label>
+          <label class="text-mono-70">{{'TYPE OF IDENTIFICATION'|translate}}</label>
           <select formControlName="identification_type" class="ec-input w-full">
             <option *ngFor="let identify of dataDropIdentification" [value]="identify.value">{{identify.label}}</option>
           </select>
         </div>
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Número de Identificación</label>
+            <label class="text-mono-70">{{'NUMBER OF IDENTIFICATION'|translate}}</label>
             <input formControlName="identification_number" type="number" id="identification_number"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
@@ -52,17 +52,17 @@
           <div
             *ngIf="formBasicInfo.get('identification_number')?.dirty && (formBasicInfo.get('identification_number')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('minlength')">{{'MINIMUM LENGTH EXCEEDED(4)'|translate}}</span>
             <span
-              *ngIf="formBasicInfo.get('identification_number')?.hasError('required')">El descripción es requerido</span>
+              *ngIf="formBasicInfo.get('identification_number')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
           </div>
         </div>
       </div>
       <div class="md:flex space-y-1 md:-space-y-0 md:space-x-4 w-full">
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Nombre</label>
+            <label class="text-mono-70">{{'NAME'|translate}}</label>
             <input formControlName="name" type="name" id="name"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
@@ -70,14 +70,14 @@
           <div
             *ngIf="formBasicInfo.get('name')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('name')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('name')?.hasError('minlength')">La longitud minima excedida(4)</span>
-            <span *ngIf="formBasicInfo.get('name')?.hasError('required')">El descripción es requerido</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('minlength')">{{'MINIMUM LENGTH EXCEEDED(4)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
           </div>
         </div>
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Apellido</label>
+            <label class="text-mono-70">{{'LAST NAME'|translate}}</label>
             <input formControlName="last_name" type="last_name" id="last_name"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
@@ -85,9 +85,9 @@
           <div
             *ngIf="formBasicInfo.get('last_name')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('last_name')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('last_name')?.hasError('minlength')">La longitud minima excedida(4)</span>
-            <span *ngIf="formBasicInfo.get('last_name')?.hasError('required')">El descripción es requerido</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('minlength')">{{'MINIMUM LENGTH EXCEEDED(4)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
           </div>
         </div>
       </div>
@@ -97,11 +97,11 @@
       <div *ngIf="!returnExistUser()" class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full ">
         <div class="space-y-1 w-full">
 
-          <label class="text-mono-70">Constraseña</label>
+          <label class="text-mono-70">{{'PASSWORD'|translate}}</label>
           <div class="relative flex w-full flex-wrap items-stretch mb-3">
 
             <input formControlName="password" type="{{showPassword?'text':'password'}}" class="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-mono-10 rounded text-sm border border-mono-10 outline-none focus:outline-none focus:ring w-full pr-10"/>
-            <span class="z-10 h-full leading-snug font-normal absolute text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+            <span class="z-10 h-full leading-snug font-normal text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
     <span *ngIf="!showPassword" appIcon iconColor="text-alert-info" iconName="eye hide" (click)="showPassword=!showPassword"></span>
               <span *ngIf="showPassword" appIcon iconColor="text-alert-info" iconName="eye show" (click)="showPassword=!showPassword"></span>
   </span>
@@ -116,11 +116,11 @@
         </div>
         <div class="space-y-1 w-full">
 
-          <label class="text-mono-70">Confirmar Contraseña</label>
+          <label class="text-mono-70">{{'CONFIRM_PASSWORD'|translate}}</label>
           <div class="relative flex w-full flex-wrap items-stretch mb-3">
 
             <input formControlName="password_confirm" type="{{showPasswordConfirm?'text':'password'}}" class="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-mono-10 rounded text-sm border border-mono-10 outline-none focus:outline-none focus:ring w-full pr-10"/>
-            <span class="z-10 h-full leading-snug font-normal absolute text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+            <span class="z-10 h-full leading-snug font-normal text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
     <span *ngIf="!showPasswordConfirm" appIcon iconColor="text-alert-info" iconName="eye hide" (click)="showPasswordConfirm=!showPasswordConfirm"></span>
               <span *ngIf="showPasswordConfirm" appIcon iconColor="text-alert-info" iconName="eye show" (click)="showPasswordConfirm=!showPasswordConfirm"></span>
   </span>
@@ -141,12 +141,12 @@
       </div>
     </div>
     <div class="flex w-full space-x-4 md:w-1/2">
-      <app-button type="button" label="Guardar"
+      <app-button type="button" label="{{'SAVE'|translate}}"
                   brColor="border-brand-1"
                   bgColor="bg-transparent"
                   txtColor="text-brand-1" class="h-12 w-full" (click)="saveForm();typeExecution=0"></app-button>
       <app-button [disabled]="formBasicInfo.invalid"
-                  type="button" label="Siguiente"
+                  type="button" label="{{'NEXT'|translate}}"
                   brColor="border-brand-1"
                   bgColor="bg-brand-1"
                   txtColor="text-white" class="h-12 w-full" (click)="nextStep();typeExecution=1"></app-button>
@@ -166,7 +166,7 @@
 </svg>
 </span>
         <span class="text-mono-70">
-                  Si quieres cancelar presiona la ‘X’ de la parte superior izquierda.
+                  {{'If you want to cancel press the \'X\' in the upper left corner.'|translate}}
                 </span>
       </div>
       <div class="flex space-x-2">
@@ -177,7 +177,7 @@
 </svg>
 </span>
         <span class="text-mono-70">
-                  El botón ‘Guardar’ realiza el registro hasta este punto y te dirige a la pantalla anterior.
+                  {{'The "Save" button executes the record up to that point and returns you to the previous screen.'|translate}}
                 </span>
       </div>
       <div class="flex space-x-2">
@@ -190,7 +190,7 @@
           </svg>
       </span>
         <span class="text-mono-70">
-                  El botón ‘Siguiente’ también realiza el registro, pero te dirige a la asignación de roles y entidades de seguridad, esos pasos son opcionales.
+                 {{'The "Next" button also performs the registration, but directs you to the role and manager assignment, those steps are optional.'|translate}}
                 </span>
       </div>
     </div>

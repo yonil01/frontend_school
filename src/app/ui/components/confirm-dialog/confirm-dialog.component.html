@@ -29,12 +29,12 @@
       <div class="actions flex justify-end w-full gap-2">
         <div>
           <button class="b-outline" (click)="action.emit(false)">
-            <span>Cancelar</span>
+            <span>{{'CANCEL'|translate}}</span>
           </button>
         </div>
         <div>
           <button class="b-solid" (click)="action.emit(true)">
-            <span>Aceptar</span>
+            <span>{{'ACEPT'|translate}}</span>
           </button>
         </div>
       </div>

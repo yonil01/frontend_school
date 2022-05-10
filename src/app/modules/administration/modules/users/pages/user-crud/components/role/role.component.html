@@ -39,12 +39,12 @@
     </div>
   </div>
   <div class="flex space-x-4 w-1/4">
-    <app-button type="button" label="Anterior"
+    <app-button type="button" label="{{'PREVIOUS'|translate}}{{'PREVIOUS'|translate}}"
                 brColor="border-brand-1"
                 bgColor="bg-transparent"
                 txtColor="text-brand-1" class="h-12 w-full" (click)="backStep(1)"></app-button>
     <app-button [disabled]="usersRoles.length === 0"
-                type="button" label="Siguiente"
+                type="button" label="{{'NEXT'|translate}}"
                 brColor="border-brand-1"
                 bgColor="bg-brand-1"
                 txtColor="text-white" class="h-12 w-full" (click)="nextStep(1)"></app-button>

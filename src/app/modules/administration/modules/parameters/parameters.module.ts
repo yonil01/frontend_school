@@ -11,20 +11,22 @@ import {HttpClientModule} from "@angular/common/http";
 import {UiModule} from "@app/ui/ui.module";
 import {ToastModule} from "ecapture-ng-ui";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 
 @NgModule({
   declarations: [ParametersComponent, ParameterListComponent, ParameterCrudComponent],
-    imports: [
-        CommonModule,
-        ParametersRoutingModule,
-        HttpClientModule,
-        UiModule,
-        ToastModule,
-        ReactiveFormsModule,
-        FormsModule
-    ],
+  imports: [
+    CommonModule,
+    ParametersRoutingModule,
+    HttpClientModule,
+    UiModule,
+    ToastModule,
+    ReactiveFormsModule,
+    FormsModule,
+    TranslateModule
+  ],
   providers:[
     ParametersService
   ]

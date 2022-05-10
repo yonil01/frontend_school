@@ -25,15 +25,15 @@
         </div>
       </div>
       <div class="description mb-6 flex flex-col space-y-2">
-        <span class="t-h5 text-black dark:text-white">Grupo Documental</span>
-        <Span class="t-body-2 text-mono-70 dark:text-mono-30">Acceda a la lista de tipos documentales de un grupo documental con el botón verde a la derecha.</Span>
+        <span class="t-h5 text-black dark:text-white">{{'DOCUMENTARY GROUP'|translate}}</span>
+        <Span class="t-body-2 text-mono-70 dark:text-mono-30">{{'ACCESS THE LIST OF DOCUMENT TYPES OF A DOCUMENT GROUP WITH GREEN BUTTON ON THE RIGHT.'|translate}}.</Span>
       </div>
       <div class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
         <div>
-          <button class="b-solid w-full md:w-auto" (click)="view = 'docTypesGroupCreate'">Crear Grupo Documental
+          <button class="b-solid w-full md:w-auto" (click)="view = 'docTypesGroupCreate'">{{'CREATE DOCUMENTARY GROUP'|translate}}
           </button>
         </div>
-        <div *ngIf="false"><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"></div>
+        <div *ngIf="false"><input class="ec-input w-full md:w-48" type="text" placeholder="{{'SEARCH'|translate}}"></div>
       </div>
       <div class="data space-y-4 mt-4">
         <div class="table-v md:hidden flex flex-col space-y-4">
@@ -41,7 +41,7 @@
                *ngFor="let docTypeGroup of docTypeGroupsPagination; let position = index">
             <span class="text-mono-70 t-caption-1">N° {{docTypeGroups.indexOf(docTypeGroup) + 1}}</span>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">{{'Grupo Documental'}}</span>
+              <span class="text-mono-70 t-caption-2">{{'DOCUMENTARY GROUP'|translate}}</span>
               <span class="text-black t-body-1">{{(docTypeGroup.name || '') | replace: '_': ' '}}</span>
             </div>
             <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
@@ -78,8 +78,8 @@
         <div class="table-h hidden md:block w-full">
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
-            <div class="p-2 flex-1">{{'Grupo Documental'}}</div>
-            <div class="p-2 w-32">{{'Opciones'}}</div>
+            <div class="p-2 flex-1">{{'DOCUMENTARY GROUP'|translate}}</div>
+            <div class="p-2 w-32">{{'OPTIONS'|translate}}</div>
           </div>
           <div class="table-body t-body-2 text-mono-70">
             <div class="item border-b border-mono-10 w-full flex flex-row" *ngFor="let docTypeGroup of docTypeGroupsPagination; let position = index">
@@ -89,7 +89,7 @@
               <div class="flex items-center p-2 w-32">
                 <div class="w-full flex flex-row">
                   <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
-                          tooltip="Editar grupo documental" (click)="editDocTypeGroups(docTypeGroup)">
+                          tooltip="{{'EDIT DOCUMENTARY GROUP'|translate}}" (click)="editDocTypeGroups(docTypeGroup)">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -98,7 +98,7 @@
                     </div>
                   </button>
                   <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
-                          tooltip="Eliminar grupo documental" (click)="showAlertDeleteDtg = true; docTypeGroupSelected = docTypeGroup">
+                          tooltip="{{'DELETE DOCUMENTARY GROUP'|translate}}" (click)="showAlertDeleteDtg = true; docTypeGroupSelected = docTypeGroup">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -107,7 +107,7 @@
                     </div>
                   </button>
                   <button class="w-10 text-alert-success px-2 h-10 hover:bg-mono-10" ecTooltip
-                          tooltip="Ver grupo documental" (click)="selectedDocTypeGroup(docTypeGroup)">
+                          tooltip="{{'VIEW DOCUMENTARY GROUP'|translate}}" (click)="selectedDocTypeGroup(docTypeGroup)">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -133,19 +133,19 @@
     <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
       <form [formGroup]="docTypeGroupForm" class="flex flex-col space-y-12">
         <span class="t-h5 text-black dark:text-white">{{view === 'docTypesGroupEdit' ? 'Editar' : 'Crear' }}
-          Grupo Documental</span>
+          {{'DOCUMENTARY GROUP'|translate}}</span>
         <div class="flex flex-col space-y-1 lg:w-1/2">
-          <label class="t-caption-2 text-mono-70 dark:text-mono-30">{{'Nombre'}}</label>
+          <label class="t-caption-2 text-mono-70 dark:text-mono-30">{{'NAME'|translate}}</label>
           <input type="text" class="ec-input" formControlName="name">
           <small class="text-alert-error"
                  *ngIf="docTypeGroupForm.get('name')?.touched && docTypeGroupForm.get('name')?.invalid">
-            El campo es requerido
+            {{'FIELD IS REQUIRED'|translate}}
           </small>
         </div>
         <div class="flex flex-row space-x-4">
           <button class="flex-1 md:flex-none b-outline"
-                  (click)="view = 'docTypesGroup'; docTypeGroupForm.reset()">{{'Cancelar'}}</button>
-          <button class="flex-1 md:flex-none b-solid" (click)="saveDocTypeGroups()">{{'Guardar'}}</button>
+                  (click)="view = 'docTypesGroup'; docTypeGroupForm.reset()">{{'CANCEL'|translate}}</button>
+          <button class="flex-1 md:flex-none b-solid" (click)="saveDocTypeGroups()">{{'SAVE'|translate}}</button>
         </div>
       </form>
     </div>
@@ -177,19 +177,19 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span (click)="view = 'docTypesGroup'" class="t-body-2 cursor-pointer">Grupos Documentales</span>
+          <span (click)="view = 'docTypesGroup'" class="t-body-2 cursor-pointer">{{'DOCUMENTARY GROUP'|translate}}</span>
         </div>
       </div>
       <div class="description mb-6 flex flex-col space-y-2">
         <span
           class="t-h5 text-black dark:text-white capitalize">{{(docTypeGroupSelected.name || '') | replace: '_': ' '}}</span>
-        <Span class="t-body-2 text-mono-70 dark:text-mono-30">Cree un tipo documental para este grupo documental con el siguiente botón.</Span>
+        <Span class="t-body-2 text-mono-70 dark:text-mono-30">{{'CREATE A DOCUMENT TYPE FOR THIS DOCUMENT GROUP WITH THE FOLLOWING BUTTON.'|translate}}</Span>
       </div>
       <div class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
         <div>
-          <button class="b-outline w-full md:w-auto" (click)="showAddDocType()">Crear Tipo Documental</button>
+          <button class="b-outline w-full md:w-auto" (click)="showAddDocType()">{{'CREATE DOCUMENTARY GROUP'|translate}}</button>
         </div>
-        <div *ngIf="false"><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar"></div>
+        <div *ngIf="false"><input class="ec-input w-full md:w-48" type="text" placeholder="{{'SEARCH'|translate}}"></div>
       </div>
       <div class="data space-y-4 mt-4">
         <div class="table-v md:hidden flex flex-col space-y-4">
@@ -197,24 +197,24 @@
                *ngFor="let docType of docTypesDisplayPagination; let position = index">
             <span class="text-mono-70 t-caption-1">N° {{position + 1}}</span>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Código</span>
+              <span class="text-mono-70 t-caption-2">{{'CODE'|translate}}</span>
               <span class="text-black t-body-1">{{docType.docType.code}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Nombre</span>
+              <span class="text-mono-70 t-caption-2">{{'NAME'|translate}}</span>
               <span class="text-black t-body-1">{{docType.docType.name}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Enlace (URL)</span>
+              <span class="text-mono-70 t-caption-2">{{'LINK'|translate}} (URL)</span>
               <a href="www.ecapture.com.co" class="underline  text-black t-body-1">{{docType.docType.url_path}}</a>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Formato</span>
+              <span class="text-mono-70 t-caption-2">{{'FORMAT'|translate}}</span>
               <span class="text-black t-body-1">{{docType.docType.format}}</span>
             </div>
             <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
               <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
-                      tooltip="Editar tipo documental" (click)="editDocType(docType.docType)">
+                      tooltip="{{'EDIT DOCUMENTARY GROUP'|translate}}" (click)="editDocType(docType.docType)">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -238,7 +238,7 @@
                 </button>
               </div>
               <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
-                      tooltip="Eliminar el tipo documental"
+                      tooltip="{{'DELETE DOCUMENTARY GROUP'|translate}}"
                       (click)="showAlertDeleteTg = true; docTypeSelected = docType.docType">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -253,11 +253,11 @@
         <div class="table-h hidden md:block w-full">
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
-            <div class="p-2 w-24">Código</div>
-            <div class="p-2 flex-1">Nombre</div>
-            <div class="p-2 flex-1">Enlace (URL)</div>
-            <div class="p-2 w-24">Formato</div>
-            <div class="p-2 w-32">Opciones</div>
+            <div class="p-2 w-24">{{'CODE'|translate}}</div>
+            <div class="p-2 flex-1">{{'NAME'|translate}}</div>
+            <div class="p-2 flex-1">{{'LINK'|translate}} (URL)</div>
+            <div class="p-2 w-24">{{'FOTMAT'|translate}}</div>
+            <div class="p-2 w-32">{{'OPTIONS'|translate}}</div>
           </div>
           <div class="table-body t-body-2 text-mono-70">
             <div class="item border-b border-mono-10 w-full flex flex-row" *ngFor="let docType of docTypesDisplayPagination; let position = index">
@@ -270,7 +270,7 @@
               <div class="flex items-center p-2 w-32">
                 <div class="w-full flex flex-row">
                   <button class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10" ecTooltip
-                          tooltip="Editar tipo documental" (click)="editDocType(docType.docType)">
+                          tooltip="{{'EDIT DOCUMENTARY TYPE'|translate}}" (click)="editDocType(docType.docType)">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -281,7 +281,7 @@
                   </button>
                   <div class="relative w-10 h-10">
                     <button class="w-full group text-alert-warning px-2 h-10 hover:bg-mono-10" ecTooltip
-                            tooltip="Configurar el tipo documental">
+                            tooltip="{{'CONFIGURE DOCUMENTARY TYPE'|translate}}">
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -290,14 +290,14 @@
                         </svg>
                       </div>
                       <div class="hidden group-hover:block absolute shadow-lg z-50 border border-mono-30 bg-white rounded p-2 bottom-10 right-0 transform translate-1/2">
-                        <button class="b-ghost" (click)="selectTyeConfig('autoname', docType.docType)">Autoname</button>
-                        <button class="b-ghost" (click)="selectTyeConfig('entities', docType.docType)">Entidades</button>
-                        <button class="b-ghost text-left" style="line-height: 18px" (click)="redirectAnnexe(docType.docType, position)">Documentos Anexos</button>
+                        <button class="b-ghost" (click)="selectTyeConfig('autoname', docType.docType)">{{'AUTONAME'|translate}}</button>
+                        <button class="b-ghost" (click)="selectTyeConfig('entities', docType.docType)">{{'ENTITIS'|translate}}</button>
+                        <button class="b-ghost text-left" style="line-height: 18px" (click)="redirectAnnexe(docType.docType, position)">{{'DOC_ANNEXES'|translate}}</button>
                       </div>
                     </button>
                   </div>
                   <button class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10" ecTooltip
-                          tooltip="Eliminar el tipo documental"
+                          tooltip="{{'DELETE DOCUMENTARY TYPE'|translate}}"
                           (click)="showAlertDeleteTg = true; docTypeSelected = docType.docType">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -325,61 +325,61 @@
     <div class="ec-container py-6 md:py-12 bg-white dark:bg-black">
       <div class="flex flex-col lg:items-center space-y-12">
         <div class="flex flex-col space-y-2 w-full lg:w-2/3">
-          <span class="t-h5 text-black dark:text-white">{{view === 'doctypeEdit' ? 'Editar' : 'Crear'}} Tipo Documental</span>
+          <span class="t-h5 text-black dark:text-white">{{view === 'doctypeEdit' ? 'Editar' : 'Crear'}} {{'DOCUMENTARY TYPE'|translate}}</span>
           <div>
             <div class="flex flex-row space-x-2">
               <div class="bg-brand-2 rounded-sm w-2"></div>
               <div class="w-full text-mono-70 py-1">
-                <span>El campo "código" no se puede editar luego de crear el tipo documental.</span>
+                <span>{{'THE \"CODE\" FIELD CANNOT BE EDITED AFTER CREATING THE DOCUMENTARY TYPE.'|translate}}</span>
               </div>
             </div>
           </div>
         </div>
         <form class="grid grid-cols-2 gap-4 lg:w-2/3" [formGroup]="doctypeForm">
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Código</label>
+            <label class="t-caption-2 text-mono-70">{{'CODE'|translate}}</label>
             <input class="ec-input" type="number" formControlName="code">
             <small class="text-alert-error" *ngIf="doctypeForm.get('code')?.invalid && doctypeForm.get('code')?.touched && doctypeForm.get('code')?.hasError('required')">
               El codigo es requerido
             </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Nombre</label>
+            <label class="t-caption-2 text-mono-70">{{'NAME'|translate}}</label>
             <input class="ec-input" type="text" formControlName="name">
             <small class="text-alert-error" *ngIf="doctypeForm.get('name')?.invalid && doctypeForm.get('name')?.touched && doctypeForm.get('name')?.hasError('required')">
               El nombre es requerido
             </small>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Retención Electrónica</label>
+            <label class="t-caption-2 text-mono-70">{{'ELECTRONIC WITHHOLDING'|translate}}</label>
             <input class="ec-input" type="number" formControlName="retencion_electronic">
             <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_electronic')?.invalid && doctypeForm.get('retencion_electronic')?.touched && doctypeForm.get('retencion_electronic')?.hasError('required')">
               El tipo de retención electrónica es requerido
             </small>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Retención AG</label>
+            <label class="t-caption-2 text-mono-70">{{'RETENTION'|translate}} AG</label>
             <input class="ec-input" type="number" formControlName="retencion_ag">
             <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ag')?.invalid && doctypeForm.get('retencion_ag')?.touched && doctypeForm.get('retencion_ag')?.hasError('required')">
               El tipo de retención AG es requerido
             </small>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Retención AC</label>
+            <label class="t-caption-2 text-mono-70">{{'RETENTION'|translate}} AC</label>
             <input class="ec-input" type="number" formControlName="retencion_ac">
             <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ac')?.invalid && doctypeForm.get('retencion_ac')?.touched && doctypeForm.get('retencion_ac')?.hasError('required')">
               El tipo de retención AC es requerido
             </small>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Retención AH</label>
+            <label class="t-caption-2 text-mono-70">{{'RETENTION'|translate}} AH</label>
             <input class="ec-input" type="number" formControlName="retencion_ah">
             <small class="text-alert-error" *ngIf="doctypeForm.get('retencion_ah')?.invalid && doctypeForm.get('retencion_ah')?.touched && doctypeForm.get('retencion_ah')?.hasError('required')">
               El tipo de retención AH es requerido
             </small>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Formato</label>
+            <label class="t-caption-2 text-mono-70">{{'FORMAT'|translate}}</label>
             <ec-dropdown [filter]="true" placeholder="{{'Seleccione un formato'}}" formControlName="format"
                          [icon]="true" optionLabel="label" optionValue="value" [data]="format"
                          [dropStyle]="dropStyle"></ec-dropdown>
@@ -388,16 +388,16 @@
             </small>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Procedimiento</label>
+            <label class="t-caption-2 text-mono-70">{{'PROCEDURE'|translate}}</label>
             <input class="ec-input" type="text" formControlName="procedure">
           </div>
           <div class="input flex flex-col space-y-1 col-span-2">
-            <label class="t-caption-2 text-mono-70">Enlace (URL)</label>
+            <label class="t-caption-2 text-mono-70">{{'LINK'|translate}} (URL)</label>
             <input class="ec-input" type="text" formControlName="url_path">
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Icono</label>
-            <ec-dropdown class="font-icon-material" placeholder="SELECCIONE UN ÍCONO"
+            <label class="t-caption-2 text-mono-70">{{'CLASS'|translate}}</label>
+            <ec-dropdown class="font-icon-material" placeholder="{{'SELECT AN ICON'|translate}}"
                          formControlName="class" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="icons" [dropStyle]="dropStyle"></ec-dropdown>
             <small class="text-alert-error" *ngIf="doctypeForm.get('class')?.invalid && doctypeForm.get('class')?.touched && doctypeForm.get('class')?.hasError('required')">
@@ -405,8 +405,8 @@
             </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Tipo de Soporte</label>
-            <ec-dropdown [filter]="true" placeholder="{{'Seleccioner un Tipo de Soporte'}}"
+            <label class="t-caption-2 text-mono-70">{{'TYPE OF SUPPORT'|translate}}</label>
+            <ec-dropdown [filter]="true" placeholder="{{'SELECT A TYPE OF SUPPORT.'|translate}}"
                          formControlName="tipo_soporte" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="typeSupport" [dropStyle]="dropStyle"></ec-dropdown>
             <small class="text-alert-error" *ngIf="doctypeForm.get('tipo_soporte')?.invalid && doctypeForm.get('tipo_soporte')?.touched && doctypeForm.get('tipo_soporte')?.hasError('required')">
@@ -414,8 +414,8 @@
             </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Disposición Final</label>
-            <ec-dropdown [filter]="true" placeholder="{{'Seleccione una Disposición Final'}}"
+            <label class="t-caption-2 text-mono-70">{{'FINAL DISPOSITION'|translate}}</label>
+            <ec-dropdown [filter]="true" placeholder="{{'SELECT A FINAL DISPOSITION.'|translate}}"
                          formControlName="final_disposition" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="disposition_final" [dropStyle]="dropStyle"></ec-dropdown>
             <small class="text-alert-error" *ngIf="doctypeForm.get('final_disposition')?.invalid && doctypeForm.get('final_disposition')?.touched && doctypeForm.get('final_disposition')?.hasError('required')">
@@ -423,8 +423,8 @@
             </small>
           </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
-            <label class="t-caption-2 text-mono-70">Almacenamiento</label>
-            <ec-dropdown [filter]="true" placeholder="{{'Seleccione el Almacenamiento'}}"
+            <label class="t-caption-2 text-mono-70">{{'STORAGE'|translate}}</label>
+            <ec-dropdown [filter]="true" placeholder="{{'SELECT A STORAGE.'|translate}}"
                          formControlName="storage_id" [icon]="true" optionLabel="label" optionValue="value"
                          [data]="storages" [dropStyle]="dropStyle"></ec-dropdown>
             <small class="text-alert-error" *ngIf="doctypeForm.get('storage_id')?.invalid && doctypeForm.get('storage_id')?.touched && doctypeForm.get('storage_id')?.hasError('required')">
@@ -434,18 +434,18 @@
           <div class="grid grid-cols-2 gap-4 col-span-2">
             <div class="flex flex-row space-x-2 items-center">
               <input class="w-4 h-4" type="checkbox" formControlName="digitalizacion">
-              <label class="t-body-2 text-black">Digitalización</label>
+              <label class="t-body-2 text-black">{{'DIGITIZATION'|translate}}</label>
             </div>
             <div class="flex flex-row space-x-2 items-center">
               <input class="w-4 h-4" type="checkbox" formControlName="is_cipher">
-              <label class="t-body-2 text-black">Cifrado</label>
+              <label class="t-body-2 text-black">{{'ENCRYPTION'|translate}}</label>
             </div>
           </div>
         </form>
         <div class="flex flex-row space-x-4 lg:w-2/3">
           <button class="flex-1 md:flex-none b-outline"
-                  (click)="view = 'docTypesList'; this.resetCustomDoctypeForm();">{{'Cancelar'}}</button>
-          <button class="flex-1 md:flex-none b-solid" (click)="saveDoctype()">{{'Guardar'}}</button>
+                  (click)="view = 'docTypesList'; this.resetCustomDoctypeForm();">{{'CANCEL'|translate}}</button>
+          <button class="flex-1 md:flex-none b-solid" (click)="saveDoctype()">{{'SAVE'|translate}}</button>
         </div>
       </div>
     </div>
@@ -472,11 +472,11 @@
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
 
 <app-confirm-dialog [show]="showAlertDeleteDtg" type="warning"
-                    title="¿Esta seguro de querer borrar el grupo documental?"
-                    body="Si realiza esta acción se va a elimiar el grupo documental y todos los elementos relacionados a este!"
+                    title="{{'ARE YOU SURE YOU WANT TO DELETE THE DOCUMENTARY GROUP?'|translate}}"
+                    body="{{'THIS ACTION WILL DELETE THE DOCUMENTARY GROUP AND ALL THE ELEMENTS RELATED TO IT!'|translate}}"
                     (onEvent)="confirmDeleteDoctypeGroups($event)"></app-confirm-dialog>
 
 <app-confirm-dialog [show]="showAlertDeleteTg" type="warning"
-                    title="¿Esta seguro de querer borrar el tipo documental?"
-                    body="Si realiza esta acción se va a elimiar el tipo documental y todos los elementos relacionados a este!"
+                    title="{{'ARE YOU SURE YOU WANT TO DELETE THE DOCUMENTARY GROUP?'|translate}}"
+                    body="{{'THIS ACTION WILL DELETE THE DOCUMENTARY GROUP AND ALL THE ELEMENTS RELATED TO IT!'|translate}}"
                     (onEvent)="confirmDeleteDoctype($event)"></app-confirm-dialog>

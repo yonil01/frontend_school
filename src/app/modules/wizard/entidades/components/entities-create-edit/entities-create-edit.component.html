@@ -8,13 +8,13 @@
             d="M7.73272 15.7907C8.03264 16.0764 8.50738 16.0649 8.79306 15.765C9.07875 15.465 9.06721 14.9903 8.76728 14.7046L2.51587 8.75L17.25 8.75C17.6642 8.75 18 8.41421 18 8C18 7.58579 17.6642 7.25 17.25 7.25L2.51577 7.25L8.76728 1.29529C9.06721 1.00961 9.07875 0.534874 8.79306 0.234947C8.50738 -0.0649794 8.03264 -0.0765226 7.73272 0.209165L0.313785 7.27587C0.144859 7.43678 0.0449066 7.64202 0.0139294 7.85539C0.00478934 7.90218 -4.32463e-09 7.95053 0 8C4.3331e-09 8.04957 0.00480748 8.09801 0.0139828 8.14489C0.045022 8.35813 0.144956 8.56323 0.313786 8.72404L7.73272 15.7907Z"
             fill="#595B5D"/>
         </svg>
-        <span *ngIf="!isEdit" class="t-h5 text-black">Crear Entidad</span>
-        <span *ngIf="isEdit" class="t-h5 text-black">Editar Entidad</span>
+        <span *ngIf="!isEdit" class="t-h5 text-black">{{'CREATE ENTITY'|translate}}</span>
+        <span *ngIf="isEdit" class="t-h5 text-black">{{'EDIT ENTITY'|translate}}</span>
         <div>
           <div class="flex flex-row space-x-2">
             <div class="bg-brand-2 rounded-sm w-2"></div>
             <div class="w-full text-mono-70 py-1">
-              <span>El campo "Es único" no es editable después de crear la entidad."</span>
+              <span>{{'THE\"IS UNIQUE\" FIELD IS NOT EDITABLE AFTER CREATING THE ENTITY.'|translate}}"</span>
             </div>
           </div>
         </div>
@@ -22,18 +22,18 @@
       <div class="form">
         <form [formGroup]="createEditForm" class="space-y-4" action="">
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70" for="name">Nombre</label>
+            <label class="t-caption-2 text-mono-70" for="name">{{'NAME'|translate}}</label>
             <input formControlName="name" class="h-10 w-full lg:w-1/2 px-2 text-black t-body-2 bg-mono-10 rounded"
                    type="text" id="name">
             <span
               *ngIf="createEditForm.get('name')?.hasError('noWhiteSpace')"
-              class="t-caption-2 text-alert-error">Este campo no puede contener espacios.</span>
+              class="t-caption-2 text-alert-error">{{'THIS FIELD CANNOT CONTAIN SPACES.'|translate}}</span>
             <span
               *ngIf="createEditForm.get('name')?.hasError('minlength')"
-              class="t-caption-2 text-alert-error">Este campo debe tener m&iacute;nimo 3 caracteres.</span>
+              class="t-caption-2 text-alert-error">{{'THIS FIELD MUST BE AT LEAST 3 CHARACTERS LONG.'|translate}}</span>
             <span
               *ngIf="createEditForm.get('name')?.hasError('maxlength')"
-              class="t-caption-2 text-alert-error">Este campo debe tener m&aacute;ximo 50 caracteres.</span>
+              class="t-caption-2 text-alert-error">{{'THIS FIELD MUST HAVE A MAXIMUM OF 50 CHARACTERS.'|translate}}</span>
           </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70" for="name">Descripci&oacute;n</label>
@@ -51,13 +51,13 @@
           </div>
           <div class="flex flex-row space-x-2 items-center">
             <input formControlName="is_unique" class="w-4 h-4" id="unique" type="checkbox">
-            <label class="t-body-2 text-black" for="unique">Es único</label>
+            <label class="t-body-2 text-black" for="unique">{{'IT IS UNIQUE'|translate}}</label>
           </div>
         </form>
       </div>
       <div class="actions flex flex-row space-x-2">
-        <button (click)="onCancelCreateEntities()" class="w-full md:w-auto b-outline">Cancelar</button>
-        <button (click)="onSubmitForm()" type="submit" class="w-full md:w-auto b-solid">Guardar</button>
+        <button (click)="onCancelCreateEntities()" class="w-full md:w-auto b-outline">{{'CANCEL'|translate}}</button>
+        <button (click)="onSubmitForm()" type="submit" class="w-full md:w-auto b-solid">{{'SAVE'|translate}}</button>
       </div>
     </div>
     <app-footer></app-footer>
@@ -71,7 +71,7 @@
     </div>
     <div class="t-h5 ml-4 text-black">
       <span>
-        Cargando...
+        {{'LOADING'|translate}}...
       </span>
     </div>
   </div>

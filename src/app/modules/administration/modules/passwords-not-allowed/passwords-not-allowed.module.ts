@@ -12,6 +12,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {UiModule} from "@app/ui/ui.module";
 import {ToastModule} from "ecapture-ng-ui";
 import {ReactiveFormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -20,14 +21,15 @@ import {ReactiveFormsModule} from "@angular/forms";
     PasswordsNotAllowedListComponent,
     PasswordsNotAllowedCrudComponent
   ],
-  imports: [
-    CommonModule,
-    PasswordsNotAllowedRoutingModule,
-    HttpClientModule,
-    UiModule,
-    ToastModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        CommonModule,
+        PasswordsNotAllowedRoutingModule,
+        HttpClientModule,
+        UiModule,
+        ToastModule,
+        ReactiveFormsModule,
+        TranslateModule
+    ],
   providers:[PasswordNotAllowedService]
 
 })

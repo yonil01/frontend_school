@@ -17,7 +17,7 @@
                 fill="#6699FF"/>
             </svg>
             <span routerLink="" class="t-body-2 cursor-pointer">
-          CLIENTE
+          {{'CLIENT'|translate}}
           </span>
           </div>-->
           <div class="miga flex flex-row items-center space-x-2">
@@ -27,16 +27,15 @@
                 d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
             </svg>
             <span routerLink="/admin/user" class="t-body-2 cursor-pointer">
-          Usuarios
+              {{'USERS'|translate}}
           </span>
           </div>
         </div>
         <div class="titles">
-          <span class="t-h5 text-black">Usuarios</span>
+          <span class="t-h5 text-black">{{'USERS'|translate}}</span>
           <div>
             <ul class="t-body-1 pl-4">
-              <li class="list-disc text-mono-70">{{styleTable.dataSource?.length}} usuarios registrados actualmente.</li>
-              <li class="list-disc text-mono-70">Último registro el {{dateMax | date :'short'}}</li>
+              <li class="list-disc text-mono-70">{{styleTable.dataSource?.length}} {{'CURRENT REGISTERED USERS'|translate}}.</li>
             </ul>
           </div>
         </div>
@@ -49,7 +48,7 @@
                   <g><path d="M884.4,332.8H728.1v97h156.3V332.8z M884.4,456.3H728.1v97.1h156.3V456.3z M884.4,209.3H728.1v97h156.3V209.3z M884.4,698.8H728.1v97.1h156.3V698.8z M956.2,112.3H580.3c-4.5,0-8.8,0.9-12.7,2.6V10L10,121.1v757.8L567.6,990v-99.6c3.9,1.7,8.2,2.6,12.7,2.6h375.9c18.7,0,33.8-15.8,33.8-35.3V147.6C990,128.1,974.9,112.3,956.2,112.3z M385.9,663.6l-67.6-4.4l-50.7-127.9l-54.9,119.2l-63.4-4.4l80.3-145.6l-71.8-158.7l63.3-4.4l42.2,119.1h8.4l46.5-127.9l67.6-4.4l-84.5,167.6L385.9,663.6z M947.8,848.8H567.6v-52.9h126.7v-97.1H567.6v-22h126.7v-97H567.6v-26.4h126.7v-97.1H567.6v-26.5h126.7v-97H567.6v-26.4h126.7v-97H567.6v-52.9h380.2L947.8,848.8L947.8,848.8z M884.4,579.8H728.1v97h156.3V579.8z"/></g>
                 </svg>
               </div>
-              <span>Subir Datos</span>
+              <span>{{'UPLOAD DATA'|translate}}</span>
               <input  type='file' class="hidden" (change)="onFileExcel($event)"/>
             </label>
           </div>
