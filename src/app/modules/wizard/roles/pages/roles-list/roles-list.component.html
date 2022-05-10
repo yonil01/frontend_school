@@ -76,6 +76,8 @@
                class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
             <span class="text-mono-70 t-caption-1">Rol N° {{roles.indexOf(role) + 1}}</span>
             <span class="text-black t-body-1">{{role.description}}</span>
+            <span class="text-mono-70 t-caption-1">ID</span>
+            <span class="text-black t-body-1">{{role.id}}</span>
             <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
               <button (click)="editRole(role)" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
                 <div>
@@ -107,13 +109,15 @@
         <div class="table-h hidden md:block w-full">
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
+            <div class="p-2 flex-1">ID</div>
             <div class="p-2 flex-1">Rol</div>
             <div class="p-2 w-32">Opciones</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
-            <div *ngFor="let role of rolesForPagination; index as i" class="item w-full flex flex-row">
+            <div *ngFor="let role of rolesForPagination; index as i" class="item border-b border-mono-10 w-full flex flex-row">
               <div class="flex items-center p-2 w-16">{{roles.indexOf(role) + 1}}</div>
-              <div class="flex items-center p-2 flex-1 break-all">{{roles.description}}</div>
+              <div class="flex items-center p-2 flex-1 break-all" style="user-select: all;">{{role.id}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{role.description}}</div>
               <div class="flex items-center p-2 w-32">
                 <div class="w-full flex flex-row">
                   <button (click)="editRole(role)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">

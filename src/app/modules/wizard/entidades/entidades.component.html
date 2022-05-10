@@ -41,7 +41,6 @@
             <div>
               <ul class="t-body-1 pl-4">
                 <li class="list-disc text-mono-70">{{entities.length}} {{'CURRENTLY REGISTERED ENTITIES.'|translate}}</li>
-                <li class="list-disc text-mono-70">{{'LAST RECORD'|translate}} 24/04/2021 13:04:02</li>
               </ul>
             </div>
             <div>
@@ -66,6 +65,10 @@
           <div class="table-v md:hidden flex flex-col space-y-4">
             <div *ngFor="let entitie of entitiesTable, let i = index" class="register drop-shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
               <span class="text-mono-70 t-caption-1">N° {{entities.indexOf(entitie) + 1}}</span>
+              <div class="flex flex-col">
+                <span class="text-mono-70 t-caption-2">ID</span>
+                <span class="text-black t-body-1">{{entitie.id}}</span>
+              </div>
               <div class="flex flex-col">
                 <span class="text-mono-70 t-caption-2">{{'ENTITY'|translate}}</span>
                 <span class="text-black t-body-1">{{entitie.name}}</span>
@@ -101,13 +104,15 @@
           <div class="table-h hidden md:block w-full">
             <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
               <div class="p-2 w-16">N°</div>
+              <div class="p-2 flex-1">ID</div>
               <div class="p-2 flex-1">{{'ENTITY'|translate}}</div>
               <div class="p-2 w-32">{{'OPTIONS'|translate}}</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
-              <div class="item w-full flex flex-row" *ngFor="let entitie of entitiesTable, let i = index">
+              <div class="item border-b border-mono-10 w-full flex flex-row" *ngFor="let entitie of entitiesTable, let i = index">
                 <div class="flex items-center p-2 w-16">{{entities.indexOf(entitie) + 1}}</div>
-                <div class="flex items-center p-2 flex-1 break-all">{{entitie.name}}</div>
+                <div class="flex items-center p-2 flex-1 break-all" style="user-select: all;">{{entitie.id}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{entitie.description}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
                     <button (click)="onEditEntity(entitie)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
