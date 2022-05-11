@@ -81,8 +81,8 @@ export class UsersComponent implements OnInit {
           this.users.forEach((user: any) => {
             const newUser = {
               value: user,
-              value1: user.identification_number,
-              value2: user.name+' '+user.last_name,
+              value1: user.name,
+              value2: user.last_name,
               value3: user.email_notifications,
               value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
               value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',

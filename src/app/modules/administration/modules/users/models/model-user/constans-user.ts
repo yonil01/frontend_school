@@ -5,10 +5,10 @@ import {DataContentUser} from "@app/modules/administration/modules/users/models/
 export const styleTableUser: TableModel = {
   columns: [
     {
-      label: 'N° de Identificación',
+      label: 'Nombre',
     },
     {
-      label: 'Apellido y Nombre',
+      label: 'Apellido',
     },
     {
       label: 'EMAIL',
