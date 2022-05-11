@@ -81,8 +81,8 @@ export class UsersComponent implements OnInit {
           this.users.forEach((user: any) => {
             const newUser = {
               value: user,
-              value1: user.identification_number,
-              value2: user.name+' '+user.last_name,
+              value1: user.name,
+              value2: user.last_name,
               value3: user.email_notifications,
               value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
               value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
@@ -145,17 +145,20 @@ export class UsersComponent implements OnInit {
   }
 
   private deleteUser(user: User): void {
+    this.showLoader[0].value = true;
     this.userService.deleteUser(user.id!.toLowerCase()).subscribe((res: Response) => {
       if (res.error) {
+        this.showLoader[0].value = false;
         this._messageService.add( {
-            type: 'success',
+            type: 'errror',
             message: res.msg,
             life: 5000,
           }
         );
       } else {
+        this.showLoader[0].value = false;
         this._messageService.add({
-          type: 'error',
+          type: 'success',
           message: res.msg,
           life: 5000,
         });
