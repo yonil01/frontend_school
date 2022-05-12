@@ -28,29 +28,36 @@ export class WizardComponent implements OnInit, OnDestroy {
   public isGenerate: boolean = false;
   public clientID: string = '';
   public projectID: string = '';
+  public isBlockPage: boolean = false;
 
   constructor(
     private _fb: FormBuilder,
     private customerService: CustomerService,
     private _messageService: ToastService
   ) {
+    this.isBlockPage = true;
     this._subscription.add(
       this.customerService.getCustomers().subscribe({
         next: (res) => {
           if (res.error) {
             this._messageService.add({type: 'error', message: res.msg, life: 5000});
+            this.isBlockPage = false;
           } else {
             if (res.data) {
               const data = res.data.filter( (c: Client) => c.projects?.length );
               if (data) this.clients = data;
               if (this.isExistClientAndProject()) this.setInitDropdown();
+
+              this.isBlockPage = false;
             } else {
               this._messageService.add({type: 'info', message: 'No hay clientes configurados!', life: 5000});
+              this.isBlockPage = false;
             }
           }
         },
         error: (err: HttpErrorResponse) => {
           this._messageService.add({type: 'error', message: err.message, life: 5000});
+          this.isBlockPage = false;
         }
       })
     );

@@ -23,6 +23,7 @@ export class EntidadesComponent implements OnInit {
   public project!: Project;
   public datasetForm!: FormGroup;
   public dataSets!: FormArray;
+  public dataTemp: any = [];
 
   public entities: Entity[] = [];
   public entity!: Entity;
@@ -205,5 +206,31 @@ export class EntidadesComponent implements OnInit {
 
   getCurrentPage($event: number) {
     this.tableIndex = $event;
+  }
+
+  public findForm(value: any): void {
+    let data = value.target.value;
+    data = data.toLowerCase();
+    if (this.dataTemp.length > 0) {
+      this.entities = this.dataTemp;
+      this.entitiesTable = this.dataTemp;
+    } else {
+      this.dataTemp = this.entities;
+      this.entitiesTable = this.entities;
+    }
+    this.entities = this.entities?.filter((m: any) => {
+      if (m.description.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    this.entitiesTable = this.entitiesTable?.filter((m: any) => {
+      if (m.description.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    if (data === '') {
+      this.entities = this.dataTemp;
+      this.entitiesTable = this.dataTemp;
+    }
   }
 }

@@ -2,12 +2,12 @@
   <div class="flex {{StyleStep.style?.size}} justify-between">
     <div style="white-space: nowrap" class="w-full hidden lg:block" *ngFor="let data of StyleStep.dataSourceStep; index as i ">
         <div style="white-space: nowrap" *ngIf="data.focus" class="mb-2 flex space-x-4 p-2  hover:bg-mono-10 cursor-pointer " (click)="changeUbication(i)">
-          <div class="w-10 h-10 bg-brand-1 rounded-full text-lg text-white flex items-center ">
+          <div class="w-10 h-10 bg-brand-2 rounded-full text-lg text-white flex items-center ">
             <span class="text-center font-bold text-mono-10 w-full">
               {{ i + 1 }}
             </span>
           </div>
-          <div class="flex align-center text-brand-1 items-center  content-center" >
+          <div class="flex align-center text-brand-2 items-center  content-center" >
             <span>{{ data.title }}</span>
           </div>
         </div>
@@ -17,17 +17,17 @@
               {{ i + 1}}
             </span>
         </div>
-        <div class="flex align-center text-brand-1 items-center  content-center" >
+        <div class="flex align-center text-brand-2 items-center  content-center" >
           <span>{{ data.title }}</span>
         </div>
       </div>
       <div *ngIf="data.status === 'Completed' && !data.focus" class="mb-2 flex space-x-4 cursor-pointer hover:bg-mono-10 p-2" (click)="changeUbication(i)">
-        <div class="w-10 h-10 bg-transparent rounded-full text-lg text-white flex items-center border-2 border-brand-1">
-            <span class="text-center font-bold text-brand-1 w-full">
+        <div class="w-10 h-10 bg-transparent rounded-full text-lg text-white flex items-center border-2 border-brand-2">
+            <span class="text-center font-bold text-brand-2 w-full">
               {{ i + 1 }}
             </span>
         </div>
-        <div class="flex align-center text-brand-1 items-center  content-center" >
+        <div class="flex align-center text-brand-2 items-center  content-center" >
           <span>{{ data.title }}</span>
         </div>
       </div>

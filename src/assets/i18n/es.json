@@ -288,6 +288,7 @@
   "ARE YOU SURE ABOUT THIS ACTION?": "¿Está seguro de que desea realizar esta acción?",
   "THIS ACTION MAY AFFECT THE DATA MODEL.": "Esta acción puede afectar el modelo de datos.",
   "DELETE": "Eliminar",
+  "EDIT": "Editar",
   "CREATE ATTRIBUTE": "Crear atributo",
   "EDIT ATTRIBUTE": "Editar atributo",
   "THE\"NAME\" AND \"VALUE TO STORE\" ARE NOT EDITABLE AFTER CREATING THE ATTRIBUTE.": "El \"nombre\" y \"valor para almacenar\" no se pueden editar después de crear el atributo.",
@@ -354,8 +355,10 @@
   "DOCUMENTS": "Documentos",
   "PROCESSES": "Procesos",
   "ROLES": "Roles",
+  "ROLE": "Rol",
   "OPEN WEB CLIENT": "Abrir cliente web",
   "SEARCH FORM": "Formulario de búsqueda",
-  "ATTRIBITE": "Atributo"
+  "ATTRIBITE": "Atributo",
+  "EXPORT": "Exportar"
 }
 

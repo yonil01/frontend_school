@@ -12,15 +12,7 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{'CLIENT,S NAME'|translate}}</span>
-        </div>
-        <div class="miga flex flex-row items-center space-x-2">
-          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-               fill="none">
-            <path
-              d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
-          </svg>
-          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{'PROJECT NAME'|translate}}</span>
+          <span class="t-body-2 cursor-pointer">{{'DATA SET'|translate}}</span>
         </div>
       </div>
 
@@ -31,36 +23,47 @@
             <div>
               <ul class="t-body-1 pl-4">
                 <li class="list-disc text-mono-70">{{datasets.length}} {{'CURRENTLY REGISTERED DATA SETS'|translate}}.</li>
-                <!--<li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>-->
               </ul>
             </div>
           </div>
-          <div>
-            <button (click)="onCreateDataset()" class="w-full md:w-auto bg-brand-2 text-white t-button-2 h-10 rounded">
-              {{'CREATE A DATA SET'|translate}}
-            </button>
-          </div>
         </div>
         <div class="data space-y-4">
-          <div><input class="w-full h-10 px-2 rounded t-body-2 bg-mono-10 text-black" type="text"
-                      placeholder="{{'SEARCH FOR THE ENTITY'|translate}}"></div>
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <button (click)="onCreateDataset()" class="w-full md:w-auto bg-brand-2 text-white t-button-2 h-10 rounded">
+                {{'CREATE A DATA SET'|translate}}
+              </button>
+            </div>
+            <div class="input-group relative flex rounded bg-mono-10">
+              <input (input)="findForm($event)" class="ec-input focus:outline-none w-full md:w-48" type="text" placeholder="{{'SEARCH'|translate}}">
+              <span
+                class="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-400 text-center whitespace-nowrap rounded"
+                id="basic-addon2">
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="w-4" role="img"
+             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="currentColor"
+                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+        </svg>
+      </span>
+            </div>
+          </div>
           <div class="table-v md:hidden flex flex-col space-y-4">
-            <div class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+            <div *ngFor="let dataset of datasetsTable, let i = index" class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
               <span class="text-mono-70 t-caption-1">N° 1</span>
               <div class="flex flex-col">
                 <span class="text-mono-70 t-caption-2">{{'NAME'|translate}}</span>
-                <span class="text-black t-body-1">estado_civil</span>
+                <span class="text-black t-body-1">{{dataset.name}}</span>
               </div>
               <div class="flex flex-col">
                 <span class="text-mono-70 t-caption-2">{{'DESCRIPTION'|translate}}</span>
-                <span class="text-black t-body-1">Estado Civil</span>
+                <span class="text-black t-body-1">{{dataset.description}}</span>
               </div>
               <div class="flex flex-col">
                 <span class="text-mono-70 t-caption-2">{{'FIELD TYPE'|translate}}</span>
-                <span class="text-black t-body-1">varchar</span>
+                <span class="text-black t-body-1">{{dataset.field_type}}</span>
               </div>
               <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-                <button class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
+                <button (click)="onEditDataset(dataset)" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -68,7 +71,7 @@
                     </svg>
                   </div>
                 </button>
-                <button class="w-full text-alert-warning px-2 h-10 hover:bg-mono-10">
+                <button (click)="onConfigDataset(dataset)" class="w-full text-alert-warning px-2 h-10 hover:bg-mono-10">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -76,7 +79,7 @@
                     </svg>
                   </div>
                 </button>
-                <button class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
+                <button (click)="onDeleteDataset(dataset)" class="w-full text-alert-error px-2 h-10 hover:bg-mono-10">
                   <div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path

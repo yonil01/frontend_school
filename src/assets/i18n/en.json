@@ -288,6 +288,7 @@
   "ARE YOU SURE ABOUT THIS ACTION?": "Are you sure about this action?",
   "THIS ACTION MAY AFFECT THE DATA MODEL.": "This action may affect the data model.",
   "DELETE": "Delete",
+  "EDIT": "Edit",
   "CREATE ATTRIBUTE": "Create attribute",
   "EDIT ATTRIBUTE": "Edit attribute",
   "THE\"NAME\" AND \"VALUE TO STORE\" ARE NOT EDITABLE AFTER CREATING THE ATTRIBUTE.": "The \"Name\" and \"Value to store\" are not editable after creating the attribute.",
@@ -356,10 +357,10 @@
   "DOCUMENTS": "Documents",
   "PROCESSES": "Processes",
   "ROLES": "Roles",
+  "ROLE": "Role",
   "OPEN WEB CLIENT": "Open web client",
   "SEARCH FORM": "Search form",
-  "ATTRIBITE": "Attribite"
-
-
+  "ATTRIBITE": "Attribite",
+  "EXPORT": "Export"
 }
 

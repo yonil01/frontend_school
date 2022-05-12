@@ -24,6 +24,7 @@ export class DatasetListComponent implements OnInit {
   public datasetsTable: any;
   public tableIndex: number = 0;
   public currentRowPage: number = 0;
+  public dataTemp: any = [];
 
   constructor(private datasetsService: DatasetsService,
               private messageService: ToastService
@@ -138,5 +139,31 @@ export class DatasetListComponent implements OnInit {
 
   getCurrentPage($event: number) {
     this.tableIndex = $event;
+  }
+
+  public findForm(value: any): void {
+    let data = value.target.value;
+    data = data.toLowerCase();
+    if (this.dataTemp.length > 0) {
+      this.datasets = this.dataTemp;
+      this.datasetsTable = this.dataTemp;
+    } else {
+      this.dataTemp = this.datasets;
+      this.datasetsTable = this.datasets;
+    }
+    this.datasets = this.datasets?.filter((m: any) => {
+      if (m.description.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    this.datasetsTable = this.datasetsTable?.filter((m: any) => {
+      if (m.description.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    if (data === '') {
+      this.datasets = this.dataTemp;
+      this.datasetsTable = this.dataTemp;
+    }
   }
 }

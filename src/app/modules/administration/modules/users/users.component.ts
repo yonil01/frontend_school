@@ -81,11 +81,12 @@ export class UsersComponent implements OnInit {
           this.users.forEach((user: any) => {
             const newUser = {
               value: user,
-              value1: user.identification_number,
-              value2: user.name+' '+user.last_name,
-              value3: user.email_notifications,
-              value4: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
-              value5: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
+              value1: user.username,
+              value2: user.identification_number,
+              value3: user.name+' '+user.last_name,
+              value4: user.email_notifications,
+              value5: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
+              value6: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
             }
             this.styleTable.dataSource?.push(newUser);
           })
@@ -316,7 +317,7 @@ export class UsersComponent implements OnInit {
 
   export(): void {
     const ArrayObject:any = [];
-    ArrayObject.push(['N° Identifiación', 'Apellidos Y nombres', 'Correo', 'Estado', 'Roles'])
+    ArrayObject.push(['Nombre de Usuario','N° Identifiación', 'Apellidos Y nombres', 'Correo', 'Estado', 'Roles'])
     this.dataExport.filter((user: any) => {
       const ArrayTem = Object.values(user)
       ArrayTem.shift();

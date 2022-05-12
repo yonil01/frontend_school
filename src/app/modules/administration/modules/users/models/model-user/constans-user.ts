@@ -5,6 +5,9 @@ import {DataContentUser} from "@app/modules/administration/modules/users/models/
 export const styleTableUser: TableModel = {
   columns: [
     {
+      label: 'Nombre de usuario',
+    },
+    {
       label: 'N° de Identificación',
     },
     {

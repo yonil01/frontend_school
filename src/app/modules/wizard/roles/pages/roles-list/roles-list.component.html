@@ -1,6 +1,6 @@
 <app-layout>
   <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white">
+    <div class="ec-container py-6 md:py-12 bg-white h-full">
       <div class="migas mb-4 text-brand-2 flex flex-row space-x-2 items-center flex-wrap">
         <div class="home">
           <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -54,11 +54,24 @@
                   <g><path d="M884.4,332.8H728.1v97h156.3V332.8z M884.4,456.3H728.1v97.1h156.3V456.3z M884.4,209.3H728.1v97h156.3V209.3z M884.4,698.8H728.1v97.1h156.3V698.8z M956.2,112.3H580.3c-4.5,0-8.8,0.9-12.7,2.6V10L10,121.1v757.8L567.6,990v-99.6c3.9,1.7,8.2,2.6,12.7,2.6h375.9c18.7,0,33.8-15.8,33.8-35.3V147.6C990,128.1,974.9,112.3,956.2,112.3z M385.9,663.6l-67.6-4.4l-50.7-127.9l-54.9,119.2l-63.4-4.4l80.3-145.6l-71.8-158.7l63.3-4.4l42.2,119.1h8.4l46.5-127.9l67.6-4.4l-84.5,167.6L385.9,663.6z M947.8,848.8H567.6v-52.9h126.7v-97.1H567.6v-22h126.7v-97H567.6v-26.4h126.7v-97.1H567.6v-26.5h126.7v-97H567.6v-26.4h126.7v-97H567.6v-52.9h380.2L947.8,848.8L947.8,848.8z M884.4,579.8H728.1v97h156.3V579.8z"/></g>
                 </svg>
               </div>
-              <span>Exportar Roles</span>
+              <span>{{'EXPORT'|translate}}</span>
             </button>
           </div>
         </div>
-        <div><input class="ec-input w-full md:w-48" type="hidden" placeholder="Buscar"></div>
+        <div>
+          <div class="input-group relative  flex items-stretch w-full mb-4 rounded bg-mono-10 border">
+            <input (input)="findForm($event)" class="ec-input focus:outline-none w-full md:w-48" type="text" placeholder="{{'SEARCH'|translate}}">
+            <span
+              class="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-400 text-center whitespace-nowrap rounded"
+              id="basic-addon2">
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="w-4" role="img"
+             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="currentColor"
+                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+        </svg>
+      </span>
+          </div>
+        </div>
       </div>
       <div *ngIf="roles.length === 0" class="notify-null flex flex-col space-y-2 items-center p-12">
         <div class="text-brand-2">
@@ -74,12 +87,12 @@
         <div class="table-v md:hidden grid grid-cols-1 gap-4">
           <div *ngFor="let role of rolesForPagination; index as i"
                class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-            <span class="text-mono-70 t-caption-1">Rol N° {{roles.indexOf(role) + 1}}</span>
+            <span class="text-mono-70 t-caption-1">{{'ROLE'|translate}} N° {{roles.indexOf(role) + 1}}</span>
             <span class="text-black t-body-1">{{role.description}}</span>
             <span class="text-mono-70 t-caption-1">ID</span>
             <span class="text-black t-body-1">{{role.id}}</span>
             <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
-              <button (click)="editRole(role)" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
+              <button (click)="editRole(role)" ecTooltip tooltip="{{'EDIT'|translate}}" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -95,7 +108,7 @@
                   </svg>
                 </div>
               </button>
-              <button (click)="showRole(role)" class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
+              <button (click)="showRole(role)" ecTooltip tooltip="{{'ADMINISTRATION'|translate}}" class="w-full text-alert-success px-2 h-10 hover:bg-mono-10">
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -110,8 +123,8 @@
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
             <div class="p-2 flex-1">ID</div>
-            <div class="p-2 flex-1">Rol</div>
-            <div class="p-2 w-32">Opciones</div>
+            <div class="p-2 flex-1">{{'ROLE'|translate}}</div>
+            <div class="p-2 w-32">{{'OPTIONS'|translate}}</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
             <div *ngFor="let role of rolesForPagination; index as i" class="item border-b border-mono-10 w-full flex flex-row">
@@ -120,7 +133,7 @@
               <div class="flex items-center p-2 flex-1 break-all">{{role.description}}</div>
               <div class="flex items-center p-2 w-32">
                 <div class="w-full flex flex-row">
-                  <button (click)="editRole(role)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
+                  <button (click)="editRole(role)" ecTooltip tooltip="{{'EDIT'|translate}}" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -128,7 +141,7 @@
                       </svg>
                     </div>
                   </button>
-                  <button (click)="delete(role)" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
+                  <button (click)="delete(role)" ecTooltip tooltip="{{'DELETE'|translate}}" class="w-10 text-alert-error px-2 h-10 hover:bg-mono-10">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -136,7 +149,7 @@
                       </svg>
                     </div>
                   </button>
-                  <button (click)="showRole(role)" class="w-10 text-alert-success px-2 h-10 hover:bg-mono-10">
+                  <button (click)="showRole(role)" ecTooltip tooltip="{{'ADMINISTRATION'|translate}}" class="w-10 text-alert-success px-2 h-10 hover:bg-mono-10">
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -152,7 +165,7 @@
         <app-paginator [data]="roles" (current-data-page)="rolesForPagination = $event"></app-paginator>
       </div>
     </div>
-    <app-footer></app-footer>
+    <app-footer class="absolute bottom-0 left-0 w-full"></app-footer>
   </ng-container>
 </app-layout>
 

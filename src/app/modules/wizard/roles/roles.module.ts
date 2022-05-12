@@ -9,6 +9,7 @@ import { RolesCreateComponent } from './pages/roles-create/roles-create.componen
 import { RolesManagerComponent } from './pages/roles-manager/roles-manager.component';
 import {ToastModule} from "ecapture-ng-ui";
 import {ReactiveFormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {ReactiveFormsModule} from "@angular/forms";
         RolesRoutingModule,
         UiModule,
         ToastModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        TranslateModule
     ]
 })
 export class RolesModule { }
