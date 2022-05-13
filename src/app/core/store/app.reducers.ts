@@ -15,6 +15,7 @@ export interface AppState {
   token: reducers.TokenState;
   component: reducers.ComponentState;
   env: reducers.EnvState;
+  language: reducers.LanguageState;
   // TODO Si necesita mas estados pongalos aqui
 }
 
@@ -29,5 +30,6 @@ export const appReducers: ActionReducerMap<AppState> = {
   documentSource: reducers.DocumentSourceReducer,
   token: reducers.TokenReducer,
   component: reducers.ComponentReducer,
-  env: reducers.EnvReducer
+  env: reducers.EnvReducer,
+  language: reducers.LanguageReducer
 };

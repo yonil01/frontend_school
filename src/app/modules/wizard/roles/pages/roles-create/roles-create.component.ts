@@ -86,9 +86,10 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
 
   saveRole() {
     const description: string = this.roleForm.get('description')?.value+"";
-    const re = / /gi;
-    const descriptionRefactor: string = description.replace(re,'_')+"";
-    const name: string = descriptionRefactor.toLowerCase();
+    //const re = / /gi;
+    //const descriptionRefactor: string = description.replace(re,'_')+"";
+    //const name: string = descriptionRefactor.toLowerCase();
+    const name = description;
     this.roleForm.get('name')?.setValue(name);
 
     if (!this.roleForm.invalid) {

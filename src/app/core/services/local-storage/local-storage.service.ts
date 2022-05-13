@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from "@app/core/store/app.reducers";
 import {Module, Project} from "@app/core/models";
 import {Client} from "@app/core/models/wizard/wizard";
+import {decryptText, encryptText} from "@app/core/utils/crypto/cypher";
 
 const helper = new JwtHelperService();
 
@@ -12,8 +13,14 @@ const helper = new JwtHelperService();
 })
 export class LocalStorageService {
   modules!: Module[];
+  public secretKey: string = '';
 
   constructor(private store: Store<AppState>) {
+    this.store.select('env').subscribe(
+      (res) => {
+        this.secretKey = res.env;
+      },
+    );
   }
 
   getModules(): [] {
@@ -76,4 +83,24 @@ export class LocalStorageService {
     const project = sessionStorage.getItem('project');
     return project ? JSON.parse(project).name : ''
   }
+
+  public getLanguage(): string {
+    const lang = decryptText(localStorage.getItem('Language') || '', this.secretKey)
+    if (lang) {
+      const objLanguage = JSON.parse(lang);
+      if (this.getUserId() === objLanguage.id) {
+        return objLanguage.language;
+      }
+    }
+    return 'es';
+  }
+
+  public setLanguage(language: string): void {
+    const objLanguage = {
+      id: this.getUserId(),
+      language: language
+    };
+    localStorage.setItem('Language', encryptText(JSON.stringify(objLanguage), this.secretKey));
+  }
+
 }

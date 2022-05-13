@@ -359,6 +359,11 @@
   "OPEN WEB CLIENT": "Abrir cliente web",
   "SEARCH FORM": "Formulario de búsqueda",
   "ATTRIBITE": "Atributo",
-  "EXPORT": "Exportar"
+  "EXPORT": "Exportar",
+  "LAST_CONNECTION": "Última conección",
+  "PROFILE": "Perfil",
+  "SPANISH": "Español",
+  "ENGLISH": "Inglés",
+  "CHANGE_PASSWORD": "Cambiar contraseña"
 }
 
