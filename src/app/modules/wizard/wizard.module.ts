@@ -9,6 +9,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {RoleService} from "@app/core/services/graphql/auth/role/role.service";
 import {DocumentService} from "@app/core/services/graphql/doc/document/document.service";
 import {FormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {FormsModule} from "@angular/forms";
     UiModule,
     DropdownModule,
     DragDropModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ], providers: [RoleService, DocumentService, ToastService]
 })
 export class WizardModule {

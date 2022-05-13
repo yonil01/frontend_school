@@ -1,24 +1,28 @@
 <div class="w-full grid space-y-8 lg:space-x-4 lg:flex lg:space-y-0">
   <form [formGroup]="formBasicInfo" class="w-full space-y-10" novalidate>
+    <div *ngIf="isEdit" class="flex flex-col space-y-1">
+      <span class="text-brand-2 t-caption-2">ID</span>
+      <span class="text-black t-body-1" style="user-select: all">{{this.user.id}}</span>
+    </div>
     <div class="w-full space-y-4">
       <div class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full">
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Nombre de Usuario</label>
+            <label class="text-mono-70">{{'USER NAME'|translate}}</label>
             <input formControlName="username"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-mono-10 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
           </div>
           <div *ngIf="formBasicInfo.get('username')?.dirty && (formBasicInfo.get('username')?.errors || formBasicInfo.get('username')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('username')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('username')?.hasError('minlength')">La longitud minima excedida(4)</span>
-            <span *ngIf="formBasicInfo.get('username')?.hasError('required')">El descripción es requerido</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('minlength')">{{'MINIMUM LENGTH EXCEEDED(4)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('username')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
           </div>
         </div>
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Correo Electronico</label>
+            <label class="text-mono-70">{{'EMAIL'|translate}}</label>
             <input formControlName="email_notifications" type="email_notifications" id="email_notifications"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
@@ -26,25 +30,25 @@
           <div
             *ngIf="formBasicInfo.get('email_notifications')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('email_notifications')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
+            <span *ngIf="formBasicInfo.get('email_notifications')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
             <span
-              *ngIf="formBasicInfo.get('email_notifications')?.hasError('required')">El descripción es requerido</span>
+              *ngIf="formBasicInfo.get('email_notifications')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
             <span
-              *ngIf="formBasicInfo.get('email_notifications')?.hasError('pattern')">El campo debe tener @</span>
+              *ngIf="formBasicInfo.get('email_notifications')?.hasError('pattern')">{{'THE FIELD MUST HAVE @'|translate}}</span>
 
           </div>
         </div>
       </div>
       <div class="md:flex space-y-1 md:-space-y-0 md:space-x-4 w-full">
         <div class="w-full ">
-          <label class="text-mono-70">Tipo de Identificación</label>
+          <label class="text-mono-70">{{'TYPE OF IDENTIFICATION'|translate}}</label>
           <select formControlName="identification_type" class="ec-input w-full">
             <option *ngFor="let identify of dataDropIdentification" [value]="identify.value">{{identify.label}}</option>
           </select>
         </div>
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Número de Identificación</label>
+            <label class="text-mono-70">{{'NUMBER OF IDENTIFICATION'|translate}}</label>
             <input formControlName="identification_number" type="number" id="identification_number"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
@@ -52,17 +56,17 @@
           <div
             *ngIf="formBasicInfo.get('identification_number')?.dirty && (formBasicInfo.get('identification_number')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('minlength')">La longitud minima excedida(4)</span>
+            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('identification_number')?.hasError('minlength')">{{'MINIMUM LENGTH EXCEEDED(4)'|translate}}</span>
             <span
-              *ngIf="formBasicInfo.get('identification_number')?.hasError('required')">El descripción es requerido</span>
+              *ngIf="formBasicInfo.get('identification_number')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
           </div>
         </div>
       </div>
       <div class="md:flex space-y-1 md:-space-y-0 md:space-x-4 w-full">
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Nombre</label>
+            <label class="text-mono-70">{{'NAME'|translate}}</label>
             <input formControlName="name" type="name" id="name"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
@@ -70,14 +74,14 @@
           <div
             *ngIf="formBasicInfo.get('name')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('name')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('name')?.hasError('minlength')">La longitud minima excedida(4)</span>
-            <span *ngIf="formBasicInfo.get('name')?.hasError('required')">El descripción es requerido</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('minlength')">{{'MINIMUM LENGTH EXCEEDED(4)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('name')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
           </div>
         </div>
         <div class="w-full">
           <div class="space-y-1">
-            <label class="text-mono-70">Apellido</label>
+            <label class="text-mono-70">{{'LAST NAME'|translate}}</label>
             <input formControlName="last_name" type="last_name" id="last_name"
                    class="h-10 bg-mono-10 border border-mono-10 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-mono-10 block w-full p-2.5 dark:bg-mono-10 dark:border-mono-10 dark:placeholder-mono-70 dark:text-mono-70 dark:focus:ring-mono-10 dark:focus:border-none outline-none"
                    required>
@@ -85,9 +89,9 @@
           <div
             *ngIf="formBasicInfo.get('last_name')?.dirty && (formBasicInfo.get('email_notifications')?.errors || formBasicInfo.get('email_notifications')?.touched)"
             class="text-xs text-alert-error">
-            <span *ngIf="formBasicInfo.get('last_name')?.hasError('maxlength')">La longitud máxima excedida(50)</span>
-            <span *ngIf="formBasicInfo.get('last_name')?.hasError('minlength')">La longitud minima excedida(4)</span>
-            <span *ngIf="formBasicInfo.get('last_name')?.hasError('required')">El descripción es requerido</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('maxlength')">{{'MAXIMUM LENGTH EXCEEDED(50)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('minlength')">{{'MINIMUM LENGTH EXCEEDED(4)'|translate}}</span>
+            <span *ngIf="formBasicInfo.get('last_name')?.hasError('required')">{{'DESCRIPTION IS REQUIRED'|translate}}</span>
           </div>
         </div>
       </div>
@@ -97,11 +101,11 @@
       <div *ngIf="!returnExistUser()" class="md:flex space-y-4 md:-space-y-0 md:space-x-4 w-full ">
         <div class="space-y-1 w-full">
 
-          <label class="text-mono-70">Constraseña</label>
+          <label class="text-mono-70">{{'PASSWORD'|translate}}</label>
           <div class="relative flex w-full flex-wrap items-stretch mb-3">
 
             <input formControlName="password" type="{{showPassword?'text':'password'}}" class="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-mono-10 rounded text-sm border border-mono-10 outline-none focus:outline-none focus:ring w-full pr-10"/>
-            <span class="z-10 h-full leading-snug font-normal absolute text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+            <span class="z-10 h-full leading-snug font-normal text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
     <span *ngIf="!showPassword" appIcon iconColor="text-alert-info" iconName="eye hide" (click)="showPassword=!showPassword"></span>
               <span *ngIf="showPassword" appIcon iconColor="text-alert-info" iconName="eye show" (click)="showPassword=!showPassword"></span>
   </span>
@@ -116,11 +120,11 @@
         </div>
         <div class="space-y-1 w-full">
 
-          <label class="text-mono-70">Confirmar Contraseña</label>
+          <label class="text-mono-70">{{'CONFIRM_PASSWORD'|translate}}</label>
           <div class="relative flex w-full flex-wrap items-stretch mb-3">
 
             <input formControlName="password_confirm" type="{{showPasswordConfirm?'text':'password'}}" class="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-mono-10 rounded text-sm border border-mono-10 outline-none focus:outline-none focus:ring w-full pr-10"/>
-            <span class="z-10 h-full leading-snug font-normal absolute text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+            <span class="z-10 h-full leading-snug font-normal text-center text-slate-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
     <span *ngIf="!showPasswordConfirm" appIcon iconColor="text-alert-info" iconName="eye hide" (click)="showPasswordConfirm=!showPasswordConfirm"></span>
               <span *ngIf="showPasswordConfirm" appIcon iconColor="text-alert-info" iconName="eye show" (click)="showPasswordConfirm=!showPasswordConfirm"></span>
   </span>
@@ -141,15 +145,8 @@
       </div>
     </div>
     <div class="flex w-full space-x-4 md:w-1/2">
-      <app-button type="button" label="Guardar"
-                  brColor="border-brand-1"
-                  bgColor="bg-transparent"
-                  txtColor="text-brand-1" class="h-12 w-full" (click)="saveForm();typeExecution=0"></app-button>
-      <app-button [disabled]="formBasicInfo.invalid"
-                  type="button" label="Siguiente"
-                  brColor="border-brand-1"
-                  bgColor="bg-brand-1"
-                  txtColor="text-white" class="h-12 w-full" (click)="nextStep();typeExecution=1"></app-button>
+      <button (click)="saveForm();typeExecution=0" class="b-outline">{{'SAVE'|translate}}</button>
+      <button (click)="nextStep();typeExecution=1" [disabled]="formBasicInfo.invalid" class="b-solid">{{'NEXT'|translate}}</button>
     </div>
   </form>
 
@@ -158,7 +155,7 @@
 
     <div class=" space-y-4">
       <div class="flex space-x-2">
-        <span><svg class="fill-current text-brand-1" width="24" height="21" viewBox="0 0 24 21"
+        <span><svg class="fill-current text-brand-2" width="24" height="21" viewBox="0 0 24 21"
                    xmlns="http://www.w3.org/2000/svg">
 <path
   d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"
@@ -166,23 +163,23 @@
 </svg>
 </span>
         <span class="text-mono-70">
-                  Si quieres cancelar presiona la ‘X’ de la parte superior izquierda.
+                  {{'If you want to cancel press the \'X\' in the upper left corner.'|translate}}
                 </span>
       </div>
       <div class="flex space-x-2">
-        <span><svg class="fill-current text-brand-1" width="24" height="21" viewBox="0 0 24 21"
+        <span><svg class="fill-current text-brand-2" width="24" height="21" viewBox="0 0 24 21"
                    xmlns="http://www.w3.org/2000/svg">
 <path
   d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"/>
 </svg>
 </span>
         <span class="text-mono-70">
-                  El botón ‘Guardar’ realiza el registro hasta este punto y te dirige a la pantalla anterior.
+                  {{'The "Save" button executes the record up to that point and returns you to the previous screen.'|translate}}
                 </span>
       </div>
       <div class="flex space-x-2">
         <span>
-          <svg class="fill-current text-brand-1" width="24" height="21" viewBox="0 0 24 21"
+          <svg class="fill-current text-brand-2" width="24" height="21" viewBox="0 0 24 21"
                xmlns="http://www.w3.org/2000/svg">
             <path
               d="M12 0.996094C16.0499 0.996094 19.3567 4.19084 19.4958 8.24515L19.5 8.49609V12.5931L20.88 15.7491C20.9491 15.907 20.9847 16.0775 20.9847 16.2499C20.9847 16.9402 20.4251 17.4999 19.7347 17.4999L15 17.5014C15 19.1582 13.6569 20.5014 12 20.5014C10.4023 20.5014 9.09634 19.2524 9.00509 17.6776L8.99955 17.4991L4.27486 17.4999C4.10353 17.4999 3.93402 17.4646 3.77686 17.3964C3.14366 17.1213 2.85331 16.3851 3.12835 15.7519L4.5 12.594V8.49599C4.5006 4.3412 7.85209 0.996094 12 0.996094ZM13.4995 17.4991L10.5 17.5014C10.5 18.3298 11.1716 19.0014 12 19.0014C12.7797 19.0014 13.4204 18.4065 13.4931 17.6458L13.4995 17.4991ZM12 2.49609C8.67984 2.49609 6.00048 5.17035 6 8.49609V12.9057L4.65602 15.9999H19.3525L18 12.9067L18.0001 8.50895L17.9964 8.28375C17.8853 5.05027 15.2416 2.49609 12 2.49609ZM21 7.24987H23C23.4142 7.24987 23.75 7.58566 23.75 7.99987C23.75 8.37957 23.4678 8.69336 23.1018 8.74302L23 8.74987H21C20.5858 8.74987 20.25 8.41408 20.25 7.99987C20.25 7.62017 20.5322 7.30638 20.8982 7.25672L21 7.24987ZM1 7.24987H3C3.41421 7.24987 3.75 7.58566 3.75 7.99987C3.75 8.37957 3.46785 8.69336 3.10177 8.74302L3 8.74987H1C0.585786 8.74987 0.25 8.41408 0.25 7.99987C0.25 7.62017 0.532154 7.30638 0.898229 7.25672L1 7.24987ZM22.6 1.54987C22.8259 1.85112 22.791 2.26702 22.5338 2.52687L22.45 2.59987L20.45 4.09987C20.1186 4.3484 19.6485 4.28124 19.4 3.94987C19.1741 3.64862 19.209 3.23272 19.4662 2.97287L19.55 2.89987L21.55 1.39987C21.8814 1.15134 22.3515 1.2185 22.6 1.54987ZM2.45 1.39987L4.45 2.89987C4.78137 3.1484 4.84853 3.6185 4.6 3.94987C4.35147 4.28124 3.88137 4.3484 3.55 4.09987L1.55 2.59987C1.21863 2.35134 1.15147 1.88124 1.4 1.54987C1.64853 1.2185 2.11863 1.15134 2.45 1.39987Z"
@@ -190,7 +187,7 @@
           </svg>
       </span>
         <span class="text-mono-70">
-                  El botón ‘Siguiente’ también realiza el registro, pero te dirige a la asignación de roles y entidades de seguridad, esos pasos son opcionales.
+                 {{'The "Next" button also performs the registration, but directs you to the role and manager assignment, those steps are optional.'|translate}}
                 </span>
       </div>
     </div>

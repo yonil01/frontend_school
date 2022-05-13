@@ -23,6 +23,7 @@ export class RolesListComponent implements OnInit, OnDestroy {
   public isBlockPage: boolean = false;
   public roles: Role[] = [];
   public rolesForPagination: Role[] = [];
+  public dataTemp: any = [];
   private client: Customer;
   private project: Project;
   public nameClient: string = '';
@@ -167,5 +168,30 @@ export class RolesListComponent implements OnInit, OnDestroy {
     XLSX.writeFile(wb, 'Roles '+this.client.name+' '+this.project.name+'.xlsx');
   }
 
+  public findForm(value: any): void {
+    let data = value.target.value;
+    data = data.toLowerCase();
+    if (this.dataTemp.length > 0) {
+      this.roles = this.dataTemp;
+      this.rolesForPagination = this.dataTemp;
+    } else {
+      this.dataTemp = this.roles;
+      this.rolesForPagination = this.roles;
+    }
+    this.roles = this.roles?.filter((m: any) => {
+      if (m.description.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    this.rolesForPagination = this.rolesForPagination?.filter((m: any) => {
+      if (m.description.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    if (data === '') {
+      this.roles = this.dataTemp;
+      this.rolesForPagination = this.dataTemp;
+    }
+  }
 
 }

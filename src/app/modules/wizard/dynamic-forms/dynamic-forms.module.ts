@@ -21,6 +21,7 @@ import { DynamicFormsListComponent } from './pages/dynamic-forms-list/dynamic-fo
 import { DynamicFormsDetailComponent } from './pages/dynamic-forms-detail/dynamic-forms-detail.component';
 import { DynamicFormsContainerCreateComponent } from './pages/dynamic-forms-container-create/dynamic-forms-container-create.component';
 import { DynamicFormsContainerEditComponent } from './pages/dynamic-forms-container-edit/dynamic-forms-container-edit.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -38,18 +39,19 @@ import { DynamicFormsContainerEditComponent } from './pages/dynamic-forms-contai
     DynamicFormsContainerCreateComponent,
     DynamicFormsContainerEditComponent
   ],
-  imports: [
-    CommonModule,
-    DynamicFormsRoutingModule,
-    UiModule,
-    InputTextModule,
-    CheckboxModule,
-    DropdownModule,
-    GridsterModule,
-    RadioButtonModule,
-    check,
-    StepsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        DynamicFormsRoutingModule,
+        UiModule,
+        InputTextModule,
+        CheckboxModule,
+        DropdownModule,
+        GridsterModule,
+        RadioButtonModule,
+        check,
+        StepsModule,
+        ReactiveFormsModule,
+        TranslateModule
+    ]
 })
 export class DynamicFormsModule { }

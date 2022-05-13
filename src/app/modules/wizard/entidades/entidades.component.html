@@ -1,7 +1,7 @@
 <!--ENTITIES-->
 <app-layout *ngIf="showEntities">
   <ng-container layoutBody>
-    <div class="ec-container pb-12 space-y-6 bg-white" style="min-height: calc(100vh - 3rem)">
+    <div class="ec-container pb-12 space-y-6 bg-white h-full">
       <div class="migas-pan w-full text-brand-2 space-x-2 h-12 flex items-center">
         <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
              height="24" viewBox="0 0 24 24" fill="none">
@@ -30,44 +30,59 @@
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
           <span routerLink="/workflow" class="t-body-2 cursor-pointer">
-          Entidades
+          {{'ENTITIS'|translate}}
           </span>
         </div>
       </div>
       <div class="space-y-12">
         <div class="space-y-6">
           <div class="space-y-2">
-            <div class="text-2xl text-black">Entidades</div>
+            <div class="text-2xl text-black">{{'ENTITIS'|translate}}</div>
             <div>
               <ul class="t-body-1 pl-4">
-                <li class="list-disc text-mono-70">{{entities.length}} entidades registradas actualmente.</li>
-                <li class="list-disc text-mono-70">Último registro el 24/04/2021 13:04:02</li>
+                <li class="list-disc text-mono-70">{{entities.length}} {{'CURRENTLY REGISTERED ENTITIES.'|translate}}</li>
               </ul>
             </div>
             <div>
               <div class="flex flex-row space-x-2">
                 <div class="bg-brand-2 rounded-sm w-2"></div>
                 <div class="w-full text-mono-70 py-1">
-                  <span>Acceda a la lista de registros de una entidad con el botón verde a la derecha.</span>
+                  <span>{{'ACCESS THE LIST OF RECORDS FOR AN ENTITY WITH THE GREEN BUTTON ON THE RIGHT.'|translate}}</span>
                 </div>
               </div>
             </div>
           </div>
-          <div>
-            <button
-              (click)="createEntity()"
-              class="w-full md:w-auto bg-brand-2 text-white t-button-2 h-10 rounded">Crear Entidad
-            </button>
-          </div>
         </div>
         <div class="data space-y-4">
-          <div><input class="w-full h-10 px-2 rounded t-body-2 bg-mono-10 text-black" type="text"
-                      placeholder="Buscar entidad"></div>
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <button
+                (click)="createEntity()"
+                class="w-full md:w-auto bg-brand-2 text-white t-button-2 h-10 rounded">{{'CREATE ENTITY'|translate}}
+              </button>
+            </div>
+            <div class="input-group relative flex rounded bg-mono-10">
+              <input (input)="findForm($event)" class="ec-input focus:outline-none w-full md:w-48" type="text" placeholder="{{'SEARCH'|translate}}">
+              <span
+                class="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-400 text-center whitespace-nowrap rounded"
+                id="basic-addon2">
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="w-4" role="img"
+             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="currentColor"
+                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+        </svg>
+      </span>
+            </div>
+          </div>
           <div class="table-v md:hidden flex flex-col space-y-4">
             <div *ngFor="let entitie of entitiesTable, let i = index" class="register drop-shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
               <span class="text-mono-70 t-caption-1">N° {{entities.indexOf(entitie) + 1}}</span>
               <div class="flex flex-col">
-                <span class="text-mono-70 t-caption-2">Entidad</span>
+                <span class="text-mono-70 t-caption-2">ID</span>
+                <span class="text-black t-body-1">{{entitie.id}}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-mono-70 t-caption-2">{{'ENTITY'|translate}}</span>
                 <span class="text-black t-body-1">{{entitie.name}}</span>
               </div>
               <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
@@ -101,13 +116,15 @@
           <div class="table-h hidden md:block w-full">
             <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
               <div class="p-2 w-16">N°</div>
-              <div class="p-2 flex-1">Entidad</div>
-              <div class="p-2 w-32">Opciones</div>
+              <div class="p-2 flex-1">ID</div>
+              <div class="p-2 flex-1">{{'ENTITY'|translate}}</div>
+              <div class="p-2 w-32">{{'OPTIONS'|translate}}</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
-              <div class="item w-full flex flex-row" *ngFor="let entitie of entitiesTable, let i = index">
+              <div class="item border-b border-mono-10 w-full flex flex-row" *ngFor="let entitie of entitiesTable, let i = index">
                 <div class="flex items-center p-2 w-16">{{entities.indexOf(entitie) + 1}}</div>
-                <div class="flex items-center p-2 flex-1 break-all">{{entitie.name}}</div>
+                <div class="flex items-center p-2 flex-1 break-all" style="user-select: all;">{{entitie.id}}</div>
+                <div class="flex items-center p-2 flex-1 break-all">{{entitie.description}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
                     <button (click)="onEditEntity(entitie)" class="w-10 text-alert-info px-2 h-10 hover:bg-mono-10">
@@ -153,7 +170,7 @@
         </div>
       </div>
     </div>
-    <app-footer></app-footer>
+    <app-footer class="absolute bottom-0 left-0 w-full"></app-footer>
   </ng-container>
 </app-layout>
 
@@ -171,7 +188,7 @@
     </div>
     <div class="t-h5 ml-4 text-black">
       <span>
-        Cargando...
+        {{'LOADING'|translate}}...
       </span>
     </div>
   </div>
@@ -200,16 +217,16 @@
       </div>
       <!-- Modal body -->
       <div class="p-6 pt-0 text-center">
-        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Está seguro de eliminar la entidad
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{'INSURANCE THAT ELIMINATES THE ENTITY'|translate}}
           <b>"{{selectedEntity.name}}"</b>?</h3>
         <div class="flex justify-around">
           <button (click)="deleteEntity()" data-modal-toggle="popup-modal" type="button"
                   class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-            Si, estoy seguro.
+            {{'YES, I AM SURE.'|translate}}
           </button>
           <button (click)="cancelDelete()" data-modal-toggle="popup-modal" type="button"
                   class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">
-            No, cancelar
+            {{'NO, CANCEL'|translate}}
           </button>
         </div>
       </div>

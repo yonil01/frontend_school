@@ -22,20 +22,20 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/wizard" class="t-body-2 cursor-pointer">Parameters</span>
+          <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{'PARAMETERS'|translate}}</span>
         </div>
       </div>
       <div class="description mb-6 flex flex-col space-y-2">
-        <span class="t-h5 text-black dark:text-white">Parameters</span>
+        <span class="t-h5 text-black dark:text-white">{{'PARAMETERS'|translate}}</span>
         <div>
           <ul class="t-body-1 pl-4">
-            <li class="list-disc text-mono-70">{{parameters.length}} parametros registradas actualmente.</li>
+            <li class="list-disc text-mono-70">{{parameters.length}} {{'PARAMETERS REGISTERED CURRENTLY'|translate}}.</li>
           </ul>
         </div>
       </div>
       <div *ngIf="!isEditOrCreate" class="actions flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0">
         <div>
-          <button (click)="isEditOrCreate = true" class="b-solid w-full md:w-auto">Crear Parametro</button>
+          <button (click)="isEditOrCreate = true" class="b-solid w-full md:w-auto">{{'CREATE PARAMETER'|translate}}</button>
         </div>
         <button class="rounded px-4 bg-alert-info h-10 text-black" (click)="exportCSV()" [disabled]="parameters.length <= 0">
           <div>
@@ -78,38 +78,38 @@
           </div>
           <span>PDF</span>
         </button>
-        <div><input class="ec-input w-full md:w-48" type="text" placeholder="Buscar" (input)="filterMessages($event)"></div>
+        <div><input class="ec-input w-full md:w-48" type="text" placeholder="{{'SEARCH'|translate}}" (input)="filterMessages($event)"></div>
       </div>
       <div *ngIf="!isEditOrCreate" class="data space-y-4 mt-4">
         <div *ngFor="let parameter of parametersPagination; let position = index" class="table-v md:hidden flex flex-col space-y-4">
           <div class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
             <span class="text-mono-70 t-caption-1">N° {{position+1}}</span>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">ID</span>
+              <span class="text-mono-70 t-caption-2">{{'IDENTIFICATION'|translate}}</span>
               <span class="text-black t-body-1">{{parameter.id}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Name</span>
+              <span class="text-mono-70 t-caption-2">{{'NAME'|translate}}</span>
               <span class="text-black t-body-1">{{parameter.name}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Value</span>
+              <span class="text-mono-70 t-caption-2">{{'VALUE'|translate}}</span>
               <span class="text-black t-body-1">{{parameter.value}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Type</span>
+              <span class="text-mono-70 t-caption-2">{{'TYPE'|translate}}</span>
               <span class="text-black t-body-1">{{parameter.type}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Description</span>
+              <span class="text-mono-70 t-caption-2">{{'DESCRIPTION'|translate}}</span>
               <span class="text-black t-body-1">{{parameter.description}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">Client id</span>
+              <span class="text-mono-70 t-caption-2">{{'CLIENT ID'|translate}}</span>
               <span class="text-black t-body-1">{{parameter.client_id}}</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">is cipher</span>
+              <span class="text-mono-70 t-caption-2">{{'CIPHER'|translate}}</span>
               <span class="text-black t-body-1">{{parameter.is_cipher}}</span>
             </div>
             <div class="actions border-t pt-2 border-mono-30 w-full flex flex-row">
@@ -137,14 +137,14 @@
         <div class="table-h hidden md:block w-full">
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
-            <div class="p-2 flex-1">ID</div>
-            <div class="p-2 flex-1">Nombre</div>
-            <div class="p-2 flex-1">Valor</div>
-            <div class="p-2 flex-1">Tipo</div>
-            <div class="p-2 flex-1">Descripcion</div>
-            <div class="p-2 flex-1">Id Cliente </div>
-            <div class="p-2 flex-1">Cifrado</div>
-            <div class="p-2 w-24">Opciones</div>
+            <div class="p-2 flex-1">{{'IDENTIFICATION'|translate}}</div>
+            <div class="p-2 flex-1">{{'NAME'|translate}}</div>
+            <div class="p-2 flex-1">{{'VALUE'|translate}}</div>
+            <div class="p-2 flex-1">{{'TYPE'|translate}}</div>
+            <div class="p-2 flex-1">{{'DESCRIPTION'|translate}}</div>
+            <div class="p-2 flex-1">{{'CLIENT ID'|translate}}</div>
+            <div class="p-2 flex-1">{{'CIPHER'|translate}} </div>
+            <div class="p-2 w-24">{{'OPTIONS'|translate}}</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
             <div class="register-table w-full flex flex-row"
@@ -221,88 +221,88 @@
       </div>
       <div class="ec-container w-full py-6 md:py-12 bg-white dark:bg-black" *ngIf="isEditOrCreate">
         <div class="flex flex-col  space-y-12">
-          <span class="t-h5 text-black dark:text-white">{{idParameter === 0 ? 'Crear' : 'Editar'}} Parametro</span>
+          <span class="t-h5 text-black dark:text-white">{{idParameter === 0 ? 'Crear' : 'Editar'}} {{'PARAMETER'|translate}}</span>
           <form [formGroup]="formParameter" class=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             <div class="input flex flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70">Nombre</label>
+              <label class="t-caption-2 text-mono-70">{{'NAME'|translate}}</label>
               <input class="ec-input" type="text" formControlName="name">
               <div class="text-alert-error" *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('required')">
-                <span>El campo es requerido</span>
+                <span>{{'FIELD IS REQUIRED'|translate}}</span>
               </div>
               <div class="text-alert-error"
                    *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('maxlength')">
-                <span>El tamaño del campo no puede ser mayor a 20 caracteres</span>
+                <span>{{'THE FIELD SIZE CANNOT EXECEED 20 CHARACTERS'|translate}}</span>
               </div>
               <div class="text-alert-error"
                    *ngIf="formParameter.get('name')?.invalid && formParameter.get('name')?.touched && formParameter.get('name')?.hasError('minlength')">
-                <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
+                <span>{{'THE FIELD SIZE CANNOT BE LESS THAN 4 CHARACTER'|translate}}</span>
               </div>
             </div>
             <div class="input flex flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70">Valor</label>
+              <label class="t-caption-2 text-mono-70">{{'VALUE'|translate}}</label>
               <input class="ec-input" type="text" formControlName="value">
               <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('required')">
-                <span>El campo es requerido</span>
+                <span>{{'FIELD IS REQUIRED'|translate}}</span>
               </div>
               <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('maxlength')">
-                <span>El tamaño del campo no puede ser mayor a 20 caracteres</span>
+                <span>{{'THE FIELD SIZE CANNOT EXECEED 20 CHARACTERS'|translate}}</span>
               </div>
               <div class="text-alert-error" *ngIf="formParameter.get('value')?.invalid && formParameter.get('value')?.touched && formParameter.get('value')?.hasError('minlength')">
-                <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
+                <span>{{'THE FIELD SIZE CANNOT BE LESS THAN 4 CHARACTER'|translate}}</span>
               </div>
             </div>
             <div class="input flex flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70">Tipo</label>
+              <label class="t-caption-2 text-mono-70">{{'TYPE'|translate}}</label>
               <input class="ec-input" type="text" formControlName="type">
               <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('required')">
-                <span>El campo es requerido</span>
+                <span>{{'FIELD IS REQUIRED'|translate}}</span>
               </div>
               <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('maxlength')">
-                <span>El tamaño del campo no puede ser mayor a 10 caracteres</span>
+                <span>{{'THE FIELD SIZE CANNOT EXECEED 10 CHARACTERS'|translate}}</span>
               </div>
               <div class="text-alert-error" *ngIf="formParameter.get('type')?.invalid && formParameter.get('type')?.touched && formParameter.get('type')?.hasError('minlength')">
-              <span>El tamaño del campo no puede ser menor a 4 caracteres</span>
+              <span>{{'THE FIELD SIZE CANNOT BE LESS THAN 4 CHARACTER'|translate}}</span>
             </div>
             </div>
             <div class="input flex flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70">Descripcion</label>
+              <label class="t-caption-2 text-mono-70">{{'DESCRIPTION'|translate}}</label>
               <input class="ec-input" type="text" formControlName="description">
               <div class="text-alert-error" *ngIf="formParameter.get('description')?.invalid && formParameter.get('description')?.touched && formParameter.get('description')?.hasError('required')">
-                <span>El campo es requerido</span>
+                <span>{{'FIELD IS REQUIRED'|translate}}</span>
               </div>
               <div class="text-alert-error" *ngIf="formParameter.get('description')?.invalid && formParameter.get('description')?.touched && formParameter.get('description')?.hasError('maxlength')">
-                <span>El tamaño del campo no puede ser mayor a 50 caracteres</span>
+                <span>{{'THE FIELD SIZE CANNOT EXECEED 50 CHARACTERS'|translate}}</span>
               </div>
             </div>
             <div class="input flex flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70">Id Client</label>
+              <label class="t-caption-2 text-mono-70">{{'CLIENT ID'|translate}}</label>
               <input class="ec-input" type="number" formControlName="client_id">
               <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('required')">
-                <span>El campo es requerido</span>
+                <span>{{'FIELD IS REQUIRED'|translate}}</span>
               </div>
               <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('max')">
-                <span>El id del cliente no puede ser mayor a 100000 </span>
+                <span>{{'CUSTOMER ID CANNOT BE GREATER THAN 100000'|translate}} </span>
               </div>
               <div class="text-alert-error" *ngIf="formParameter.get('client_id')?.invalid && formParameter.get('client_id')?.touched && formParameter.get('client_id')?.hasError('min')">
-                <span>El id del cliente debe ser mayor a 0</span>
+                <span>{{'CUSTOMER ID MUST BE GREATER THAN 0'|translate}}</span>
               </div>
             </div>
             <div class="input flex flex-col space-y-1">
-              <label class="t-caption-2 text-mono-70">Cifrado</label>
+              <label class="t-caption-2 text-mono-70">{{'CIPHER'|translate}}</label>
               <div class="flex gap-4 items-center">
                 <div class="flex gap-4 items-center">
-                  <label class="t-caption-2 text-mono-70">verdadero</label>
+                  <label class="t-caption-2 text-mono-70">{{'TRUE'|translate}}</label>
                   <input class="ec-input" type="radio" name="is_cipher" formControlName="is_cipher" [value]="true">
                 </div>
                 <div class="flex gap-4 items-center">
-                  <label class="t-caption-2 text-mono-70">falso</label>
+                  <label class="t-caption-2 text-mono-70">{{'FALSE'|translate}}</label>
                   <input class="ec-input" type="radio" name="is_cipher" formControlName="is_cipher" [value]="false">
                 </div>
               </div>
             </div>
           </form>
           <div class="flex flex-row space-x-4 lg:w-2/3 ">
-            <button class="flex-1 md:flex-none b-outline" (click)="isEditOrCreate = false; idParameter=0">Cancelar</button>
+            <button class="flex-1 md:flex-none b-outline" (click)="isEditOrCreate = false; idParameter=0">{{'CANCEL'|translate}}</button>
             <button class="flex-1 md:flex-none b-solid"
                     (click)="sendForm()">{{idParameter === 0 ? 'Crear' : 'Editar'}}</button>
           </div>

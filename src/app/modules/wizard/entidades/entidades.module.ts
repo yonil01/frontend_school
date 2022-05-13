@@ -19,6 +19,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import { EntityListValuesComponent } from './components/entity-list-values/entity-list-values.component';
 import { EntityCreateValueComponent } from './components/entity-create-value/entity-create-value.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
         UiModule,
         ReactiveFormsModule,
         ToastModule,
-        DragDropModule
+        DragDropModule,
+        TranslateModule
     ],
   providers: [
     ToastService

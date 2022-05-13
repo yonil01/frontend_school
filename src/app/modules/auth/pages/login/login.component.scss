@@ -2,7 +2,7 @@
 @import 'src/app/core/styles/global';
 
 .form-login {
-  @apply flex flex-col p-6 flex-none lg:flex-1 bg-white space-y-12
+  @apply flex flex-col p-6 lg:p-32 flex-none lg:items-center lg:justify-center lg:w-1/2 bg-white space-y-12
 }
 
 .footer-login {

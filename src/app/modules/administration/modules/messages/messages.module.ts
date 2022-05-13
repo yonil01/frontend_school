@@ -10,6 +10,7 @@ import { MessagesCreateComponent } from './pages/messages-create/messages-create
 import {MessageServices} from "@app/modules/administration/services/message/message.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ToastModule} from "ecapture-ng-ui";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {ToastModule} from "ecapture-ng-ui";
         UiModule,
         ReactiveFormsModule,
         ToastModule,
-        FormsModule
+        FormsModule,
+        TranslateModule
     ],
   providers: [MessageServices],
   exports: [

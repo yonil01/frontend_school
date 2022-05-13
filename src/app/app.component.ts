@@ -13,6 +13,7 @@ import {AuthenticationGuard} from "@app/core/services/guards/authentication.guar
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
 import {EnvServiceProvider} from "@app/core/services/env/env.service.provider";
 import {decryptText} from "@app/core/utils/crypto/cypher";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,14 @@ export class AppComponent implements OnDestroy {
     private idle: Idle,
     private _localStorageService: LocalStorageService,
     private route: Router,
+    private translate: TranslateService,
   ) {
+    this.store.select('language').subscribe((state) => {
+      this.setLanguage()
+    });
+
+    this.setLanguage();
+
     this.setTheme();
     this.getAppId();
     lookAndFeelService.getLookAndFeelConfig().subscribe((resp) => {
@@ -148,5 +156,11 @@ export class AppComponent implements OnDestroy {
     if (EnvServiceProvider.useFactory().REDIRECT_TO) {
       window.location.href = decryptText(EnvServiceProvider.useFactory().REDIRECT_URL, '');
     }
+  }
+
+  private setLanguage(): void {
+    const lang =  this._localStorageService.getLanguage();
+    this.translate.setDefaultLang('es');
+    this.translate.use(lang);
   }
 }

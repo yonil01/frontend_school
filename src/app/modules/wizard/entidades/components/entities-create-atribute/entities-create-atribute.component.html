@@ -1,14 +1,16 @@
+
+
 <app-layout>
   <ng-container layoutBody>
     <div class="ec-container py-12 space-y-12 bg-white">
       <div class="flex flex-col space-y-2 w-full">
-        <span *ngIf="!isEdit" class="t-h5 text-black">Crear Atributo</span>
-        <span *ngIf="isEdit" class="t-h5 text-black">Editar Atributo</span>
+        <span *ngIf="!isEdit" class="t-h5 text-black">{{'CREATE ATTRIBUTE'|translate}}</span>
+        <span *ngIf="isEdit" class="t-h5 text-black">{{'EDIT ATTRIBUTE'|translate}}</span>
         <div>
           <div class="flex flex-row space-x-2">
             <div class="bg-brand-2 rounded-sm w-2"></div>
             <div class="w-full text-mono-70 py-1">
-              <span>El "Nombre" y "Valor a Almacenar" no son editables luego de crear el atributo.</span>
+              <span>{{'THE\"NAME\" AND \"VALUE TO STORE\" ARE NOT EDITABLE AFTER CREATING THE ATTRIBUTE.'|translate}}</span>
             </div>
           </div>
         </div>
@@ -16,15 +18,15 @@
       <div class="form">
         <form [formGroup]="createAttributeForm" class="space-y-4" class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70" for="name">Nombre</label>
+            <label class="t-caption-2 text-mono-70" for="name">{{'NAME'|translate}}</label>
             <input formControlName="name" class="ec-input" type="text" id="name">
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70" for="description">Descripción</label>
+            <label class="t-caption-2 text-mono-70" for="description">{{'DESCRIPTION'|translate}}</label>
             <input formControlName="description" class="ec-input" type="text" id="description">
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Validación</label>
+            <label class="t-caption-2 text-mono-70">{{'VALIDATION'|translate}}</label>
             <select formControlName="validation" class="ec-input">
               <option *ngFor="let validation of validations" value="{{validation.value}}">
                 {{ validation.label }}
@@ -32,75 +34,75 @@
             </select>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Etiqueta HTML</label>
+            <label class="t-caption-2 text-mono-70">{{'HTML TAG'|translate}}</label>
             <select formControlName="tag_html" class="ec-input">
               <option *ngFor="let tag of tagsHtml" value="{{tag.value}}">{{tag.label}}</option>
             </select>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Tipo de Campo</label>
+            <label class="t-caption-2 text-mono-70">{{'FIELD TYPE' |translate}}</label>
             <select formControlName="field_types" class="ec-input">
               <option *ngFor="let type of fieldTypes" value="{{type.value}}">{{type.label}}</option>
             </select>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Tipo</label>
+            <label class="t-caption-2 text-mono-70">{{'TYPE'|translate}}</label>
             <select formControlName="type" class="ec-input">
               <option *ngFor="let type of types" value="{{type.value}}">{{type.label}}</option>
             </select>
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Máscara</label>
+            <label class="t-caption-2 text-mono-70">{{'MASK'|translate}}</label>
             <input formControlName="mask" class="ec-input" type="text">
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Secuencia</label>
+            <label class="t-caption-2 text-mono-70">{{'SEQUENCE'|translate}}</label>
             <input formControlName="sequence" class="ec-input" type="number">
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Longitud Mínima</label>
+            <label class="t-caption-2 text-mono-70">{{'MINIMUM LENGTH'|translate}}</label>
             <input formControlName="min_length" class="ec-input" type="number">
           </div>
           <div class="input flex flex-col space-y-1">
-            <label class="t-caption-2 text-mono-70">Longitud Máxima</label>
+            <label class="t-caption-2 text-mono-70">{{'MAXIMUM LENGTH'|translate}}</label>
             <input formControlName="max_length" class="ec-input" type="number">
           </div>
           <div class="input flex flex-col space-y-1">
             <div class="flex flex-row items-center justify-between">
-              <label class="t-caption-2 text-mono-70">Expresión Regular</label>
-              <span class="t-overline text-mono-70">OPCIONAL</span>
+              <label class="t-caption-2 text-mono-70">{{'REGULAR EXPRESSION'|translate}}</label>
+              <span class="t-overline text-mono-70">{{'OPTIONAL'|translate}}</span>
             </div>
             <input formControlName="regex" class="ec-input" type="text">
           </div>
           <div class="grid md:col-span-2 grid-cols-2 md:grid-cols-3 gap-4">
             <div class="flex flex-row space-x-2 items-center">
               <input formControlName="dataset" class="w-4 h-4" type="checkbox">
-              <label class="t-body-2 text-black">Dataset</label>
+              <label class="t-body-2 text-black">{{'DATA SET'|translate}}</label>
             </div>
             <div class="flex flex-row space-x-2 items-center">
               <input formControlName="is_cipher" class="w-4 h-4" type="checkbox">
-              <label class="t-body-2 text-black">Cifrado</label>
+              <label class="t-body-2 text-black">{{'CIPHER'|translate}}</label>
             </div>
             <div class="flex flex-row space-x-2 items-center">
               <input formControlName="required" class="w-4 h-4" type="checkbox">
-              <label class="t-body-2 text-black">Requerido</label>
+              <label class="t-body-2 text-black">{{'REQUIRED'|translate}}</label>
             </div>
             <div class="flex flex-row space-x-2 items-center">
               <input formControlName="hidden" class="w-4 h-4" type="checkbox">
-              <label class="t-body-2 text-black">Oculto</label>
+              <label class="t-body-2 text-black">{{'HIDDEN'|translate}}</label>
             </div>
             <div class="flex flex-row space-x-2 items-center">
               <input formControlName="disabled" class="w-4 h-4" type="checkbox">
-              <label class="t-body-2 text-black">Deshabilitado</label>
+              <label class="t-body-2 text-black">{{'DISABLED'|translate}}</label>
             </div>
             <div class="flex flex-row space-x-2 items-center">
               <input formControlName="is_index" class="w-4 h-4" type="checkbox">
-              <label class="t-body-2 text-black">Índice</label>
+              <label class="t-body-2 text-black">{{'INDEX'|translate}}</label>
             </div>
           </div>
           <div class="actions flex flex-row space-x-2">
-            <button (click)="onSendForm('cancel')" class="w-full md:w-auto b-outline">Cancelar</button>
-            <button (click)="onSendForm('sure')" class="w-full md:w-auto b-solid">Guardar</button>
+            <button (click)="onSendForm('cancel')" class="w-full md:w-auto b-outline">{{'CANCEL'|translate}}</button>
+            <button (click)="onSendForm('sure')" class="w-full md:w-auto b-solid">{{'SAVE'|translate}}</button>
           </div>
         </form>
       </div>
@@ -117,11 +119,11 @@
       <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div class="sm:flex sm:items-start">
           <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Guardar Atributo</h3>
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">{{'SAVE ATTRIBUTE'|translate}}</h3>
             <div class="mt-2">
-              <p class="text-sm text-gray-500">Los campos <b>Nombre</b> y <b>Tipo de campo</b> están especificados como
-                "{{createAttributeForm.controls['name'].value}} y "{{createAttributeForm.controls['field_types'].value}}"
-                y no se podran editar despues de creados, ¿Está seguro de crear el atributo?`</p>
+              <p class="text-sm text-gray-500">{{'THE FIELDS'|translate}} <b>{{'NAME'|translate}}</b> y <b>{{'FIELD TYPE'|translate}}</b> {{'ARE SPECIFIED AS'|translate}}
+                "{{createAttributeForm.controls['name'].value}} {{'AND'|translate}} "{{createAttributeForm.controls['field_types'].value}}"
+                {{'AND CANNOT BE EDITED AFTER BEING CREATED, ARE YOU SURE TO CREATE THE ATTRIBUTE?'|translate}}`</p>
             </div>
           </div>
         </div>
@@ -143,7 +145,7 @@
     </div>
     <div class="t-h5 ml-4 text-black">
       <span>
-        Cargando...
+        {{'LOADING'|translate}}...
       </span>
     </div>
   </div>

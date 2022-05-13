@@ -9,3 +9,4 @@ export * from './document-source.reducer';
 export * from './token.reducer';
 export * from './component.reducer';
 export * from './env.reducer';
+export * from './language.reducer';
