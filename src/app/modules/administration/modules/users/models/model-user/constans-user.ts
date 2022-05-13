@@ -11,10 +11,10 @@ export const styleTableUser: TableModel = {
       label: 'N° de Identificación',
     },
     {
-      label: 'Apellido y Nombre',
+      label: 'Apellido',
     },
     {
-      label: 'Correo',
+      label: 'EMAIL',
     },
     {
       label: 'Estado',

@@ -11,6 +11,7 @@
   "NAMES": "Nombres",
   "LASTNAMES": "Apellidos",
   "USER": "Usuario",
+  "USERS": "Usuarios",
   "CONFIRM_PASSWORD": "Confirmar Contraseña",
   "BASIC INFORMATION": "Información basica",
   "WORK FLOW": "Flujo de Trabajo",
@@ -364,6 +365,7 @@
   "PROFILE": "Perfil",
   "SPANISH": "Español",
   "ENGLISH": "Inglés",
-  "CHANGE_PASSWORD": "Cambiar contraseña"
+  "CHANGE_PASSWORD": "Cambiar contraseña",
+  "LANGUAGE": "Lenguaje"
 }
 

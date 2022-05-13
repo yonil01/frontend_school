@@ -92,7 +92,6 @@ import {
     InputPasswordModule,
     IconsModule,
     TranslateModule,
-
   ],
   providers: [ToastService]
 })

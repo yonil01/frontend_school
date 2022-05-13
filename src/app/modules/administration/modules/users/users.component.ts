@@ -146,17 +146,20 @@ export class UsersComponent implements OnInit {
   }
 
   private deleteUser(user: User): void {
+    this.showLoader[0].value = true;
     this.userService.deleteUser(user.id!.toLowerCase()).subscribe((res: Response) => {
       if (res.error) {
+        this.showLoader[0].value = false;
         this._messageService.add( {
-            type: 'success',
+            type: 'errror',
             message: res.msg,
             life: 5000,
           }
         );
       } else {
+        this.showLoader[0].value = false;
         this._messageService.add({
-          type: 'error',
+          type: 'success',
           message: res.msg,
           life: 5000,
         });
