@@ -279,7 +279,7 @@
   "FORM": "Formulario",
   "CURRENTLY REGISTERED ENTITIES.": "Entidades registradas actualmente.",
   "ACCESS THE LIST OF RECORDS FOR AN ENTITY WITH THE GREEN BUTTON ON THE RIGHT.": "Acceda a la lista de registros de una entidad con el botón verde en la parte derecha.",
-  "CREATE ENTITY": "Crear entidad",
+  "CREATE ENTITY": "Crear nueva entidad",
   "SEARCH ENTITY": "Buscar entidad",
   "BASIC FIDUCIARY INFORMATION": "Información básica de fiduciario",
   "INSURANCE THAT ELIMINATES THE ENTITY": "Seguro que elimina la entidad",
@@ -366,6 +366,7 @@
   "SPANISH": "Español",
   "ENGLISH": "Inglés",
   "CHANGE_PASSWORD": "Cambiar contraseña",
-  "LANGUAGE": "Lenguaje"
+  "LANGUAGE": "Lenguaje",
+  "CREATE_NEW_ROLE": "Crear nuevo rol"
 }
 

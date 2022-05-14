@@ -31,6 +31,7 @@ export class EntitiesListAutofillsComponent implements OnInit {
   public tableIndex: number = 0;
   public currentRowPage: number = 0;
   public autofillsTable: any;
+  public dataTemp: any = [];
 
 
   constructor(private _localStorage: LocalStorageService,
@@ -167,5 +168,31 @@ export class EntitiesListAutofillsComponent implements OnInit {
 
   getCurrentPage($event: number) {
     this.tableIndex = $event;
+  }
+
+  public findForm(value: any): void {
+    let data = value.target.value;
+    data = data.toLowerCase();
+    if (this.dataTemp.length > 0) {
+      this.autofills = this.dataTemp;
+      this.autofillsTable = this.dataTemp;
+    } else {
+      this.dataTemp = this.autofills;
+      this.autofillsTable = this.autofills;
+    }
+    this.autofills = this.autofills?.filter((m: any) => {
+      if (m.name.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    this.autofillsTable = this.autofillsTable?.filter((m: any) => {
+      if (m.name.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    if (data === '') {
+      this.autofills = this.dataTemp;
+      this.autofillsTable = this.dataTemp;
+    }
   }
 }

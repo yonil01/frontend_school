@@ -14,6 +14,7 @@ const helper = new JwtHelperService();
 export class LocalStorageService {
   modules!: Module[];
   public secretKey: string = '';
+  private key = '204812730425442A472D2F423F452847';
 
   constructor(private store: Store<AppState>) {
     this.store.select('env').subscribe(
@@ -85,7 +86,7 @@ export class LocalStorageService {
   }
 
   public getLanguage(): string {
-    const lang = decryptText(localStorage.getItem('Language') || '', this.secretKey)
+    const lang = decryptText(localStorage.getItem('Language') || '', this.key)
     if (lang) {
       const objLanguage = JSON.parse(lang);
       if (this.getUserId() === objLanguage.id) {
@@ -100,7 +101,7 @@ export class LocalStorageService {
       id: this.getUserId(),
       language: language
     };
-    localStorage.setItem('Language', encryptText(JSON.stringify(objLanguage), this.secretKey));
+    localStorage.setItem('Language', encryptText(JSON.stringify(objLanguage), this.key));
   }
 
 }

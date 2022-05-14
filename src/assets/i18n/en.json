@@ -279,7 +279,7 @@
   "FORM": "Form",
   "CURRENTLY REGISTERED ENTITIES.": "currently registered entities.",
   "ACCESS THE LIST OF RECORDS FOR AN ENTITY WITH THE GREEN BUTTON ON THE RIGHT.": "Access the list of records for an entity with the green button on the right.",
-  "CREATE ENTITY": "Create entity",
+  "CREATE ENTITY": "Create new entity",
   "SEARCH ENTITY": "Search entity",
   "BASIC FIDUCIARY INFORMATION": "Basic fiduciary information",
   "INSURANCE THAT ELIMINATES THE ENTITY": "Insurance that eliminates the entity",
@@ -368,6 +368,7 @@
   "ENGLISH": "English",
   "CHANGE_PASSWORD": "Change password",
   "LANGUAGE": "Language",
-  "PROFILE": "Profile"
+  "PROFILE": "Profile",
+  "CREATE_NEW_ROLE": "Create new role"
 }
 

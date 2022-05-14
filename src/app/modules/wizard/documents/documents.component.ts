@@ -73,6 +73,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public showAlertDeleteDtg: boolean = false;
   public showAlertDeleteTg: boolean = false;
   public doctypeForm: FormGroup;
+  public dataTemp: any = [];
 
   public icons: OptionsDropdown[] = [];
 
@@ -603,4 +604,29 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.router.navigate(["/wizard/documents/annexes-doc"])
   }
 
+  public findForm(value: any): void {
+    let data = value.target.value;
+    data = data.toLowerCase();
+    if (this.dataTemp.length > 0) {
+      this.docTypeGroups = this.dataTemp;
+      this.docTypeGroupsPagination = this.dataTemp;
+    } else {
+      this.dataTemp = this.docTypeGroups;
+      this.docTypeGroupsPagination = this.docTypeGroups;
+    }
+    this.docTypeGroups = this.docTypeGroups?.filter((m: any) => {
+      if (m.name.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    this.docTypeGroupsPagination = this.docTypeGroupsPagination?.filter((m: any) => {
+      if (m.name.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    if (data === '') {
+      this.docTypeGroups = this.dataTemp;
+      this.docTypeGroupsPagination = this.dataTemp;
+    }
+  }
 }

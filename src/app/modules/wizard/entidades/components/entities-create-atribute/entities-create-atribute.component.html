@@ -15,8 +15,12 @@
           </div>
         </div>
       </div>
-      <div class="form">
-        <form [formGroup]="createAttributeForm" class="space-y-4" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngIf="isEdit" class="flex flex-col space-y-1">
+        <span class="text-brand-2 t-caption-2">ID {{'ENTITY'|translate}}</span>
+        <span class="text-black t-body-1 select-all">{{entity.id}}</span>
+      </div>
+      <div class="form space-y-12">
+        <form [formGroup]="createAttributeForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70" for="name">{{'NAME'|translate}}</label>
             <input formControlName="name" class="ec-input" type="text" id="name">
@@ -100,11 +104,11 @@
               <label class="t-body-2 text-black">{{'INDEX'|translate}}</label>
             </div>
           </div>
-          <div class="actions flex flex-row space-x-2">
-            <button (click)="onSendForm('cancel')" class="w-full md:w-auto b-outline">{{'CANCEL'|translate}}</button>
-            <button (click)="onSendForm('sure')" class="w-full md:w-auto b-solid">{{'SAVE'|translate}}</button>
-          </div>
         </form>
+        <div class="actions flex flex-row space-x-2">
+          <button (click)="onSendForm('cancel')" class="w-full md:w-auto b-outline">{{'CANCEL'|translate}}</button>
+          <button (click)="onSendForm('sure')" class="w-full md:w-auto b-solid">{{'SAVE'|translate}}</button>
+        </div>
       </div>
     </div>
     <app-footer></app-footer>

@@ -29,7 +29,7 @@
             <path
               d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
           </svg>
-          <span routerLink="/workflow" class="t-body-2 cursor-pointer">
+          <span class="t-body-2 cursor-pointer">
           {{'ENTITIS'|translate}}
           </span>
         </div>
@@ -116,14 +116,12 @@
           <div class="table-h hidden md:block w-full">
             <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
               <div class="p-2 w-16">N°</div>
-              <div class="p-2 flex-1">ID</div>
               <div class="p-2 flex-1">{{'ENTITY'|translate}}</div>
               <div class="p-2 w-32">{{'OPTIONS'|translate}}</div>
             </div>
             <div class="table-body text-body-2 text-mono-70">
               <div class="item border-b border-mono-10 w-full flex flex-row" *ngFor="let entitie of entitiesTable, let i = index">
                 <div class="flex items-center p-2 w-16">{{entities.indexOf(entitie) + 1}}</div>
-                <div class="flex items-center p-2 flex-1 break-all" style="user-select: all;">{{entitie.id}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{entitie.description}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
