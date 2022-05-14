@@ -40,6 +40,7 @@ export class EntitiesListComponent implements OnInit {
   public tableIndex: number  = 0;
   public currentRowPage: number = 0;
   public attributesTable: any[] = [];
+  public dataTemp: any = [];
 
   constructor(private _localStorage: LocalStorageService,
               private messageService: ToastService,
@@ -254,5 +255,31 @@ export class EntitiesListComponent implements OnInit {
 
   getCurrentPage($event: number) {
     this.tableIndex = $event;
+  }
+
+  public findForm(value: any): void {
+    let data = value.target.value;
+    data = data.toLowerCase();
+    if (this.dataTemp.length > 0) {
+      this.attributes = this.dataTemp;
+      this.attributesTable = this.dataTemp;
+    } else {
+      this.dataTemp = this.attributes;
+      this.attributesTable = this.attributes;
+    }
+    this.attributes = this.attributes?.filter((m: any) => {
+      if (m.name.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    this.attributesTable = this.attributesTable?.filter((m: any) => {
+      if (m.name.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    if (data === '') {
+      this.attributes = this.dataTemp;
+      this.attributesTable = this.dataTemp;
+    }
   }
 }

@@ -31,6 +31,7 @@ export class EntityListCascadeComponent implements OnInit {
   public tableIndex: number = 0;
   public currentRowPage: number = 0;
   public cascadingDatasetsTable: any;
+  public dataTemp: any = [];
 
   constructor(private _localStorage: LocalStorageService,
               private entityService: EntityService,
@@ -164,5 +165,31 @@ export class EntityListCascadeComponent implements OnInit {
 
   getCurrentPage($event: number) {
     this.tableIndex = $event;
+  }
+
+  public findForm(value: any): void {
+    let data = value.target.value;
+    data = data.toLowerCase();
+    if (this.dataTemp.length > 0) {
+      this.cascadingDatasets = this.dataTemp;
+      this.cascadingDatasetsTable = this.dataTemp;
+    } else {
+      this.dataTemp = this.cascadingDatasets;
+      this.cascadingDatasetsTable = this.cascadingDatasets;
+    }
+    this.cascadingDatasets = this.cascadingDatasets?.filter((m: any) => {
+      if (m.name.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    this.cascadingDatasetsTable = this.cascadingDatasetsTable?.filter((m: any) => {
+      if (m.name.toLowerCase().indexOf(data) !== -1) {
+        return m;
+      }
+    });
+    if (data === '') {
+      this.cascadingDatasets = this.dataTemp;
+      this.cascadingDatasetsTable = this.dataTemp;
+    }
   }
 }

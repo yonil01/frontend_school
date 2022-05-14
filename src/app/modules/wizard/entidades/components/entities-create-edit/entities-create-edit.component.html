@@ -21,6 +21,10 @@
       </div>
       <div class="form">
         <form [formGroup]="createEditForm" class="space-y-4" action="">
+          <div *ngIf="isEdit" class="flex flex-col space-y-1">
+            <span class="text-brand-2 t-caption-2">ID {{'ENTITY'|translate}}</span>
+            <span class="text-black t-body-1 select-all">{{entity.id}}</span>
+          </div>
           <div class="input flex flex-col space-y-1">
             <label class="t-caption-2 text-mono-70" for="name">{{'NAME'|translate}}</label>
             <input formControlName="name" class="h-10 w-full lg:w-1/2 px-2 text-black t-body-2 bg-mono-10 rounded"

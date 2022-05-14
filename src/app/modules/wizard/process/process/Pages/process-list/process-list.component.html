@@ -1,6 +1,6 @@
 <app-layout>
   <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white h-full dark:bg-black">
+    <div class="ec-container py-6 md:py-12 bg-white min-h-full dark:bg-black">
       <div *ngIf="view === 'listProcess'">
         <div class="migas mb-4 text-brand-2 flex flex-row space-x-2 items-center flex-wrap">
           <div class="home">
@@ -58,6 +58,16 @@
             </div>
           </div>
         </div>
+        <div *ngIf="processesDisplay.length === 0" class="notify-null flex flex-col space-y-2 items-center p-12">
+          <div class="text-brand-2">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M39.54 62.72C29.406 62.72 24.722 58.284 18.732 51.516C17.044 49.61 11.862 43.996 11.862 43.996L10.86 42.888C8.42603 40.21 7.28003 38.852 7.28003 37.97C7.28003 36.888 8.02803 35.926 9.38403 35.256C11.76 34.084 15.642 33.964 18.022 35.794C19.812 37.17 23.376 41.016 25.28 43.12V14C25.28 11.224 27.216 9.28601 29.988 9.28001C29.988 9.28001 29.988 9.28001 29.99 9.28001C29.99 9.28001 29.992 9.28001 29.996 9.28001C29.998 9.28001 30 9.28001 30.002 9.28001C32.782 9.28601 34.72 11.224 34.72 14V29.28H47.824C52.896 29.28 56.72 32.836 56.72 37.552V45.572C56.72 54.478 54.638 62.72 39.54 62.72ZM12.93 43.032C12.934 43.036 18.12 48.654 19.81 50.566C25.54 57.038 30.008 61.28 39.54 61.28C52.604 61.28 55.28 55 55.28 45.572V37.552C55.28 33.656 52.074 30.718 47.824 30.718H34C33.602 30.718 33.28 30.396 33.28 29.998V14C33.28 12.04 31.96 10.722 29.996 10.72C28.038 10.722 26.72 12.04 26.72 14V45C26.72 45.298 26.536 45.566 26.256 45.674C25.978 45.782 25.66 45.704 25.462 45.476C25.402 45.41 19.496 38.74 17.146 36.934C15.296 35.516 11.968 35.588 10.022 36.55C9.19603 36.956 8.72203 37.476 8.72203 37.972C8.83603 38.52 10.848 40.732 11.928 41.922L12.93 43.032ZM21.51 23.458C18.814 21.07 17.268 17.622 17.268 14C17.268 6.98601 22.974 1.28001 29.988 1.28001C37.002 1.28001 42.708 6.98601 42.708 14C42.708 17.622 41.162 21.068 38.466 23.458L37.508 22.38C39.896 20.264 41.266 17.21 41.266 14C41.266 7.78001 36.208 2.72001 29.986 2.72001C23.766 2.72001 18.706 7.78001 18.706 14C18.706 17.21 20.076 20.266 22.464 22.38L21.51 23.458Z"/>
+            </svg>
+          </div>
+          <span
+            class="t-body-1 text-mono-70">No hay procesos registrados actualmente, presione "Crear Nuevo Proceso" para agregar uno.</span>
+        </div>
         <div class="data space-y-4 mt-4">
           <div class="table-v grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div *ngFor="let process of processesDisplay; let position = index"
@@ -66,7 +76,7 @@
               <div class="flex flex-row space-x-4">
                 <div class="flex flex-col">
                   <span class="text-mono-70 t-caption-2">ID</span>
-                  <span class="text-black t-body-1">{{process.process.id}}</span>
+                  <span class="text-black t-body-1 select-all">{{process.process.id}}</span>
                 </div>
                 <div class="flex flex-1 flex-col">
                   <span class="text-mono-70 t-caption-2">{{'PROCESS' | translate}}</span>
@@ -659,7 +669,7 @@
         </div>
       </div>
     </div>
-    <app-footer class="absolute bottom-0 left-0 w-full"></app-footer>
+    <app-footer class="w-full"></app-footer>
   </ng-container>
 </app-layout>
 <app-block-page [show]="isBlockPage"></app-block-page>

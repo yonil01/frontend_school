@@ -9,6 +9,10 @@
             <input type="text" formControlName="name" id="name" value="{{role.name}}" class="ec-input">
             <span *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
           </div>-->
+          <div *ngIf="isEdit" class="flex flex-col space-y-1">
+            <span class="text-brand-2 t-caption-2">ID {{'ROLE'|translate}}</span>
+            <span class="text-black t-body-1 select-all">{{role.id}}</span>
+          </div>
           <div class="flex flex-col space-y-1 lg:w-1/2">
             <label class="t-caption-2 text-mono-70">Nombre</label>
             <input type="text" formControlName="description" id="description" value="{{role.description}}" class="ec-input">
