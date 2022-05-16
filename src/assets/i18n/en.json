@@ -369,6 +369,7 @@
   "CHANGE_PASSWORD": "Change password",
   "LANGUAGE": "Language",
   "PROFILE": "Profile",
-  "CREATE_NEW_ROLE": "Create new role"
+  "CREATE_NEW_ROLE": "Create new role",
+  "PUBLISH": "Publish"
 }
 
