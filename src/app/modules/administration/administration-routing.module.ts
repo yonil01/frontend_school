@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: 'calendar',loadChildren: () => import('@app/modules/administration/modules/calendar/calendar.module').then(m => m.CalendarModule )},
   {path: 'notification',loadChildren: () => import('@app/modules/administration/modules/notification/notification.module').then(m => m.NotificationModule )},
   {path: 'timer',loadChildren: () => import('@app/modules/administration/modules/timer/timer.module').then(m => m.TimerModule )},
+  {path: 'console_notification',loadChildren: () => import('@app/modules/administration/modules/console-notify/console-notify.module').then(m => m.ConsoleNotifyModule )},
 ];
 
 @NgModule({
