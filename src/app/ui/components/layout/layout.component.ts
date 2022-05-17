@@ -54,8 +54,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private route: Router,
   ) {
     this.typeButton = 0;
-    this.language = this._localStorageService.getLanguage();
-    this.userId = this._localStorageService.getUserId();
+    this.language = this._localStorageService.getLanguage() || '';
+    this.userId = this._localStorageService.getUserId() || '';
 
     this._subscription.add(
       this.usersService.getUserByID(this.userId).subscribe((res) => {
@@ -66,14 +66,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
             this.rolesService.getRoles().subscribe((res) => {
               if(!res.error){
                 const roles = res.data;
-                console.log(roles);
 
                 for (let role of roles){
                   for(let roleUser of this.user.roles){
                     if(role.id === roleUser.id){
                       this.rolesUser.push(role.name);
-                      console.log(role);
-                      console.log(role.name);
                       break;
                     }
                   }

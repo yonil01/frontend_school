@@ -46,8 +46,11 @@ export class LocalStorageService {
     return this.decodeToken().user.colors;
   }
 
-  getUserId(): string {
-    return this.decodeToken().user.id;
+  getUserId(): string{
+    if(this.decodeToken()){
+      return this.decodeToken().user.id || '';
+    }
+    return '';
   }
 
   getUserName(): string {
@@ -89,9 +92,7 @@ export class LocalStorageService {
     const lang = decryptText(localStorage.getItem('Language') || '', this.key)
     if (lang) {
       const objLanguage = JSON.parse(lang);
-      if (this.getUserId() === objLanguage.id) {
-        return objLanguage.language;
-      }
+      return objLanguage.language;
     }
     return 'es';
   }
