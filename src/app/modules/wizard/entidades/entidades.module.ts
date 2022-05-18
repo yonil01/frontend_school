@@ -20,6 +20,9 @@ import { EntityListValuesComponent } from './components/entity-list-values/entit
 import { EntityCreateValueComponent } from './components/entity-create-value/entity-create-value.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import {TranslateModule} from "@ngx-translate/core";
+import { ImportAutofillComponent } from './components/import-autofill/import-autofill.component';
+import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
+import {DirectivesModule} from "@app/core/directives/directives.module";
 
 
 @NgModule({
@@ -39,17 +42,20 @@ import {TranslateModule} from "@ngx-translate/core";
     EntityListValuesComponent,
     EntityCreateValueComponent,
     ConfirmationModalComponent,
+    ImportAutofillComponent,
 
   ],
-    imports: [
-        CommonModule,
-        EntidadesRoutingModule,
-        UiModule,
-        ReactiveFormsModule,
-        ToastModule,
-        DragDropModule,
-        TranslateModule
-    ],
+  imports: [
+    CommonModule,
+    EntidadesRoutingModule,
+    UiModule,
+    ReactiveFormsModule,
+    ToastModule,
+    DragDropModule,
+    TranslateModule,
+    PerfectScrollbarModule,
+    DirectivesModule
+  ],
   providers: [
     ToastService
   ]

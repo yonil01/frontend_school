@@ -1,0 +1,37 @@
+<div class="fixed top-0 left-0 w-full h-screen" style="background: rgba(20,20,20,0.6)">
+  <div class="h-full flex" style="padding: 4rem 8rem">
+    <div class="w-full flex flex-col bg-white rounded shadow-lg border border-mono-30">
+      <div class="h-12 flex justify-between bg-mono-10">
+        <div class="text-2xl text-black p-2"><span class="p-1.5">Importación de Autofill</span></div>
+        <div class="flex justify-end p-2">
+          <button type="button" (click)="closeModal.emit(true)"
+                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                  data-modal-toggle="popup-modal">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="flex flex-1 flex-col items-center justify-center space-y-4 cursor-pointer" appDragDrop
+           (onFileDropped)="dragDropFile($event[0])" (click)="fileInput.click()">
+        <div class="flex flex-col items-center justify-center space-y-1 truncate select-none">
+          <div class="">
+            <svg class="fill-current text-mono-30" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+                 viewBox="0 0 64 64" fill="none">
+              <path
+                d="M39.5393 62.7198C29.4053 62.7198 24.7213 58.2838 18.7313 51.5158C17.0433 49.6098 11.8613 43.9958 11.8613 43.9958L10.8593 42.8878C8.4253 40.2098 7.2793 38.8518 7.2793 37.9698C7.2793 36.8878 8.0273 35.9258 9.3833 35.2558C11.7593 34.0838 15.6413 33.9638 18.0213 35.7938C19.8113 37.1698 23.3753 41.0158 25.2793 43.1198V13.9998C25.2793 11.2238 27.2153 9.28578 29.9873 9.27979C29.9873 9.27979 29.9873 9.27979 29.9893 9.27979C29.9893 9.27979 29.9913 9.27979 29.9953 9.27979C29.9973 9.27979 29.9993 9.27979 30.0013 9.27979C32.7813 9.28578 34.7193 11.2238 34.7193 13.9998V29.2798H47.8233C52.8953 29.2798 56.7193 32.8358 56.7193 37.5518V45.5718C56.7193 54.4778 54.6373 62.7198 39.5393 62.7198ZM12.9293 43.0318C12.9333 43.0358 18.1193 48.6538 19.8093 50.5658C25.5393 57.0378 30.0073 61.2798 39.5393 61.2798C52.6033 61.2798 55.2793 54.9998 55.2793 45.5718V37.5518C55.2793 33.6558 52.0733 30.7178 47.8233 30.7178H33.9993C33.6013 30.7178 33.2793 30.3958 33.2793 29.9978V13.9998C33.2793 12.0398 31.9593 10.7218 29.9953 10.7198C28.0373 10.7218 26.7193 12.0398 26.7193 13.9998V44.9998C26.7193 45.2978 26.5353 45.5658 26.2553 45.6738C25.9773 45.7818 25.6593 45.7038 25.4613 45.4758C25.4013 45.4098 19.4953 38.7398 17.1453 36.9338C15.2953 35.5158 11.9673 35.5878 10.0213 36.5498C9.1953 36.9558 8.7213 37.4758 8.7213 37.9718C8.8353 38.5198 10.8473 40.7318 11.9273 41.9218L12.9293 43.0318ZM21.5093 23.4578C18.8133 21.0698 17.2673 17.6218 17.2673 13.9998C17.2673 6.98579 22.9733 1.27979 29.9873 1.27979C37.0013 1.27979 42.7073 6.98579 42.7073 13.9998C42.7073 17.6218 41.1613 21.0678 38.4653 23.4578L37.5073 22.3798C39.8953 20.2638 41.2653 17.2098 41.2653 13.9998C41.2653 7.77979 36.2073 2.71979 29.9853 2.71979C23.7653 2.71979 18.7053 7.77979 18.7053 13.9998C18.7053 17.2098 20.0753 20.2658 22.4633 22.3798L21.5093 23.4578Z"/>
+            </svg>
+          </div>
+          <span class="t-body-2 text-brand-2">{{'IMPORT_PRESS_OR_DRAG_DOCUMENT'|translate}}</span>
+          <span class="t-body-2 text-brand-2">CSV</span>
+        </div>
+      </div>
+      <input class="hidden" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, text/csv" type="file" #fileInput (change)="clickUploadFile($event)"/>
+    </div>
+  </div>
+</div>
+
+<app-block-page></app-block-page>
