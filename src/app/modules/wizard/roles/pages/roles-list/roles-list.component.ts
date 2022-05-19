@@ -81,7 +81,6 @@ export class RolesListComponent implements OnInit, OnDestroy {
   public showRole(role: Role): void {
     this._store.dispatch(controlRole({ role: role, index: 0 }));
     this._router.navigateByUrl('wizard/roles/manager');
-    console.log(role);
   }
 
   public createRole(): void {

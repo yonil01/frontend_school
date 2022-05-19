@@ -47,7 +47,6 @@ export class AuthModalComponent implements OnInit, OnDestroy {
     this.loginError = false;
     this.isLoading = true;
     this._authenticationService.login(this.form.value, '').subscribe((resp: any) => {
-      console.log(resp);
       if (resp.data) {
         this._authenticationService.setTokenSessionStorage(resp.data);
         this.store.dispatch(controlLogin({ logged: true }));

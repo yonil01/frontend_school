@@ -1,6 +1,6 @@
 <app-layout>
   <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white h-full">
+    <div class="ec-container py-6 md:py-12 bg-white min-h-full">
       <div class="migas mb-4 text-brand-2 flex flex-row space-x-2 items-center flex-wrap">
         <div class="home">
           <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -161,7 +161,7 @@
         <app-paginator [data]="roles" (current-data-page)="rolesForPagination = $event"></app-paginator>
       </div>
     </div>
-    <app-footer class="absolute bottom-0 left-0 w-full"></app-footer>
+    <app-footer></app-footer>
   </ng-container>
 </app-layout>
 

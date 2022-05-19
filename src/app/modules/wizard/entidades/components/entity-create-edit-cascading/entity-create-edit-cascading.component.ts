@@ -81,7 +81,7 @@ export class EntityCreateEditCascadingComponent implements OnInit {
   }
 
   createCascade(entity: Entity) {
-    debugger
+
     if (this.entity.id) {
       const cascadingPersistent: CascadingDataset = {...this.createEditForm.value};
       cascadingPersistent.id = uuidv4().toLowerCase();

@@ -56,8 +56,6 @@ export class EntityAddAttributeComponent implements OnInit {
 
   getCascadingdatasets(): void {
     this.isBlock = true;
-    console.log(this.selectedCascading)
-    debugger
     const attributes = this.entity?.attributes ? JSON.parse(JSON.stringify(this.entity.attributes)) : [];
     this.cascadingdatasetsService.getAttributeCascadingDataset().subscribe((res) => {
       this.attributesSelected = [];
@@ -80,7 +78,6 @@ export class EntityAddAttributeComponent implements OnInit {
         }
         this.isBlock = false;
       }
-      debugger
     }, (err) => {
       this.isBlock = false;
       this.message.emit({
@@ -286,8 +283,7 @@ export class EntityAddAttributeComponent implements OnInit {
           }
         }
         this.attributesSelected.sort((a: any, b: any) => Number(a.sequence) - Number(b.sequence));
-        console.log(this.attributesSelected)
-        debugger
+
         this.isBlock = false;
       });
     }

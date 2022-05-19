@@ -333,8 +333,6 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
           value: dataForm?.value,
         }
 
-        debugger
-
         if (!await this.updateRequiredAttribute(requestUpdate)) {
           this.isBlockPage = false
           return;
@@ -346,8 +344,6 @@ export class ConfigAttributeRequeridComponent implements OnInit, OnChanges, Afte
 
       if (!this.attributesRequiredAll.length) {
         this.isCreate = this.showForm = true;
-        console.log(this.showForm);
-        console.log('show')
       }
     }
   }

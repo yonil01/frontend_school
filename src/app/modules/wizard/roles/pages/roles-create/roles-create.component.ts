@@ -48,8 +48,6 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
 
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.client = JSON.parse(sessionStorage.getItem('client') || '');
-
-    console.log(this.project);
   }
 
   ngOnInit(): void {

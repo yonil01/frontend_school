@@ -78,8 +78,6 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
           value: doc.id || ''
         });
       }
-      console.log(this.role.doctypes);
-      console.log(this.sourceDoctypeDrop);
     });
   }
 
@@ -106,7 +104,6 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
   }
 
   public assignItemsDoctypes(datos: string[]): void {
-    console.log(this.role);
     const doctypeAlloweds: RolesDoctype[] = [];
     for (const doc of datos) {
       const doctypeAllowed: RolesDoctype = {
@@ -153,7 +150,6 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
   }
 
   public unAssignItemsDoctypes(datos: string[]): void {
-    console.log(this.role);
     this.isBlockPage = true;
     if (datos) {
       let ids: string[] = [];

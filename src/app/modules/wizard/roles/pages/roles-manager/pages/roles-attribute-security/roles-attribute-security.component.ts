@@ -102,7 +102,6 @@ export class RolesAttributeSecurityComponent implements OnInit {
         }
       }
 
-      console.log(this.role);
       this.isBlockPage = false;
     });
 
@@ -244,8 +243,6 @@ export class RolesAttributeSecurityComponent implements OnInit {
         this.showConfirmDeleteEntity = false;
         this._messageService.add({type: 'error', message: 'No se pudo eliminar, la entidad tiene atributos', life: 5000});
       }else{
-        console.log('ID Entidad Seleccionada:');
-        console.log(this.entitySelected.id);
         this._roleService
           .deleteRolesSecurityEntity(this.entitySelected.id || '')
           .subscribe((res: Response) => {

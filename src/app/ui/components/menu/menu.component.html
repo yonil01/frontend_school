@@ -75,15 +75,6 @@
         </div>
       </div>
       <div class="flex flex-row">
-        <button (click)="isOptionConfig = true" class="edit w-12 b-ghost">
-          <div>
-            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                 fill="none">
-              <path
-                d="M21.0303 2.96973C22.4278 4.36719 22.4278 6.63293 21.0303 8.03039L9.06201 19.9987C8.78513 20.2756 8.44079 20.4754 8.06303 20.5784L2.94734 21.9736C2.38747 22.1263 1.87374 21.6126 2.02643 21.0527L3.42162 15.937C3.52465 15.5593 3.72447 15.2149 4.00135 14.9381L15.9697 2.96973C17.3671 1.57227 19.6329 1.57227 21.0303 2.96973ZM15.0002 6.06063L5.06201 15.9987C4.96972 16.091 4.90311 16.2058 4.86877 16.3317L3.81892 20.1811L7.66836 19.1313C7.79428 19.097 7.90906 19.0303 8.00135 18.9381L17.9392 8.99963L15.0002 6.06063ZM17.0303 4.03039L16.0602 4.99963L18.9992 7.93963L19.9697 6.96973C20.7813 6.15805 20.7813 4.84206 19.9697 4.03039C19.158 3.21871 17.842 3.21871 17.0303 4.03039Z"/>
-            </svg>
-          </div>
-        </button>
         <button class="logout w-12 b-ghost" (click)="logout()">
           <div>
             <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -260,12 +251,6 @@
   <div (click)="closeMenu.emit(false)" class="flex-1" style="background: rgba(0,0,0,0.4)"></div>
 </div>
 
-<div *ngIf="isOptionConfig" class="options-config fixed z-50 w-full h-screen top-0 left-0 flex items-center justify-center" style="background: rgba(0,0,0,0.6)">
-  <div class="body border border-mono-30 drop-shadow-lg rounded p-4 bg-white">
-    <div class="actions">
-      <div>
-        <button (click)="isOptionConfig = false" class="b-outline">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
+<app-block-page [show]="isBlock"></app-block-page>
+<app-confirm-dialog [show]="showConfirmLogout" type="warning" title="¿Está seguro(a) de cerrar la sesión?"
+                    body="" (onEvent)="confirmDialogLogout($event)"></app-confirm-dialog>

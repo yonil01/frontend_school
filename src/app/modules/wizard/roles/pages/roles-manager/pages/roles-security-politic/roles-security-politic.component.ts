@@ -7,7 +7,7 @@ import {Router} from "@angular/router";
 import { v4 as uuidv4 } from 'uuid';
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {ToastService} from "ecapture-ng-ui";
-import {addPasswordPolicy, deletePasswordPolicy} from "@app/core/store/actions/roles.action";
+import {addPasswordPolicy, controlRole, deletePasswordPolicy} from "@app/core/store/actions/roles.action";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 
@@ -42,8 +42,8 @@ export class RolesSecurityPoliticComponent implements OnInit {
       max_length: ['', [Validators.required, Validators.min(1), Validators.max(50)]],
       time_unlock: ['', [Validators.required, Validators.min(1), Validators.max(1000)]],
       store_pass_not_repeated: ['', [Validators.required, Validators.max(1000)]],
-      days_pass_valid: ['', [Validators.required, Validators.max(50)]],
-      failed_attempts: ['', [Validators.required, Validators.max(50)]],
+      days_pass_valid: ['', [Validators.required, Validators.max(120)]],
+      failed_attempts: ['', [Validators.required, Validators.max(120)]],
       inactivity_time: ['', [Validators.required, Validators.max(1000)]],
       alpha: ['', [Validators.required, Validators.min(0), Validators.max(50)]],
       special: ['', [Validators.required, Validators.min(0), Validators.max(50)]],
@@ -53,7 +53,8 @@ export class RolesSecurityPoliticComponent implements OnInit {
       timeout: ['', [Validators.required, Validators.max(1000)]],
     });
     this.store.select('role').subscribe((res) => {
-      this.role = res.role;
+      const data = res.role;
+      this.role = JSON.parse(JSON.stringify(data));
       if (!this.role || Object.keys(this.role).length === 0) this.router.navigateByUrl('wizard/roles');
     });
   }
@@ -67,6 +68,52 @@ export class RolesSecurityPoliticComponent implements OnInit {
       this.DocumentsPoliticiesForm.setValue(passPolicy);
       this.isActive = this.DocumentsPoliticiesForm.get('enable')?.value;
     }
+  }
+
+  refreshRolePolicy(data: any){
+    const dataPassPolicy = JSON.parse(JSON.stringify(data));
+    this.store.select('role').subscribe((res) => {
+      const data = res.role;
+      this.role = JSON.parse(JSON.stringify(data));
+      if (!this.role || Object.keys(this.role).length === 0) this.router.navigateByUrl('wizard/roles');
+    });
+
+    this.role.password_policy = {
+      id: dataPassPolicy.id,
+      alpha: dataPassPolicy.alpha,
+      days_pass_valid: dataPassPolicy.days_pass_valid,
+      digits: dataPassPolicy.digits,
+      enable: dataPassPolicy.enable,
+      failed_attempts: dataPassPolicy.failed_attempts,
+      inactivity_time: dataPassPolicy.inactivity_time,
+      lower_case: dataPassPolicy.lower_case,
+      max_length: dataPassPolicy.max_length,
+      min_length: dataPassPolicy.min_length,
+      special: dataPassPolicy.special,
+      store_pass_not_repeated: dataPassPolicy.store_pass_not_repeated,
+      time_unlock: dataPassPolicy.time_unlock,
+      timeout: dataPassPolicy.timeout,
+      upper_case: dataPassPolicy.upper_case,
+    };
+
+    this.store.dispatch(controlRole({ role: this.role, index: 0 }));
+
+    this.store.select('role').subscribe((res) => {
+      this.role = res.role;
+      if (!this.role || Object.keys(this.role).length === 0) this.router.navigateByUrl('wizard/roles');
+    });
+
+    this.DocumentsPoliticiesForm.reset();
+
+    if(this.role.password_policy){
+      const passPolicy: PasswordPolicy = { ...this.role.password_policy };
+      delete passPolicy.id;
+      delete passPolicy.role_id;
+      this.DocumentsPoliticiesForm.setValue(passPolicy);
+      this.isActive = this.DocumentsPoliticiesForm.get('enable')?.value;
+    }
+
+    this.isBlockPage = false;
   }
 
   handleChange() {
@@ -89,8 +136,13 @@ export class RolesSecurityPoliticComponent implements OnInit {
           this._messageService.add({type: 'error', message: 'Error en la Eliminación' + res.msg,life: 5000});
         } else {
           this._messageService.add({type: 'success', message: 'Eliminación Exitosa' + res.msg,life: 5000});
-          this.store.dispatch(deletePasswordPolicy({}));
+
+          this.role.password_policy = {};
+          this.store.dispatch(controlRole({ role: this.role, index: 0 }));
+
           this.DocumentsPoliticiesForm.reset();
+
+          this.isBlockPage = false;
         }
         this.showConfirm = false;
       });
@@ -117,10 +169,12 @@ export class RolesSecurityPoliticComponent implements OnInit {
   }
 
   createPassPolicy(data: PasswordPolicy) {
+    this.isBlockPage = true;
     if (this.DocumentsPoliticiesForm.invalid) {
       return Object.values(this.DocumentsPoliticiesForm.controls).forEach((control) => {
         control.markAsTouched();
       });
+      this.isBlockPage = false;
     } else {
       if (this.role.password_policy?.id !== undefined) {
         const passPolicy: PasswordPolicy = {...this.role.password_policy, ...this.DocumentsPoliticiesForm.value, id: this.role.password_policy?.id.toLocaleLowerCase(), role_id: this.role.id?.toLocaleLowerCase(),
@@ -129,9 +183,11 @@ export class RolesSecurityPoliticComponent implements OnInit {
         this._roleService.updateRolesPasswordPolicy(dataPassPolicy).subscribe((res: Response) => {
           if (res.error) {
             this._messageService.add({type: 'error', message: 'Error en la Actualización' + res.msg,life: 5000});
+            this.isBlockPage = false;
           } else {
             this._messageService.add({type: 'success', message: 'Actualización Exitosa' + res.msg,life: 5000});
-            this.store.dispatch(addPasswordPolicy({ passwordpolicy: dataPassPolicy }));
+
+            this.refreshRolePolicy(dataPassPolicy);
           }
         });
       } else {
@@ -141,9 +197,11 @@ export class RolesSecurityPoliticComponent implements OnInit {
         this._roleService.createRolesPasswordPolicy(dataPassPolicy).subscribe((res: Response) => {
           if (res.error) {
             this._messageService.add({type: 'error', message: 'Error en la Creación' + res.msg,life: 5000});
+            this.isBlockPage = false;
           } else {
             this._messageService.add({type: 'success', message: 'Creación Exitosa' + res.msg,life: 5000});
-            this.store.dispatch(addPasswordPolicy({ passwordpolicy: dataPassPolicy }));
+
+            this.refreshRolePolicy(dataPassPolicy);
           }
         });
       }

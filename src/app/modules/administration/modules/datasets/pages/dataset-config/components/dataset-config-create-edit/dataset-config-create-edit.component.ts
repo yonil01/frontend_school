@@ -123,7 +123,6 @@ export class DatasetConfigCreateEditComponent implements OnInit {
   }
 
   onSubmitForm() {
-    console.log(this.datasetForm.value)
     if (this.datasetValue) {
       this.changeDatasetValue();
     } else {

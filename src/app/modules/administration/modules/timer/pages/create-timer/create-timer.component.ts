@@ -57,7 +57,6 @@ export class CreateTimerComponent implements OnInit {
   public saveForm(): void {
     if (this.formTimer.valid) {
       this.isBlockPage = true;
-      debugger
       const newTimer: Timer = {
         id: Object.keys(this.timer).length ? this.timer.id : uuidv4().toLowerCase(),
         name: this.formTimer.get('name')?.value,

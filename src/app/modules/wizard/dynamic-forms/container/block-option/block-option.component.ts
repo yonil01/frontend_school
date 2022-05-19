@@ -25,11 +25,9 @@ export class BlockOptionComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataModelFileManager = dataModelFileManager;
-    console.log(this.dataModelFileManager)
   }
 
   ngOnChanges(changes: any) {
-    console.log(this.dataModelFileManager)
 
   }
 

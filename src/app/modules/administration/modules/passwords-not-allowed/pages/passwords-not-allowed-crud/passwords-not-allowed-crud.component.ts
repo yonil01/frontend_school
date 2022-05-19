@@ -22,7 +22,7 @@ export class PasswordsNotAllowedCrudComponent implements OnInit {
             if (res.error) {
 
             } else {
-           console.log(res)
+
             }
 
           },
