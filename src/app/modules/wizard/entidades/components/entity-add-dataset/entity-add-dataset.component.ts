@@ -62,9 +62,9 @@ export class EntityAddDatasetComponent implements OnInit {
         if (!res.error) {
           const attribute = {...this.attribute, entities_attributes_dataset: this.datasetForm.get('dataset')?.value};
           this.store.dispatch(editAttribute({attribute: attribute as Attribute}));
-          debugger
+
           this.datasetForm.get('dataset')?.setValue(null);
-          debugger
+
           this.message.emit({
             type: 'success',
             message: 'Cambios guardados con éxito',

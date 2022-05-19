@@ -464,8 +464,6 @@ export class ProcessService {
         id: id,
       })
       .pipe(map(({data}: any) => {
-        console.log(data)
-        debugger
         return data.deleteAnsReminder
       }));
   }

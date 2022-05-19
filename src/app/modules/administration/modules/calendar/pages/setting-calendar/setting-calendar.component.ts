@@ -173,7 +173,6 @@ export class SettingCalendarComponent implements OnInit {
         this._subscription.add(
           this._calendarService.createCalendarWorkingDaysWeeks(newData).subscribe({
             next: (res) => {
-              console.log(res)
               if (res.error) {
                 this.addToast({
                   type: 'error',
@@ -340,8 +339,6 @@ export class SettingCalendarComponent implements OnInit {
         this._subscription.add(
           this._calendarService.updateCalendarHoliday(newData).subscribe({
             next: (res) => {
-              console.log(res)
-              debugger
               if (res.error) {
                 this.addToast({
                   type: 'error',

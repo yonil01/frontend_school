@@ -843,8 +843,6 @@ export class ProcessListComponent implements OnInit, OnDestroy {
 
 
   public addReminder():void {
-    console.log(this.ReminderForm)
-    debugger
     if (this.ReminderForm.valid) {
       this.isBlockPage = true;
       const dataAns = this.dataListAns.filter((data:ListAns)=>{

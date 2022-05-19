@@ -70,7 +70,6 @@ export class MessagesListComponent implements OnInit, OnDestroy {
               if (res.data) {
                 this.messages = res.data;
                 this.initPagination();
-                console.log(this.messages);
               } else {
                 this._toastService.add({type: 'info', message: 'No hay mensajes creados', life: 5000});
               }
@@ -173,7 +172,6 @@ export class MessagesListComponent implements OnInit, OnDestroy {
       this.isShowBlockPage = true;
       this._messageService.createMsgService(msg).subscribe({
         next: (res) => {
-          debugger;
           if (res.error) {
             this._toastService.add({type: "error", message: res.msg, life: 5000})
           } else {
@@ -201,7 +199,6 @@ export class MessagesListComponent implements OnInit, OnDestroy {
     this.idMessages = id;
     this.createOrEdit = true;
     const msgEdit = this.messages.find((msg) => msg.id === id);
-    console.log(msgEdit)
     if (msgEdit) {
       this.messageForm.patchValue(
         {

@@ -55,7 +55,6 @@ export class DatasetCreateEditComponent implements OnInit {
       //  \"${datasetPersistent.name}\" y \"${datasetPersistent.field_type}\"
       //  los cuales no son editables despues de creado, ¿Está seguro de crear el dataset?`,
         datasetPersistent.id = uuidv4().toLowerCase();
-        debugger
         this.datasetsService.createDataset(datasetPersistent).subscribe((res) => {
           if (res.error) {
             this.messageService.add({

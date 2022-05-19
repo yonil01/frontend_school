@@ -78,10 +78,6 @@ export class EntityListValuesComponent implements OnInit {
           delete value.updated_at
         });
         this.columnsTable = Object.keys(this.valuesAttributesAutofills[0])
-        console.log('columnsTable')
-        console.log(this.columnsTable);
-        console.log('valuesAttributesAutofills')
-        console.log(this.valuesAttributesAutofills);
       } else {
         this.ResponsevaluesAttributesAutofills = [];
       }
@@ -92,8 +88,6 @@ export class EntityListValuesComponent implements OnInit {
           for (const autofill of this.ResponseAtrributesOfAutofills) {
             this.AttributesOfAutofills.push(autofill.attribute);
           }
-          console.log('AttributesOfAutofills')
-          console.log(this.AttributesOfAutofills);
           this.isBlock = false;
         }, (error) => {
           console.log(error);
@@ -155,7 +149,6 @@ export class EntityListValuesComponent implements OnInit {
   }
 
   onDelete($event: boolean) {
-    console.log(this.selectedValue)
     if ($event) {
       if (this.selectedAutofill.id)
         this.autofillsService.deleteAutofillValue(this.selectedValue.id, this.selectedAutofill.id.toLowerCase()).subscribe((res) => {

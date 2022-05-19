@@ -123,7 +123,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       };
       this.createExecutionRole(executionRole, roleID)
     } else {
-      debugger;
       const processRole = this.executionSelected.execution_roles?.find((pdt) => pdt?.role?.id?.toLowerCase() === roleID.toLowerCase());
       if (processRole) {
         this.deleteExecutionRole(processRole)

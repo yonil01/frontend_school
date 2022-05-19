@@ -116,8 +116,6 @@ export class RolesAllowedRolesComponent implements OnInit, OnDestroy {
   public assignItemsRoles(items: string[]): void {
     const roleAlloweds: RoleAllowed[] = [];
     const datos = JSON.parse(JSON.stringify(items));
-    console.log(this.rolesAvailable);
-    console.log(datos);
     for (const role of datos) {
       const roleAllowed: RoleAllowed = {
         id: uuidv4().toLowerCase(),
@@ -165,7 +163,6 @@ export class RolesAllowedRolesComponent implements OnInit, OnDestroy {
   public unAssignItemsRoles(datos: string[]): void {
     this.isBlockPage = true;
     let idsRoleAllow: string[] = [];
-    console.log(this.role);
 
     for(let rol of datos){
       const role_selected = this.role.role_allow?.find((doc) => doc.role_allow?.id?.toLowerCase() === rol.toLowerCase());

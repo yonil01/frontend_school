@@ -144,7 +144,6 @@ export class EntitiesCreateEditAutofillsComponent implements OnInit {
 
 
   onSubmitForm() {
-    debugger
     if (this.createEditForm.valid) {
       if (this.isEdit) {
         this.editAutofill()

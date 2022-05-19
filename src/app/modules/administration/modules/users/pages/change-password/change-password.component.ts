@@ -35,7 +35,6 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   public saveForm():void {
-    debugger
     if (this.formPassword.valid) {
       if (this.comparePassword()) {
         this.showLoading(true);

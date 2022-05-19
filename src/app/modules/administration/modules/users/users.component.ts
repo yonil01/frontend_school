@@ -274,8 +274,6 @@ export class UsersComponent implements OnInit {
             password:  encryptText(us[6], this.secretKey),
             password_comfirm: encryptText(us[6], this.secretKey),
           }
-          console.log(us[7])
-          debugger
          ArrayRoles.push({id_user: us[4], roles: us[7]?.split(',')})
           ArrayUser.push(newUser);
         }

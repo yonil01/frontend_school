@@ -40,12 +40,14 @@ const hideAnimation = animation([
 export class MenuComponent implements OnInit {
   @Output('close-menu') closeMenu = new EventEmitter<boolean>();
   private items: any;
+  public showConfirmLogout: boolean = false;
   public activeAcordion1: boolean = false
   public activeAcordion2: boolean = false
   public transformOptions: string = "translate3d(-100%, 0px, 0px)";
   public transitionOptions: string = '0.2s cubic-bezier(0, 0, 0.2, 1)';
   public url_logo: string = '';
   public UserNames: string = '';
+  public isBlock: boolean = false;
 
   public isOptionConfig: boolean = false;
 
@@ -86,6 +88,17 @@ export class MenuComponent implements OnInit {
 
   private getUrlLogo(): void {
     this.url_logo = EnvServiceProvider.useFactory().MENU_URL_LOGO;
+  }
+
+  public confirmDialogLogout(event: boolean): void {
+    const confirm = event;
+    this.isBlock = true;
+    this.showConfirmLogout = false;
+    if(confirm){
+      this.logout();
+    }else{
+      this.isBlock = false;
+    }
   }
 
   public async logout() {

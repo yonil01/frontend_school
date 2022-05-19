@@ -142,7 +142,6 @@ export class RolesDisabledDatesComponent implements OnInit {
           role_id: this.role.id?.toLocaleLowerCase(),
         };
         const dataDateD = JSON.parse(JSON.stringify(dateDisall));
-        console.log(dataDateD);
         this._roleService.createRolesDateDisallowed(dataDateD).subscribe((res: Response) => {
           if (res.error) {
             this._messageService.add({type: 'error', message: res.msg, life: 5000});

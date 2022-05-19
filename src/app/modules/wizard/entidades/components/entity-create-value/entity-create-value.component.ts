@@ -28,8 +28,6 @@ export class EntityCreateValueComponent implements OnInit {
   ngOnInit(): void {
     this.isBlock = true;
     this.AttributesOfAutofills.sort((a: any, b: any) => Number(a.sequence) - Number(b.sequence));
-    console.log(this.AttributesOfAutofills)
-    debugger
     this.generateForm(this.AttributesOfAutofills);
   }
 
@@ -37,8 +35,6 @@ export class EntityCreateValueComponent implements OnInit {
     atributos.forEach((atributo) => {
       this.newValuesForm.addControl(atributo.name, new FormControl('', this.setValidators(atributo)));
     });
-    console.log(this.newValuesForm);
-    debugger
     this.isBlock = false;
   }
 
@@ -81,7 +77,6 @@ export class EntityCreateValueComponent implements OnInit {
     if(this.newValuesForm.valid){
       this.autofillService.createAutofillValue(query).subscribe(
         (response) => {
-          console.log(response);
           this.onReturn();
         },
         (error) => {
