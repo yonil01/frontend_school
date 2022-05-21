@@ -418,6 +418,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public updateDoctype(doctype: DocTypes): void {
     const docTypesEntities = doctype.doctypes_entities;
     delete doctype.doctypes_entities;
+    delete doctype.required;
     this.isBlockPage = true;
     this._subscription.add(
       this.doctypegroupService.updateDoctype(doctype).subscribe({

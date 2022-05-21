@@ -72,7 +72,7 @@
               <ec-dropdown [filter]="true" placeholder="{{'SELECT_ATTRIBUTE' | translate}}" [showClear]="true"
                            optionLabel="name"
                            optionValue="id" [data]="attributesSelected" [dropStyle]="dropStyle"
-                           (onChangeValue)="selectedAttribute($event)"></ec-dropdown>
+                           (onChangeValue)="selectedAttribute($event)" [onlyValue]="false"></ec-dropdown>
             </div>
           </div>
 
