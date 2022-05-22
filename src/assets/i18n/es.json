@@ -361,7 +361,7 @@
   "SEARCH FORM": "Formulario de búsqueda",
   "ATTRIBITE": "Atributo",
   "EXPORT": "Exportar",
-  "LAST_CONNECTION": "Última conección",
+  "LAST_CONNECTION": "Última conexión",
   "PROFILE": "Perfil",
   "SPANISH": "Español",
   "ENGLISH": "Inglés",
@@ -369,6 +369,10 @@
   "LANGUAGE": "Lenguaje",
   "CREATE_NEW_ROLE": "Crear nuevo rol",
   "PUBLISH": "Publicar",
-  "CREATE_DOCTYPE": "Crear Tipo Documental"
+  "CREATE_DOCTYPE": "Crear Tipo Documental",
+  "CONSOLE_WORKER": "Consola Diagnóstico Worker",
+  "NOTIFICATIONS": "Notificaciones",
+  "TIMERS": "Temporizadores",
+  "CALENDARS": "Calendarios"
 }
 
