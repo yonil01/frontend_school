@@ -88,6 +88,8 @@
           <div *ngFor="let role of rolesForPagination; index as i"
                class="register-table shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
             <span class="text-mono-70 t-caption-1">{{'ROLE'|translate}} N° {{roles.indexOf(role) + 1}}</span>
+            <span class="text-black t-body-1">{{role.name}}</span>
+            <span class="text-mono-70 t-caption-1">{{'DESCRIPTION'|translate}}</span>
             <span class="text-black t-body-1">{{role.description}}</span>
             <div class="border-t pt-2 border-mono-30 w-full flex flex-row">
               <button (click)="editRole(role)" ecTooltip tooltip="{{'EDIT'|translate}}" class="w-full text-alert-info px-2 h-10 hover:bg-mono-10">
@@ -121,11 +123,13 @@
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
             <div class="p-2 flex-1">{{'ROLE'|translate}}</div>
+            <div class="p-2 flex-1">{{'DESCRIPTION'|translate}}</div>
             <div class="p-2 w-32">{{'OPTIONS'|translate}}</div>
           </div>
           <div class="table-body text-body-2 text-mono-70">
             <div *ngFor="let role of rolesForPagination; index as i" class="item border-b border-mono-10 w-full flex flex-row">
               <div class="flex items-center p-2 w-16">{{roles.indexOf(role) + 1}}</div>
+              <div class="flex items-center p-2 flex-1 break-all">{{role.name}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{role.description}}</div>
               <div class="flex items-center p-2 w-32">
                 <div class="w-full flex flex-row">

@@ -370,6 +370,7 @@
   "LANGUAGE": "Language",
   "PROFILE": "Profile",
   "CREATE_NEW_ROLE": "Create new role",
-  "PUBLISH": "Publish"
+  "PUBLISH": "Publish",
+  "CREATE_DOCTYPE": "Create doctype"
 }
 
