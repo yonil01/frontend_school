@@ -149,6 +149,7 @@ export class AutonameComponent implements OnInit, OnDestroy {
   }
 
   public selectedAttribute(event: any): void {
+    console.log(event)
     this.showValuesAttributes = true;
     this.optionsDescription = '';
     this.optionsValue = '';
