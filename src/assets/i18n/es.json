@@ -373,6 +373,7 @@
   "CONSOLE_WORKER": "Consola Diagnóstico Worker",
   "NOTIFICATIONS": "Notificaciones",
   "TIMERS": "Temporizadores",
-  "CALENDARS": "Calendarios"
+  "CALENDARS": "Calendarios",
+  "IMPORT_PRESS_OR_DRAG_DOCUMENT":"Importe Documento 'Presione o Arrastre'"
 }
 
