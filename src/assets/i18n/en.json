@@ -375,6 +375,7 @@
   "CONSOLE_WORKER": "Worker diagnostic console",
   "NOTIFICATIONS": "Notifications",
   "TIMERS": "Timers",
-  "CALENDARS": "Calendars"
+  "CALENDARS": "Calendars",
+  "IMPORT_PRESS_OR_DRAG_DOCUMENT": "Import 'Press or Drag' Document"
 }
 

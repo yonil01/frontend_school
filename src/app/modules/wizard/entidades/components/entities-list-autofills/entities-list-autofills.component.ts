@@ -33,6 +33,8 @@ export class EntitiesListAutofillsComponent implements OnInit {
   public autofillsTable: any;
   public dataTemp: any = [];
 
+  private readonly entityLoadAutofill = 'ea305aa7-4e5e-4d52-96cc-280787ee8efc';
+  public showModalImportAutofill: boolean = false;
 
   constructor(private _localStorage: LocalStorageService,
               private autofillsService: AutofillsService,
@@ -195,4 +197,7 @@ export class EntitiesListAutofillsComponent implements OnInit {
       this.autofillsTable = this.dataTemp;
     }
   }
+
+  public readonly validEntityLoadAutofill = () => this.entity ? this.entity.id === this.entityLoadAutofill : false;
+
 }
