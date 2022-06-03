@@ -200,4 +200,11 @@ export class EntitiesListAutofillsComponent implements OnInit {
 
   public readonly validEntityLoadAutofill = () => this.entity ? this.entity.id === this.entityLoadAutofill : false;
 
+  onReturn() {
+    this.onReturnList.emit({
+      id: 'list',
+      from: 'list',
+      value: true,
+    });
+  }
 }

@@ -220,7 +220,7 @@
         </div>
       </div>
       <div class="title text-black flex flex-row items-center space-x-2">
-        <button routerLink="/wizard/documents" class="hover:bg-mono-10 w-10 h-10" title="Volver">
+        <button (click)="view = 'docTypesGroup'" class="hover:bg-mono-10 w-10 h-10" title="Volver">
           <div>
             <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12.2676 15.793C11.9677 16.0787 11.493 16.0672 11.2073 15.7673L6.20597 10.5168C5.93004 10.2271 5.93004 9.7719 6.20597 9.48223L11.2073 4.23177C11.493 3.93184 11.9677 3.92031 12.2676 4.206C12.5676 4.49169 12.5791 4.96642 12.2934 5.26634L7.78483 9.99952L12.2934 14.7327C12.5791 15.0326 12.5676 15.5074 12.2676 15.793Z"/>
@@ -243,10 +243,6 @@
           <div class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded"
                *ngFor="let docType of docTypesDisplayPagination; let position = index">
             <span class="text-mono-70 t-caption-1">N° {{position + 1}}</span>
-            <div class="flex flex-col">
-              <span class="text-mono-70 t-caption-2">ID</span>
-              <span class="text-black t-body-1">{{docType.docType.id}}</span>
-            </div>
             <div class="flex flex-col">
               <span class="text-mono-70 t-caption-2">{{'CODE'|translate}}</span>
               <span class="text-black t-body-1">{{docType.docType.code}}</span>
@@ -304,7 +300,6 @@
         <div class="table-h hidden md:block w-full">
           <div class="table-head border-b border-brand-2 flex flex-row t-caption-1 text-brand-2">
             <div class="p-2 w-16">N°</div>
-            <div class="p-2 flex-1">ID</div>
             <div class="p-2 w-24">{{'CODE'|translate}}</div>
             <div class="p-2 flex-1">{{'NAME'|translate}}</div>
             <div class="p-2 flex-1">{{'LINK'|translate}} (URL)</div>
@@ -314,7 +309,6 @@
           <div class="table-body t-body-2 text-mono-70">
             <div class="item border-b border-mono-10 w-full flex flex-row" *ngFor="let docType of docTypesDisplayPagination; let position = index">
               <div class="flex items-center p-2 w-16">{{position + 1}}</div>
-              <div class="flex items-center p-2 flex-1 break-all" style="user-select: all">{{docType.docType.id}}</div>
               <div class="flex items-center p-2 w-24 break-all" style="user-select: all">{{docType.docType.code}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{docType.docType.name}}</div>
               <div class="flex items-center p-2 flex-1 break-all">{{docType.docType.url_path}}</div>
@@ -397,6 +391,10 @@
           </div>
         </div>
         <form class="grid grid-cols-2 gap-4 lg:w-2/3" [formGroup]="doctypeForm">
+          <div *ngIf="view === 'doctypeEdit'" class="col-span-2 flex flex-col space-y-1">
+            <span class="text-brand-2 t-caption-2">ID {{'DOCUMENTARY TYPE'|translate}}</span>
+            <span class="text-black t-body-1 select-all">{{docTypeSelected.id}}</span>
+          </div>
           <div class="input flex flex-col space-y-1 col-span-2 md:col-span-1">
             <label class="t-caption-2 text-mono-70">{{'CODE'|translate}}</label>
             <input class="ec-input" type="number" formControlName="code">

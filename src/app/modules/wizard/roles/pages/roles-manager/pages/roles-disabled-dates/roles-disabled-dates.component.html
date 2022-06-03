@@ -1,6 +1,6 @@
 <app-layout>
   <ng-container layoutBody>
-    <div class="ec-container py-6 md:py-12 bg-white space-y-12">
+    <div class="ec-container py-6 md:py-12 bg-white min-h-full space-y-12">
       <div class="title text-black flex flex-row items-center space-x-2">
         <button routerLink="/wizard/roles/manager" class="hover:bg-mono-10 w-10 h-10" title="Volver a la lista de roles">
           <div>
@@ -28,24 +28,23 @@
           <div class="title pb-2 text-brand-2 flex items-center justify-between border-b border-brand-2">
             <span class="t-subtitle-1">Datos Básicos</span>
           </div>
-          <form id="formFechas" [formGroup]="DocumentsFechasForm" (ngSubmit)="!isEdit ? saveFechasDeshabilitada($event) : updateDateDisallowed($event)" class="permissions grid grid-cols-2 gap-4">
+          <form id="formFechas" [formGroup]="DocumentsFechasForm" (ngSubmit)="!isEdit ? saveFechasDeshabilitada($event) : updateDateDisallowed($event)" class="permissions grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             <div class="flex flex-col space-y-1">
               <label for="begins_at" class="t-caption-2 text-mono-70">Fecha Inicial</label>
               <input yearRange="2000:2030" dateFormat="dd/mm/yy" id="begins_at" type="date" class="ec-input" formControlName="begins_at">
               <span *ngIf="DocumentsFechasForm.get('begins_at')?.invalid && DocumentsFechasForm.get('begins_at')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
             </div>
-            <div class="flex flex-col space-y-1 lg:col-start-1">
+            <div class="flex flex-col space-y-1">
               <label for="ends_at" class="t-caption-2 text-mono-70">Fecha Final</label>
               <input yearRange="2000:2030" dateFormat="dd/mm/yy" id="ends_at" type="date" class="ec-input" formControlName="ends_at">
               <span *ngIf="DocumentsFechasForm.get('ends_at')?.invalid && DocumentsFechasForm.get('ends_at')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
             </div>
-            <div class="flex flex-col col-span-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:row-span-2 space-y-1">
+            <div class="flex flex-col md:col-span-2 lg:col-span-1 space-y-1">
               <div class="text-mono-70 flex flex-row items-center justify-between">
                 <label for="description" class="t-caption-2">Observación</label>
                 <span class="t-overline">OPCIONAL</span>
               </div>
-              <textarea maxlength="50" (keyup)="onKey($event)" formControlName="description" id="description" type="number" class="p-2 text-black t-body-2 bg-mono-10 rounded h-full"></textarea>
-              <span class="text-alert-info t-caption-2">{{contador}}/50</span>
+              <input formControlName="description" id="description" type="text" class="ec-input">
             </div>
           </form>
         </div>
