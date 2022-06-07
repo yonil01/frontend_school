@@ -1,6 +1,6 @@
 <app-layout>
   <ng-container layoutBody>
-    <div *ngIf="!isAttribute" class="ec-container py-6 md:py-12 bg-white space-y-12">
+    <div *ngIf="!isAttribute" class="ec-container py-6 md:py-12 min-h-full bg-white space-y-12">
       <div class="flex items-center space-x-2">
         <button routerLink="/wizard/roles/manager" class="hover:bg-mono-10 w-10 h-10" title="Volver">
           <div>
@@ -106,7 +106,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="isAttribute" class="ec-container py-6 md:py-12 bg-white space-y-12">
+    <div *ngIf="isAttribute" class="ec-container py-6 md:py-12 min-h-full bg-white space-y-12">
       <div class="title flex flex-col">
         <div class="flex flex-row items-center space-x-1">
           <span class="text-mono-70 t-body-1">{{role.description}} / Seguridad de Atributos</span>
@@ -128,13 +128,13 @@
             </div>
             <div class="flex w-full flex-col space-y-6 md:flex-row md:space-y-0 md:justify-between md:items-end">
               <form [formGroup]="attributeForm" (ngSubmit)="!isEditAttribute ? createAttribute():updateAttribute()" class="entities flex flex-col space-y-4 md:space-y-0 md:space-x-4 md:flex-row md:items-end md:w-2/3 lg:w-1/2">
-                <div class="flex flex-1 flex-row space-x-2">
-                  <div class="flex flex-col space-y-1 flex-1">
+                <div class="flex w-ful flex-row space-x-2">
+                  <div class="flex flex-col space-y-1 w-ful">
                     <label class="t-caption-2 text-mono-70">Atributo</label>
                     <ec-dropdown formControlName="attribute_id" [dropStyle]="dropStyle" [data]="entityAttributesGlobalDrop"
                                  placeholder="Seleccione un Atributo" optionLabel="label"></ec-dropdown>
                   </div>
-                  <div class="flex flex-col space-y-1 flex-1">
+                  <div class="flex flex-col space-y-1 w-full">
                     <label class="t-caption-2 text-mono-70">Valor</label>
                     <input formControlName="value" type="text" class="ec-input w-full">
                   </div>
