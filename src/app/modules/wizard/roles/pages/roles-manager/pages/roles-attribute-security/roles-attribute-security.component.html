@@ -37,9 +37,6 @@
                 <button (click)="createEntity()" class="w-full md:w-auto b-outline">Agregar Entidad</button>
               </div>
             </div>
-            <div class="border-t border-mono-30 pt-6 md:w-40 md:pt-0 md:border-none">
-              <input type="text" disabled="true" placeholder="Buscar" class="ec-input w-full md:w-40">
-            </div>
           </div>
           <div *ngIf="entitiesRole.length < 1" class="notify flex items-center justify-center py-6 space-y-2 flex-col">
             <div><svg class="text-brand-2" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,8 +53,8 @@
                 <div class="p-2 w-24">Opciones</div>
               </div>
               <div class="table-body t-body-2 text-mono-70">
-                <div *ngFor="let entity of entitiesRole; index as i" class="item w-full flex flex-row">
-                  <div class="flex items-center p-2 w-16">{{i+1}}</div>
+                <div *ngFor="let entity of entitiesRoleForTable; index as i" class="item w-full flex flex-row">
+                  <div class="flex items-center p-2 w-16">{{entitiesRole.indexOf(entity) + 1}}</div>
                   <div class="flex items-center p-2 flex-1 break-all">{{entity.entity?.name}}</div>
                   <div class="flex items-center p-2 w-24">
                     <div class="w-full flex flex-row">
@@ -77,28 +74,7 @@
                 </div>
               </div>
             </div>
-            <div class="pagination flex flex-row items-center justify-between">
-              <div class="left">
-                <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
-                  <option>10</option>
-                  <option>20</option>
-                  <option>30</option>
-                </select>
-              </div>
-              <div class="right flex items-center flex-row space-x-1">
-                <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
-                </svg>
-                </div></button>
-                <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-                  <span class="t-body-2">1/2</span>
-                </div>
-                <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
-                </svg>
-                </div></button>
-              </div>
-            </div>
+            <app-paginator [data]="entitiesRole" (current-data-page)="entitiesRoleForTable = $event"></app-paginator>
           </div>
         </div>
         <div class="action flex flex-row space-x-2 md:justify-end mt-12">
@@ -107,17 +83,26 @@
       </div>
     </div>
     <div *ngIf="isAttribute" class="ec-container py-6 md:py-12 min-h-full bg-white space-y-12">
-      <div class="title flex flex-col">
-        <div class="flex flex-row items-center space-x-1">
-          <span class="text-mono-70 t-body-1">{{role.description}} / Seguridad de Atributos</span>
+      <div class="flex space-x-2">
+        <button *ngIf="isAttribute" (click)="isAttribute = false; isExistAttributes = false; attributeForm.reset();" class="hover:bg-mono-10 w-10 h-10" title="Volver">
           <div>
-            <svg class="text-mono-70" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C14.2091 2 16 3.79086 16 6V8H17.75C18.9926 8 20 9.00736 20 10.25V19.75C20 20.9926 18.9926 22 17.75 22H6.25C5.00736 22 4 20.9926 4 19.75V10.25C4 9.00736 5.00736 8 6.25 8H8V6C8 3.79086 9.79086 2 12 2ZM17.75 9.5H6.25C5.83579 9.5 5.5 9.83579 5.5 10.25V19.75C5.5 20.1642 5.83579 20.5 6.25 20.5H17.75C18.1642 20.5 18.5 20.1642 18.5 19.75V10.25C18.5 9.83579 18.1642 9.5 17.75 9.5ZM12.0001 13.5C12.8286 13.5 13.5001 14.1716 13.5001 15C13.5001 15.8284 12.8286 16.5 12.0001 16.5C11.1717 16.5 10.5001 15.8284 10.5001 15C10.5001 14.1716 11.1717 13.5 12.0001 13.5ZM12 3.5C10.6193 3.5 9.5 4.61929 9.5 6V8H14.5V6C14.5 4.61929 13.3807 3.5 12 3.5Z"/>
+            <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.2676 15.793C11.9677 16.0787 11.493 16.0672 11.2073 15.7673L6.20597 10.5168C5.93004 10.2271 5.93004 9.7719 6.20597 9.48223L11.2073 4.23177C11.493 3.93184 11.9677 3.92031 12.2676 4.206C12.5676 4.49169 12.5791 4.96642 12.2934 5.26634L7.78483 9.99952L12.2934 14.7327C12.5791 15.0326 12.5676 15.5074 12.2676 15.793Z"/>
             </svg>
           </div>
-        </div>
-        <div class="flex flex-row items-center space-x-1">
-          <span class="text-black t-h5">{{entitySelected.entity?.name}}</span>
+        </button>
+        <div class="title flex flex-col">
+          <div class="flex flex-row items-center space-x-1">
+            <span class="text-mono-70 t-body-1">{{role.description}} / Seguridad de Atributos</span>
+            <div>
+              <svg class="text-mono-70" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C14.2091 2 16 3.79086 16 6V8H17.75C18.9926 8 20 9.00736 20 10.25V19.75C20 20.9926 18.9926 22 17.75 22H6.25C5.00736 22 4 20.9926 4 19.75V10.25C4 9.00736 5.00736 8 6.25 8H8V6C8 3.79086 9.79086 2 12 2ZM17.75 9.5H6.25C5.83579 9.5 5.5 9.83579 5.5 10.25V19.75C5.5 20.1642 5.83579 20.5 6.25 20.5H17.75C18.1642 20.5 18.5 20.1642 18.5 19.75V10.25C18.5 9.83579 18.1642 9.5 17.75 9.5ZM12.0001 13.5C12.8286 13.5 13.5001 14.1716 13.5001 15C13.5001 15.8284 12.8286 16.5 12.0001 16.5C11.1717 16.5 10.5001 15.8284 10.5001 15C10.5001 14.1716 11.1717 13.5 12.0001 13.5ZM12 3.5C10.6193 3.5 9.5 4.61929 9.5 6V8H14.5V6C14.5 4.61929 13.3807 3.5 12 3.5Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="flex flex-row items-center space-x-1">
+            <span class="text-black t-h5">{{entitySelected.entity?.name}}</span>
+          </div>
         </div>
       </div>
       <div class="body">
@@ -147,9 +132,6 @@
                   </div>
                 </div>
               </form>
-              <div class="border-t border-mono-30 pt-6 md:pt-0 md:border-none">
-                <input disabled="true" type="text" placeholder="Buscar" class="ec-input w-full md:w-36 lg:w-40">
-              </div>
             </div>
           </div>
 
@@ -162,8 +144,8 @@
           </div> <!--Activar cuando no hay ningún atributo registrado-->
           <div *ngIf="isExistAttributes" class="data w-full space-y-4 mt-4">
             <div class="table-v md:hidden flex flex-col space-y-4">
-              <div *ngFor="let attribute of attributesRole; index as i" class="item shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-                <span class="text-mono-70 t-caption-1">N° {{i+1}}</span>
+              <div *ngFor="let attribute of attributesRoleForTable; index as i" class="item shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+                <span class="text-mono-70 t-caption-1">N° {{attributesRole.indexOf(attribute) + 1}}</span>
                 <div class="flex flex-col">
                   <span class="text-mono-70 t-caption-2">Atributo</span>
                   <span class="text-black t-body-1">{{attribute.attribute?.description}}</span>
@@ -195,8 +177,8 @@
                 <div class="p-2 w-24">Opciones</div>
               </div>
               <div class="table-body t-body-2 text-mono-70">
-                <div *ngFor="let attribute of attributesRole; index as i" class="item w-full flex flex-row">
-                  <div class="flex items-center p-2 w-16">{{i+1}}</div>
+                <div *ngFor="let attribute of attributesRoleForTable; index as i" class="item w-full flex flex-row">
+                  <div class="flex items-center p-2 w-16">{{attributesRole.indexOf(attribute) + 1}}</div>
                   <div class="flex items-center p-2 flex-1 break-all">{{attribute.attribute?.description}}</div>
                   <div class="flex items-center p-2 flex-1 break-all">{{attribute?.value}}</div>
                   <div class="flex items-center p-2 w-24">
@@ -217,28 +199,7 @@
                 </div>
               </div>
             </div>
-            <div class="pagination flex flex-row items-center justify-between">
-              <div class="left">
-                <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
-                  <option>10</option>
-                  <option>20</option>
-                  <option>30</option>
-                </select>
-              </div>
-              <div class="right flex items-center flex-row space-x-1">
-                <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
-                </svg>
-                </div></button>
-                <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-                  <span class="t-body-2">1/2</span>
-                </div>
-                <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
-                </svg>
-                </div></button>
-              </div>
-            </div>
+            <app-paginator [data]="attributesRole" (current-data-page)="attributesRoleForTable = $event"></app-paginator>
           </div>
         </div>
         <div *ngIf="!isEditAttribute" class="action w-full flex flex-row space-x-2 md:justify-end mt-12">

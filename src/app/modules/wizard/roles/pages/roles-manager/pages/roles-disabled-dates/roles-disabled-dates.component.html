@@ -2,7 +2,7 @@
   <ng-container layoutBody>
     <div class="ec-container py-6 md:py-12 bg-white min-h-full space-y-12">
       <div class="title text-black flex flex-row items-center space-x-2">
-        <button routerLink="/wizard/roles/manager" class="hover:bg-mono-10 w-10 h-10" title="Volver a la lista de roles">
+        <button routerLink="/wizard/roles/manager" class="hover:bg-mono-10 w-10 h-10" title="Volver">
           <div>
             <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12.2676 15.793C11.9677 16.0787 11.493 16.0672 11.2073 15.7673L6.20597 10.5168C5.93004 10.2271 5.93004 9.7719 6.20597 9.48223L11.2073 4.23177C11.493 3.93184 11.9677 3.92031 12.2676 4.206C12.5676 4.49169 12.5791 4.96642 12.2934 5.26634L7.78483 9.99952L12.2934 14.7327C12.5791 15.0326 12.5676 15.5074 12.2676 15.793Z"/>
@@ -61,8 +61,8 @@
         </div>
         <div *ngIf="fechas.length > 0" class="data w-full space-y-4">
           <div class="table-v md:hidden flex flex-col space-y-4">
-            <div *ngFor="let fecha of fechas; index as i" class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
-              <span class="text-mono-70 t-caption-1">N° {{i+1}}</span>
+            <div *ngFor="let fecha of fechasForTable; index as i" class="shadow-lg flex flex-col w-full space-y-2 px-6 py-4 border border-mono-30 rounded">
+              <span class="text-mono-70 t-caption-1">N° {{fechas.indexOf(fecha) + 1}}</span>
               <div class="flex flex-col">
                 <span class="text-mono-70 t-caption-2">Fecha Inicial</span>
                 <span class="text-black t-body-1">{{fecha.begins_at|date:'medium':'UTC'}}</span>
@@ -99,8 +99,8 @@
               <div class="p-2 w-24">Opciones</div>
             </div>
             <div class="table-body t-body-2 text-mono-70">
-              <div *ngFor="let fecha of fechas; index as i" class="item w-full flex flex-row">
-                <div class="flex items-center p-2 w-16">{{i+1}}</div>
+              <div *ngFor="let fecha of fechasForTable; index as i" class="item w-full flex flex-row">
+                <div class="flex items-center p-2 w-16">{{fechas.indexOf(fecha) + 1}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{fecha.begins_at|date:'medium':'UTC'}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{fecha.ends_at|date:'medium':'UTC'}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{fecha.description}}</div>
@@ -122,28 +122,7 @@
               </div>
             </div>
           </div>
-          <div class="pagination flex flex-row items-center justify-between">
-            <div class="left">
-              <select class="h-8 w-16 bg-mono-10 t-body-2 text-black">
-                <option>10</option>
-                <option>20</option>
-                <option>30</option>
-              </select>
-            </div>
-            <div class="right flex items-center flex-row space-x-1">
-              <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.3536 2.81313C10.5489 3.0084 10.5489 3.32498 10.3536 3.52024L5.87385 8.00002L10.3536 12.4798C10.5489 12.6751 10.5489 12.9916 10.3536 13.1869C10.1584 13.3822 9.84179 13.3822 9.64653 13.1869L4.81319 8.35357C4.61793 8.15831 4.61793 7.84173 4.81319 7.64647L9.64653 2.81313C9.84179 2.61787 10.1584 2.61787 10.3536 2.81313Z"/>
-              </svg>
-              </div></button>
-              <div class="flex items-center bg-mono-10 px-2 rounded h-8">
-                <span class="t-body-2">1/2</span>
-              </div>
-              <button class="w-8 h-8 bg-mono-10 hover:bg-mono-30"><div><svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5.64645 2.81313C5.45118 3.0084 5.45118 3.32498 5.64645 3.52024L10.1262 8.00002L5.64645 12.4798C5.45118 12.6751 5.45118 12.9916 5.64645 13.1869C5.84171 13.3822 6.15829 13.3822 6.35355 13.1869L11.1869 8.35357C11.3821 8.15831 11.3821 7.84173 11.1869 7.64647L6.35355 2.81313C6.15829 2.61787 5.84171 2.61787 5.64645 2.81313Z"/>
-              </svg>
-              </div></button>
-            </div>
-          </div>
+          <app-paginator [data]="fechas" (current-data-page)="fechasForTable = $event"></app-paginator>
         </div>
         <div class="action flex flex-row space-x-2 md:justify-end mt-12">
           <button routerLink="/wizard/roles/manager" class="flex-1 md:flex-none b-outline">Cerrar</button>

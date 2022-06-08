@@ -48,10 +48,12 @@ export class RolesAttributeSecurityComponent implements OnInit {
   public entityAttributesGlobalDrop: OptionsDropdown[] = [];
   public entitiesGlobalDrop: OptionsDropdown[] = [];
   public entitiesRole: SecurityEntity[] = [];
+  public entitiesRoleForTable: SecurityEntity[] = [];
   public entityCreate: Entity = {};
   public entitySelected: SecurityEntity = this.entitiesRole[0];
 
   public attributesRole: RoleAttribute[] = [];
+  public attributesRoleForTable: RoleAttribute[] = [];
   public attributeSelected: RoleAttribute = this.attributesRole[0];
   public indexAttributeSelected: number = 0;
   public attributeForm: FormGroup;

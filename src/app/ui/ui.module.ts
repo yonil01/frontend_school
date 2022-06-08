@@ -33,6 +33,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatNativeDateModule} from "@angular/material/core";
 import {RouterModule} from "@angular/router";
 import {EcTemplateDirective} from "@app/ui/directives/ec-template.directive";
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import {EcTemplateDirective} from "@app/ui/directives/ec-template.directive";
     PaginatorComponent,
     EcTooltipDirective,
     EcTemplateDirective,
-    ListSelectComponent
+    ListSelectComponent,
+    DropdownComponent
   ],
   exports: [
     FooterComponent,
