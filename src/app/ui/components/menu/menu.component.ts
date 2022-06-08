@@ -51,8 +51,6 @@ export class MenuComponent implements OnInit {
 
   public isOptionConfig: boolean = false;
 
-  public ecatch_api = EnvServiceProvider.useFactory().ECATCH_API;
-
   constructor(
     private _menuService: MenuService,
     private _localStorageService: LocalStorageService,
