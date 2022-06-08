@@ -4,34 +4,35 @@
       <form action="" class="flex flex-col space-y-12">
         <span class="t-h5 text-black dark:text-white">{{isEdit ? 'Editar' : 'Crear'}} Rol</span>
         <div class="grid gap-4">
-          <!--<div class="flex flex-col space-y-1 lg:w-1/2">
-            <label class="t-caption-2 text-mono-70" for="name">Nombre</label>
-            <input type="text" formControlName="name" id="name" value="{{role.name}}" class="ec-input">
-            <span *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
-          </div>-->
           <div *ngIf="isEdit" class="flex flex-col space-y-1">
             <span class="text-brand-2 t-caption-2">ID {{'ROLE'|translate}}</span>
             <span class="text-black t-body-1 select-all">{{role.id}}</span>
           </div>
           <div class="flex flex-col space-y-1 lg:w-1/2">
-            <label class="t-caption-2 text-mono-70">Nombre</label>
-            <input type="text" formControlName="description" id="description" value="{{role.description}}" class="ec-input">
+            <label class="t-caption-2 text-mono-70" for="name">{{'NAME'|translate}}</label>
+            <input type="text" formControlName="name" id="name" value="{{role.name}}" class="ec-input">
+            <span *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
+          </div>
+          <div class="flex flex-col space-y-1 lg:w-1/2">
+            <label class="t-caption-2 text-mono-70">{{'DESCRIPTION'|translate}}</label>
+            <textarea formControlName="description" id="description" maxlength="255" (keyup)="onKey($event)" formControlName="description" id="description" type="number" class="p-2 text-black t-body-2 bg-mono-10 rounded h-full">{{role.description}}</textarea>
+            <span class="text-alert-info t-caption-2">{{contador}}/255</span>
             <span *ngIf="roleForm.get('description')?.invalid && roleForm.get('description')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
           </div>
           <div class="flex flex-col space-y-1 lg:w-1/2">
-            <label class="t-caption-2 text-mono-70">Sesiones</label>
+            <label class="t-caption-2 text-mono-70">{{'SESSIONS'|translate}}</label>
             <input type="number" formControlName="sessions_allowed" id="sessions_allowed" value="{{role.sessions_allowed}}" class="ec-input">
             <span *ngIf="roleForm.get('sessions_allowed')?.invalid && roleForm.get('sessions_allowed')?.touched" class="t-caption-2 text-alert-error">Campo Requerido</span>
           </div>
           <div class="flex flex-row space-x-2 items-center">
             <input id="see_all_users" formControlName="see_all_users" id="see_all_users" value="{{role.see_all_users}}" class="w-4 h-4" type="checkbox">
-            <label for="see_all_users" class="t-body-2 text-black">Ver todos los usuarios</label>
+            <label for="see_all_users" class="t-body-2 text-black">{{'VIEW_ALL_USERS'|translate}}</label>
           </div>
         </div>
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <div class="flex flex-row space-x-4">
-            <button routerLink="/wizard/roles" class="flex-1 md:flex-none b-outline">Cancelar</button>
-            <button [disabled]="roleForm.invalid" type="submit" class="flex-1 md:flex-none b-solid">Guardar</button>
+            <button routerLink="/wizard/roles" class="flex-1 md:flex-none b-outline">{{'CANCEL'|translate}}</button>
+            <button [disabled]="roleForm.invalid" type="submit" class="flex-1 md:flex-none b-solid">{{'SAVE'|translate}}</button>
           </div>
         </div>
       </form>

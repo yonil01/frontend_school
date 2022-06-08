@@ -1,6 +1,10 @@
 <div class="container-activity-form">
   <p-card header="{{'GENERAL_INFORMATION_OF_ACTIVITIES' | translate}}">
     <form [formGroup]="form" class="flex flex-col gap-4">
+      <div class="flex flex-col space-y-2">
+        <span class="text-brand-2 t-caption-2">ID</span>
+        <span class="text-black t-body-2 select-all">{{getForm.get('id')?.value}}</span>
+      </div>
       <div>
         <span>{{'ACTIVITY' | translate}}</span>
         <ec-dropdown formControlName="activity" [dropStyle]="dropStyle" [data]="activityOptions" optionLabel="label"

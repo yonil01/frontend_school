@@ -6,7 +6,7 @@
              xmlns="http://www.w3.org/2000/svg">
           <path
             d="M7.73272 15.7907C8.03264 16.0764 8.50738 16.0649 8.79306 15.765C9.07875 15.465 9.06721 14.9903 8.76728 14.7046L2.51587 8.75L17.25 8.75C17.6642 8.75 18 8.41421 18 8C18 7.58579 17.6642 7.25 17.25 7.25L2.51577 7.25L8.76728 1.29529C9.06721 1.00961 9.07875 0.534874 8.79306 0.234947C8.50738 -0.0649794 8.03264 -0.0765226 7.73272 0.209165L0.313785 7.27587C0.144859 7.43678 0.0449066 7.64202 0.0139294 7.85539C0.00478934 7.90218 -4.32463e-09 7.95053 0 8C4.3331e-09 8.04957 0.00480748 8.09801 0.0139828 8.14489C0.045022 8.35813 0.144956 8.56323 0.313786 8.72404L7.73272 15.7907Z"
-            fill="#595B5D"/>
+            />
         </svg>
         <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
              height="24" viewBox="0 0 24 24" fill="none">
@@ -168,7 +168,7 @@
                 <div class="flex items-center p-2 w-16">{{attributes.indexOf(atribute) + 1}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.name}}</div>
                 <div class="flex items-center p-2 flex-1 break-all">{{atribute.description}}</div>
-                <div class="flex items-center p-2 w-24 break-all">password</div>
+                <div class="flex items-center p-2 w-24 break-all">{{atribute.type}}</div>
                 <div class="flex items-center p-2 w-24 break-all">{{atribute.is_cipher ? 'Sí':'No'}}</div>
                 <div class="flex items-center p-2 w-32">
                   <div class="w-full flex flex-row">
@@ -235,13 +235,115 @@
 </app-layout>
 <app-entities-list-autofills (onReturnList)="onChangeOption($event)"
                              [entity]="selectedEntity"
-                             *ngIf="onSelectAutofills"></app-entities-list-autofills>
+                             *ngIf="onSelectAutofills">
+  <ng-container migas>
+    <div class="migas-pan w-full text-brand-2 space-x-2 h-12 flex items-center">
+      <svg (click)="onReturn()" class="cursor-pointer" width="18" height="16" viewBox="0 0 18 16" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M7.73272 15.7907C8.03264 16.0764 8.50738 16.0649 8.79306 15.765C9.07875 15.465 9.06721 14.9903 8.76728 14.7046L2.51587 8.75L17.25 8.75C17.6642 8.75 18 8.41421 18 8C18 7.58579 17.6642 7.25 17.25 7.25L2.51577 7.25L8.76728 1.29529C9.06721 1.00961 9.07875 0.534874 8.79306 0.234947C8.50738 -0.0649794 8.03264 -0.0765226 7.73272 0.209165L0.313785 7.27587C0.144859 7.43678 0.0449066 7.64202 0.0139294 7.85539C0.00478934 7.90218 -4.32463e-09 7.95053 0 8C4.3331e-09 8.04957 0.00480748 8.09801 0.0139828 8.14489C0.045022 8.35813 0.144956 8.56323 0.313786 8.72404L7.73272 15.7907Z"
+        />
+      </svg>
+      <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
+           height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"/>
+      </svg>
+      <div class="miga flex flex-row items-center space-x-2">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+          <path
+            d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+        </svg>
+        <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{nameClient}}</span>
+      </div>
+      <div class="miga flex flex-row items-center space-x-2">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+             fill="none">
+          <path
+            d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+        </svg>
+        <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{nameProject}}</span>
+      </div>
+      <div class="miga flex flex-row items-center space-x-2">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+             fill="none">
+          <path
+            d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+        </svg>
+        <span routerLink="/wizard/entities" class="t-body-2 cursor-pointer">
+          {{'ENTITIS'|translate}}
+          </span>
+      </div>
+      <div class="miga flex flex-row items-center space-x-2">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+             fill="none">
+          <path
+            d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+        </svg>
+        <span class="t-body-2">
+          {{selectedEntity.description}}
+          </span>
+      </div>
+    </div>
+  </ng-container>
+</app-entities-list-autofills>
 <app-entities-create-atribute *ngIf="onSelectCreateAtribute" (message)="toastMessage($event)"
                               [entity]="selectedEntity" [attribute]="selectedAttribute"
                               (onSubmit)=" onShowListEntity($event)"></app-entities-create-atribute>
 <app-entity-list-cascade (onReturnList)="onChangeOption($event)"
                          [entity]="selectedEntity"
-                         *ngIf="onSelectCascade"></app-entity-list-cascade>
+                         *ngIf="onSelectCascade">
+  <ng-container migas>
+    <div class="migas-pan w-full text-brand-2 space-x-2 h-12 flex items-center">
+      <svg (click)="onReturn()" class="cursor-pointer" width="18" height="16" viewBox="0 0 18 16" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M7.73272 15.7907C8.03264 16.0764 8.50738 16.0649 8.79306 15.765C9.07875 15.465 9.06721 14.9903 8.76728 14.7046L2.51587 8.75L17.25 8.75C17.6642 8.75 18 8.41421 18 8C18 7.58579 17.6642 7.25 17.25 7.25L2.51577 7.25L8.76728 1.29529C9.06721 1.00961 9.07875 0.534874 8.79306 0.234947C8.50738 -0.0649794 8.03264 -0.0765226 7.73272 0.209165L0.313785 7.27587C0.144859 7.43678 0.0449066 7.64202 0.0139294 7.85539C0.00478934 7.90218 -4.32463e-09 7.95053 0 8C4.3331e-09 8.04957 0.00480748 8.09801 0.0139828 8.14489C0.045022 8.35813 0.144956 8.56323 0.313786 8.72404L7.73272 15.7907Z"
+        />
+      </svg>
+      <svg routerLink="/wizard" class="fill-current cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24"
+           height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M10.5495 2.53214C11.3874 1.82555 12.6126 1.82555 13.4505 2.53214L20.2005 8.22425C20.7074 8.65176 21 9.28115 21 9.94431V19.7471C21 20.7136 20.2165 21.4971 19.25 21.4971H15.75C14.7835 21.4971 14 20.7136 14 19.7471V14.2471C14 14.109 13.8881 13.9971 13.75 13.9971H10.25C10.1119 13.9971 9.99999 14.109 9.99999 14.2471V19.7471C9.99999 20.7136 9.2165 21.4971 8.25 21.4971H4.75C3.7835 21.4971 3 20.7136 3 19.7471V9.94431C3 9.28115 3.29255 8.65176 3.79952 8.22425L10.5495 2.53214ZM12.4835 3.67884C12.2042 3.44331 11.7958 3.44331 11.5165 3.67884L4.76651 9.37095C4.59752 9.51346 4.5 9.72325 4.5 9.94431V19.7471C4.5 19.8851 4.61193 19.9971 4.75 19.9971H8.25C8.38807 19.9971 8.49999 19.8851 8.49999 19.7471V14.2471C8.49999 13.2806 9.2835 12.4971 10.25 12.4971H13.75C14.7165 12.4971 15.5 13.2806 15.5 14.2471V19.7471C15.5 19.8851 15.6119 19.9971 15.75 19.9971H19.25C19.3881 19.9971 19.5 19.8851 19.5 19.7471V9.94431C19.5 9.72325 19.4025 9.51346 19.2335 9.37095L12.4835 3.67884Z"/>
+      </svg>
+      <div class="miga flex flex-row items-center space-x-2">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+          <path
+            d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+        </svg>
+        <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{nameClient}}</span>
+      </div>
+      <div class="miga flex flex-row items-center space-x-2">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+             fill="none">
+          <path
+            d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+        </svg>
+        <span routerLink="/wizard" class="t-body-2 cursor-pointer">{{nameProject}}</span>
+      </div>
+      <div class="miga flex flex-row items-center space-x-2">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+             fill="none">
+          <path
+            d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+        </svg>
+        <span routerLink="/wizard/entities" class="t-body-2 cursor-pointer">
+          {{'ENTITIS'|translate}}
+          </span>
+      </div>
+      <div class="miga flex flex-row items-center space-x-2">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+             fill="none">
+          <path
+            d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"/>
+        </svg>
+        <span class="t-body-2">
+          {{selectedEntity.description}}
+          </span>
+      </div>
+    </div>
+  </ng-container>
+</app-entity-list-cascade>
 
 
 <app-entity-add-dataset *ngIf="showAddDataset" (onSubmit)=" onShowListEntity($event)" (message)="toastMessage($event)" [attribute]="selectedAttribute"></app-entity-add-dataset>

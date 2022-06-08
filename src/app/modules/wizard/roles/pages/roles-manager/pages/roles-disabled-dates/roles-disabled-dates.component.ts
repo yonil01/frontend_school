@@ -40,6 +40,7 @@ export class RolesDisabledDatesComponent implements OnInit {
   DocumentsFechasForm: FormGroup;
 
   public fechas: DateDisallowed[] = [];
+  public fechasForTable: DateDisallowed[] = [];
   OpcFechas: DateDisallowed = this.fechas[0];
   indexDate = 0;
   contador = 0;
@@ -67,10 +68,13 @@ export class RolesDisabledDatesComponent implements OnInit {
   ngOnInit(): void {
     this.isBlockPage = true;
     this.store.select('role').subscribe((res) => {
-      this.role = res.role;
+      const data = res.role;
+      this.role = JSON.parse(JSON.stringify(data));
       if (!this.role || Object.keys(this.role).length === 0) this.router.navigateByUrl('wizard/roles');
       this.fechas = [];
       this.isBlockPage = false;
+
+      console.log(this.role);
     });
     this.initFechas();
   }
@@ -101,6 +105,8 @@ export class RolesDisabledDatesComponent implements OnInit {
 
   initFechas(): void {
     this.store.select('role').subscribe((res) => {
+      const data = res.role;
+      this.role = JSON.parse(JSON.stringify(data));
       if (this.role.date_disallowed) {
         for (let item of this.role.date_disallowed) {
           const fechaIFNS = item.begins_at;
@@ -146,10 +152,13 @@ export class RolesDisabledDatesComponent implements OnInit {
           if (res.error) {
             this._messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
-            this.store.dispatch(addDatedisallowed({datedisallowed: dataDateD}));
+            //this.store.dispatch(addDatedisallowed({datedisallowed: dataDateD}));
             this.DocumentsFechasForm.reset();
             this._messageService.add({type: 'success', message: res.msg, life: 5000});
-            this.getRoleDates();
+            //this.getRoleDates();
+
+            this.role.date_disallowed?.push(dateDisall);
+            this.store.dispatch(controlRole({ role: this.role, index: 0 }));
           }
           this.isBlockPage = false;
         });
@@ -159,6 +168,7 @@ export class RolesDisabledDatesComponent implements OnInit {
           message: 'La Fecha Inicial debe ser Menor a la Fecha Final',
           life: 5000
         });
+        this.isBlockPage = false;
       }
     }
   }
@@ -174,6 +184,7 @@ export class RolesDisabledDatesComponent implements OnInit {
         message: 'La Fecha Inicial debe ser Menor a la Fecha Final',
         life: 5000
       });
+      this.isBlockPage = false;
     } else {
       if (this.indexDate !== 9999) {
         const id_Date = this.fechas[this.indexDate].id;
@@ -191,10 +202,17 @@ export class RolesDisabledDatesComponent implements OnInit {
             this._messageService.add({type: 'error', message: 'Error en la Actualización', life: 5000});
           } else {
             this._messageService.add({type: 'success', message: 'Actualización Exitosa', life: 5000});
-            this.store.dispatch(controlDatedisallowed({index: this.indexDate}));
-            this.store.dispatch(updateDatedisallowed({datedisallowed: dataDateD}));
 
-            this.getRoleDates();
+            // @ts-ignore
+            const index = this.role.date_disallowed?.indexOf(this.role.date_disallowed?.find(r => r.id === dateDisall.id), 1);
+            // @ts-ignore
+            this.role.date_disallowed[index] = dateDisall;
+
+            this.store.dispatch(controlRole({ role: this.role, index: 0 }));
+            //this.store.dispatch(controlDatedisallowed({index: this.indexDate}));
+            //this.store.dispatch(updateDatedisallowed({datedisallowed: dataDateD}));
+
+            //this.getRoleDates();
 
             this.isEdit = false;
           }
@@ -238,7 +256,7 @@ export class RolesDisabledDatesComponent implements OnInit {
         } else {
           this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
           this.fechas.splice(this.indexDate, 1);
-          this.store.dispatch(deleteDatedisallowed({index: this.indexDate}));
+          //this.store.dispatch(deleteDatedisallowed({index: this.indexDate}));
           this.getRoleDates();
           this.DocumentsFechasForm.reset();
         }

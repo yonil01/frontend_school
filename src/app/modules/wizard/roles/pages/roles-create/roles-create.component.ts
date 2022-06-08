@@ -25,6 +25,7 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   public isBlockPage: boolean = false;
   public isEdit: boolean = true;
   public showConfirm: boolean = false;
+  public contador: number = 0;
 
   public role: Role = {};
   public roleProject: NewRolesProject = {id: "", project: "", role_id: ""};
@@ -40,8 +41,8 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
   ) {
     this.roleForm = this.fb.group({
-      name: ['', []],
-      description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(60)]],
+      name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+      description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
       sessions_allowed: ['', [Validators.required, Validators.min(1), Validators.max(10000)]],
       see_all_users: [false]
     });
@@ -83,12 +84,12 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
   }
 
   saveRole() {
-    const description: string = this.roleForm.get('description')?.value+"";
+    //const description: string = this.roleForm.get('description')?.value+"";
     //const re = / /gi;
     //const descriptionRefactor: string = description.replace(re,'_')+"";
     //const name: string = descriptionRefactor.toLowerCase();
-    const name = description;
-    this.roleForm.get('name')?.setValue(name);
+    //const name = description;
+    //this.roleForm.get('name')?.setValue(name);
 
     if (!this.roleForm.invalid) {
       if (!this.isEdit) {
@@ -158,5 +159,8 @@ export class RolesCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  onKey(event: any){
+    this.contador = event.target.value.length;
+  }
 
 }

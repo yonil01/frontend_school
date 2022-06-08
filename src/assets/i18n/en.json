@@ -376,6 +376,8 @@
   "NOTIFICATIONS": "Notifications",
   "TIMERS": "Timers",
   "CALENDARS": "Calendars",
-  "IMPORT_PRESS_OR_DRAG_DOCUMENT": "Import 'Press or Drag' Document"
+  "IMPORT_PRESS_OR_DRAG_DOCUMENT": "Import 'Press or Drag' Document",
+  "VIEW_ALL_USERS": "View all users",
+  "SESSIONS": "Sessions"
 }
 
