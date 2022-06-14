@@ -12,10 +12,10 @@
               <span class="text-mono-70 t-subtitle-1">{{'ADMINISTRATION'|translate}}</span>
             </div>
             <div class="item-group">
-              <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                <div class="item flex-1">
-                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/user">
-                    <div>
+              <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-2">
+                <div *ngFor="let module of adminList" class="item flex-1">
+                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/{{module.route}}">
+                    <div *ngIf="module.route === 'users'">
                       <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40"
                            xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -23,79 +23,44 @@
                         />
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">{{'USERS'|translate}}</span>
-                  </button>
-                </div>
-                <div class="item flex-1">
-                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/password-not-allowed">
-                    <div>
+                    <div *ngIf="module.route === 'password-not-allowed'">
                       <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2C14.2091 2 16 3.79086 16 6V8H17.75C18.9926 8 20 9.00736 20 10.25V19.75C20 20.9926 18.9926 22 17.75 22H6.25C5.00736 22 4 20.9926 4 19.75V10.25C4 9.00736 5.00736 8 6.25 8H8V6C8 3.79086 9.79086 2 12 2ZM17.75 9.5H6.25C5.83579 9.5 5.5 9.83579 5.5 10.25V19.75C5.5 20.1642 5.83579 20.5 6.25 20.5H17.75C18.1642 20.5 18.5 20.1642 18.5 19.75V10.25C18.5 9.83579 18.1642 9.5 17.75 9.5ZM12.0001 13.5C12.8286 13.5 13.5001 14.1716 13.5001 15C13.5001 15.8284 12.8286 16.5 12.0001 16.5C11.1717 16.5 10.5001 15.8284 10.5001 15C10.5001 14.1716 11.1717 13.5 12.0001 13.5ZM12 3.5C10.6193 3.5 9.5 4.61929 9.5 6V8H14.5V6C14.5 4.61929 13.3807 3.5 12 3.5Z"/>
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">{{'PASSWORDS NOT ALOWED'|translate}}</span>
-                  </button>
-                </div>
-                <div class="item flex-1">
-                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/message">
-                    <div>
+                    <div *ngIf="module.route === 'message'">
                       <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           d="M20 4C28.8366 4 36 11.1634 36 20C36 28.8366 28.8366 36 20 36C17.4536 36 14.9918 35.4037 12.7734 34.2787L12.532 34.15L5.24218 35.9702C4.62254 36.1249 4.05245 35.6737 4.00262 35.0877L4.00228 34.9248L4.02987 34.7574L5.85 27.47L5.72338 27.2306C4.8132 25.4371 4.24866 23.4845 4.06549 21.4565L4.01475 20.6927L4 20C4 11.1634 11.1634 4 20 4ZM20 6C12.268 6 6 12.268 6 20C6 22.4341 6.62109 24.7756 7.78705 26.8497C7.88093 27.0167 7.92421 27.2059 7.91384 27.3946L7.88548 27.5823L6.374 33.624L12.4221 32.1167C12.5459 32.0858 12.6732 32.0791 12.7975 32.0958L12.9806 32.1383L13.154 32.215C15.2272 33.3797 17.5674 34 20 34C27.732 34 34 27.732 34 20C34 12.268 27.732 6 20 6ZM21 22C21.5523 22 22 22.4477 22 23C22 23.4909 21.6462 23.8992 21.1798 23.9839L21 24H15C14.4477 24 14 23.5523 14 23C14 22.5091 14.3538 22.1008 14.8202 22.0161L15 22H21ZM25 16C25.5523 16 26 16.4477 26 17C26 17.4909 25.6462 17.8992 25.1798 17.9839L25 18H15C14.4477 18 14 17.5523 14 17C14 16.5091 14.3538 16.1008 14.8202 16.0161L15 16H25Z"/>
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">{{'MESSAGES'|translate}}</span>
-                  </button>
-                </div>
-                <div class="item flex-1">
-                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/datasets">
-                    <div>
+                    <div *ngIf="module.route === 'datasets'">
                       <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           d="M14.1667 8.71679C14.1667 6.64573 15.8456 4.9668 17.9167 4.9668H22.0833C24.1544 4.9668 25.8333 6.64573 25.8333 8.7168V11.6668H31.25C33.3211 11.6668 35 13.3457 35 15.4168V33.7501C35 34.4405 34.4404 35.0001 33.75 35.0001H6.25C5.55964 35.0001 5 34.4405 5 33.7501V20.4168C5 18.3457 6.67893 16.6668 8.75 16.6668H14.1667V8.71679ZM16.6667 32.5001H23.3333V8.7168C23.3333 8.02644 22.7737 7.4668 22.0833 7.4668H17.9167C17.2263 7.4668 16.6667 8.02644 16.6667 8.71679V32.5001ZM14.1667 19.1668H8.75C8.05964 19.1668 7.5 19.7264 7.5 20.4168V32.5001H14.1667V19.1668ZM25.8333 32.5001H32.5V15.4168C32.5 14.7264 31.9404 14.1668 31.25 14.1668H25.8333V32.5001Z"/>
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">{{'DATA SET'|translate}}</span>
-                  </button>
-                </div>
-                <div class="item flex-1">
-                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/calendar">
-                    <div>
+                    <div *ngIf="module.route === 'calendar'">
                       <svg  class="text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.75 3C19.5449 3 21 4.45507 21 6.25V17.75C21 19.5449 19.5449 21 17.75 21H6.25C4.45507 21 3 19.5449 3 17.75V6.25C3 4.45507 4.45507 3 6.25 3H17.75ZM19.5 8.5H4.5V17.75C4.5 18.7165 5.2835 19.5 6.25 19.5H17.75C18.7165 19.5 19.5 18.7165 19.5 17.75V8.5ZM7.75 14.5C8.44036 14.5 9 15.0596 9 15.75C9 16.4404 8.44036 17 7.75 17C7.05964 17 6.5 16.4404 6.5 15.75C6.5 15.0596 7.05964 14.5 7.75 14.5ZM12 14.5C12.6904 14.5 13.25 15.0596 13.25 15.75C13.25 16.4404 12.6904 17 12 17C11.3096 17 10.75 16.4404 10.75 15.75C10.75 15.0596 11.3096 14.5 12 14.5ZM7.75 10.5C8.44036 10.5 9 11.0596 9 11.75C9 12.4404 8.44036 13 7.75 13C7.05964 13 6.5 12.4404 6.5 11.75C6.5 11.0596 7.05964 10.5 7.75 10.5ZM12 10.5C12.6904 10.5 13.25 11.0596 13.25 11.75C13.25 12.4404 12.6904 13 12 13C11.3096 13 10.75 12.4404 10.75 11.75C10.75 11.0596 11.3096 10.5 12 10.5ZM16.25 10.5C16.9404 10.5 17.5 11.0596 17.5 11.75C17.5 12.4404 16.9404 13 16.25 13C15.5596 13 15 12.4404 15 11.75C15 11.0596 15.5596 10.5 16.25 10.5ZM17.75 4.5H6.25C5.2835 4.5 4.5 5.2835 4.5 6.25V7H19.5V6.25C19.5 5.2835 18.7165 4.5 17.75 4.5Z"/>
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">{{'CALENDARS'|translate}}</span>
-                  </button>
-                </div>
-                <div class="item flex-1">
-                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/notification">
-                    <div>
+                    <div *ngIf="module.route === 'notification'">
                       <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 1.99622C16.0499 1.99622 19.3567 5.19096 19.4958 9.24527L19.5 9.49622V13.5932L20.88 16.7492C20.949 16.9071 20.9847 17.0776 20.9847 17.25C20.9847 17.9403 20.425 18.5 19.7347 18.5L15 18.5015C15 20.1583 13.6568 21.5015 12 21.5015C10.4023 21.5015 9.09633 20.2526 9.00508 18.6778L8.99954 18.4992L4.27485 18.5C4.10351 18.5 3.93401 18.4648 3.77685 18.3965C3.14365 18.1215 2.8533 17.3852 3.12834 16.752L4.49999 13.5941V9.49611C4.50059 5.34132 7.85208 1.99622 12 1.99622ZM13.4995 18.4992L10.5 18.5015C10.5 19.3299 11.1716 20.0015 12 20.0015C12.7797 20.0015 13.4204 19.4066 13.4931 18.6459L13.4995 18.4992ZM12 3.49622C8.67983 3.49622 6.00047 6.17047 5.99999 9.49622V13.9058L4.65601 17H19.3525L18 13.9068L18.0001 9.50907L17.9964 9.28387C17.8853 6.0504 15.2416 3.49622 12 3.49622Z"/>
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">{{'NOTIFICATIONS'|translate}}</span>
-                  </button>
-                </div>
-                <div class="item flex-1">
-                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/timer">
-                    <div>
+                    <div *ngIf="module.route === 'timer'">
                       <svg class="text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2C17.523 2 22 6.478 22 12C22 17.522 17.523 22 12 22C6.477 22 2 17.522 2 12C2 6.478 6.477 2 12 2ZM12 3.667C7.405 3.667 3.667 7.405 3.667 12C3.667 16.595 7.405 20.333 12 20.333C16.595 20.333 20.333 16.595 20.333 12C20.333 7.405 16.595 3.667 12 3.667ZM11.25 6C11.6295 6 11.9435 6.28233 11.9931 6.64827L12 6.75V12H15.25C15.664 12 16 12.336 16 12.75C16 13.1295 15.7177 13.4435 15.3517 13.4931L15.25 13.5H11.25C10.8705 13.5 10.5565 13.2177 10.5069 12.8517L10.5 12.75V6.75C10.5 6.336 10.836 6 11.25 6Z"/>
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">{{'TIMERS'|translate}}</span>
-                  </button>
-                </div>
-                <div class="item flex-1">
-                  <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/console_notification">
-                    <div>
+                    <div *ngIf="module.route === 'console_notification'">
                       <svg class="text-brand-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.25 21C3.45507 21 2 19.5449 2 17.75L2 6.25C2 4.45507 3.45508 3 5.25 3L18.75 3C20.5449 3 22 4.45507 22 6.25L22 17.75C22 19.5449 20.5449 21 18.75 21L5.25 21ZM5.25 19.5L18.75 19.5C19.7165 19.5 20.5 18.7165 20.5 17.75L20.5 6.25C20.5 5.2835 19.7165 4.5 18.75 4.5L5.25 4.5C4.2835 4.5 3.5 5.2835 3.5 6.25L3.5 17.75C3.5 18.7165 4.2835 19.5 5.25 19.5ZM11.2516 17.5L6.7457 17.5C6.33149 17.5 5.9957 17.1642 5.9957 16.75C5.9957 16.3703 6.27785 16.0565 6.64393 16.0068L6.7457 16L11.2516 16C11.6659 16 12.0016 16.3358 12.0016 16.75C12.0016 17.1297 11.7195 17.4435 11.3534 17.4932L11.2516 17.5L6.7457 17.5L11.2516 17.5Z"/>
                       </svg>
                     </div>
-                    <span class="t-body-2 flex-1 text-left">{{'CONSOLE_WORKER'|translate}}</span>
+                    <span class="t-body-2 flex-1 text-left">{{module.name}}</span>
                   </button>
                 </div>
               </div>
