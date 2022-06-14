@@ -15,7 +15,7 @@
               <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-2">
                 <div *ngFor="let module of adminList" class="item flex-1">
                   <button class="w-full hover:drop-shadow-lg btn-item-home" routerLink="/admin/{{module.route}}">
-                    <div *ngIf="module.route === 'users'">
+                    <div *ngIf="module.route === 'user'">
                       <svg class="fill-current text-brand-2" width="24" height="24" viewBox="0 0 40 40"
                            xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -112,7 +112,7 @@
                   <div *ngIf="!isGenerate" class="flex justify-center items-center w-full">
                     <div class="flex flex-col items-center space-y-4">
                       <img src="assets/img/touch-icon.svg" class="text-mono-70" alt="img access">
-                      <span class="text-mono-70">{{'Select \"Generate access\".'|translate}}</span>
+                      <span class="text-mono-70">{{'SELECT_WIZARD'|translate}}</span>
                     </div>
                   </div>
                 </div>

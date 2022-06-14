@@ -65,7 +65,7 @@ export const AdminElement = [
   {
     id: '84c729c0-66a1-4213-b2f8-5c0b58a7ece2',
     name: 'Usuarios',
-    route: 'users',
+    route: 'user',
   },
   {
     id: 'd65d7929-7fa5-492a-974f-82ceb729290d',
