@@ -143,6 +143,8 @@ export class RolesListComponent implements OnInit, OnDestroy {
             }else{
               this._messageService.add({type: 'success', message: 'Eliminación Exitosa', life: 5000});
               this._store.dispatch(deleteRole({ indexRole: this.indexRoleDelete }));
+              this.roles.splice(this.indexRoleDelete, 1);
+              window.location.reload();
               this.isBlockPage = false;
             }
           });
