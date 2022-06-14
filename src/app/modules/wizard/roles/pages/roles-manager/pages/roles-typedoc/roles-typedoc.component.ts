@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DocTypeGroups, DocTypes, Role, Response} from "@app/core/models";
+import {DocTypeGroups, DocTypes, Role, Response, Project} from "@app/core/models";
 import {v4 as uuidv4} from "uuid";
 import {Subscription} from "rxjs/internal/Subscription";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
@@ -50,6 +50,8 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
   selectedDtg: DocTypeGroups[] = [];
 
   groupDocIdSelected = '';
+  private project: Project;
+
 
   constructor(
     private _roleService: RoleService,
@@ -67,10 +69,11 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
         }
       }
     });
+    this.project = JSON.parse(sessionStorage.getItem('project') || '');
   }
 
   ngOnInit(): void {
-    this.doctypegroupService.getDoctypeGroupsProject().subscribe((res: Response) => {
+    this.doctypegroupService.getDoctypeGroupsByProjectID(this.project.id.toLowerCase()).subscribe((res: Response) => {
       this.sourceDoctype = res.data;
       for(let doc of this.sourceDoctype){
         this.sourceDoctypeDrop.push({

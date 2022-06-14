@@ -33,6 +33,7 @@ export class UsersComponent implements OnInit {
   public styleTable: TableModel = styleTableUser;
   public users: User[] = [];
   public user: User;
+  public userSelected: User = {};
   public contentModel: DataContentUser[] = dataContent
   public showEdit: boolean;
   public showLoader: any = showLoader;
@@ -45,6 +46,7 @@ export class UsersComponent implements OnInit {
   data: AOA = [[1, 2], [3, 4]];
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName: string = 'Usuarios No creado.xlsx';
+  public showConfirmDelete: boolean = false;
 
   constructor(private router: Router,
               private userService: UsersService,
@@ -146,26 +148,8 @@ export class UsersComponent implements OnInit {
   }
 
   private deleteUser(user: User): void {
-    this.showLoader[0].value = true;
-    this.userService.deleteUser(user.id!.toLowerCase()).subscribe((res: Response) => {
-      if (res.error) {
-        this.showLoader[0].value = false;
-        this._messageService.add( {
-            type: 'errror',
-            message: res.msg,
-            life: 5000,
-          }
-        );
-      } else {
-        this.showLoader[0].value = false;
-        this._messageService.add({
-          type: 'success',
-          message: res.msg,
-          life: 5000,
-        });
-        this.getUsers();
-      }
-    });
+    this.userSelected = user;
+    this.showConfirmDelete = true;
   }
 
   public confirmLockUnlock(user: User) {
@@ -331,5 +315,68 @@ export class UsersComponent implements OnInit {
 
     XLSX.writeFile(wb, this.fileName);
     this.dataExport = [];
+  }
+
+  confirmDialogDelete(event: boolean) {
+    this.showConfirmDelete = false;
+    const user = this.userSelected;
+    if (event) {
+      this.showLoader[0].value = true;
+      this.userService.deleteUser(user.id!.toLowerCase()).subscribe((res: Response) => {
+        if (res.error) {
+          this.showLoader[0].value = false;
+          this._messageService.add( {
+              type: 'error',
+              message: res.msg,
+              life: 5000,
+            }
+          );
+        } else {
+          this._messageService.add({
+            type: 'success',
+            message: res.msg,
+            life: 5000,
+          });
+
+          this.userService.getUsersRolesByUserID(user.id!.toLowerCase()).subscribe((res: Response) => {
+            if (res.error) {
+              this.showLoader[0].value = false;
+              this._messageService.add( {
+                  type: 'error',
+                  message: res.msg,
+                  life: 5000,
+                }
+              );
+            }else{
+              if(res.data){
+                let data = res.data;
+                for(let item of data){
+                  this.userService.deleteUsersRoles(item.id!.toLowerCase()).subscribe((res: Response) => {
+                    if (res.error) {
+                      this.showLoader[0].value = false;
+                      this._messageService.add( {
+                          type: 'error',
+                          message: res.msg,
+                          life: 5000,
+                        }
+                      );
+                    }
+                    if(item === data[data.length - 1]){
+                      this.getUsers();
+                      this.showLoader[0].value = false;
+                    }
+                  });
+                }
+              }else{
+                this.showLoader[0].value = false;
+                this.getUsers();
+              }
+            }
+          });
+        }
+      });
+    }else{
+      this.userSelected = {};
+    }
   }
 }

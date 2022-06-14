@@ -67,10 +67,12 @@
 </app-layout>
 
 <p-confirmDialog styleClass="ce-dialog-width" [baseZIndex]="10000"></p-confirmDialog>
-{{showLoader[0].value}}
 <app-block-page [show]="showLoader[0].value"></app-block-page>
 
 <ec-toast [toastStyle]="toastStyle"></ec-toast>
+
+<app-confirm-dialog [show]="showConfirmDelete" type="warning" title="Confimar Eliminación"
+                    body="¿Desea Eliminar al usuario?" (onEvent)="confirmDialogDelete($event)"></app-confirm-dialog>
 
 
 
