@@ -572,7 +572,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           id: this.docTypeSelected.id?.toLocaleLowerCase(),
           doctypes_groups_id: this.docTypeSelected.doctypes_groups_id?.toLocaleLowerCase(),
         };
-        if (docTypes.format !== 'frm' && docTypes.format !== 'dsb' && docTypes.format !== 'rpt') {
+        if (docTypes.format !== 'frm' && docTypes.format !== 'trg' && docTypes.format !== 'dsb' && docTypes.format !== 'rpt') {
           docTypes.procedure = '';
           docTypes.url_path = '';
         } else if (docTypes.format === 'dsb' || docTypes.format === 'rpt') {
