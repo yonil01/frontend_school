@@ -73,8 +73,6 @@ export class RolesDisabledDatesComponent implements OnInit {
       if (!this.role || Object.keys(this.role).length === 0) this.router.navigateByUrl('wizard/roles');
       this.fechas = [];
       this.isBlockPage = false;
-
-      console.log(this.role);
     });
     this.initFechas();
   }

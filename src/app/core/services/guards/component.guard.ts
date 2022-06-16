@@ -10,13 +10,26 @@ export class ComponentGuard implements CanActivate {
   }
 
   async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const modules = this._localStorageService.getModules();
-    let components = modules.map((item:any) => item.components);
-    components = components.filter((c) => c);
-    const component = components.some((item) => {
-      return item.some((com:any) => com.url_front === state.url);
-    });
-    if (component) {
+    const modules:any[] = this._localStorageService.getModules();
+    let elements:any[] = [];
+
+    for(let module of modules){
+      for(let component of module.components){
+        for(let element of component.elements){
+          elements.push(element);
+        }
+      }
+    }
+
+    let element: any = null;
+    for(let item of elements){
+      if(state.url === item.url_back){
+        element = item;
+        break;
+      }
+    }
+
+    if (element) {
       return true;
     } else {
       await this._router.navigateByUrl('');

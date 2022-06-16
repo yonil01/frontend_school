@@ -70,8 +70,6 @@ export class WizardComponent implements OnInit, OnDestroy {
 
     this.modulesUserLogin = _sessionsService.getModules();
 
-    console.log(this.modulesUserLogin);
-
     for(let module of this.modulesUserLogin){
       if(module.id === "8e5df79b-7b22-4b2d-a3a2-0986224724e2"){ //Configuración
         module.components[0].elements.forEach((element:any) => {

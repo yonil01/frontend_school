@@ -11,6 +11,7 @@ import {controlLogin} from "@app/core/store/actions/token.action";
 import {decryptText} from "@app/core/utils/crypto/cypher";
 import {animate, animation, style, transition, trigger, useAnimation} from "@angular/animations";
 import {MenuService} from "@app/ui/services/menu.service";
+import {AdminElement} from "@app/core/utils/constants/constant";
 
 const showAnimation = animation([
   style({transform: '{{transform}}'}),
@@ -50,14 +51,43 @@ export class MenuComponent implements OnInit {
   public isBlock: boolean = false;
 
   public isOptionConfig: boolean = false;
+  private modulesUserLogin: any[] = [];
+  public adminList: any[] = [];
 
   constructor(
     private _menuService: MenuService,
     private _localStorageService: LocalStorageService,
     // private _loguotService: LogoutService,
+    private _sessionsService: LocalStorageService,
     private store: Store<AppState>,
     private route: Router,
   ) {
+
+    this.modulesUserLogin = _sessionsService.getModules();
+
+    for(let module of this.modulesUserLogin){
+      if(module.id === "667c1c37-0d72-4ecc-945e-93ab97b4b0cc"){ //Administration
+        for(let component of module.components){
+          component.elements.forEach((element:any) => {
+            const adminItem = AdminElement.find((item) => item.id === element.id);
+            if(adminItem){
+              this.adminList.push(adminItem);
+            }
+          });
+        }
+      }
+      if(module.id === "b53819ee-2088-4e8a-be68-2e4b1d82cebb"){ //Monitoreo
+        for(let component of module.components){
+          component.elements.forEach((element:any) => {
+            const adminItem = AdminElement.find((item) => item.id === element.id);
+            if(adminItem){
+              this.adminList.push(adminItem);
+            }
+          });
+        }
+      }
+    }
+
   }
 
   ngOnInit(): void {

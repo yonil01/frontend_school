@@ -41,7 +41,6 @@ export class ImportAutofillComponent implements OnInit {
     // this.typeFile = 'base64';
     // this.documentAnnexe.b64 = reader.result;
     this.base64 = reader.result;
-    console.log(this.base64)
   }
 
   public clickUploadFile($event: any): void {
