@@ -118,6 +118,7 @@ export const formatsDocs = [
   {label: 'vsr', value: 'vsr'},
   {label: 'tpl', value: 'tpl'},
   {label: 'rpt', value: 'rpt'},
+  {label: 'trg', value: 'trg'},
 ];
 
 export const typeSupport = [
