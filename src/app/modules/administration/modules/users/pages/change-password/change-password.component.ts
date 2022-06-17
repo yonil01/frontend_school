@@ -27,7 +27,7 @@ export class ChangePasswordComponent implements OnInit {
       {
         validators: [this.confirmPasswordValidator],
       });
-    this.secretKey = '';
+    this.secretKey = '204812730425442A472D2F423F452847';
     this.user = {};
   }
 
