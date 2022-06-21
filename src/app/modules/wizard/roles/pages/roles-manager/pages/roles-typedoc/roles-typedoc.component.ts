@@ -12,6 +12,7 @@ import {Store} from "@ngrx/store";
 import {AppState} from "@app/core/store/app.reducers";
 import {Router} from "@angular/router";
 import {DropdownModel} from "ecapture-ng-ui/lib/modules/dropdown/models/dropdown";
+import {DoctypeGroup} from "@app/core/store/reducers";
 
 export interface RolesDoctype {
   id?: string;
@@ -63,9 +64,12 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
     this.store.select('role').subscribe((res) => {
       this.role = JSON.parse(JSON.stringify(res.role));
       if (!this.role || Object.keys(this.role).length === 0) this.router.navigateByUrl('wizard/roles');
+
       if(this.role.roles_doc_types){
         for(let doc of this.role.roles_doc_types){
-          this.doctypesSelected.push(doc);
+          if(doc){
+            this.doctypesSelected.push(doc);
+          }
         }
       }
     });
@@ -75,6 +79,7 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.doctypegroupService.getDoctypeGroupsByProjectID(this.project.id.toLowerCase()).subscribe((res: Response) => {
       this.sourceDoctype = res.data;
+
       for(let doc of this.sourceDoctype){
         this.sourceDoctypeDrop.push({
           label: doc.name || '',
@@ -94,6 +99,19 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
       if(!res.error){
         const data = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
         this.role = data.find((doc: any) => doc.id?.toLowerCase() === this.role.id?.toLowerCase()) || this.role;
+
+        const doctypes = this.role.roles_doc_types;
+
+        //clear doc_types
+        if(doctypes){
+          this.role.roles_doc_types = [];
+          for(let doctype of doctypes){
+            if(doctype){
+              this.role.roles_doc_types.push(doctype);
+            }
+          }
+        }
+
         this.changeGroupDoctype(this.groupDocIdSelected);
       }else{
         this._messageService.add({
@@ -208,10 +226,12 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
     const groupDoc = this.sourceDoctype.find((el) => el.id === this.groupDocIdSelected);
     if(groupDoc?.doctypes){
       for(let doctype of groupDoc.doctypes){
-        if(this.role.roles_doc_types?.find((el:any) => el.doctype.id?.toLowerCase() === doctype.id?.toLowerCase())){
-          this.doctypesOfGroupSelected.push(doctype);
-        }else{
-          this.doctypesAvailable.push(doctype);
+        if(doctype){
+          if(this.role.roles_doc_types?.find((el:any) => el.doctype.id?.toLowerCase() === doctype.id?.toLowerCase())){
+            this.doctypesOfGroupSelected.push(doctype);
+          }else{
+            this.doctypesAvailable.push(doctype);
+          }
         }
       }
     }
