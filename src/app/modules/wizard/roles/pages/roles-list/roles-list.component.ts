@@ -53,7 +53,12 @@ export class RolesListComponent implements OnInit, OnDestroy {
             this._messageService.add({type: 'error', message: res.msg, life: 5000});
           } else {
             if (res.data) {
-              this.roles = res.data;
+              const data = res.data;
+              for(let role of data){
+                if(role){
+                  this.roles.push(role);
+                }
+              }
             } else {
               this._messageService.add({type: 'error', message: 'No roles found', life: 5000});
             }
@@ -79,7 +84,66 @@ export class RolesListComponent implements OnInit, OnDestroy {
   }
 
   public showRole(role: Role): void {
-    this._store.dispatch(controlRole({ role: role, index: 0 }));
+    let roleClear:Role = {};
+    roleClear.date_disallowed = role.date_disallowed;
+    roleClear.description = role.description;
+    roleClear.id = role.id;
+    roleClear.name = role.name;
+    roleClear.password_policy = role.password_policy;
+    roleClear.sessions_allowed = role.sessions_allowed;
+    roleClear.see_all_users = role.see_all_users;
+
+    //clear projects
+    if(role.projects){
+      roleClear.projects = [];
+      for(let project of role.projects){
+        if(project){
+          roleClear.projects.push(project);
+        }
+      }
+    }
+
+    //clear role_allow
+    if(role.role_allow){
+      roleClear.role_allow = [];
+      for(let item of role.role_allow){
+        if(item){
+          roleClear.role_allow.push(item);
+        }
+      }
+    }
+
+    //clear role_elements
+    if(role.role_elements){
+      roleClear.role_elements = [];
+      for(let item of role.role_elements){
+        if(item){
+          roleClear.role_elements.push(item);
+        }
+      }
+    }
+
+    //clear security_entities
+    if(role.security_entities){
+      roleClear.security_entities = [];
+      for(let item of role.security_entities){
+        if(item){
+          roleClear.security_entities.push(item);
+        }
+      }
+    }
+
+    //clear doc_types
+    if(role.roles_doc_types){
+      roleClear.roles_doc_types = [];
+      for(let doctype of role.roles_doc_types){
+        if(doctype){
+          roleClear.roles_doc_types.push(doctype);
+        }
+      }
+    }
+
+    this._store.dispatch(controlRole({ role: roleClear, index: 0 }));
     this._router.navigateByUrl('wizard/roles/manager');
   }
 
