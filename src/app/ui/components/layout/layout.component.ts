@@ -61,7 +61,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private _doctypeService: DocTypeGroupsService,
     private route: Router,
   ) {
-    console.log(_localStorageService.getRoles());
+    // console.log(_localStorageService.getRoles());
     this.getDocTypesGroup(_localStorageService.getRoles());
 
     this.typeButton = 0;
@@ -175,7 +175,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         next: (res) => {
           if (!res.error) {
             const data = res.data;
-            console.log(data);
+            // console.log(data);
             if(data){
               let tempRolesUser: any[] = [];
               for(let rol of data){
