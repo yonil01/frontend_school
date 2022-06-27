@@ -115,7 +115,7 @@ export class MenuComponent implements OnInit {
   }
 
   private getUrlLogo(): void {
-    this.url_logo = EnvServiceProvider.useFactory().MENU_URL_LOGO;
+    this.url_logo = EnvServiceProvider.useFactory().LOGIN_URL_LOGO;
   }
 
   public confirmDialogLogout(event: boolean): void {
