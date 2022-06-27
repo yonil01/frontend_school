@@ -29,4 +29,28 @@ export class RoleService {
       })
       .valueChanges.pipe(map(({data}: any) => data.getRoles));
   }
+
+  getRolesWithDoctype(): Observable<Response> {
+    return this.apollo
+      .watchQuery({
+        query: gql`
+          query getRoles {
+            getRoles {
+              data {
+                id
+                name
+                roles_doc_types {
+                  id
+                  doctype {
+                    id
+                    doctypes_groups_id
+                  }
+                }
+              }
+            }
+          }
+        `,
+      })
+      .valueChanges.pipe(map(({data}: any) => data.getRoles));
+  }
 }
