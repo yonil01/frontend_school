@@ -17,6 +17,9 @@ import {ConfirmDialogService} from "@app/ui/components/confirm-dialog/confirm-di
 import {decryptText} from "@app/core/utils/crypto/cypher";
 import {Router} from "@angular/router";
 import {LogoutService} from "@app/core/services/graphql/auth/logout/logout.service";
+import {HttpErrorResponse} from "@angular/common/http";
+import {DocTypeGroups} from "@app/core/models";
+import {DocTypeGroupsService} from "@app/core/services/graphql/doc-type-groups/doc-type-groups.service";
 
 @Component({
   selector: 'app-layout',
@@ -30,6 +33,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   @Input() styleSidebar: string = '';
   private _subscription: Subscription = new Subscription();
 
+  public isManuals: boolean = false;
+  public isManual: boolean = false;
   public showConfirmLogout: boolean = false;
   public isConfigSystem: boolean = false;
   public isChangePassword: boolean = false;
@@ -41,6 +46,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public rolesUser: any[] = [];
   public secretKey: string = '';
   public user: any = {};
+  public linksManuales: any[] = [];
 
   constructor(
     private _logOutService: LogoutService,
@@ -51,8 +57,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private _localStorageService: LocalStorageService,
     private _messageService: ToastService,
     private _confirmDialog: ConfirmDialogService,
+    private _docTypeGroupsService: DocTypeGroupsService,
+    private _doctypeService: DocTypeGroupsService,
     private route: Router,
   ) {
+    // console.log(_localStorageService.getRoles());
+    this.getDocTypesGroup(_localStorageService.getRoles());
+
     this.typeButton = 0;
     this.language = this._localStorageService.getLanguage() || '';
     this.userId = this._localStorageService.getUserId() || '';
@@ -154,5 +165,94 @@ export class LayoutComponent implements OnInit, OnDestroy {
       window.location.href = decryptText(EnvServiceProvider.useFactory().REDIRECT_URL, this.secretKey);
     }
     this.isBlock = false;
+  }
+
+  private getDocTypesGroup(ids_role: any): void {
+    const roles_id = ids_role;
+
+    this._subscription.add(
+      this.rolesService.getRolesWithDoctype().subscribe({
+        next: (res) => {
+          if (!res.error) {
+            const data = res.data;
+            // console.log(data);
+            if(data){
+              let tempRolesUser: any[] = [];
+              for(let rol of data){
+                for(let rol_id of roles_id){
+                  if(rol_id === rol.id){
+                    tempRolesUser.push(rol)
+                    break;
+                  }
+                }
+              }
+
+              const clearDGID = [];
+              const clearDGIDFinal:any[] = [];
+
+              for(let role of tempRolesUser){
+                for(let doctype of role.roles_doc_types){
+                  if(doctype){
+                    clearDGID.push(doctype.doctype.doctypes_groups_id);
+                  }
+                }
+              }
+
+              clearDGID.sort();
+              for(let i = 0; i < clearDGID.length; i++){
+                if(i !== 0 && clearDGID[i] !== clearDGID[i-1]){
+                  clearDGIDFinal.push(clearDGID[i]);
+                }
+              }
+
+              this._doctypeService.getDocTypeGroups().subscribe({
+                next: (res) => {
+                  if (!res.error) {
+                    // this.docTypeGroups = res.data;
+                    const tempData = res.data;
+                    let tempDocGroupUser: any[] = [];
+
+                    if(clearDGIDFinal){
+                      for(let id_group of clearDGIDFinal){
+                        for(let group of tempData){
+                          if(id_group === group.id){
+                            tempDocGroupUser.push(group);
+                          }
+                        }
+                      }
+                    }
+                    let docTypeGroups: DocTypeGroups[] = tempDocGroupUser.map((resp: any) => ({label: resp.name, value: resp.id, ...resp}))
+                    //trg -> formato para manuales
+                    if(docTypeGroups){
+                      for(let docGroup of docTypeGroups){
+                        if(docGroup.doctypes){
+                          for(let docType of docGroup.doctypes){
+                            if(docType.format === 'trg'){
+                              this.linksManuales.push({
+                                url: docType.url_path || '',
+                                name: docType.name,
+                                icon: docType.class
+                              });
+                            }
+                          }
+                        }
+                      }
+                    }
+                    //
+                  }
+                },
+                error: (err: HttpErrorResponse) => {
+                  console.error(err.message);
+                }
+              });
+
+            }
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error(err);
+        }
+      })
+    );
   }
 }

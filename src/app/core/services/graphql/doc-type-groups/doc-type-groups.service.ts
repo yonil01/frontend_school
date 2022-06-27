@@ -12,7 +12,7 @@ import {
   PublishDoctypeQuery,
   GetDoctypeGroupsProjectRoleQuery,
   GetDocumentsByEntityValuesQuery,
-  GetDoctypeByFormatAndProjectIDQuery,
+  GetDoctypeByFormatAndProjectIDQuery, GetDoctypeGroupQuery,
 } from '@app/core/services/graphql/doc-type-groups/doc-type-groups.query.service';
 import { Observable } from 'rxjs';
 
@@ -29,8 +29,13 @@ export class DocTypeGroupsService {
     private publishDoctypeQuery: PublishDoctypeQuery,
     private getDoctypeGroupsProjectRoleQuery: GetDoctypeGroupsProjectRoleQuery,
     private getDocumentsByEntityValuesQuery: GetDocumentsByEntityValuesQuery,
-    private getDoctypeByFormatAndProjectIDQuery: GetDoctypeByFormatAndProjectIDQuery
+    private getDoctypeByFormatAndProjectIDQuery: GetDoctypeByFormatAndProjectIDQuery,
+    private getDoctypeGroupQuery: GetDoctypeGroupQuery,
   ) {}
+
+  public getDocTypeGroups(): Observable<Response> {
+    return this.getDoctypeGroupQuery.watch({}).valueChanges.pipe(map(({data}: any) => data.getDoctypeGroup));
+  }
 
   searchDocuments(entities: any, typeDocument: any[]) {
     return this.getDocumentsByEntityValuesQuery

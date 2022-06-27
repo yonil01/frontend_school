@@ -8,11 +8,17 @@
   ajustadas a las necesidades de nuestros clientes.`;
   var AutoGestion_parrafo3 = 'Proveemos servicios profesionales de consultoría técnica de implementación.';
 
-  var Login_nombre_proyecto = 'Ecatch';
-  var Login_version = 'Version 6.1.3';
-  var Login_slogan = 'Sistema para la administración de contenido empresarial';
+  var Login_nombre_proyecto = '';
+  var Login_slogan = '';
 
-  var Login_logo = 'assets/img/logo_ecapture_blanco_h.svg';
+  var Login_version = 'v.6.2.0';
+
+  /**  CONFIGURACIÓN DE LOGOS **/
+  var Logo_client = 'assets/logos/logo.svg';
+  var Banner_login = 'assets/logos/gallagher-banner.png';
+  var Banner_home = 'assets/img/banner-web-config.jpg';
+
+
   var menu_url_logo = 'assets/img/logo_ecatch_new.svg';
   var footer_url_logo = '';
   var AutoGestion_url_logo_barHead = 'assets/img/Seg_Blanco.png';
@@ -41,7 +47,9 @@
   window.__env.AUTOGESTION_URL_ICON_TITLE3 = Autogestion_url_icon3;
 
   // Variables contenidos de textos urls de imagenes LOGIN
-  window.__env.LOGIN_URL_LOGO = Login_logo;
+  window.__env.LOGIN_URL_LOGO = Logo_client;
+  window.__env.BANNER_URL_LOGIN = Banner_login;
+  window.__env.BANNER_URL_HOME = Banner_home;
   window.__env.LOGIN_PROYECTO = Login_nombre_proyecto;
   window.__env.LOGIN_VERSION = Login_version;
   window.__env.LOGIN_SLOGAN = Login_slogan;

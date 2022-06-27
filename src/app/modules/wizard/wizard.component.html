@@ -1,7 +1,7 @@
 <app-layout>
   <ng-container layoutBody>
     <div class="w-full bg-white pb-8">
-      <div style="background-image: url('assets/img/banner-web-config.jpg'); background-position: top"
+      <div [ngStyle]="{'background-image': 'url(' + this.url_banner_home + ')', 'background-position': 'top'}"
            class="banner bg-black h-48 bg-cover bg-center"></div>
       <div class="ec-container py-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-6 gap-x-2">

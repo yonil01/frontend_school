@@ -22,6 +22,8 @@ export class EnvService {
   public AUTOGESTION_URL_ICON_TITLE2 = '';
   public AUTOGESTION_URL_ICON_TITLE3 = '';
   public LOGIN_URL_LOGO = '';
+  public BANNER_URL_LOGIN = '';
+  public BANNER_URL_HOME = '';
   public LOGIN_PROYECTO = '';
   public LOGIN_VERSION = '';
   public LOGIN_SLOGAN = '';

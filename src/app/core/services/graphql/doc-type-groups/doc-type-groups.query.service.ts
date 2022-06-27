@@ -147,6 +147,71 @@ export class GetDoctypeFormatQuery extends Query<Response> {
 @Injectable({
   providedIn: 'root',
 })
+export class GetDoctypeGroupQuery extends Query<Response> {
+  document = gql`
+    query getDoctypeGroup {
+      getDoctypeGroup {
+        error
+        data {
+          id
+          name
+          doctypes {
+            id
+            code
+            name
+            url_path
+            storage_id
+            format
+            autoname
+            tipo_soporte
+            retencion_electronic
+            retencion_ag
+            retencion_ac
+            retencion_ah
+            final_disposition
+            digitalizacion
+            procedure
+            class
+            is_cipher
+            doctypes_entities {
+              id
+              entities {
+                id
+                name
+                is_unique
+                attributes {
+                  id
+                  name
+                  description
+                  type
+                  validation
+                  required
+                  mask
+                  entities_attributes_dataset {
+                    id
+                    description
+                    name
+                    field_type
+                    max_length
+                    outside
+                    process
+                  }
+                }
+              }
+            }
+          }
+        }
+        code
+        type
+        msg
+      }
+    }
+  `;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class GetDoctypeByFormatAndProjectIDQuery extends Query<Response> {
   document = gql`
     query getDoctypeByFormatAndProjectID($format: String!, $project_id: String!) {
