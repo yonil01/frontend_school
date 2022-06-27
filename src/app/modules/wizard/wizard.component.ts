@@ -10,6 +10,7 @@ import {Subscription} from "rxjs/internal/Subscription";
 import {ConfigElement, AdminElement} from "@app/core/utils/constants/constant";
 import {HttpErrorResponse} from "@angular/common/http";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
+import {EnvServiceProvider} from "@app/core/services/env/env.service.provider";
 
 @Component({
   selector: 'app-wizard',
@@ -31,6 +32,7 @@ export class WizardComponent implements OnInit, OnDestroy {
   public clientID: string = '';
   public projectID: string = '';
   public isBlockPage: boolean = false;
+  public url_banner_home: string = '';
 
   private modulesUserLogin: any[] = [];
 
@@ -103,6 +105,7 @@ export class WizardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getDataDynamic()
   }
 
   ngOnDestroy(): void {
@@ -150,6 +153,10 @@ export class WizardComponent implements OnInit, OnDestroy {
       this.isGenerate = true;
       sessionStorage.removeItem('project');
     }
+  }
+
+  public getDataDynamic(): void {
+    this.url_banner_home = EnvServiceProvider.useFactory().BANNER_URL_HOME;
   }
 
 }

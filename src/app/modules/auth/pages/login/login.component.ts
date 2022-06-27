@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public siteKey;
   public url_logo = '';
+  public version_ecatch = '';
   public slogan = '';
   public version = '';
   public nameProject = '';
@@ -191,6 +192,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private getDataDynamic() {
     this.url_logo = EnvServiceProvider.useFactory().LOGIN_URL_LOGO;
+    this.version_ecatch = EnvServiceProvider.useFactory().LOGIN_VERSION;
     this.slogan = EnvServiceProvider.useFactory().LOGIN_SLOGAN;
     this.version = EnvServiceProvider.useFactory().LOGIN_VERSION;
     this.nameProject = EnvServiceProvider.useFactory().LOGIN_PROYECTO;
