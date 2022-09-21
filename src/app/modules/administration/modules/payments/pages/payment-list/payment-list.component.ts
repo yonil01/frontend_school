@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TableModel} from "@app/ui/components/table/model/table.model";
-import {styleTableFirst} from "@app/modules/wizard/dynamic-forms/models/constans";
 import {Router} from "@angular/router";
-import {styleTablePayment} from "@app/modules/administration/modules/payments/models/model-Payment/constans-Payment";
+import {styleTablePayment} from "@app/modules/administration/modules/payments/models/model-payment/constans-payment";
 import {PaymentsService} from "@app/modules/administration/modules/payments/service/payment/payments.service";
 import {Payment} from "@app/core/models";
 import {PaymentSelect} from "@app/modules/administration/modules/payments/models/payment-crud-model/payment-crud-constans";

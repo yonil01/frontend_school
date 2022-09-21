@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {encryptText} from "@app/core/utils/crypto/cypher";
 import {PaymentsService} from "@app/modules/administration/modules/payments/service/payment/payments.service";
 import {Response, Payment} from "@app/core/models";
-import {showLoader, showToast} from "@app/modules/administration/modules/payments/models/model-Payment/constans-Payment";
+import {showLoader} from "@app/modules/administration/modules/payments/models/model-payment/constans-payment";
 
 @Component({
   selector: 'app-change-password',

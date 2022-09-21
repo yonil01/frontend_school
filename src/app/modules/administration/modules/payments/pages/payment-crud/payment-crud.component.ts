@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
-  CrudModel,
-  PaymentSelect
+  CrudModel
 } from "@app/modules/administration/modules/payments/models/payment-crud-model/payment-crud-constans";
 import {StepModel} from "@app/ui/components/step/models/step-vertical-model";
 import {Router} from "@angular/router";

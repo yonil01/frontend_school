@@ -69,7 +69,7 @@ export const styleTablePayment: TableModel = {
 
 export const dataContent: DataContentPayment[] = [
   {
-    name: 'list-Payment',
+    name: 'list-payment',
     status: true,
   },
   {

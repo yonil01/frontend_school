@@ -21,7 +21,7 @@ import {PaymentsService} from "@app/modules/administration/modules/payments/serv
 import {FormControl} from "@angular/forms";
 import {LocalStorageService} from "@app/core/services/local-storage/local-storage.service";
 import {atRule} from "postcss";
-import {showLoader} from "@app/modules/administration/modules/payments/models/model-Payment/constans-Payment";
+import {showLoader} from "@app/modules/administration/modules/payments/models/model-payment/constans-payment";
 
 @Component({
   selector: 'app-security-entities',

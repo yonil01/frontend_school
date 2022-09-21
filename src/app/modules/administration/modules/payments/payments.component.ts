@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {TableModel} from "@app/ui/components/table/model/table.model";
 import {
   dataContent,
-  showLoader, showToast,
+  showLoader,
   styleTablePayment
-} from "@app/modules/administration/modules/payments/models/model-Payment/constans-Payment";
+} from "@app/modules/administration/modules/payments/models/model-payment/constans-payment";
 import {Response, Roles, Payment} from "@app/core/models";
 import {Router} from "@angular/router";
 import {PaymentsService} from "@app/modules/administration/modules/payments/service/payment/payments.service";
@@ -23,7 +23,7 @@ import {AppState} from "@app/core/store/app.reducers";
 import {Subscription} from "rxjs/internal/Subscription";
 
 @Component({
-  selector: 'app-Payments',
+  selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss'],
   providers: [ConfirmationService, MessageService],

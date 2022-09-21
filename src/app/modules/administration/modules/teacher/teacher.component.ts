@@ -24,8 +24,8 @@ import {TeacherService} from "@app/modules/administration/modules/teacher/servic
 
 @Component({
   selector: 'app-Teacher',
-  templateUrl: './Teacher.component.html',
-  styleUrls: ['./Teacher.component.scss'],
+  templateUrl: './teacher.component.html',
+  styleUrls: ['./teacher.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
 export class TeacherComponent implements OnInit {

@@ -7,7 +7,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 const helper = new JwtHelperService();
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
-import {showLoader} from "@app/modules/administration/modules/payments/models/model-Payment/constans-Payment";
+import {showLoader} from "@app/modules/administration/modules/payments/models/model-payment/constans-payment";
 import {Subscription} from "rxjs/internal/Subscription";
 @Component({
   selector: 'app-role',

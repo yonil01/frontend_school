@@ -14,7 +14,7 @@ import {AppState} from "@app/core/store/app.reducers";
 import {Store} from "@ngrx/store";
 import {PaymentsService} from "@app/modules/administration/modules/payments/service/payment/payments.service";
 import {ToastService} from "ecapture-ng-ui";
-import {showLoader, showToast} from "@app/modules/administration/modules/payments/models/model-Payment/constans-Payment";
+import {showLoader, showToast} from "@app/modules/administration/modules/payments/models/model-payment/constans-payment";
 import {ToastStyleModel} from "ecapture-ng-ui/lib/modules/toast/model/toast.model";
 import {toastDataStyle} from "@app/core/models/toast/toast";
 import {Subscription} from "rxjs/internal/Subscription";
