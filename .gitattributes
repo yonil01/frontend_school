@@ -1,2 +1,2 @@
-*.paxkck filter=lfs diff=lfs merge=lfs -text
 *.pack filter=lfs diff=lfs merge=lfs -text
+*.paxkck filter=lfs diff=lfs merge=lfs -text
