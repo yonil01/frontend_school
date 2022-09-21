@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "heroku-postbuild": "ng build"
+    "heroku-postbuild": "ng build — prod",
+    "start" : "node server.js",
+    "engines": { "node": "v16.15.1", "npm": "8.11.0" }
   },
   "private": true,
   "dependencies": {
@@ -33,15 +34,18 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "angular-gridster2": "^13.2.0",
-    "apollo-angular": "^2.6.0",
     "angular-split": "^5.0.0",
+    "apollo-angular": "^2.6.0",
     "bpmn-js": "^8.10.0",
     "bpmn-js-properties-panel": "^0.46.0",
     "crypto-js": "^4.1.1",
     "diagram-js": "^8.2.0",
     "ecapture-ng-ui": "^0.0.83",
+    "express": "^4.18.1",
     "file-saver": "^2.0.5",
     "graphql": "^15.8.0",
+    "highcharts": "^7.2.0",
+    "highcharts-angular": "^2.4.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.23",
     "material-design-icons": "^3.0.1",
@@ -53,6 +57,7 @@
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-quicklink": "^0.2.7",
     "ngx-webcam": "^0.4.1",
+    "path": "^0.12.7",
     "primeicons": "^5.0.0",
     "primeng": "^12.2.2",
     "rxjs": "~6.6.0",
@@ -61,9 +66,7 @@
     "utif": "^3.1.0",
     "uuid": "^8.3.2",
     "xlsx": "*",
-    "zone.js": "~0.11.4",
-    "highcharts": "^7.2.0",
-    "highcharts-angular": "^2.4.0"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.0.3",
