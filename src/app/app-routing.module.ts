@@ -10,12 +10,12 @@ const routes: Routes = [
   {path: 'auth', loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule)},
   {
     path: 'wizard',
-    canActivate: [AuthenticationGuard],
+    //canActivate: [AuthenticationGuard],
     loadChildren: () => import('./modules/wizard/wizard.module').then((m) => m.WizardModule)
   },
   {
     path: 'admin',
-    canActivate: [AuthenticationGuard],
+    //canActivate: [AuthenticationGuard],
     loadChildren: () => import('./modules/administration/administration.module').then((m) => m.AdministrationModule)
   },
   {

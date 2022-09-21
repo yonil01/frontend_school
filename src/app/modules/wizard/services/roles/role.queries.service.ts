@@ -6,7 +6,7 @@ import {Response} from '@app/core/models';
 @Injectable({
   providedIn: 'root',
 })
-export class GetRolesQuery extends Query<Response> {
+/*export class GetRolesQuery extends Query<Response> {
   document = gql`
     query getRoles {
       getRoles {
@@ -107,7 +107,7 @@ export class GetRolesQuery extends Query<Response> {
       }
     }
   `;
-}
+}*/
 
 @Injectable({
   providedIn: 'root',

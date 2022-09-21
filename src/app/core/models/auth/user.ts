@@ -1,35 +1,40 @@
 import { Module, Entity, Attribute } from '../index';
 
 export interface User {
-  id?: string;
+  id?: number;
+  dni?: string;
+  matricula?: number;
   username?: string;
-  name?: string;
-  last_name?: string;
-  password?: string;
-  password_comfirm?: string;
-  roles?: Roles[];
-  logged_users?: LoggedUsers[];
-  email_notifications?: string;
+  names?: string;
+  lastnames?: string;
+  sexo?: string;
   status?: number;
-  client_id?: number;
-  real_ip?: string;
-  host_name?: string;
-  time_out?: number;
-  failed_attempts?: number;
-  last_change_password?: Date;
-  block_date?: Date;
-  disabled_date?: Date;
-  change_password?: boolean;
-  change_password_days_left?: number;
-  last_login?: Date;
-  modules?: Module[];
-  token?: string;
+  role?: number;
+  date_admission?: string;
+  date_birth?: string;
+  email?: string;
+  is_delete?: number;
+  password?: string;
   created_at?: string;
   updated_at?: string;
-  identification_number?: string;
-  identification_type?: string;
-  security_entities?: UserSecurityEntity[];
-  is_block?: boolean;
+}
+
+export interface Personal {
+  id?: number;
+  dni?: string;
+  matricula?: number;
+  username?: string;
+  names?: string;
+  lastnames?: string;
+  sexo?: string;
+  status?: number;
+  date_admission?: string;
+  date_birth?: string;
+  email?: string;
+  is_delete?: number;
+  password?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface LoggedUsers {
@@ -49,6 +54,11 @@ export interface RolesAllowUser {
   name?: string;
 }
 
+export interface RolesAllowPersonal {
+  id?: string;
+  name?: string;
+}
+
 export interface Roles {
   id?: string;
   name?: string;
@@ -56,6 +66,12 @@ export interface Roles {
 }
 
 export interface UserRole {
+  id?: string;
+  user_id?: string;
+  role_id?: string;
+}
+
+export interface PersonalRole {
   id?: string;
   user_id?: string;
   role_id?: string;
@@ -87,3 +103,5 @@ export interface UserAttribute {
   enable?: boolean;
   attribute?: Attribute;
 }
+
+

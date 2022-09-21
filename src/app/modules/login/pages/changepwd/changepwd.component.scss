@@ -1,0 +1,266 @@
+@import 'src/app/core/styles/variables';
+.align-submit {
+  margin: 1em auto;
+  text-align: right;
+}
+
+.marginIzq {
+  margin: 1em;
+  text-align: right;
+}
+
+.titulo {
+  display: block;
+  text-align: center;
+  padding: 7px;
+  font-size: 18px;
+  font-weight: 500;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.iniciemos {
+  color: #566c84;
+  font-size: 1.6rem;
+  font-weight: 420;
+  text-align: center;
+  font-family: Colfax-Medium, helvetica, sans-serif;
+  padding: 7px;
+}
+.bienvenido {
+  color: #3c546d;
+  font-size: 2.513rem;
+  font-weight: 415;
+  text-align: center;
+  font-family: Colfax-Medium, helvetica, sans-serif;
+  padding: 7px;
+}
+
+titulo-header {
+  padding: 15px;
+}
+
+.subtitulo {
+  display: block;
+  padding: 0px;
+  font-size: 18px;
+  font-weight: 400;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.ui-messages {
+  padding: 12px;
+  font-size: 12px;
+  display: block;
+  margin: 0 0 1em 0;
+  text-align: center;
+  //  border: blue($color: #396f85);
+}
+
+.ecapture_logo {
+  display: flex;
+  justify-content: left;
+  // padding: 4px;
+
+  img {
+    width: $autogestion-logo-main;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.ecapture_logo_footer {
+  display: flex;
+  justify-content: left;
+
+  img {
+    width: $autogestion-logo-footer;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.img_content {
+  display: right;
+  justify-content: right;
+  padding: 0px;
+  text-align: center;
+
+  img {
+    width: 3.9rem;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.header-bar {
+  box-sizing: border-box;
+  background-color: $colorhead;
+  height: 70px;
+  box-shadow: 0 8px 2px $colorhead;
+  position: fixed;
+  vertical-align: top !important;
+  padding: initial;
+  z-index: 1;
+}
+
+.card-top {
+  border-radius: 3px;
+  // background: rgba(175, 180, 176, 0.24);
+  box-sizing: border-box;
+  padding: 1px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.card {
+  border-radius: 3px;
+  margin-top: 40px;
+  // background: rgba(175, 180, 176, 0.24);
+  box-sizing: border-box;
+  padding: 1px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.btn-sesion {
+  position: relative;
+  padding: 8px 13px;
+  color: #ffffff;
+  font-weight: 400;
+  overflow: hidden;
+  transition: 0.1s;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #ffffff;
+  box-sizing: border-box;
+}
+
+.btn-sesion:hover {
+  background: #ffffff;
+  transition-delay: 0.3s;
+  border-radius: 4px;
+  font-weight: 600;
+  color: #3c546d;
+}
+
+.sesion {
+  font-weight: 400;
+  color: #ffffff;
+  padding: 0px;
+}
+
+.bpo {
+  margin-top: 0px;
+  color: #3c546d;
+  padding: 0px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.ui-inputgroup {
+  margin-top: 0px;
+}
+
+.black-title {
+  margin: 0px;
+}
+
+.dfooter {
+  background-color: $colorhead;
+  border-color: #343c4c;
+  padding: 0px;
+  position: absolute;
+  display: block;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  color: white;
+}
+
+footer {
+  background-color: black;
+  position:fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  color: white;
+}
+
+.childFooter {
+  width: 100%;
+  height: 40px;
+  padding: 11px 2em 1px 4em;
+}
+
+.area-sesion {
+  background-color: $colorhead;
+  height: 70px;
+  padding-top: 13px;
+}
+
+.layout-content {
+  padding: 5em 2em 0 2em;
+}
+
+.main-container {
+  height: 40em;
+}
+
+.logo-container {
+  padding-top: 18px;
+}
+
+.container-form {
+  padding: 3em 0 0 0;
+}
+
+.container-text {
+  margin-bottom: 2em;
+  padding: 2em 0 0 0;
+}
+
+.img-content {
+  padding: 0px;
+  text-align: center;
+}
+
+.title-content {
+  margin: 0px;
+  padding: 0px;
+}
+
+.padd {
+  padding-top: 0px;
+}
+
+.copy-right {
+  font-size: 14px;
+  font-weight: 100;
+  display: inline;
+}
+
+.container-btn-sesion {
+  margin-top: 8px;
+}
+
+.linea {
+  background-color: #f1f1f0;
+  height: 1px;
+  box-shadow: 0 0px 1px #f1f1f0;
+  margin-bottom: 15px;
+  margin-top: 0px;
+}
+
+::ng-deep .card-success {
+  // margin: 10em 0 0 5em!important;
+  font-size: 15px !important;
+  width: 100%;
+  margin: 0.5em 0 0.5em 0;
+  background-color: #B7D8B7 !important;
+}

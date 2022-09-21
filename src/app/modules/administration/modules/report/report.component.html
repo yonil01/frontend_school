@@ -1,0 +1,24 @@
+<app-layout>
+  <ng-container layoutBody>
+    <div class="hidden lg:block">
+      <as-split unit="percent" direction="horizontal">
+        <div class="left-split overflow-hidden">
+          <app-filter-documents (showTable)="showTable=$event"></app-filter-documents>
+        </div>
+        <div class="right-split overflow-hidden">
+          <perfect-scrollbar>
+            <app-report-table *ngIf="showTable"></app-report-table>
+          </perfect-scrollbar>
+        </div>
+      </as-split>
+    </div>
+    <div class="lg:hidden">
+      <!--
+      <app-filter-documents></app-filter-documents>
+      <app-report-table></app-report-table>
+      -->
+      <app-report-table *ngIf="showTable"></app-report-table>
+
+    </div>
+  </ng-container>
+</app-layout>

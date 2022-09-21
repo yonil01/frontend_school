@@ -34,23 +34,23 @@ export interface Process {
 }
 
 export interface Queue {
-  id: string;
-  process_id: string;
-  name: string;
-  sequences: number;
-  balance_type: number;
-  type: number;
-  class: string;
-  ans: number;
-  percent_alert: number;
-  status: number;
-  id_bpmn_element: string;
-  roles: string[];
-  entities: string[];
+  id?: string;
+  process_id?: string;
+  name?: string;
+  sequences?: number;
+  balance_type?: number;
+  type?: number;
+  class?: string;
+  ans?: number;
+  percent_alert?: number;
+  status?: number;
+  id_bpmn_element?: string;
+  roles?: string[];
+  entities?: string[];
   executions?: Execution[];
-  must_confirm_comment: boolean;
+  must_confirm_comment?: boolean;
   comments?: QueueComment[];
-  description: string;
+  description?: string;
   queue_attributes?: QueueAttribute[];
   queue_roles?: any[];
 }

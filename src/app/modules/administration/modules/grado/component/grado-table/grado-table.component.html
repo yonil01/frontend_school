@@ -1,0 +1,10 @@
+<!-- Large -->
+<div class="p-4">
+  <app-table [tableStyle]="styleTable"
+             (dataReturn)="eventTableOption($event)"
+             (eventButton)="showEventButtonTable($event)"
+  ></app-table>
+  <div class="p-4">
+    <app-widget-pie ></app-widget-pie>
+  </div>
+</div>

@@ -127,7 +127,7 @@ export class ActivityFormComponent implements OnInit {
     let objFormLy: {};
     switch (obj.list) {
       case 'queues':
-        list = this.bpm.queues?.map((q) => ({value: q.id.toLowerCase(), label: q.name}));
+        list = this.bpm.queues?.map((q) => ({value: q.id!.toLowerCase(), label: q.name}));
         objFormLy = {
           key: obj.name,
           className: 'row-input',

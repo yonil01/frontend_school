@@ -68,10 +68,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.language = this._localStorageService.getLanguage() || '';
     this.userId = this._localStorageService.getUserId() || '';
 
-    this._subscription.add(
+    /*this._subscription.add(
       this.usersService.getUserByID(this.userId).subscribe((res) => {
         if (!res.error) {
-          this.user = res.data;
+          this.payment = res.data;
 
           this._subscription.add(
             this.rolesService.getRoles().subscribe((res) => {
@@ -79,7 +79,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
                 const roles = res.data;
 
                 for (let role of roles){
-                  for(let roleUser of this.user.roles){
+                  for(let roleUser of this.payment.roles){
                     if(role.id === roleUser.id){
                       this.rolesUser.push(role.name);
                       break;
@@ -107,7 +107,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
           this.isBlock = false;
         }
       })
-    );
+    );*/
 
     this.store.select('env').subscribe(
       (res) => {
@@ -170,7 +170,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private getDocTypesGroup(ids_role: any): void {
     const roles_id = ids_role;
 
-    this._subscription.add(
+    /*this._subscription.add(
       this.rolesService.getRolesWithDoctype().subscribe({
         next: (res) => {
           if (!res.error) {
@@ -253,6 +253,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
           console.error(err);
         }
       })
-    );
+    );*/
   }
 }

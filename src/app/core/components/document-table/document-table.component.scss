@@ -1,0 +1,88 @@
+::ng-deep .documents-table {
+  @media screen and (max-width: 576px) {
+    .ui-paginator {
+      .ui-dropdown {
+        display: none;
+      }
+    }
+  }
+  .ui-paginator {
+    .ui-dropdown {
+      float: left;
+      // z-index: 10000;
+    }
+
+    .ui-paginator-current {
+      float: right;
+    }
+  }
+
+  .ui-column-filter {
+    display: block;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .ui-paginator {
+    // border: 0 none;
+    padding: 1em;
+  }
+
+  .ui-table-thead > tr > th {
+    // border: 0 none !important;
+    text-align: left;
+
+    &.ui-filter-column {
+      border-top: 1px solid #c8c8c8;
+    }
+  }
+
+  .ui-table-tbody > tr > td {
+    // border: 0 none !important;
+    padding: 1em 0.857em !important;
+    cursor: pointer;
+  }
+  .ui-table-tbody > tr > td .ui-column-title {
+    display: none;
+  }
+}
+
+.icon-filter {
+  background-color: transparent;
+  color: black;
+  border-color: transparent;
+}
+
+.table-caption {
+  // border: 0 none;
+  padding: 0;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media screen and (max-width: 576px) {
+    flex-direction: column;
+    .ui-table-globalfilter-container {
+      input {
+        width: 95vw !important;
+        margin: 0.2rem !important;
+      }
+    }
+  }
+  .ui-table-globalfilter-container {
+    float: right;
+
+    input {
+      width: 200px;
+    }
+  }
+}
+
+::ng-deep .filter {
+  @media screen and (max-width: 576px) {
+    display: none;
+  }
+}

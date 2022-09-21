@@ -83,7 +83,7 @@ export class RolesDisabledDatesComponent implements OnInit {
 
   getRoleDates(){
     this.isBlockPage = true;
-    this._roleService.getRoles().subscribe((res: Response) => {
+    /*this._roleService.getRoles().subscribe((res: Response) => {
       if(!res.error){
         const roles = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
         this.role = roles.find((doc: Role) => doc.id?.toLowerCase() === this.role.id?.toLowerCase()) || this.role;
@@ -98,7 +98,7 @@ export class RolesDisabledDatesComponent implements OnInit {
         });
       }
       this.isBlockPage = false;
-    });
+    });*/
   }
 
   initFechas(): void {

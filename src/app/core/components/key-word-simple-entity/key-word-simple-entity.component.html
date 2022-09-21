@@ -1,0 +1,74 @@
+<div *ngIf="false" class="ec-input-search flex-grow">
+  <input class="placeholder:text-mono-30" placeholder="{{'SEARCH'|translate}}" type="search">
+  <div class="icon">
+    <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path
+        d="M6.66671 1.83325C9.33608 1.83325 11.5 3.99721 11.5 6.66659C11.5 7.82117 11.0952 8.8812 10.4197 9.71246L13.6869 12.9797C13.8822 13.175 13.8822 13.4915 13.6869 13.6868C13.5094 13.8643 13.2316 13.8805 13.0359 13.7352L12.9798 13.6868L9.71258 10.4196C8.88132 11.0951 7.82129 11.4999 6.66671 11.4999C3.99733 11.4999 1.83337 9.33596 1.83337 6.66659C1.83337 3.99721 3.99733 1.83325 6.66671 1.83325ZM6.66671 2.83325C4.54962 2.83325 2.83337 4.54949 2.83337 6.66659C2.83337 8.78368 4.54962 10.4999 6.66671 10.4999C8.7838 10.4999 10.5 8.78368 10.5 6.66659C10.5 4.54949 8.7838 2.83325 6.66671 2.83325Z"/>
+    </svg>
+  </div>
+</div>
+
+<div class="w-full h-full space-y-2">
+  <div *ngFor="let entity of entitiesSimplesDisplay; let position = index"
+       class="entity-container border {{!isCreate(entity.entity.name) ? 'border-mono-30' : 'border-brand-2 bg-brand-l-3'}} hover:bg-white-p rounded overflow-hidden">
+    <div (click)="openAccordion(position)"
+         class="entity-head cursor-pointer h-10 px-2 flex items-center {{!isCreate(entity.entity.name) ? 'text-mono-100' : 'text-brand-2'}}">
+      <span class="t-subtitle-1 truncate flex-1">{{entity.entity.name + '' | replace:'_': ' '}}</span>
+      <div>
+        <svg class="{{entity.display ? 'rotate-180' : ''}} transform" width="20" height="20" viewBox="0 0 20 20"
+             fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M3.51704 7.05806C3.76112 6.81398 4.15685 6.81398 4.40093 7.05806L10.0007 12.6578L15.6004 7.05806C15.8445 6.81398 16.2402 6.81398 16.4843 7.05806C16.7283 7.30214 16.7283 7.69786 16.4843 7.94194L10.4426 13.9836C10.1985 14.2277 9.80279 14.2277 9.55871 13.9836L3.51704 7.94194C3.27296 7.69786 3.27296 7.30214 3.51704 7.05806Z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="body" *ngIf="entity.display">
+      <div class="filter bg-white relative">
+        <input
+          class="bg-white pl-2 placeholder:text-mono-30 pr-10 border border-mono-10 w-full h-10 t-body-1 text-black"
+          placeholder="{{'SEARCH'|translate}} {{'ATTRIBUTE'|translate}}"
+               (input)="filterListDoctype($event.target, entity.entity)"
+        >
+        <div class="absolute h-10 right-0 top-0">
+          <div class="w-10 h-10 flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M6.66667 1.83337C9.33605 1.83337 11.5 3.99733 11.5 6.66671C11.5 7.82129 11.0952 8.88132 10.4197 9.71259L13.6869 12.9798C13.8822 13.1751 13.8822 13.4917 13.6869 13.6869C13.5094 13.8644 13.2316 13.8806 13.0359 13.7353L12.9798 13.6869L9.71255 10.4197C8.88128 11.0952 7.82125 11.5 6.66667 11.5C3.99729 11.5 1.83334 9.33608 1.83334 6.66671C1.83334 3.99733 3.99729 1.83337 6.66667 1.83337ZM6.66667 2.83337C4.54958 2.83337 2.83334 4.54962 2.83334 6.66671C2.83334 8.7838 4.54958 10.5 6.66667 10.5C8.78376 10.5 10.5 8.7838 10.5 6.66671C10.5 4.54962 8.78376 2.83337 6.66667 2.83337Z"
+                fill="#2B2B2B"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="form[entity.entity.id || '']" class="p-6 grid grid-cols-1 gap-4">
+        <div>
+
+          <!--<span class="t-caption-2 text-alert-error">Alert</span>-->
+        </div>
+        <ng-container *ngFor="let item of fields[entity.entity.id || '']; let index = index">
+          <div *ngIf="item.isShow" class="flex flex-col w-full space-y-1">
+            <div class="flex items-center">
+              <!--<label class="t-caption-2 text-mono-70">{{item.key | replace:'_': ' '}}</label>-->
+              <label class="t-caption-2 text-mono-70">{{item.templateOptions.label}}</label>
+              <span *ngIf="false" class="text-mono-70 t-overflow">OBLIGATORIO</span>
+            </div>
+            <div class="w-full">
+              <input *ngIf="item.type === 'input'" class="input-style w-full" [type]="item.templateOptions.type"
+                     [formControlName]="item.key">
+            </div>
+          </div>
+        </ng-container>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="btn-container mt-12" *ngIf="false">
+  <button (click)="loadEntitiesPersistenses()" class="b-outline w-full">{{'ADD' | translate}}</button>
+</div>
+
+<div class="btn-container mt-12" *ngIf="false">
+  <button (click)="submitForm()" class="b-outline w-full">{{'SAVE_ENTITIES' | translate}}</button>
+</div>
+
+<app-block-page [show]="isLoading"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>

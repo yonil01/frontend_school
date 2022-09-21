@@ -1,0 +1,241 @@
+.combo-container {
+  position: relative;
+}
+
+.combo-label {
+  white-space: nowrap;
+  overflow: hidden;
+  flex: 1 1 auto;
+  width: 1%;
+  text-overflow: ellipsis;
+  cursor: pointer
+}
+
+.select-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.value-container {
+  width: 100%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-base {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.icon-transform {
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.icon-rotate-180 {
+  --tw-rotate: 180deg;
+}
+
+.rotate-45 {
+  --tw-rotate: 45deg;
+}
+
+.option-container {
+  @apply bg-white-p rounded-lg border border-mono-30 drop-shadow-lg absolute w-full left-0 p-2;
+  z-index: 1000;
+}
+
+.option-container-bottom {
+  top: 44px;
+}
+
+.option-container-top {
+  bottom: 44px;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 2.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem;
+}
+
+.input-search {
+  height: 2.25rem;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  width: 100%;
+}
+
+.input-search:focus {
+  outline: none;
+}
+
+.icon-search {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.option-group{
+  cursor: pointer;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.option {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+
+.inp-drop-container {
+  background: rgba(0, 0, 0, 0);
+  border-radius: 0.5rem;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  user-select: none;
+  padding: 0 1rem;
+}
+.inp-drop-container:focus {
+  outline: none;
+}
+
+.drop-disable {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 3rem;
+  cursor: default;
+  opacity: 80%;
+}
+.inp-drop-container-disable {
+  background: rgba(0, 0, 0, 0);
+  border-radius: 0.5rem;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  user-select: none;
+  padding: 0 1rem;
+}
+.inp-drop-container-disable:focus {
+  outline: none;
+}
+.item-selected {
+  font-weight: bold;
+}
+
+.hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px
+}
+
+.default-container {
+  color: #6c757d;
+  height: 2.5rem;
+  border: 2px solid #6c757d;
+  border-radius: 4px;
+}
+
+.default-container:hover {
+  border: 2px solid rgba(0, 85, 255, 1);
+}
+
+.default-container:focus-within {
+  border: 2px solid rgba(0, 85, 255, 1);
+}
+
+
+
+/* INPUT GLOBAL STYLE */
+
+.input {
+  @apply flex flex-col space-y-1
+}
+
+.input .alert {
+  @apply text-alert-error
+}
+
+.input-head {
+  @apply flex items-center space-x-1 text-brand-2
+}
+
+.input-head .info-content {
+  @apply flex-1 flex justify-end
+}
+
+input, .input-element, select {
+  @apply w-full h-10 rounded px-2 bg-mono-10 text-black
+}
+
+.input-element-valid {
+  @apply w-full h-10 rounded px-2 bg-brand-l-3 text-black
+}
+
+select:disabled {
+  opacity: 1;
+}
+
+input:hover, .text-area:hover, select:hover {
+  @apply border border-mono-30
+}
+
+input:focus, .text-area:focus, select:focus {
+  @apply outline-none border-brand-2 ring-1 ring-brand-2
+}
+
+.input-valid {
+  @apply bg-brand-l-3
+}
+
+.input-disabled-valid, .text-area:disabled {
+  @apply text-black bg-brand-l-3 border-none
+}
+
+input:disabled .input-disabled, .text-area:disabled, select:disabled {
+  @apply text-black border-none
+}
+
+.info-input {
+  @apply relative cursor-pointer
+}
+
+.info-input div {
+  @apply absolute border border-mono-30 w-40 md:w-56 lg:w-80 rounded-lg p-2 drop-shadow-lg bg-white text-black hidden bottom-4 right-0
+}

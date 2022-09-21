@@ -1,0 +1,58 @@
+.pdf-visor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #6d6d6d;
+
+  &-canvas {
+    display: block;
+    margin: auto;
+  }
+
+  &-content {
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    display: grid;
+  }
+
+  &-action {
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 500ms;
+    z-index: 10;
+
+    &__page {
+      display: inline-block;
+      background: white;
+      border: 1px solid black;
+      padding: 8px;
+      border-radius: 7px;
+      margin: 0 10px;
+    }
+
+    &__option {
+      margin-left: 10px;
+    }
+  }
+}
+
+::ng-deep #thumbnailView {
+  width: 100% !important;
+}
+
+::ng-deep #sidebarResizer {
+  display: none !important;
+}
+
+::ng-deep #toolbarSidebar {
+  display: none !important;
+}
+
+::ng-deep #sidebarContainer {
+  top: 0px !important;
+}

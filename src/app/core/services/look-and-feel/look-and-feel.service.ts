@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 export class LookAndFeelService {
   constructor(private _httpClient: HttpClient) {}
 
-  getLookAndFeelConfig() {
+  /*getLookAndFeelConfig() {
     const url = EnvServiceProvider.useFactory().REST_API + '/api/v1/laf';
     return this._httpClient.get(url).pipe(map((res) => res));
-  }
+  }*/
 }

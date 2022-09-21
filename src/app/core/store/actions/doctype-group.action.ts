@@ -6,6 +6,11 @@ export const controlEntities = createAction(
   props<{ entities: Entity[] }>(),
 );
 
+export const controlTokens = createAction(
+  '[Doctype-Group] load tokens',
+  props<{ tokens: Token[], isRechargeManual: boolean }>(),
+);
+
 export const controlStepEntities = createAction(
   '[Doctype-Group] load doctype group entities by entity',
   props<{ stepEntities: EntityValue[] }>(),

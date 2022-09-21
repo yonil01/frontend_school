@@ -19,7 +19,7 @@ export class AuthenticationService {
   }
 
   public login(value: any, secretKey: string) {
-    const url = EnvServiceProvider.useFactory().REST_API + '/api/v3/auth';
+    const url = EnvServiceProvider.useFactory().REST_API + '/api/v4/auth';
     const data = {
       id: encryptText(value.user, secretKey),
       password: encryptText(value.password, secretKey),
@@ -31,13 +31,13 @@ export class AuthenticationService {
   }
 
   /*validateUserName(username: string) {
-    let url = EnvServiceProvider.useFactory().REST_API + '/api/v1/user/user-exist';
-    url = url + '?' + 'user=' + username;
+    let url = EnvServiceProvider.useFactory().REST_API + '/api/v1/subject/subject-exist';
+    url = url + '?' + 'subject=' + username;
     return this._httpClient.get(url).pipe(map((res) => res));
   }
 
   validateUserEmail(useremail: string) {
-    let url = EnvServiceProvider.useFactory().REST_API + '/api/v1/user/email-exist';
+    let url = EnvServiceProvider.useFactory().REST_API + '/api/v1/subject/email-exist';
     url = url + '?' + 'email-exist=' + useremail;
     return this._httpClient.get(url).pipe(map((res) => res));
   }
@@ -71,7 +71,7 @@ export class AuthenticationService {
 
   setTokenSessionStorage(token: any) {
     // const str = JSON.stringify(token);
-    sessionStorage.setItem('Token', token);
+    sessionStorage.setItem('Token', token.access_token);
     const timeout = this.localStorageService.getSessionExp();
     this.store.dispatch(controlTimeout({timeout: timeout}));
   }

@@ -1,0 +1,75 @@
+<div class="pdf-visor">
+  <div class="pdf-visor-content" *ngIf="!type || type === 'ng2'">
+    <perfect-scrollbar>
+      <pdf-viewer
+        [src]="src"
+        [(page)]="actualPage"
+        [render-text]="true"
+        [zoom]="zoom"
+        [rotation]="rotation"
+        [show-all]="false"
+        [fit-to-page]="true"
+        (after-load-complete)="afterLoadComplete($event)"
+        [stick-to-page]="false"
+        [autoresize]="true"
+        (page-rendered)="scrollUp($event)"
+      ></pdf-viewer>
+    </perfect-scrollbar>
+  </div>
+
+  <div class="pdf-visor-action" [style.opacity]="mouseEnter ? 1 : 0.1" #action *ngIf="!type || type === 'ng2'">
+    <!--<p-button icon="pi pi-arrow-left" [disabled]="actualPage == 1" (click)="backPage()"></p-button>
+    <div class="pdf-visor-action__page">{{ actualPage }} / {{ numPages }}</div>
+    <p-button icon="pi pi-arrow-right" [disabled]="actualPage == numPages" (click)="nextPage()"></p-button>
+
+    <p-button icon="pi pi-search-minus" class="pdf-visor-action__option" (click)="reduce()"></p-button>
+    <p-button icon="pi pi-search-plus" class="pdf-visor-action__option" (click)="expand()"></p-button>
+
+    <p-button icon="pi pi-replay" class="pdf-visor-action__option" (click)="rotateRight()"></p-button>
+    <p-button icon="pi pi-undo" class="pdf-visor-action__option" (click)="rotateLeft()"></p-button>
+
+    <p-button icon="pi pi-download" class="pdf-visor-action__option" (click)="download()"></p-button>-->
+  </div>
+
+  <ngx-extended-pdf-viewer
+    [base64Src]="src"
+    backgroundColor="#ffffff"
+    [useBrowserLocale]="true"
+    [handTool]="false"
+    [showBookmarkButton]="false"
+    [showDownloadButton]="true"
+    [showPresentationModeButton]="true"
+    [showScrollingButton]="true"
+    [showSecondaryToolbarButton]="true"
+    *ngIf="type === 'ngx'"
+  ></ngx-extended-pdf-viewer>
+</div>
+<!--
+<p-dialog header="Descargar" [(visible)]="isShowDownload" [modal]="true" (onHide)="cancelDownload()">
+  <div>
+    ¿Esta seguro de descargar el documento?
+  </div>
+  <p-footer>
+    <div class="justify">
+      <button
+        type="button"
+        pButton
+        icon="pi pi-times"
+        label="Cancelar"
+        class="ui-button-secondary margin-element-right"
+        (click)="cancelDownload()"
+      ></button>
+      <a
+        type="button"
+        pButton
+        icon="pi pi-download"
+        label="OK"
+        appBtnPrimary
+        btnType="filled"
+        [download]="nameDownload"
+        (click)="closeDownload()"
+        [href]="srcSafeResourceUrl"
+      ></a>
+    </div>
+  </p-footer>
+</p-dialog>-->

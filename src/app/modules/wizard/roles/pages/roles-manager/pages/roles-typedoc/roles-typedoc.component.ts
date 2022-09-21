@@ -95,7 +95,7 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
 
   getRolesDoctypes(){
     this.isBlockPage = true;
-    this._roleService.getRoles().subscribe((res: Response) => {
+    /*this._roleService.getRoles().subscribe((res: Response) => {
       if(!res.error){
         const data = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
         this.role = data.find((doc: any) => doc.id?.toLowerCase() === this.role.id?.toLowerCase()) || this.role;
@@ -121,7 +121,7 @@ export class RolesTypedocComponent implements OnInit, OnDestroy {
         });
       }
       this.isBlockPage = false;
-    });
+    });*/
   }
 
   public assignItemsDoctypes(datos: string[]): void {

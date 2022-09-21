@@ -221,7 +221,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.isBlockPage = false;
     })
-    this._subscription.add(
+    /*this._subscription.add(
       this.roleService.getRoles().subscribe({
           next: (res) => {
             if (res.error) {
@@ -235,7 +235,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
           },
         }
       )
-    );
+    );*/
   }
 
   private getEntitiesByProjectId(id: string): Promise<Response> {

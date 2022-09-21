@@ -14,7 +14,7 @@ import {
 } from '@app/core/models';
 import {Observable} from 'rxjs';
 import {
-  GetRolesQuery,
+  //GetRolesQuery,
   CreateRoleMutation,
   CreateRoleProjectMutation,
   UpdateRoleMutation,
@@ -49,7 +49,7 @@ import {
 export class RoleService {
   constructor(
     private apollo: Apollo,
-    private getRolesQuery: GetRolesQuery,
+    //private getRolesQuery: GetRolesQuery,
     private getRolesByProjectIDQuery: GetRolesByProjectIDQuery,
     private createRoleQuery: CreateRoleMutation,
     private createRoleProjectQuery: CreateRoleProjectMutation,
@@ -81,10 +81,10 @@ export class RoleService {
   ) {
   }
 
-  getRoles(): Observable<Response> {
+  /*getRoles(): Observable<Response> {
     return this.getRolesQuery.watch().valueChanges.pipe(map(({data}: any) => data.getRoles));
   }
-
+*/
   getRolesByProjectID(project_id: string): Observable<Response> {
     return this.getRolesByProjectIDQuery.watch({project_id}).valueChanges.pipe(map(({data}: any) => data.getRolesByProjectID));
   }

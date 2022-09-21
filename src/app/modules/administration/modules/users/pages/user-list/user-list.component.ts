@@ -8,7 +8,7 @@ import {User} from "@app/core/models";
 import {userSelect} from "@app/modules/administration/modules/users/models/user-crud-model/user-crud-constans";
 
 @Component({
-  selector: 'app-user-list',
+  selector: 'app-teacher-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
@@ -45,7 +45,7 @@ export class UserListComponent implements OnInit {
 
   public eventTableOption(data:any): void {
     if (data.type === 'edit') {
-      this.router.navigate(['/admin/user/detail'])
+      this.router.navigate(['/admin/subject/detail'])
     }
     if (data.type === 'normally') {
       this.router.navigate(['/wizard/dymanic-forms/configuration'])

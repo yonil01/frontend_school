@@ -1,0 +1,13 @@
+      <div class="flex w-full">
+        <div class="w-full ">
+          <app-step [StyleStep]="styleCrud">
+            <ng-container step>
+              <div class="w-full space-y-8">
+                <app-basic-information (showToast)="showToastAdd($event)" (returnPayment)="valuePayment($event)" [isEdit]="isEdit" [Payment]="Payment" *ngIf="styleCrud.dataSourceStep[0].focus"></app-basic-information>
+
+                <!--<app-security-entities (showToast)="showToastAdd($event)" [subject]="subject" *ngIf="styleCrud.dataSourceStep[2].focus"></app-security-entities>-->
+              </div>
+            </ng-container>
+          </app-step>
+        </div>
+      </div>

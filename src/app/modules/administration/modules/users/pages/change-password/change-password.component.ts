@@ -42,7 +42,7 @@ export class ChangePasswordComponent implements OnInit {
         const passpasswordConfirm: string = encryptText(this.formPassword.get('password_confirm')?.value, this.secretKey);
         // const id: string = this.idGlobal;
         this.userService.updatePasswordByAdministrator(
-          this.user?.id!.toLowerCase(),
+          this.user?.dni!.toLowerCase(),
           password,
           passpasswordConfirm,
         ).subscribe(

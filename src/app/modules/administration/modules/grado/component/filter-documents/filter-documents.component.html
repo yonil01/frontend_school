@@ -1,0 +1,35 @@
+<div class="sub-container primary-height">
+  <div class="bg-white ec-container-workflow w-full p-4 flex flex-col space-y-1 border-b border-mono-30">
+    <span class="t-h5 text-black">{{'GradoS'|translate}}</span>
+    <div class="flex flex-row bg-white">
+
+    </div>
+  </div>
+
+  <perfect-scrollbar style="height:100%">
+    <div>
+      <div>
+
+      </div>
+      <div class="pb-24 h-full">
+        <div class="h-full group-items ec-container-workflow">
+          <div class="flex justify-center">
+            <ul  class="bg-white rounded-lg border border-gray-200 w-96 text-gray-900" >
+              <!---<li class="px-6 py-2 border-b border-gray-200 w-full rounded-t-lg b-solid text-white">
+
+              </li>-->
+              <ng-container *ngFor="let grad of Grados" >
+                <li (click)="getDateSpGrapic(grad.id); getDateSpGrapicOne(grad.id)" [ngClass]="grad.status ? 'px-6 py-2 border-b border-gray-200 w-full rounded-t-lg b-solid text-white' : 'px-6 py-2 border-b border-gray-200 w-full'"  >{{grad.value}}</li>
+              </ng-container>
+
+            </ul>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </perfect-scrollbar>
+</div>
+
+<app-block-page [show]="blockPage"></app-block-page>

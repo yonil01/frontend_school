@@ -51,44 +51,43 @@ export class BasicInformationComponent implements OnInit {
                private confirmationService: ConfirmationService,
   ) {
     this.user = {
-      id: '',
+      id: 0,
+      dni: '',
+      matricula: 0,
       username: '',
-      name: '',
-      last_name: '',
-      email_notifications: '',
-      identification_number: '',
-      identification_type: '',
+      names: '',
+      lastnames: '',
+      sexo: '',
       status: 0,
-      roles: [
-        {
-          id: '',
-          name: '',
-          role_allow: []
-        }
-      ],
-      security_entities: [],
-      created_at: ''
+      date_admission: '',
+      date_birth: '',
+      email: '',
+      role: 0,
+      is_delete: 0,
+      password: '',
+      created_at: '',
+      updated_at: '',
     }
 
     this.isEdit = false;
     this.typeExecution = 0;
 
     this.formBasicInfo = this._formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      name: ['', [Validators.required, Validators.maxLength(255), Validators.pattern('[a-zA-Z ]{2,255}')]],
-      last_name: ['', [Validators.required, Validators.maxLength(255), Validators.pattern('[a-zA-Z ]{2,255}')]],
-      email_notifications: ['', [
+      dni: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      username: ['', [Validators.required, Validators.maxLength(255), Validators.pattern('[a-zA-Z ]{2,255}')]],
+      names: ['', [Validators.required, Validators.maxLength(255), Validators.pattern('[a-zA-Z ]{2,255}')]],
+        lastnames: ['', [Validators.required, Validators.maxLength(255), Validators.pattern('[a-zA-Z ]{2,255}')]],
+      email: ['', [
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/),
         Validators.email, Validators.minLength(5), Validators.maxLength(255)],
       ],
-      identification_type: ['', Validators.required],
-      identification_number: ['', [Validators.required,  Validators.pattern(/^-?(0|[1-9]\d*)?$/), Validators.maxLength(50)]],
-      password: ['', Validators.required],
-      password_confirm: ['', Validators.required],
+      sexo: ['', [Validators.required]],
+      date_birth: ['', Validators.required],
+      date_admission: ['', Validators.required],
     },
       {
-        validator: [this.confirmPasswordValidator],
+       // validator: [this.confirmPasswordValidator],
       });
     this.secretKey = '';
     this.disabledNext =  false;
@@ -96,10 +95,6 @@ export class BasicInformationComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.returnExistUser()) {
-      this.formBasicInfo.get('password')?.clearValidators();
-      this.formBasicInfo.get('password')?.updateValueAndValidity();
-      this.formBasicInfo.get('password_confirm')?.clearValidators();
-      this.formBasicInfo.get('password_confirm')?.updateValueAndValidity();
       this.loadUser();
     } else {
       this.disabledNext = true;
@@ -135,32 +130,35 @@ export class BasicInformationComponent implements OnInit {
   }
 
   public loadUser():void {
+    this.formBasicInfo.get('dni')!.setValue(this.user.dni);
     this.formBasicInfo.get('username')!.setValue(this.user.username);
-    this.formBasicInfo.get('name')!.setValue(this.user.name);
-    this.formBasicInfo.get('last_name')!.setValue(this.user.last_name);
-    this.formBasicInfo.get('email_notifications')!.setValue(this.user.email_notifications);
-    this.formBasicInfo.get('identification_number')!.setValue(this.user.identification_number);
-
-    this.formBasicInfo.get('identification_type')!.setValue(this.user.identification_type);
+    this.formBasicInfo.get('names')!.setValue(this.user.names);
+    this.formBasicInfo.get('lastnames')!.setValue(this.user.lastnames);
+    this.formBasicInfo.get('email')!.setValue(this.user.email);
+    this.formBasicInfo.get('sexo')!.setValue(this.user.sexo);
+    this.formBasicInfo.get('date_birth')!.setValue(this.user.date_birth);
+    this.formBasicInfo.get('date_admission')!.setValue(this.user.date_admission);
   }
 
   createUser(): void {
     if (this.formBasicInfo.valid) {
       const userPersistence: User = {};
-      userPersistence.id = uuidv4().toLowerCase();
-      userPersistence.name = this.formBasicInfo.get('name')?.value;
+      userPersistence.id = 0;
+      userPersistence.dni = this.formBasicInfo.get('dni')?.value;
       userPersistence.username = this.formBasicInfo.get('username')?.value;
-      userPersistence.last_name = this.formBasicInfo.get('last_name')?.value;
-      userPersistence.email_notifications = this.formBasicInfo.get('email_notifications')?.value;
-      userPersistence.identification_type = this.formBasicInfo.get('identification_type')?.value;
-      userPersistence.identification_number = String(this.formBasicInfo.get('identification_number')?.value);
-      userPersistence.password = encryptText(this.formBasicInfo.get('password')?.value, this.secretKey);
-      userPersistence.password_comfirm = encryptText(this.formBasicInfo.get('password_comfirm')?.value, this.secretKey);
-      //this.user = userPersistence;
-      //this.returnUser.emit(this.user)
+      userPersistence.names = this.formBasicInfo.get('names')?.value;
+      userPersistence.lastnames = this.formBasicInfo.get('lastnames')?.value;
+      userPersistence.email = this.formBasicInfo.get('email')?.value;
+      userPersistence.role = 1;
+      userPersistence.sexo = String(this.formBasicInfo.get('sexo')?.value);
+      userPersistence.date_birth = new Date(String(this.formBasicInfo.get('date_birth')?.value)).toISOString();
+      userPersistence.date_admission = new Date(String(this.formBasicInfo.get('date_admission')?.value)).toISOString();
+      //this.subject = userPersistence;
+      //this.returnUser.emit(this.subject)
       this._subscription.add(
-        this.userService.getUserByName({username: userPersistence.username, identification_number: userPersistence.identification_number}).subscribe(
-          (resp: Response) => {
+        this.userService.createUser(userPersistence).subscribe(
+          (resp: any) => {
+            debugger
           if (resp.error) {
             this.isBlockPage = false;
             this.addToast({
@@ -169,72 +167,15 @@ export class BasicInformationComponent implements OnInit {
               life: 5000,
             });
           } else {
-            if (resp.data) {
-              this.isBlockPage = false;
-              this.confirmationService.confirm({
-                message: '¿Desea desbloquear el usuario que se encuentra en estado eliminado?',
-                header: 'Usuario Eliminado',
-                icon: 'pi pi-info-circle',
-                accept: () => {
-                  this._subscription.add(
-                    this.userService.activeUser(resp.data.id).subscribe(
-                      (resp: Response) => {
-                        if (resp.error) {
-                          this.isBlockPage = false;
-                          this.addToast({
-                            type: 'error',
-                            message: resp.msg,
-                            life: 5000,
-                          });
-                        } else {
-                          this.addToast({
-                            type: 'success',
-                            message: resp.msg,
-                            life: 5000,
-                          });
-                          this.user = resp.data;
-                          this.returnUser.emit(this.user);
-                        }
-                      })
-                  );
-                },
-                reject: () => {
-                  this.addToast({
-                    type: 'info',
-                    message: 'Usuario no creado',
-                    life: 5000,
-                  });
-                  this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
-                },
-              });
-            } else {
-              this.userService.createUser(userPersistence).subscribe(
-                (resp: Response) => {
-                if (resp.error) {
-                  //this.showLoading(false);
-                  this.isBlockPage = false;
-                  this.addToast({
-                    type: 'error',
-                    message: resp.msg,
-                    life: 5000,
-                  });
-                } else {
-                  this.addToast({
-                    type: 'success',
-                    message: resp.msg,
-                    life: 5000,
-                  });
-                  this.disabledNext = false;
-                  this.user = resp.data;
-                  this.returnUser.emit(this.user);
-                  //this.showLoading(false);
-                  this.isBlockPage = false;
-                  if (this.typeExecution === 1) {
-                    this.changeStatusStep(0);
-                  }
-                }
-              });
-            }
+
+            this.addToast({
+              type: 'success',
+              message: resp.msg,
+              life: 5000,
+            });
+            //this.showLoading(false);
+            this.isBlockPage = false;
+            window.location.reload();
           }
         })
       );
@@ -276,16 +217,17 @@ export class BasicInformationComponent implements OnInit {
   private updateUser(): void {
     if (this.formBasicInfo.valid) {
       const userPersistence: User = {};
-      userPersistence.id = this.user.id?.toLowerCase();
+      userPersistence.matricula = this.user.matricula;
+      userPersistence.dni = this.formBasicInfo.get('dni')?.value;
       userPersistence.username = this.formBasicInfo.get('username')?.value;
-      userPersistence.name = this.formBasicInfo.get('name')?.value;
-      userPersistence.last_name = this.formBasicInfo.get('last_name')?.value;
-      userPersistence.email_notifications = this.formBasicInfo.get('email_notifications')?.value;
-      userPersistence.identification_number = String(this.formBasicInfo.get('identification_number')?.value);
-      userPersistence.identification_type = this.formBasicInfo.get('identification_type')?.value;
-      userPersistence.password = '';
-      userPersistence.password_comfirm = '';
-      this.userService.updateUser(userPersistence).subscribe((resp: Response) => {
+      userPersistence.names = this.formBasicInfo.get('names')?.value;
+      userPersistence.lastnames = this.formBasicInfo.get('lastnames')?.value;
+      userPersistence.email = this.formBasicInfo.get('email')?.value;
+      userPersistence.role = 1;
+      userPersistence.sexo = String(this.formBasicInfo.get('sexo')?.value);
+      userPersistence.date_birth = new Date(String(this.formBasicInfo.get('date_birth')?.value)).toISOString();
+      userPersistence.date_admission = new Date(String(this.formBasicInfo.get('date_admission')?.value)).toISOString();
+      this.userService.updateUser(userPersistence).subscribe((resp: any) => {
         if (!resp.error) {
           this.addToast({
             type: 'success',
@@ -294,11 +236,7 @@ export class BasicInformationComponent implements OnInit {
           });
           //this.showLoading(false);
           this.isBlockPage = false;
-          if (this.typeExecution === 1) {
-            this.changeStatusStep(0);
-          } else {
             window.location.reload();
-          }
         } else {
           this.addToast({
             type: 'error',

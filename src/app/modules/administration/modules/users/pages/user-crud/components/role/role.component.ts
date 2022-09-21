@@ -103,7 +103,7 @@ export class RoleComponent implements OnInit {
       })
     this.rolesAvailables = JSON.parse(JSON.stringify(uniqueAddresses));
     if (this.callServicesCount === 0 && this.user) {
-      this.userService.getUsersRolesByUserID(this.user.id ? this.user.id : '').subscribe(
+      this.userService.getUsersRolesByUserID(this.user.dni ? this.user.dni : '').subscribe(
         (response) => {
         if (!response.error) {
           this.rolesSelected = [];
@@ -132,7 +132,7 @@ export class RoleComponent implements OnInit {
     for (const role of roles) {
       const userRole: UserRole = {
         id: uuidv4().toLowerCase(),
-        user_id: this.user.id?.toLowerCase(),
+        user_id: this.user.dni?.toLowerCase(),
         role_id: role.role_allow?.id!.toLowerCase(),
       };
       this.callServicesCount++;
@@ -164,7 +164,7 @@ export class RoleComponent implements OnInit {
     this.callServicesCount = 0;
     for (const role of roles) {
       const userRole: UserRole = this.usersRoles.find((ur) =>
-          ur.user_id?.toLowerCase() === this.user.id?.toLowerCase() &&
+          ur.user_id?.toLowerCase() === this.user.dni?.toLowerCase() &&
           ur.role_id?.toLowerCase() === role.role_allow?.id!.toLowerCase(),
       )!;
       this.callServicesCount++;

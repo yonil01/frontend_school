@@ -77,22 +77,24 @@ export class UsersComponent implements OnInit {
     this.styleTable.dataSource = [];
     this.showLoader[0].value = true;
     this._subscription.add(
-      this.userService.getUsersByRolesAllow().subscribe((res) => {
+      this.userService.getStudentsAll().subscribe((res: any) => {
         if (!res.error) {
-          this.users = res.data;
-          this.users.forEach((user: any) => {
-            const newUser = {
-              value: user,
-              value1: user.username,
-              value2: user.identification_number,
-              value3: user.name+' '+user.last_name,
-              value4: user.email_notifications,
-              value5: user.status === 0 ? 'Desbloqueado' : 'Bloqueado',
-              value6: user.roles !== null ? this.getRoles(user.roles) : 'Sin roles',
-            }
-            this.styleTable.dataSource?.push(newUser);
-          })
-          this.getCreateAtMax();
+          if (res.data) {
+            this.users = res.data;
+            this.users.forEach((user: any) => {
+              const newUser = {
+                value: user,
+                value1: user.dni,
+                value2: user.username,
+                value3: user.names,
+                value4: user.lastnames,
+                value5: user.sexo === 'M' ? 'Masculino' : 'Femenino',
+                value6: user.email,
+              }
+              this.styleTable.dataSource?.push(newUser);
+            })
+            this.getCreateAtMax();
+          }
           this.showLoader[0].value = false;
         } else {
           this.showLoader[0].value = false;
@@ -183,7 +185,7 @@ export class UsersComponent implements OnInit {
 
   public lockUnlock(user: User) {
     if (user.status !== 16) {
-      this.userService.blockUser(user.id!).subscribe((res: Response) => {
+      this.userService.blockUser('').subscribe((res: Response) => {
         if (res.error) {
           this._messageService.add( {
               type: 'error',
@@ -203,7 +205,7 @@ export class UsersComponent implements OnInit {
         }
       });
     } else {
-      this.userService.unblockUser(user.id!).subscribe((res: Response) => {
+      this.userService.unblockUser('').subscribe((res: Response) => {
         if (res.error) {
           this._messageService.add( {
               type: 'error',
@@ -248,15 +250,14 @@ export class UsersComponent implements OnInit {
       data.forEach((us: any, index: number) => {
         if (index !== 0 && us.length) {
           const newUser: User = {
-            id: uuidv4().toLowerCase(),
-            username: us[0],
-            email_notifications: us[1],
-            identification_type: us[2],
-            identification_number: String(us[3]),
-            name: us[4],
-            last_name: us[5],
-            password:  encryptText(us[6], this.secretKey),
-            password_comfirm: encryptText(us[6], this.secretKey),
+            dni: us[0],
+            username: us[1],
+            names: us[2],
+            lastnames: us[3],
+            email: us[4],
+            sexo: us[5],
+            date_birth:  us[6],
+            date_admission: us[7],
           }
          ArrayRoles.push({id_user: us[4], roles: us[7]?.split(',')})
           ArrayUser.push(newUser);
@@ -265,7 +266,7 @@ export class UsersComponent implements OnInit {
       await Promise.all(ArrayUser).then((users: User[]) => {
         users.forEach((user: User) => {
           this._subscription.add(
-            this.userService.createUser(user).subscribe((resp: Response) => {
+            this.userService.createUser(user).subscribe((resp: any) => {
               if (resp.error) {
                 this.showLoader[0].value = false;
                 this._messageService.add({
@@ -322,7 +323,7 @@ export class UsersComponent implements OnInit {
     const user = this.userSelected;
     if (event) {
       this.showLoader[0].value = true;
-      this.userService.deleteUser(user.id!.toLowerCase()).subscribe((res: Response) => {
+      this.userService.deleteUser(user).subscribe((res: any) => {
         if (res.error) {
           this.showLoader[0].value = false;
           this._messageService.add( {
@@ -338,41 +339,8 @@ export class UsersComponent implements OnInit {
             life: 5000,
           });
 
-          this.userService.getUsersRolesByUserID(user.id!.toLowerCase()).subscribe((res: Response) => {
-            if (res.error) {
-              this.showLoader[0].value = false;
-              this._messageService.add( {
-                  type: 'error',
-                  message: res.msg,
-                  life: 5000,
-                }
-              );
-            }else{
-              if(res.data){
-                let data = res.data;
-                for(let item of data){
-                  this.userService.deleteUsersRoles(item.id!.toLowerCase()).subscribe((res: Response) => {
-                    if (res.error) {
-                      this.showLoader[0].value = false;
-                      this._messageService.add( {
-                          type: 'error',
-                          message: res.msg,
-                          life: 5000,
-                        }
-                      );
-                    }
-                    if(item === data[data.length - 1]){
-                      this.getUsers();
-                      this.showLoader[0].value = false;
-                    }
-                  });
-                }
-              }else{
-                this.showLoader[0].value = false;
-                this.getUsers();
-              }
-            }
-          });
+          this.getUsers()
+          this.showLoader[0].value = false;
         }
       });
     }else{

@@ -16,7 +16,7 @@ export class CryptoService {
     this.urlGetIDApp = EnvServiceProvider.useFactory().REST_API + '/api/v1/cipher/key-app';
   }
 
-  public getAppId(): Observable<any> {
+  /*public getAppId(): Observable<any> {
     return this._httpClient.get<any>(this.urlGetIDApp).pipe((res) => res);
-  }
+  }*/
 }

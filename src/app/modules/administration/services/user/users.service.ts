@@ -12,7 +12,7 @@ import {
   UnBlockUserQuery,
   LogoutUserQuery,
   GetUsersQueryCpy,
-  GetRoles,
+  //GetRoles,
   GetRolesById,
   UpdatePasswordByAdministratorQuery,
   ChangePassUser,
@@ -47,7 +47,7 @@ export class UsersService {
     private blockUserQuery: BlockUserQuery,
     private unBlockUserQuery: UnBlockUserQuery,
     private logoutUserQuery: LogoutUserQuery,
-    private getRolesQry: GetRoles,
+    //private getRolesQry: GetRoles,
     private getRolesAllowByUserQuery: GetRolesAllowByUserQuery,
     private getRolesByIdQry: GetRolesById,
     private updatePasswordByAdministratorQuery: UpdatePasswordByAdministratorQuery,
@@ -125,9 +125,9 @@ export class UsersService {
       .pipe(map(({ data }: any) => data.unblockUser));
   }
 
-  getRoles(): Observable<Response> {
+  /*getRoles(): Observable<Response> {
     return this.getRolesQry.watch({}).valueChanges.pipe(map(({ data }: any) => data.getRoles));
-  }
+  }*/
 
   getRolesAllowByUser(): Observable<Response> {
     return this.getRolesAllowByUserQuery.watch({}).valueChanges.pipe(map(({ data }: any) => data.getRolesAllowByUser));
@@ -230,5 +230,15 @@ export class UsersService {
       user = helper.decodeToken(token);
     }
     return user;
+  }
+
+  public getDoctypeByUser(data: any) {
+    const url = 'https://systemschoolramonv1.herokuapp.com' + '/api/v1/doctype-user';
+    return this._httpClient.post(url, data).pipe(map((res) => res));
+  }
+
+  public getDataSp(data: any) {
+    const url = 'https://systemschoolramonv1.herokuapp.com' + '/api/v1/report/procedure';
+    return this._httpClient.post(url, data).pipe(map((res) => res));
   }
 }

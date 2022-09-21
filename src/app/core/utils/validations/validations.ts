@@ -1,3 +1,5 @@
+import {unSupportedFormatViewers} from "@app/core/utils/static/data";
+
 export const onlyNumbers = (value: KeyboardEvent) => {
   const key = value.charCode;
   return key >= 48 && key <= 57;
@@ -18,3 +20,6 @@ export const onlyLetters = (value: KeyboardEvent): boolean => {
 
   return !(letras.indexOf(tecla) == -1 && !tecla_especial);
 }
+
+
+export const validUnsupportedFormatViewers = (type: string) => !!unSupportedFormatViewers.find(({format}) => format.test(type));

@@ -369,7 +369,7 @@ export abstract class _MatPaginatorBase<
   }
 
   /!**
-   * Updates the list of page size options to display to the user. Includes making sure that
+   * Updates the list of page size options to display to the subject. Includes making sure that
    * the page size is an option and that the list is sorted.
    *!/
   private _updateDisplayedPageSizeOptions() {

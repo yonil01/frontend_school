@@ -72,7 +72,7 @@ export class QueueFormComponent implements OnInit, OnDestroy {
   public commentForm: FormControl;
   private readonly typeQueue: any = typesQueues;
   private element: any;
-  private parentQueue!: Queue;
+  private parentQueue!: any;
   private bpm!: Process;
   public isBlockPage: boolean = false;
   public showConfirm: boolean = false;
@@ -263,7 +263,7 @@ export class QueueFormComponent implements OnInit, OnDestroy {
   }
 
   private getRoles(): void {
-    this._subscription.add(
+    /*this._subscription.add(
       this.roleService.getRoles().subscribe({
         next: (res) => {
           if (res.error) {
@@ -278,11 +278,11 @@ export class QueueFormComponent implements OnInit, OnDestroy {
           this._messageService.add({type: 'error', message: 'Error al cargar los roles!', life: 5000});
         }
       })
-    );
+    );*/
   }
 
   private preloadRoles(): void {
-    const rolesSelected = this.parentQueue.queue_roles ? this.roles.filter((rl) => this.parentQueue.queue_roles?.find((rq) => rq?.role.id.toLowerCase() === rl.id?.toLowerCase())) : [];
+    const rolesSelected = this.parentQueue.queue_roles ? this.roles.filter((rl) => this.parentQueue.queue_roles?.find((rq: any) => rq?.role.id.toLowerCase() === rl.id?.toLowerCase())) : [];
     for (const rol of this.roles) {
       if (rolesSelected.find((r) => r.id === rol.id)) {
         this.rolesDisplay.push({role: rol, active: true});
@@ -411,11 +411,11 @@ export class QueueFormComponent implements OnInit, OnDestroy {
     if (this.parentQueue.queue_attributes?.length) {
       this._subscription.add(
         this.processService.deleteQueueAttribute(id.toLowerCase()).subscribe({
-          next: (res) => {
+          next: (res: any) => {
             if (res.error) {
               this._messageService.add({type: 'error', message: res.msg, life: 5000});
             } else {
-              this.parentQueue.queue_attributes = this.parentQueue.queue_attributes?.filter(queueAttribute => queueAttribute.id !== id);
+              this.parentQueue.queue_attributes = this.parentQueue.queue_attributes?.filter((queueAttribute: any) => queueAttribute.id !== id);
               this.updateQueueEvent.emit(res);
             }
           },
@@ -499,7 +499,7 @@ export class QueueFormComponent implements OnInit, OnDestroy {
                 if (roleFindIndex > -1) {
                   this.rolesDisplay[roleFindIndex].active = false;
                 }
-                this.parentQueue.queue_roles = this.parentQueue.queue_roles?.filter((qr) => qr.role.id.toLowerCase() !== role.id?.toLowerCase());
+                this.parentQueue.queue_roles = this.parentQueue.queue_roles?.filter((qr: any) => qr.role.id.toLowerCase() !== role.id?.toLowerCase());
                 this.updateQueueEvent.emit(res);
               }
               this.isBlockPage = false;

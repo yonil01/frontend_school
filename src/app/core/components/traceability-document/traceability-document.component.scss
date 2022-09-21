@@ -1,0 +1,26 @@
+.context-traceability {
+  margin: 1em;
+  // font-size: 12px;
+
+  .icon-edit {
+    background-color: transparent;
+    color: #007ad9;
+    border-color: transparent;
+  }
+
+  .options {
+    text-align: center;
+  }
+
+  .icon-filter {
+    background-color: transparent;
+    color: black;
+    border-color: transparent;
+  }
+
+  .no_results {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

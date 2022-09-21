@@ -11,6 +11,8 @@ import {ConfigElement, AdminElement} from "@app/core/utils/constants/constant";
 import {HttpErrorResponse} from "@angular/common/http";
 import {RoleService} from "@app/modules/wizard/services/roles/role.service";
 import {EnvServiceProvider} from "@app/core/services/env/env.service.provider";
+import {UsersService} from "@app/modules/administration/services/user/users.service";
+import {Doctype} from "@angular/compiler/src/i18n/serializers/xml_helper";
 
 @Component({
   selector: 'app-wizard',
@@ -27,13 +29,15 @@ export class WizardComponent implements OnInit, OnDestroy {
   public clientName: string = '';
   public configList: any[] = [];
   public adminList: any[] = [];
+  public processList: any[] = [];
+  public reportList: any[] = [];
   //public isDisableGenerated: boolean = true;
   public isGenerate: boolean = false;
   public clientID: string = '';
   public projectID: string = '';
   public isBlockPage: boolean = false;
   public url_banner_home: string = '';
-
+  private _subscriptions: Subscription = new Subscription();
   private modulesUserLogin: any[] = [];
 
   constructor(
@@ -42,9 +46,10 @@ export class WizardComponent implements OnInit, OnDestroy {
     private _messageService: ToastService,
     private _sessionsService: LocalStorageService,
     private _roleService: RoleService,
+    private _userService: UsersService,
   ) {
-    this.isBlockPage = true;
-    this._subscription.add(
+    //this.isBlockPage = true;
+    /*this._subscription.add(
       this.customerService.getCustomers().subscribe({
         next: (res) => {
           if (res.error) {
@@ -68,11 +73,11 @@ export class WizardComponent implements OnInit, OnDestroy {
           this.isBlockPage = false;
         }
       })
-    );
+    );*/
 
     this.modulesUserLogin = _sessionsService.getModules();
 
-    for(let module of this.modulesUserLogin){
+    /*for(let module of this.modulesUserLogin){
       if(module.id === "8e5df79b-7b22-4b2d-a3a2-0986224724e2"){ //Configuración
         module.components[0].elements.forEach((element:any) => {
           const confItem = ConfigElement.find((item) => item.id === element.id);
@@ -86,7 +91,7 @@ export class WizardComponent implements OnInit, OnDestroy {
           component.elements.forEach((element:any) => {
             const adminItem = AdminElement.find((item) => item.id === element.id);
             if(adminItem){
-              this.adminList.push(adminItem);
+              // this.adminList.push(adminItem);
             }
           });
         }
@@ -96,16 +101,17 @@ export class WizardComponent implements OnInit, OnDestroy {
           component.elements.forEach((element:any) => {
             const adminItem = AdminElement.find((item) => item.id === element.id);
             if(adminItem){
-              this.adminList.push(adminItem);
+              // this.adminList.push(adminItem);
             }
           });
         }
       }
-    }
+    }*/
   }
 
   ngOnInit(): void {
-    this.getDataDynamic()
+   // this.getDataDynamic()
+    this.getDoctypeByUser();
   }
 
   ngOnDestroy(): void {
@@ -157,6 +163,43 @@ export class WizardComponent implements OnInit, OnDestroy {
 
   public getDataDynamic(): void {
     this.url_banner_home = EnvServiceProvider.useFactory().BANNER_URL_HOME;
+  }
+
+  public getDoctypeByUser() {
+    const newData = {
+      user_id: 1
+    }
+    this._subscriptions.add(
+      this._userService.getDoctypeByUser(newData).subscribe({
+        next: (res: any) => {
+          if (res.error) {
+            this._messageService.add({type: 'danger', message: res.msg, life: 5000});
+          } else {
+            localStorage.setItem('doctypes', JSON.stringify(res.data));
+            res.data.forEach((item: any) => {
+              if (item.type === 10) {
+                this.adminList.push(item)
+              }
+              if (item.type === 20) {
+                this.processList.push(item)
+              }
+              if (item.type === 30) {
+                this.reportList.push(item)
+              }
+            })
+
+          }
+          this.isGenerate = false;
+        },
+        error: (err: HttpErrorResponse) => {
+          this._messageService.add({
+            type: 'error',
+            message: 'Ocurrió un error al descargar el documento',
+            life: 5000
+          });
+        }
+      })
+    );
   }
 
 }

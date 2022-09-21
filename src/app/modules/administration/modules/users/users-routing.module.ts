@@ -9,7 +9,7 @@ import {RoleComponent} from "@app/modules/administration/modules/users/pages/use
 import {UsersComponent} from "@app/modules/administration/modules/users/users.component";
 
 const routes: Routes = [
-  {path: '', component: UsersComponent},
+  {path: ':id', component: UsersComponent},
 
 ];
 

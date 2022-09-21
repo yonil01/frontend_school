@@ -54,7 +54,7 @@ export class GetEntitiesQuery extends Query<Response> {
 @Injectable({
   providedIn: 'root',
 })
-export class GetRolesQuery extends Query<Response> {
+/*export class GetRolesQuery extends Query<Response> {
   getRoles(): Observable<Response> {
     return this.apollo
     .watchQuery({
@@ -109,7 +109,7 @@ export class GetRolesQuery extends Query<Response> {
     })
     .valueChanges.pipe(map(({ data }: any) => data.getRoles));
   }
-}
+}*/
 
 // NUEVO QUERY
 

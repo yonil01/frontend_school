@@ -32,3 +32,18 @@ export const controlMobileBack = createAction('[menu-documents] load mobileBack'
 export const controlMobileVisor = createAction('[menu-documents] load mobileVisor', props<{ mobileVisor: boolean }>());
 
 export const resetStoreMenuDocument = createAction('[menu-documents] reset store', props<any>());
+
+export const controlNewDocument = createAction(
+  '[menu-documents] show new document',
+  props<{ showNewDocument: boolean }>(),
+);
+
+export const controlNewDynamicForm = createAction(
+  '[menu-documents] show new dynamic form',
+  props<{ showNewDynamicForm: boolean }>(),
+);
+
+export const controlNewExternalForm = createAction(
+  '[menu-documents] show new external form',
+  props<{ showNewExternalForm: boolean }>(),
+);

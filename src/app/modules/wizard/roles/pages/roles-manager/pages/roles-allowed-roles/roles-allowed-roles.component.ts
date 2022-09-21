@@ -56,7 +56,7 @@ export class RolesAllowedRolesComponent implements OnInit, OnDestroy {
 
   getRoleAllow(): void {
     this.isBlockPage = true;
-    this._roleService.getRoles().subscribe((res: Response) => {
+    /*this._roleService.getRoles().subscribe((res: Response) => {
       if(!res.error){
         this.rolesSelected = [];
         this.sourceRole = [];
@@ -92,13 +92,13 @@ export class RolesAllowedRolesComponent implements OnInit, OnDestroy {
         });
       }
       this.isBlockPage = false;
-    });
+    });*/
   }
   //getRoleAllow
 
   getRoleAllowUpdate(){
     this.isBlockPage = true;
-    this._roleService.getRoles().subscribe((res: Response) => {
+    /*this._roleService.getRoles().subscribe((res: Response) => {
       if(!res.error){
         this.sourceRole = res.data ? JSON.parse(JSON.stringify(res.data)) : [];
         this.role = this.sourceRole.find((doc: Role) => doc.id?.toLowerCase() === this.role.id?.toLowerCase()) || this.role;
@@ -110,7 +110,7 @@ export class RolesAllowedRolesComponent implements OnInit, OnDestroy {
         });
       }
       this.isBlockPage = false;
-    });
+    });*/
   }
 
   public assignItemsRoles(items: string[]): void {

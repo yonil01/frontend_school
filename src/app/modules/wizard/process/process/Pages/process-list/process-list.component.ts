@@ -112,7 +112,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
     this.project = JSON.parse(sessionStorage.getItem('project') || '');
     this.client = JSON.parse(sessionStorage.getItem('client') || '');
     this.defaultSVG = this._sanitizer.bypassSecurityTrustResourceUrl(DEFAULT_BPMN_BASE64);
-    this._subscription.add(
+    /*this._subscription.add(
       this._roleService.getRoles().subscribe(
         {
           next: (res) => {
@@ -128,7 +128,7 @@ export class ProcessListComponent implements OnInit, OnDestroy {
           }
         }
       )
-    );
+    );*/
 
     this._subscription.add(
       this._doctypeGroupService.getDoctypeGroupsByProjectID(this.project.id).subscribe(

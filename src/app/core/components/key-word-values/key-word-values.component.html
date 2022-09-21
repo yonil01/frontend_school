@@ -1,0 +1,41 @@
+<div *ngIf="false" class="ec-input-search flex-grow">
+  <input class="placeholder:text-mono-30" placeholder="{{'SEARCH'|translate}}" type="search">
+  <div class="icon">
+    <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path
+        d="M6.66671 1.83325C9.33608 1.83325 11.5 3.99721 11.5 6.66659C11.5 7.82117 11.0952 8.8812 10.4197 9.71246L13.6869 12.9797C13.8822 13.175 13.8822 13.4915 13.6869 13.6868C13.5094 13.8643 13.2316 13.8805 13.0359 13.7352L12.9798 13.6868L9.71258 10.4196C8.88132 11.0951 7.82129 11.4999 6.66671 11.4999C3.99733 11.4999 1.83337 9.33596 1.83337 6.66659C1.83337 3.99721 3.99733 1.83325 6.66671 1.83325ZM6.66671 2.83325C4.54962 2.83325 2.83337 4.54949 2.83337 6.66659C2.83337 8.78368 4.54962 10.4999 6.66671 10.4999C8.7838 10.4999 10.5 8.78368 10.5 6.66659C10.5 4.54949 8.7838 2.83325 6.66671 2.83325Z"/>
+    </svg>
+  </div>
+</div>
+<div *ngFor="let entity of entitiesSimplesDisplay; let position = index" class="item-card">
+  <div class="head bg-brand-2 flex justify-between h-10 flex-1 items-center">
+    <div class="flex flex-row space-x-2 items-center ml-4">
+      <span class="t-subtitle-1 text-white capitalize">{{entity.entity.name+'' | replace:'_': ' '}}</span>
+    </div>
+    <button class="b-solid w-10 h-10 rounded-none" (click)="openAccordion(position)"><span class="{{entity.display ? 'rotate-180' : ''}} transform" appIcon iconName="caret down"></span></button>
+  </div>
+  <div class="body p-4" *ngIf="entity.display">
+    <div class="form border border-mono-30 rounded p-4">
+      <div class="inputs flex flex-col space-y-4">
+        <form [formGroup]="form[entity.entity.id || '']" class="flex flex-col gap-4">
+          <div *ngFor="let item of fields[entity.entity.id || '']; let index = index" class="ec-input space-y-1 flex-1 flex gap-2 flex-col">
+            <label class="t-caption-2 text-mono-70">{{item.key | replace:'_': ' '}}</label>
+            <input *ngIf="item.type === 'input'" class="input-style" [type]="item.templateOptions.type"
+                   [formControlName]="item.key">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-container mt-12" *ngIf="!existDocument || entitiesSimplesDisplay.length">
+  <button (click)="loadEntitiesPersistenses()" class="b-outline w-full">{{'ADD' | translate}}</button>
+</div>
+
+<div class="btn-container mt-12" *ngIf="existDocument">
+  <button (click)="submitForm()" class="b-outline w-full">{{'SAVE_ENTITIES' | translate}}</button>
+</div>
+
+<app-block-page [show]="isLoading"></app-block-page>
+<ec-toast [toastStyle]="toastStyle"></ec-toast>

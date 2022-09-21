@@ -16,19 +16,12 @@ export const CrudModel: StepModel = {
       focus: true,
     },
     {
-      index: 2,
-      title: 'Roles',
-      status: 'Pending',
-      block: true,
-      focus: false,
-    },
-    /*{
       index: 3,
       title: 'Entidad de Seguridad',
       status: 'Pending',
       block: true,
       focus: false,
-    },*/
+    },
   ]
 }
 

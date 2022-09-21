@@ -57,7 +57,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getRoles(): void {
-    this._subscription.add(
+    /*this._subscription.add(
       this.roleService.getRoles().subscribe({
         next: (res) => {
           if (res.error) {
@@ -72,7 +72,7 @@ export class ConfigComponent implements OnInit, OnChanges, OnDestroy {
           this.messageService.add({type: 'error', message: 'No se pudo obtener el listado de roles!', life: 5000});
         }
       })
-    );
+    );*/
   }
 
   private preloadRoles(): void {

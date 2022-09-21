@@ -1,0 +1,210 @@
+.message-container {
+  margin-top: 2rem;
+}
+
+.content {
+  height: 100%;
+  padding: 2rem;
+
+  .content-box-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    transition: all 0.4s ease;
+  }
+
+  .content-box-center.active {
+    justify-content: flex-start;
+    transition: all 0.4s ease;
+  }
+
+  @media screen and (max-width: 992px) {
+    padding: 1rem;
+  }
+}
+
+::ng-deep .file-accordion {
+  margin-bottom: 2em;
+}
+
+.document {
+  .uploadfilecontainer {
+    height: auto;
+    min-height: 200px;
+    width: 100%;
+    max-width: 600px;
+    margin: 1em auto;
+    border: 2px dashed #1c8adb;
+    border-radius: 10px;
+
+    .dragtext-container {
+      text-align: center;
+
+      .uploadImage > i {
+        font-size: 5rem;
+        color: #3999dd;
+      }
+
+      .label-upload {
+        text-align: center;
+        b {
+          font-size: 22px;
+        }
+        div {
+          margin: 1em 2em 0em 2em;
+          span {
+            font-size: 16px;
+          }
+          .label-mobile {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .uploadfilecontainer:hover {
+    cursor: pointer;
+    background-color: #dddddd !important;
+    opacity: 0.8;
+  }
+
+  .files-list-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .files-list {
+      display: flex;
+      justify-content: space-between;
+      //   width: 60%;
+      margin: 10px 0px;
+      background: #ffffff;
+      border: 1px dashed;
+      border-radius: 12px;
+      padding: 5px;
+      color: #1c8adb;
+      align-items: center;
+
+      p {
+        color: black;
+      }
+
+      div {
+        .delete {
+          cursor: pointer;
+          color: #e91224;
+          font-size: 16px;
+        }
+
+        .refresh {
+          margin-right: 0.5rem;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .select-container {
+      display: flex;
+      flex-direction: column;
+      padding: 0 1rem;
+      //   width: 30%;
+
+      .docgroupList {
+        margin: 10px 0 10px 0;
+      }
+
+      .doctypeList {
+        margin: 10px 0 10px 0;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  @media screen and (max-width: 992px) {
+    .uploadfilecontainer {
+      height: auto;
+      min-height: 150px;
+      width: 100%;
+      max-width: 500px;
+      .dragtext-container {
+        .label-upload {
+          b {
+            display: none;
+          }
+          div {
+            .label-desktop {
+              display: none;
+            }
+            .label-mobile {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+    .files-list-container {
+      .select-container {
+        padding: 0;
+      }
+    }
+  }
+}
+
+::ng-deep .ui-dropdown {
+  width: 100% !important;
+}
+
+.viewerContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: 992px) {
+    flex-direction: column;
+    flex-wrap: wrap-reverse;
+
+    .entity-container {
+      flex: 1 1 auto;
+    }
+
+    .visor {
+      flex: 1 1 auto;
+    }
+  }
+
+  .custom-card {
+    background-color: #ffffff;
+    color: #333333;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    font-family: 'Roboto', serif;
+    padding: 1em;
+
+    .send-button {
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+  }
+
+  .entity-container {
+    flex: 1 1 30%;
+  }
+
+  .visor {
+    flex: 0 0 70%;
+  }
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  .btn {
+    margin-top: 20px;
+  }
+}

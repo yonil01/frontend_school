@@ -5,22 +5,22 @@ import {DataContentUser} from "@app/modules/administration/modules/users/models/
 export const styleTableUser: TableModel = {
   columns: [
     {
-      label: 'Nombre de usuario',
+      label: 'Dni',
     },
     {
-      label: 'N° de Identificación',
+      label: 'Username',
     },
     {
-      label: 'Apellido',
+      label: 'Nombres',
     },
     {
-      label: 'EMAIL',
+      label: 'Apellidos',
     },
     {
-      label: 'Estado',
+      label: 'Sexo',
     },
     {
-      label: 'Roles',
+      label: 'Correo',
     },
     {
       label: 'Opciones',
@@ -28,7 +28,7 @@ export const styleTableUser: TableModel = {
   ],
   buttonTittle: {
     showButton: true,
-    label: 'Crear Usuario',
+    label: 'Crear Alumno',
     route: ''
   },
   isSearch: true,

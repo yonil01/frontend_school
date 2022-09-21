@@ -1,0 +1,306 @@
+<!-- Large -->
+<div class="hidden lg:flex sub-container">
+  <div class="flex flex-row justify-between items-center">
+    <div class="flex flex-row items-center space-x-2">
+      <div class="flex items-center space-x-2" *ngIf="documentsVisibility.length > 0">
+        <button class="b-outline h-10" (click)="exportCSV()">
+          <div>
+            <svg class="text-alert-info" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"
+                 fill="none">
+              <path
+                d="M10.3333 2V6.5C10.3333 7.32843 11.0049 8 11.8333 8H16.3333V16.5C16.3333 17.3284 15.6617 18 14.8333 18H5.83331C5.00489 18 4.33331 17.3284 4.33331 16.5V3.5C4.33331 2.67157 5.00489 2 5.83331 2H10.3333ZM11.3333 2.25V6.5C11.3333 6.77614 11.5572 7 11.8333 7H16.0833L11.3333 2.25Z"
+              />
+            </svg>
+          </div>
+          <span>CSV</span>
+        </button>
+        <button class="b-outline h-10" (click)="exportExcel()">
+          <div>
+            <svg class="text-alert-success" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                 fill="none">
+              <path
+                d="M10 17H14.5C15.8807 17 17 15.8807 17 14.5V14H10V17ZM17 13V7H3V13H17ZM3 14H9V17H5.5C4.11929 17 3 15.8807 3 14.5V14ZM10 6H17V5.5C17 4.11929 15.8807 3 14.5 3H10V6ZM9 3V6H3V5.5C3 4.11929 4.11929 3 5.5 3H9Z"
+              />
+            </svg>
+          </div>
+          <span>EXCEL</span>
+        </button>
+        <button class="b-outline h-10" (click)="exportPdf()">
+          <div>
+            <svg class="text-red-500 dark:text-red-300" id="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 viewBox="0 0 32 32">
+              <polygon points="30 18 30 16 24 16 24 26 26 26 26 22 29 22 29 20 26 20 26 18 30 18"/>
+              <path
+                d="M19,26H15V16h4a3.0033,3.0033,0,0,1,3,3v4A3.0033,3.0033,0,0,1,19,26Zm-2-2h2a1.0011,1.0011,0,0,0,1-1V19a1.0011,1.0011,0,0,0-1-1H17Z"
+              />
+              <path d="M11,16H6V26H8V23h3a2.0027,2.0027,0,0,0,2-2V18A2.0023,2.0023,0,0,0,11,16ZM8,21V18h3l.001,3Z"
+              />
+              <path
+                d="M22,14V10a.9092.9092,0,0,0-.3-.7l-7-7A.9087.9087,0,0,0,14,2H4A2.0059,2.0059,0,0,0,2,4V28a2,2,0,0,0,2,2H20V28H4V4h8v6a2.0059,2.0059,0,0,0,2,2h6v2Zm-8-4V4.4L19.6,10Z"
+              />
+              <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" width="24" height="24"
+                    fill="none"/>
+            </svg>
+          </div>
+          <span>PDF</span>
+        </button>
+        <button class="b-outline h-10" (click)="showGraphic()">
+          <div>
+            <svg class="text-red-500 dark:text-red-300" id="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 viewBox="0 0 32 32">
+              <polygon points="30 18 30 16 24 16 24 26 26 26 26 22 29 22 29 20 26 20 26 18 30 18"/>
+              <path
+                d="M19,26H15V16h4a3.0033,3.0033,0,0,1,3,3v4A3.0033,3.0033,0,0,1,19,26Zm-2-2h2a1.0011,1.0011,0,0,0,1-1V19a1.0011,1.0011,0,0,0-1-1H17Z"
+              />
+              <path d="M11,16H6V26H8V23h3a2.0027,2.0027,0,0,0,2-2V18A2.0023,2.0023,0,0,0,11,16ZM8,21V18h3l.001,3Z"
+              />
+              <path
+                d="M22,14V10a.9092.9092,0,0,0-.3-.7l-7-7A.9087.9087,0,0,0,14,2H4A2.0059,2.0059,0,0,0,2,4V28a2,2,0,0,0,2,2H20V28H4V4h8v6a2.0059,2.0059,0,0,0,2,2h6v2Zm-8-4V4.4L19.6,10Z"
+              />
+              <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" width="24" height="24"
+                    fill="none"/>
+            </svg>
+          </div>
+          <span>Graficos</span>
+        </button>
+      </div>
+
+      <button *ngIf="false" class="rounded bg-mono-10 border border-mono-30 h-10 text-black">
+        <span>{{'COLUMNS'|translate}}</span>
+        <div>
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"
+               fill="none">
+            <path
+              d="M16.5194 7.64582C16.715 7.84073 16.7156 8.15731 16.5206 8.35292L11.0557 13.8374C10.8407 14.0531 10.4914 14.0531 10.2765 13.8374L4.81148 8.35292C4.61657 8.15731 4.61713 7.84073 4.81274 7.64582C5.00835 7.4509 5.32493 7.45147 5.51985 7.64708L10.6661 12.8117L15.8123 7.64708C16.0072 7.45147 16.3238 7.4509 16.5194 7.64582Z"
+              fill="white"/>
+          </svg>
+        </div>
+      </button>
+      <div class="ec-input-search w-60">
+        <input class="placeholder:text-mono-30" placeholder="{{'FILTER_DOCUMENT'|translate}}" type="search" (input)="filterTable($event)">
+        <div class="icon">
+          <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+               fill="none">
+            <path
+              d="M6.66671 1.83325C9.33608 1.83325 11.5 3.99721 11.5 6.66659C11.5 7.82117 11.0952 8.8812 10.4197 9.71246L13.6869 12.9797C13.8822 13.175 13.8822 13.4915 13.6869 13.6868C13.5094 13.8643 13.2316 13.8805 13.0359 13.7352L12.9798 13.6868L9.71258 10.4196C8.88132 11.0951 7.82129 11.4999 6.66671 11.4999C3.99733 11.4999 1.83337 9.33596 1.83337 6.66659C1.83337 3.99721 3.99733 1.83325 6.66671 1.83325ZM6.66671 2.83325C4.54962 2.83325 2.83337 4.54949 2.83337 6.66659C2.83337 8.78368 4.54962 10.4999 6.66671 10.4999C8.7838 10.4999 10.5 8.78368 10.5 6.66659C10.5 4.54949 8.7838 2.83325 6.66671 2.83325Z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="pagination">
+      <div class="flex flex-row justify-end space-x-4 items-center">
+        <div class="flex flex-row relative group cursor-pointer pl-2 items-center border-input w-20 bg-mono-10 rounded">
+          <span class="text-black w-full truncate">{{paginationValue}}</span>
+          <div class="p-3 flex items-center justify-center">
+            <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 16 16">
+              <path
+                d="M2.81319 5.64645C3.00846 5.45118 3.32504 5.45118 3.5203 5.64645L8.00008 10.1262L12.4799 5.64645C12.6751 5.45118 12.9917 5.45118 13.187 5.64645C13.3822 5.84171 13.3822 6.15829 13.187 6.35355L8.35363 11.1869C8.15837 11.3821 7.84179 11.3821 7.64653 11.1869L2.81319 6.35355C2.61793 6.15829 2.61793 5.84171 2.81319 5.64645Z"/>
+            </svg>
+          </div>
+          <div class="container-combo-up hidden group-hover:block">
+            <div class="option-combo" (click)="paginationValue = 5; changePaginationValue();" >5</div>
+            <div class="option-combo" (click)="paginationValue = 10; changePaginationValue(); ">10</div>
+            <div class="option-combo" (click)="paginationValue = 15; changePaginationValue(); ">15</div>
+            <div class="option-combo" (click)="paginationValue = 20; changePaginationValue(); ">20</div>
+          </div>
+        </div>
+
+        <div class="flex flex-row space-x-1">
+          <button class="border-input flex flex-row items-center justify-center w-10 h-10 bg-mono-10 hover:bg-white" (click)="beforePage()" [disabled]="currentPositionPagination === 1">
+            <div class="transform rotate-90">
+              <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                <path
+                  d="M2.81319 5.64645C3.00846 5.45118 3.32504 5.45118 3.5203 5.64645L8.00008 10.1262L12.4799 5.64645C12.6751 5.45118 12.9917 5.45118 13.187 5.64645C13.3822 5.84171 13.3822 6.15829 13.187 6.35355L8.35363 11.1869C8.15837 11.3821 7.84179 11.3821 7.64653 11.1869L2.81319 6.35355C2.61793 6.15829 2.61793 5.84171 2.81319 5.64645Z"/>
+              </svg>
+            </div>
+          </button>
+          <div class="border-input cursor-default flex flex-row items-center justify-center h-10 bg-mono-10 px-2">
+            <span>{{currentPositionPagination}}/{{documentsCurrent}}</span>
+          </div>
+          <button class="border-input flex flex-row items-center justify-center w-10 h-10 bg-mono-10 hover:bg-white" (click)="nextPage()" [disabled]="currentPositionPagination === documentsCurrent || documentsCurrent === 0">
+            <div class="transform -rotate-90">
+              <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                <path
+                  d="M2.81319 5.64645C3.00846 5.45118 3.32504 5.45118 3.5203 5.64645L8.00008 10.1262L12.4799 5.64645C12.6751 5.45118 12.9917 5.45118 13.187 5.64645C13.3822 5.84171 13.3822 6.15829 13.187 6.35355L8.35363 11.1869C8.15837 11.3821 7.84179 11.3821 7.64653 11.1869L2.81319 6.35355C2.61793 6.15829 2.61793 5.84171 2.81319 5.64645Z"/>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <div class="grid ec-grid-cols-{{columns.length * 2}} gap-4  items-center text-brand-2 border-b border-mono-30 t-body-2">
+      <div *ngFor="let header of columns" class="truncate flex gap-2 cursor-pointer capitalize p-2 hover:bg-mono-30 {{colSelected.field === header.field ? 'border-2 border-brand-d-1': ''}} {{header.header === 'index' ? '': 'col-span-2'}}" (click)="sortByColum(header)">
+        <span>{{(header.header !== 'index' ? header.header.substring(2,header.header.length)  : header.header) | replace: '_': ' '}}</span>
+        <span *ngIf="colSelected.field === header.field && (operationSort === 'desc' || operationSort === 'asc')" class="{{operationSort === 'asc'? 'transform rotate-180': ''}}">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="current" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.5 16C13.9142 16 14.25 16.3358 14.25 16.75C14.25 17.1642 13.9142 17.5 13.5 17.5H10.5C10.0858 17.5 9.75 17.1642 9.75 16.75C9.75 16.3358 10.0858 16 10.5 16H13.5ZM16.5 11C16.9142 11 17.25 11.3358 17.25 11.75C17.25 12.1642 16.9142 12.5 16.5 12.5H7.5C7.08579 12.5 6.75 12.1642 6.75 11.75C6.75 11.3358 7.08579 11 7.5 11H16.5ZM19.5 6C19.9142 6 20.25 6.33579 20.25 6.75C20.25 7.16421 19.9142 7.5 19.5 7.5H4.5C4.08579 7.5 3.75 7.16421 3.75 6.75C3.75 6.33579 4.08579 6 4.5 6H19.5Z"/>
+          </svg>
+        </span>
+        <span *ngIf="colSelected.field !== header.field || operationSort === 'noSort'">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="current" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.99984 16.6667H25.9998C26.7362 16.6667 27.3332 17.2636 27.3332 18C27.3332 18.6838 26.8185 19.2473 26.1553 19.3244L25.9998 19.3333H1.99984C1.26346 19.3333 0.666504 18.7364 0.666504 18C0.666504 17.3162 1.18122 16.7526 1.84434 16.6756L1.99984 16.6667H25.9998H1.99984ZM1.99968 8.66666L25.9997 8.66377C26.7361 8.66368 27.3332 9.26056 27.3332 9.99694C27.3332 10.6807 26.8186 11.2443 26.1555 11.3214L26 11.3304L2 11.3333C1.26362 11.3334 0.666504 10.7365 0.666504 10.0002C0.666504 9.31637 1.18109 8.75275 1.84418 8.67565L1.99968 8.66666L25.9997 8.66377L1.99968 8.66666ZM1.99984 0.666656H25.9998C26.7362 0.666656 27.3332 1.26361 27.3332 1.99999C27.3332 2.68377 26.8185 3.24733 26.1553 3.32435L25.9998 3.33332H1.99984C1.26346 3.33332 0.666504 2.73637 0.666504 1.99999C0.666504 1.31621 1.18122 0.752647 1.84434 0.675627L1.99984 0.666656H25.9998H1.99984Z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div class="content-list">
+      <div *ngIf="showArea" class="w-full h-full">
+        <app-widget-area></app-widget-area>
+        <app-widget-card></app-widget-card>
+        <app-widget-pie></app-widget-pie>
+      </div>
+      <perfect-scrollbar>
+        <div class="grid ec-grid-cols-{{columns.length * 2}} gap-4 items-center text-brand-2 p-2 border-b border-mono-30 hover:bg-mono-10 t-body-1"
+          *ngFor="let document of documentsVisibility">
+          <div *ngFor="let header of columns" class="{{header.header === 'index' ? '': 'col-span-2'}}">
+            <span class="text-black flex-1 break-all">{{document[header.header]}}</span>
+          </div>
+        </div>
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>
+
+<!-- Small, Medium -->
+<div class="flex lg:hidden sub-container-sm">
+
+  <div class="bg-white w-full p-4 container-paddings flex flex-col space-y-1 border-b border-mono-30">
+    <span class="t-h5 text-black">{{'PENDING_PAYMENT_REPORTS'|translate}}</span>
+    <span class="t-body-2 text-mono-70">
+      <ol>
+        <li>{{documentsRestricted.length}} {{'CURRENT_RECORDS'|translate}}</li>
+      </ol>
+    </span>
+    <div class="flex pt-4 justify-between md:justify-right space-x-4 lg:hidden">
+      <div class="flex flex-row space-x-2">
+        <button class="rounded px-4 bg-alert-info h-10 text-black" (click)="exportCSV()" [disabled]="documentsVisibility.length <= 0">
+          <div>
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"
+                 fill="none">
+              <path
+                d="M10.3333 2V6.5C10.3333 7.32843 11.0049 8 11.8333 8H16.3333V16.5C16.3333 17.3284 15.6617 18 14.8333 18H5.83331C5.00489 18 4.33331 17.3284 4.33331 16.5V3.5C4.33331 2.67157 5.00489 2 5.83331 2H10.3333ZM11.3333 2.25V6.5C11.3333 6.77614 11.5572 7 11.8333 7H16.0833L11.3333 2.25Z"
+                fill="white"/>
+            </svg>
+          </div>
+          <span>CSV</span>
+        </button>
+        <button class="rounded bg-alert-success h-10 text-black" (click)="exportExcel()" [disabled]="documentsVisibility.length <= 0">
+          <div>
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                 fill="none">
+              <path
+                d="M10 17H14.5C15.8807 17 17 15.8807 17 14.5V14H10V17ZM17 13V7H3V13H17ZM3 14H9V17H5.5C4.11929 17 3 15.8807 3 14.5V14ZM10 6H17V5.5C17 4.11929 15.8807 3 14.5 3H10V6ZM9 3V6H3V5.5C3 4.11929 4.11929 3 5.5 3H9Z"
+                fill="white"/>
+            </svg>
+          </div>
+          <span>EXCEL</span>
+        </button>
+        <button class="rounded bg-alert-error h-10 text-black" (click)="exportPdf()" [disabled]="documentsVisibility.length <= 0">
+          <div>
+            <svg class="fill-current" id="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 viewBox="0 0 32 32">
+              <polygon points="30 18 30 16 24 16 24 26 26 26 26 22 29 22 29 20 26 20 26 18 30 18" fill="white"/>
+              <path
+                d="M19,26H15V16h4a3.0033,3.0033,0,0,1,3,3v4A3.0033,3.0033,0,0,1,19,26Zm-2-2h2a1.0011,1.0011,0,0,0,1-1V19a1.0011,1.0011,0,0,0-1-1H17Z"
+                fill="white"/>
+              <path d="M11,16H6V26H8V23h3a2.0027,2.0027,0,0,0,2-2V18A2.0023,2.0023,0,0,0,11,16ZM8,21V18h3l.001,3Z"
+                    fill="white"/>
+              <path
+                d="M22,14V10a.9092.9092,0,0,0-.3-.7l-7-7A.9087.9087,0,0,0,14,2H4A2.0059,2.0059,0,0,0,2,4V28a2,2,0,0,0,2,2H20V28H4V4h8v6a2.0059,2.0059,0,0,0,2,2h6v2Zm-8-4V4.4L19.6,10Z"
+                fill="white"/>
+              <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" width="24" height="24"
+                    fill="none"/>
+            </svg>
+          </div>
+          <span>PDF</span>
+        </button>
+      </div>
+      <div class="flex flex-row space-x-2">
+        <button class="rounded bg-mono-10 h-10 text-black">
+          <span>{{'COLUMNS'|translate}}</span>
+          <div>
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"
+                 fill="none">
+              <path
+                d="M16.5194 7.64582C16.715 7.84073 16.7156 8.15731 16.5206 8.35292L11.0557 13.8374C10.8407 14.0531 10.4914 14.0531 10.2765 13.8374L4.81148 8.35292C4.61657 8.15731 4.61713 7.84073 4.81274 7.64582C5.00835 7.4509 5.32493 7.45147 5.51985 7.64708L10.6661 12.8117L15.8123 7.64708C16.0072 7.45147 16.3238 7.4509 16.5194 7.64582Z"
+                fill="white"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white w-full p-4 container-paddings border-b border-mono-30 flex flex-row space-x-2">
+    <div class="ec-input-search flex-1">
+      <input class="placeholder:text-mono-30" placeholder="{{'SEARCH'|translate}}" type="search" (input)="filterTable($event)">
+      <div class="icon">
+        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+             fill="none">
+          <path
+            d="M6.66671 1.83325C9.33608 1.83325 11.5 3.99721 11.5 6.66659C11.5 7.82117 11.0952 8.8812 10.4197 9.71246L13.6869 12.9797C13.8822 13.175 13.8822 13.4915 13.6869 13.6868C13.5094 13.8643 13.2316 13.8805 13.0359 13.7352L12.9798 13.6868L9.71258 10.4196C8.88132 11.0951 7.82129 11.4999 6.66671 11.4999C3.99733 11.4999 1.83337 9.33596 1.83337 6.66659C1.83337 3.99721 3.99733 1.83325 6.66671 1.83325ZM6.66671 2.83325C4.54962 2.83325 2.83337 4.54949 2.83337 6.66659C2.83337 8.78368 4.54962 10.4999 6.66671 10.4999C8.7838 10.4999 10.5 8.78368 10.5 6.66659C10.5 4.54949 8.7838 2.83325 6.66671 2.83325Z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <perfect-scrollbar style="height:100%">
+    <div class="group-item-flow space-y-2" *ngFor="let document of documentsVisibility">
+      <div class="item bg-white py-4 px-6 border border-mono-30 rounded space-y-2">
+        <span class="text-brand-2 t-subtitle-2">N° {{document['index']}}</span>
+        <div class="data border-t border-mono-30 space-y-2 py-4">
+          <div class="flex flex-col" *ngFor="let header of  columns">
+            <span class="text-mono-70 t-caption-1 capitalize" *ngIf="header.header !== 'index'">{{header.header  | replace: '_': ' '}}</span>
+            <span class="text-black t-body-2" *ngIf="header.header !== 'index'">{{document[header.header]}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </perfect-scrollbar>
+
+  <div class="pagination bg-white w-full p-4 border-t border-mono-30">
+    <div class="flex flex-row justify-between space-x-4 items-center">
+      <div class="flex flex-row relative group cursor-pointer pl-2 items-center border-input w-20 bg-mono-10 rounded">
+        <span class="text-black w-full truncate">{{paginationValue}}</span>
+        <div class="p-3 flex items-center justify-center">
+          <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+               viewBox="0 0 16 16">
+            <path
+              d="M2.81319 5.64645C3.00846 5.45118 3.32504 5.45118 3.5203 5.64645L8.00008 10.1262L12.4799 5.64645C12.6751 5.45118 12.9917 5.45118 13.187 5.64645C13.3822 5.84171 13.3822 6.15829 13.187 6.35355L8.35363 11.1869C8.15837 11.3821 7.84179 11.3821 7.64653 11.1869L2.81319 6.35355C2.61793 6.15829 2.61793 5.84171 2.81319 5.64645Z"/>
+          </svg>
+        </div>
+        <div class="container-combo-up hidden group-hover:block">
+          <div class="option-combo" (click)="paginationValue = 5; changePaginationValue();">5</div>
+          <div class="option-combo" (click)="paginationValue = 10; changePaginationValue();">10</div>
+          <div class="option-combo" (click)="paginationValue = 15; changePaginationValue();">15</div>
+          <div class="option-combo" (click)="paginationValue = 20; changePaginationValue();">20</div>
+        </div>
+      </div>
+
+      <div class="flex flex-row space-x-1">
+        <button class="border-input flex flex-row items-center justify-center w-10 h-10 bg-mono-10 hover:bg-white" (click)="beforePage()" [disabled]="currentPositionPagination === 1">
+          <div class="transform rotate-90">
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+              <path
+                d="M2.81319 5.64645C3.00846 5.45118 3.32504 5.45118 3.5203 5.64645L8.00008 10.1262L12.4799 5.64645C12.6751 5.45118 12.9917 5.45118 13.187 5.64645C13.3822 5.84171 13.3822 6.15829 13.187 6.35355L8.35363 11.1869C8.15837 11.3821 7.84179 11.3821 7.64653 11.1869L2.81319 6.35355C2.61793 6.15829 2.61793 5.84171 2.81319 5.64645Z"/>
+            </svg>
+          </div>
+        </button>
+        <div class="border-input cursor-default flex flex-row items-center justify-center h-10 bg-mono-10 px-2">
+          <span>{{currentPositionPagination}}/{{documentsCurrent}}</span>
+        </div>
+        <button class="border-input flex flex-row items-center justify-center w-10 h-10 bg-mono-10 hover:bg-white" (click)="nextPage()" [disabled]="currentPositionPagination === documentsCurrent || documentsCurrent === 0">
+          <div class="transform -rotate-90">
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+              <path
+                d="M2.81319 5.64645C3.00846 5.45118 3.32504 5.45118 3.5203 5.64645L8.00008 10.1262L12.4799 5.64645C12.6751 5.45118 12.9917 5.45118 13.187 5.64645C13.3822 5.84171 13.3822 6.15829 13.187 6.35355L8.35363 11.1869C8.15837 11.3821 7.84179 11.3821 7.64653 11.1869L2.81319 6.35355C2.61793 6.15829 2.61793 5.84171 2.81319 5.64645Z"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

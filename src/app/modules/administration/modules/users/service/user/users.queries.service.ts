@@ -334,7 +334,7 @@ export class LogoutUserQuery extends Mutation {
 @Injectable({
   providedIn: 'root',
 })
-export class GetRoles extends Query<Response> {
+/*export class GetRoles extends Query<Response> {
   document = gql`
     query getRoles {
       getRoles {
@@ -349,7 +349,7 @@ export class GetRoles extends Query<Response> {
       }
     }
   `;
-}
+}*/
 
 @Injectable({
   providedIn: 'root',

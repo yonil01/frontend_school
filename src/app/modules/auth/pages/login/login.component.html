@@ -2,10 +2,7 @@
   <div class="flex flex-col w-full h-screen">
     <div class="flex flex-col lg:flex-row flex-1 w-full">
       <div class="flex-1 lg:w-1/2">
-        <div style="background-image: url('assets/img/gallagher-banner.png');" class="h-full bg-cover bg-center flex items-center justify-start">
-          <div class="svg bg-white p-4 rounded-r">
-            <img class="h-8" src="{{this.url_logo}}">
-          </div>
+        <div style="background-image: url('assets/img/colegio.jpg');" class="h-full bg-cover bg-center flex items-center justify-start">
         </div>
       </div>
       <div class="form-login">
@@ -15,7 +12,7 @@
             <span class="t-subtitle-1 lg:text-left text-black text-center">{{'CONFIGURATION'|translate}}</span>
           </div>
           <div class="brand hidden lg:block">
-            <img class="h-8" src="{{this.url_logo}}">
+            <img class="h-16" src="assets/img/colegio.png">
           </div>
         </div>
         <form [formGroup]="formLogin" id="form-login" class="w-full space-y-4">
@@ -26,6 +23,12 @@
           <div class="flex flex-col flex-1 space-y-1">
             <label>{{ 'PASSWORD' | translate}}</label>
             <input formControlName="password" class="input-style" type="password">
+          </div>
+          <div class="flex flex-col flex-1 space-y-1">
+            <label>Rol</label>
+            <select class="input-style" >
+                        <option  *ngFor="let option of dataRol" [ngValue]="option">{{option}}</option>
+            </select>
           </div>
         </form>
         <div class="flex flex-col space-y-4 w-full">

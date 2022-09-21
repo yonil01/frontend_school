@@ -13,7 +13,7 @@ export class RoleService {
     private apollo: Apollo,
   ) {}
 
-  getRoles(): Observable<Response> {
+  /*getRoles(): Observable<Response> {
     return this.apollo
       .watchQuery({
         query: gql`
@@ -28,9 +28,9 @@ export class RoleService {
         `,
       })
       .valueChanges.pipe(map(({data}: any) => data.getRoles));
-  }
+  }*/
 
-  getRolesWithDoctype(): Observable<Response> {
+  /*getRolesWithDoctype(): Observable<Response> {
     return this.apollo
       .watchQuery({
         query: gql`
@@ -52,5 +52,5 @@ export class RoleService {
         `,
       })
       .valueChanges.pipe(map(({data}: any) => data.getRoles));
-  }
+  }*/
 }

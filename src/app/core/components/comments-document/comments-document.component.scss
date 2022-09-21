@@ -1,0 +1,48 @@
+.context-comments {
+  margin: 1em;
+}
+
+::ng-deep .comment-style {
+  font-size: 12px !important;
+  width: 320px;
+  margin: 0.5em 0 0.5em 0;
+  background-color: white !important;
+}
+
+.align-comment-user {
+  display: flex;
+  justify-content: flex-end;
+}
+
+::ng-deep .comment-style-user {
+  font-size: 12px !important;
+  width: 100%;
+  margin: 0.5em 0 0.5em 0;
+  background-color: #b3deff !important;
+}
+
+.justify {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+::ng-deep .height-list-box {
+  max-height: 300px;
+  width: 400px !important;
+}
+
+.info-comment {
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  border-top-style: dashed;
+  border-top-width: 0.1px;
+  border-top-color: #0082e6;
+}
+
+::ng-deep .panel-zindex {
+  z-index: 1000000000 !important;
+}

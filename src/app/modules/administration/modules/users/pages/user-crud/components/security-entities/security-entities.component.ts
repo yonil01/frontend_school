@@ -56,7 +56,7 @@ export class SecurityEntitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUserByID(this.user.id!);
+    this.getUserByID(this.user.dni!);
     this.securityEntitiesSelectedForm.valueChanges.subscribe((securityEntity: SecurityEntity) => {
       this.securityEntitySelected = securityEntity;
       this.dataDropAttribute = [];
@@ -127,8 +127,8 @@ export class SecurityEntitiesComponent implements OnInit {
 
   private getDataTable(user: User) {
     this.styleTable.dataSources = [];
-    if (user.security_entities) {
-      user.security_entities.forEach((entity: any) => {
+    if (user.status) {
+      /*subject.status.forEach((entity: any) => {
         const newData: Data = {
           name: entity.entity.name,
           value: entity,
@@ -145,7 +145,7 @@ export class SecurityEntitiesComponent implements OnInit {
           })
         }
         this.styleTable.dataSources?.push(newData);
-      })
+      })*/
     }
 
   }
@@ -154,7 +154,7 @@ export class SecurityEntitiesComponent implements OnInit {
     const securityEntityPersistence: NewUserSecurityEntity = {
       id: uuidv4().toLowerCase(),
       entity: this.securityEntitiesSelectedForm.value.entity.id,
-      user_id: this.user.id?.toLowerCase(),
+      user_id: this.user.dni?.toLowerCase(),
     };
     this.userService.createUsersSecurityEntity(securityEntityPersistence).subscribe((resp) => {
       if (resp.error) {
@@ -169,7 +169,7 @@ export class SecurityEntitiesComponent implements OnInit {
           message: resp.msg,
           life: 5000,
         });
-        this.getUserByID(this.user.id!.toLowerCase());
+        this.getUserByID(this.user.dni!.toLowerCase());
         this.showCreateSecurityEntity = false;
       }
     });
@@ -195,9 +195,9 @@ export class SecurityEntitiesComponent implements OnInit {
   }
   private findUserSecurityEntity(): void {
     if (this.securityEntitySelected) {
-      this.userSecurityEntitySelected = this.user.security_entities?.find(
+      /*this.userSecurityEntitySelected = this.subject.status?.find(
         (se) => se.entity?.id!.toLowerCase() === this.securityEntitySelected.entity?.id!.toLowerCase(),
-      )!;
+      )!;*/
       if (this.userSecurityEntitySelected) {
         this.showCreateSecurityEntity = false;
       } else {
@@ -225,7 +225,7 @@ export class SecurityEntitiesComponent implements OnInit {
           message: resp.msg,
           life: 5000,
         });
-        this.getUserByID(this.user.id!.toLowerCase());
+        this.getUserByID(this.user.dni!.toLowerCase());
       }
     });
   }
@@ -251,7 +251,7 @@ export class SecurityEntitiesComponent implements OnInit {
           message: resp.msg,
           life: 5000,
         });
-        this.getUserByID(this.user.id!.toLowerCase());
+        this.getUserByID(this.user.dni!.toLowerCase());
         this.showCreateSecurityEntityAttribute = false;
       }
     });
@@ -272,7 +272,7 @@ export class SecurityEntitiesComponent implements OnInit {
           life: 5000,
         });
         this.dataDropAttribute = [];
-        this.getUserByID(this.user.id!.toLowerCase());
+        this.getUserByID(this.user.dni!.toLowerCase());
       }
     });
   }

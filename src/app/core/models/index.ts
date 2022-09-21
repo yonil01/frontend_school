@@ -29,3 +29,6 @@ export * from './worker/config';
 export * from './worker/worker';
 export * from './visor/tif-decode';
 export * from './response';
+export * from './auth/classroom';
+export * from './auth/subject';
+export * from './auth/payment';

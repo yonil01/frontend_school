@@ -50,10 +50,10 @@ export class AppComponent implements OnDestroy {
     this.setLanguage();
 
     this.setTheme();
-    this.getAppId();
-    lookAndFeelService.getLookAndFeelConfig().subscribe((resp) => {
+    //this.getAppId();
+    /*lookAndFeelService.getLookAndFeelConfig().subscribe((resp) => {
       sessionStorage.setItem('look-and-feel-config', JSON.stringify(resp));
-    });
+    });*/
     let current: any;
     let timeout: any;
 
@@ -95,7 +95,7 @@ export class AppComponent implements OnDestroy {
 
     // sets an idle timeout of 5 seconds, for testing purposes.
     idle.setIdle(5);
-    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
+    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the subject will be considered timed out.
     idle.setTimeout(1200);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
@@ -123,7 +123,7 @@ export class AppComponent implements OnDestroy {
     this._subscription.unsubscribe();
   }
 
-  private getAppId(): void {
+  /*private getAppId(): void {
     this._subscription.add(
       this._cryptoService.getAppId().subscribe(
         (res) => {
@@ -134,7 +134,7 @@ export class AppComponent implements OnDestroy {
         },
       ),
     );
-  }
+  }*/
 
   private setTheme() {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {

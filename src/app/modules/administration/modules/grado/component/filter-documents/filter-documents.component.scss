@@ -1,0 +1,37 @@
+.btn-queue {
+  @apply h-10 rounded bg-mono-10 flex justify-center items-center w-full
+}
+
+.btn-queue:hover {
+  @apply bg-white border border-mono-30
+}
+
+.group-items {
+  @apply px-6 md:px-12 lg:px-6 p-4 space-y-4 h-full
+}
+.item-card {
+  @apply border border-mono-30 rounded overflow-hidden flex flex-col bg-white
+}
+.sub-container {
+  @apply flex flex-1 flex-col overflow-hidden bg-mono-10;
+}
+.primary-height {
+  height: calc(100vh - 48px);
+}
+
+/* Input */
+.ec-input-search {
+  @apply flex flex-row border border-mono-30 overflow-hidden items-center text-black rounded h-10 bg-mono-10
+}
+.ec-input-search div {
+  @apply flex items-center justify-center p-3
+}
+.ec-input-search input {
+  @apply bg-mono-10 px-2 w-full h-10 focus:outline-none focus:ring-0 focus:ring-transparent focus:border-transparent
+}
+
+/* Container Combo */
+/* Combo */
+.container-combo-up {
+  @apply border border-mono-30 rounded text-black absolute bottom-10 left-0 bg-mono-10 w-full
+}

@@ -12,7 +12,7 @@ import {
   UnBlockUserQuery,
   LogoutUserQuery,
   GetUsersQueryCpy,
-  GetRoles,
+  //GetRoles,
   GetRolesById,
   UpdatePasswordByAdministratorQuery,
   ChangePassUser,
@@ -47,7 +47,7 @@ export class UsersService {
     private blockUserQuery: BlockUserQuery,
     private unBlockUserQuery: UnBlockUserQuery,
     private logoutUserQuery: LogoutUserQuery,
-    private getRolesQry: GetRoles,
+    //private getRolesQry: GetRoles,
     private getRolesAllowByUserQuery: GetRolesAllowByUserQuery,
     private getRolesByIdQry: GetRolesById,
     private updatePasswordByAdministratorQuery: UpdatePasswordByAdministratorQuery,
@@ -87,28 +87,21 @@ export class UsersService {
     return this.getUsersQuery2.watch({}).valueChanges.pipe(map(({ data }: any) => data.getUsers));
   }
 
-  createUser(user: User): Observable<Response> {
-    return this.createUserQuery
-      .mutate({
-        rq: { data: user },
-      })
-      .pipe(map(({ data }: any) => data.createUser));
+
+
+  updateUser(user: User) {
+    const url = 'https://systemschoolramonv1.herokuapp.com/api/v1/user/update';
+    return this._httpClient.post(url,user).pipe(map((res) => res));
   }
 
-  updateUser(user: User): Observable<Response> {
-    return this.updateUserQuery
-      .mutate({
-        rq: { data: user },
-      })
-      .pipe(map(({ data }: any) => data.updateUser));
+  createUser(user: User) {
+    const url = 'https://systemschoolramonv1.herokuapp.com/api/v1/user/create';
+    return this._httpClient.post(url,user).pipe(map((res) => res));
   }
 
-  deleteUser(user: string): Observable<Response> {
-    return this.deleteUserQuery
-      .mutate({
-        id: user,
-      })
-      .pipe(map(({ data }: any) => data.deleteUser));
+  deleteUser(user: User) {
+    const url = 'https://systemschoolramonv1.herokuapp.com/api/v1/user/delete';
+    return this._httpClient.post(url,user).pipe(map((res) => res));
   }
 
   blockUser(user: string): Observable<Response> {
@@ -127,9 +120,9 @@ export class UsersService {
       .pipe(map(({ data }: any) => data.unblockUser));
   }
 
-  getRoles(): Observable<Response> {
+  /*getRoles(): Observable<Response> {
     return this.getRolesQry.watch({}).valueChanges.pipe(map(({ data }: any) => data.getRoles));
-  }
+  }*/
 
   getRolesAllowByUser(): Observable<Response> {
     return this.getRolesAllowByUserQuery.watch({}).valueChanges.pipe(map(({ data }: any) => data.getRolesAllowByUser));
@@ -248,5 +241,10 @@ export class UsersService {
         {id}
       )
       .pipe(map(({ data }: any) => data.activeUser));
+  }
+
+  public getStudentsAll() {
+    const url = 'https://systemschoolramonv1.herokuapp.com/api/v1/user/all/1';
+    return this._httpClient.get(url).pipe(map((res) => res));
   }
 }

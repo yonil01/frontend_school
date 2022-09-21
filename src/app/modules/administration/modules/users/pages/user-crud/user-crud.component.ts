@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
 import {User} from "@app/core/models";
 
 @Component({
-  selector: 'app-user-crud',
+  selector: 'app-subject-crud',
   templateUrl: './user-crud.component.html',
   styleUrls: ['./user-crud.component.scss']
 })
@@ -40,7 +40,7 @@ export class UserCrudComponent implements OnInit {
   public showDisabledStep(user: User): void {
     this.styleCrud.dataSourceStep.forEach((item: any, i: number) => {
       if (i === (this.styleCrud.dataSourceStep.length - 1)) {
-        if (user.roles !== null) {
+        if (user.dni !== null) {
           item.status = 'Completed';
           item.block = false;
         }

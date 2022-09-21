@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public isErrorLogin = false;
   public isLoading = false;
-
+  public dataRol: any = ['Administración', 'Alumno', 'Profesor']
   public siteKey;
   public url_logo = '';
   public version_ecatch = '';
@@ -78,7 +78,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public login() { //loginError
+
     if(this.formLogin.valid) {
+
       this.isErrorLogin = false;
       this.isLoading = true;
       this.subscription.add(

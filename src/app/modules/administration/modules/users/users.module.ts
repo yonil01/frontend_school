@@ -46,6 +46,9 @@ import {TranslateModule} from "@ngx-translate/core";
 import {
   ChangePasswordComponent
 } from "@app/modules/administration/modules/users/pages/change-password/change-password.component";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -92,6 +95,9 @@ import {
     InputPasswordModule,
     IconsModule,
     TranslateModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
   ],
   providers: [ToastService]
 })

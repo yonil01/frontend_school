@@ -1,0 +1,108 @@
+.sub-container {
+  @apply w-full flex-col p-4 space-y-4 flex-col;
+}
+
+.sub-container-sm {
+  @apply flex-1 flex-col overflow-hidden bg-mono-10;
+  height: calc(100vh - 48px);
+}
+.group-item-flow {
+  @apply w-full h-full px-6 md:px-12 lg:px-4 p-4
+}
+.container-paddings {
+  @apply px-6 md:px-12 lg:px-4 p-4
+}
+
+.content-list {
+  @apply flex flex-col;
+  height: calc(100vh - 180px);
+}
+
+/* Input */
+.ec-input-search {
+  @apply flex flex-row border border-mono-30 overflow-hidden items-center text-black rounded h-10 bg-mono-10
+}
+.ec-input-search div {
+  @apply flex items-center justify-center p-3
+}
+.ec-input-search input {
+  @apply bg-mono-10 px-2 w-full h-10 focus:outline-none focus:ring-0 focus:ring-transparent focus:border-transparent
+}
+
+/* Combo */
+.container-combo-up {
+  @apply border border-mono-30 rounded text-black absolute bottom-10 lg:top-10 left-0 bg-mono-10 w-full z-50
+}
+
+/* Button */
+.b-ghost-table {
+  @apply text-brand-2
+}
+.b-ghost-table:hover {
+  @apply bg-mono-10 text-white
+}
+
+.b-ghost-option {
+  @apply hover:bg-mono-10 border border-mono-30 bg-white h-10 w-10
+}
+
+/* Columns */
+.container-menu-sm {
+  @apply fixed z-50 flex justify-center items-end w-screen h-screen top-0 left-0 px-6 md:px-12;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.head {
+  @apply pl-4 h-12 w-full bg-brand-2 flex flex-row justify-between items-center
+}
+.item-sm {
+  @apply p-4 flex flex-row items-center justify-between rounded border border-mono-30 hover:bg-mono-10 cursor-pointer
+}
+
+.menu-sm {
+  @apply flex flex-col overflow-hidden rounded-t bg-white border-mono-30;
+  height: calc(100vh - 24px - 48px);
+}
+.body {
+  height: calc(100vh - 24px - 48px - 48px);
+}
+
+.ec-grid-cols-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+.ec-grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.ec-grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.ec-grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.ec-grid-cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+.ec-grid-cols-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+.ec-grid-cols-7 {
+  grid-template-columns: repeat(7, 1fr);
+}
+.ec-grid-cols-8 {
+  grid-template-columns: repeat(8, 1fr);
+}
+.ec-grid-cols-9 {
+  grid-template-columns: repeat(9, 1fr);
+}
+.ec-grid-cols-10 {
+  grid-template-columns: repeat(10, 1fr);
+}
+.ec-grid-cols-11 {
+  grid-template-columns: repeat(11, 1fr);
+}
+.ec-grid-cols-12 {
+  grid-template-columns: repeat(12, 1fr);
+}
+.ec-grid-cols-14 {
+  grid-template-columns: repeat(14, 1fr);
+}

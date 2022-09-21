@@ -12,6 +12,7 @@ const helper = new JwtHelperService();
   providedIn: 'root',
 })
 export class LocalStorageService {
+  private helper: any;
   modules!: Module[];
   public secretKey: string = '';
   private key = '204812730425442A472D2F423F452847';
@@ -30,7 +31,8 @@ export class LocalStorageService {
   }
 
   getRoles() {
-    return this.decodeToken().user.roles;
+    //return this.decodeToken().subject.roles;
+    return '';
     // return ['root', 'pruebas'];
   }
 
@@ -95,6 +97,21 @@ export class LocalStorageService {
       return objLanguage.language;
     }
     return 'es';
+  }
+  public getUserEmail(): string {
+    if (this.getTokenData()) {
+      return this.getTokenData().user.email_notifications;
+    }
+    return '';
+  }
+
+  private getTokenData(): any {
+    const token = sessionStorage.getItem('access-token');
+    if (token) {
+      return this.helper.decodeToken(token);
+    } else {
+      return null;
+    }
   }
 
   public setLanguage(language: string): void {
